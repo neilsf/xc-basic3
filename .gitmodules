@@ -1,0 +1,3 @@
+[submodule "modules/xcb-module-grammar"]
+	path = modules/xcb-module-grammar
+	url = https://github.com/neilsf/xcb-module-grammar

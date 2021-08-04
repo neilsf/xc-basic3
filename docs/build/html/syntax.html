@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Syntax &mdash; XC=BASIC 3  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data types" href="datatypes.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> XC=BASIC 3
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Syntax</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vocabulary">Vocabulary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#identifiers">Identifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statements">Statements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comments">Comments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#whitespace">Whitespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#labels-and-line-numbers">Labels and line numbers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datatypes.html">Data types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variables.html">Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flowcontrol.html">Flow control statements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="routines.html">Subroutines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="udt.html">User-defined types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Code modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywordref.html">Keyword reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functionref.html">Function reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">XC=BASIC 3</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Syntax</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/syntax.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="syntax">
+<h1>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vocabulary">
+<h2>Vocabulary<a class="headerlink" href="#vocabulary" title="Permalink to this headline">¶</a></h2>
+<p>The following reserved keywords form the basic vocabulary of the language. The keywords may be spelled with either upper or lower case letters, or a mix of both. Therefore <code class="docutils literal notranslate"><span class="pre">PRINT</span></code>, <code class="docutils literal notranslate"><span class="pre">print</span></code> and <code class="docutils literal notranslate"><span class="pre">Print</span></code> are equivalent.</p>
+<p>ASM BYTE CALL CHARAT CONST CONTINUE CURPOS DATA DECIMAL DECLARE DIM DO ELSE END ERROR EXIT FAST FLOAT FOR FUNCTION GOSUB GOSUB GOTO IF INCBIN INCLUDE INLINE INPUT INT LET LOAD LOOP MEMCPY MEMSET MEMSHIFT NEXT ON ORIGIN OVERRIDE POKE PRINT PRIVATE RETURN SAVE SHARED STATIC STEP STRING SUB SWAP SYS TEXTAT TO TYPE UNTIL WAIT WATCH WHILE WORD</p>
+<p>In XC=BASIC (unlike CBM BASIC) you must separate keywords from each other or from other identifiers with at least one space. This does not impose any speed or size penalty on the program.</p>
+</div>
+<div class="section" id="identifiers">
+<h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h2>
+<p>Identifiers are used to name constants, variables, labels, subs and functions in XC=BASIC. You may choose identifiers
+as you wish, following these rules:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The first character must be alphabetic or an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) character</p></li>
+<li><p>The remaining characters must be alphabetic, numeric, or the underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) character</p></li>
+<li><p>Either upper or lower case alphabetic characters may be used. Both are considered equivalent. Therefore <code class="docutils literal notranslate"><span class="pre">XYZ</span></code> and <code class="docutils literal notranslate"><span class="pre">xyz</span></code> are considered the same identifier.</p></li>
+<li><p>An identifer may not duplicate one of the reserved keywords in the basic vocabulary above.</p></li>
+</ol>
+</div></blockquote>
+<p>Identifiers can be of any length. Unlike CBM BASIC, where only the first two characters are significant, in XC=BASIC all characters are significant. The length of your identifers does not affect the size of the compiled program. For this reason it is advised to use descriptive identifiers that are easy to read.</p>
+</div>
+<div class="section" id="statements">
+<h2>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h2>
+<p>Statements can be separated using the colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) character. The separator is not required if there’s only one statement in a line. The following two code pieces will be compiled to the same exact executable.</p>
+<div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="vg">i</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="vg">INT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">5</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">PRINT</span><span class="w"> </span><span class="vg">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">NEXT</span>
+</pre></div>
+</div>
+<div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="vg">i</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="vg">INT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">5</span>
+<span class="w">  </span><span class="k">PRINT</span><span class="w"> </span><span class="vg">i</span>
+<span class="k">NEXT</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comments">
+<h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
+<p>The only way to add comments is the REM statement. The REM keyword however has an alias: the single quote (‘) character:</p>
+<div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="c1">REM This is a comment</span>
+<span class="c1">&#39; This is also a comment</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="whitespace">
+<h2>Whitespace<a class="headerlink" href="#whitespace" title="Permalink to this headline">¶</a></h2>
+<p>Whitespace (e.g spaces and tabs) are required between identifiers and keywords to avoid confusions. It is encouraged to use indentation to make the program more readable:</p>
+<div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="k">FOR</span><span class="w"> </span><span class="vg">i</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="vg">INT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">10</span>
+<span class="w">  </span><span class="k">FOR</span><span class="w"> </span><span class="vg">j</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="vg">INT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">10</span>
+<span class="w">    </span><span class="k">PRINT</span><span class="w"> </span><span class="s2">&quot;row &quot;</span><span class="p">,</span><span class="w"> </span><span class="vg">i</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;column &quot;</span><span class="p">,</span><span class="w"> </span><span class="vg">j</span>
+<span class="w">  </span><span class="k">NEXT</span><span class="w"> </span><span class="vg">j</span>
+<span class="k">NEXT</span><span class="w"> </span><span class="vg">i</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="labels-and-line-numbers">
+<h2>Labels and line numbers<a class="headerlink" href="#labels-and-line-numbers" title="Permalink to this headline">¶</a></h2>
+<p>Labels can be used to mark points in your code. Labels can be referenced by <code class="docutils literal notranslate"><span class="pre">GOTO</span></code> and <code class="docutils literal notranslate"><span class="pre">GOSUB</span></code> statements. Labels must be followed by a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>).</p>
+<div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="kr">GOSUB</span><span class="w"> </span><span class="nl">intro</span>
+<span class="k">END</span>
+
+<span class="nl">intro:</span>
+<span class="k">PRINT</span><span class="w"> </span><span class="s2">&quot;welcome to my program&quot;</span>
+<span class="k">RETURN</span>
+</pre></div>
+</div>
+<p>In later sections of this tutorial you will learn more about how labels can be useful in your program.</p>
+<p>In addition to labels, you can use line numbers as well. Line numbers will be treated by XC=BASIC like labels. However, bear in mind that:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Line numbers do not have to be consecutive</p></li>
+<li><p>The colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) character must not be appended to line numbers</p></li>
+<li><p>Labels, line numbers or unnumbered/unlabeled lines can be mixed in the program</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="datatypes.html" class="btn btn-neutral float-right" title="Data types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Csaba Fekete.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

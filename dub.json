@@ -1,0 +1,18 @@
+{
+	"authors": [
+		"Csaba Fekete"
+	],
+	"copyright": "Copyright © 2020, Csaba Fekete",
+	"dependencies": {
+		"pegged": "0.4.5-beta.2"
+	},
+	"description": "XC=BASIC Compiler Version 3",
+	"license": "MIT",
+	"name": "xcbasic3",
+    "preBuildCommands" : [
+        "cd ./modules/xcb-module-grammar && dub build && ./xcb-module-grammar > ../../source/language/grammar.d && cd ../.."
+    ],
+    "postBuildCommands" : [
+        "echo 'OK'"       
+    ]
+}

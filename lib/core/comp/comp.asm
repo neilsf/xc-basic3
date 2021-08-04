@@ -1,0 +1,6 @@
+	INCLUDE "core/comp/_byte.asm"
+	INCLUDE "core/comp/_word.asm"
+	INCLUDE "core/comp/_int.asm"
+	INCLUDE "core/comp/_long.asm"
+	INCLUDE "core/comp/_float.asm"
+	INCLUDE "core/comp/_decimal.asm"

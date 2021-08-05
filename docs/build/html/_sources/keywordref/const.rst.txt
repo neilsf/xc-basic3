@@ -4,10 +4,15 @@ CONST
 
 The ``CONST`` directive defines a constant.
 
-Grammar
-=======
+Syntax
+======
 
-.. image:: ../img/grammar_const.png
+.. code-block::
+
+    CONST <name> = <literal number>
+
+Description
+===========
 
 A constant can subsequently be used as a variable, except that it is read-only. Constants of any numeric types may be defined. The number must be a numeric literal (no expression is allowed).
 

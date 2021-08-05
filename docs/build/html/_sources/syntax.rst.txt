@@ -19,8 +19,9 @@ as you wish, following these rules:
 
  1. The first character must be alphabetic or an underscore (``_``) character
  2. The remaining characters must be alphabetic, numeric, or the underscore (``_``) character
- 3. Either upper or lower case alphabetic characters may be used. Both are considered equivalent. Therefore ``XYZ`` and ``xyz`` are considered the same identifier.
- 4. An identifer may not duplicate one of the reserved keywords in the basic vocabulary above.
+ 3. The ``$`` sign may suffix the identifer, however it doesn't automatically mean that the identifier refers to a string.
+ 4. Either upper or lower case alphabetic characters may be used. Both are considered equivalent. Therefore ``XYZ`` and ``xyz`` are considered the same identifier.
+ 5. An identifer may not duplicate one of the reserved keywords in the basic vocabulary above.
 
 Identifiers can be of any length. Unlike CBM BASIC, where only the first two characters are significant, in XC=BASIC all characters are significant. The length of your identifers does not affect the size of the compiled program. For this reason it is advised to use descriptive identifiers that are easy to read.
 
@@ -42,7 +43,7 @@ Statements can be separated using the colon (``:``) character. The separator is 
 Comments
 ========
 
-The only way to add comments is the REM statement. The REM keyword however has an alias: the single quote (') character:
+The only way to add comments is the REM statement. The REM keyword however has an alias: the single quote (``'``) character:
 
 .. code-block:: xcbasic
 

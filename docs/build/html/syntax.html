@@ -188,6 +188,7 @@ as you wish, following these rules:</p>
 <div><ol class="arabic simple">
 <li><p>The first character must be alphabetic or an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) character</p></li>
 <li><p>The remaining characters must be alphabetic, numeric, or the underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) character</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">$</span></code> sign may suffix the identifer, however it doesn’t automatically mean that the identifier refers to a string.</p></li>
 <li><p>Either upper or lower case alphabetic characters may be used. Both are considered equivalent. Therefore <code class="docutils literal notranslate"><span class="pre">XYZ</span></code> and <code class="docutils literal notranslate"><span class="pre">xyz</span></code> are considered the same identifier.</p></li>
 <li><p>An identifer may not duplicate one of the reserved keywords in the basic vocabulary above.</p></li>
 </ol>
@@ -208,7 +209,7 @@ as you wish, following these rules:</p>
 </div>
 <div class="section" id="comments">
 <h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
-<p>The only way to add comments is the REM statement. The REM keyword however has an alias: the single quote (‘) character:</p>
+<p>The only way to add comments is the REM statement. The REM keyword however has an alias: the single quote (<code class="docutils literal notranslate"><span class="pre">'</span></code>) character:</p>
 <div class="highlight-xcbasic notranslate"><div class="highlight"><pre><span></span><span class="c1">REM This is a comment</span>
 <span class="c1">&#39; This is also a comment</span>
 </pre></div>

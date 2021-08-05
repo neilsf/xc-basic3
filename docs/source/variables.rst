@@ -132,11 +132,9 @@ There are three scopes in XC=BASIC:
 - **Global**: the variable is visible in the current code module (in the source file where it was defined)
 - **Local**: the variable is only visible within the ``SUB`` or ``FUNCTION`` where it was defined.
 
-If you define a variable outside a ``SUB`` or ``FUNCTION``, it will be defined the **Global** scope which
-means that you can access it everywhere in that file (even from within ``SUB``\s and ``FUNCTION``\s), but not in other files.
+If you define a variable outside a ``SUB`` or ``FUNCTION``, it will be defined in the **Global** scope which means that you can access it everywhere in that file (even from within ``SUB``\s and ``FUNCTION``\s), but not in other files.
 
-If you define a variable inside a ``SUB`` or ``FUNCTION``, it will be defined in the **Local** scope of that ``SUB`` or ``FUNCTION``
-and it won't be accessible from anywhere else.
+If you define a variable inside a ``SUB`` or ``FUNCTION``, it will be defined in the **Local** scope of that ``SUB`` or ``FUNCTION`` and it won't be accessible from anywhere else.
 
 Using the ``SHARED`` keyword in a ``DIM`` statement, you can make a variable visible from all code modules (or source files):
 

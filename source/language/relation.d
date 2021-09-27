@@ -96,6 +96,13 @@ class Relation : AbstractExpression
 
             const string op = join(this.node.children[2].matches);
             const string asmOp = opMap[op];
+
+            if(left.getType().name == Type.STRING) {
+                if(op != "=" && op != "<>") {
+                    compiler.displayError("Relational operator '" ~ op ~ "' not supported on strings");
+                }
+            }
+
             this.asmCode ~= "    cmp" ~ expectedType.name ~ asmOp ~"\n";
         }
         // Has left only

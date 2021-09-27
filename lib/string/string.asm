@@ -1,6 +1,8 @@
 STRING_WORKAREA EQU $CF00
 STRING_BUFFER1  EQU $033C
 STRING_BUFFER2  EQU $039D
+
+	INCLUDE "string/_fn.asm"
 	
 	; Reset stack pointer
 	MAC spreset
@@ -150,6 +152,29 @@ STRING_BUFFER2  EQU $039D
 	jsr STRREMOV
 	ENDM
 	
+	; Move string on stack and update stack pointer
+	; Length in A
+	; String ptr in R0
+	IFCONST I_STRMOV_IMPORTED
+STRMOV SUBROUTINE
+	pha		; save length
+	tay
+	ldx SP	; current stack pointer
+	inx
+.loop
+	dex
+	lda (R0),y
+	sta STRING_WORKAREA,x
+	dey
+	bne .loop 
+	pla		; restore length
+	dex		
+	sta STRING_WORKAREA,x
+	dex
+	stx SP	; new stack pointer
+	rts
+	ENDIF
+	
 	IFCONST I_STRREMOV_IMPORTED
 	; Dest ptr to string in R0
 	; Max length in A
@@ -184,29 +209,6 @@ STRREMOV SUBROUTINE
 	sta SP
 	rts
 	ENDIF
-	
-	; Move string on stack and update stack pointer
-	; Length in A
-	; String ptr in R0
-	IFCONST I_STRMOV_IMPORTED
-STRMOV SUBROUTINE
-	pha		; save length
-	tay
-	ldx SP	; current stack pointer
-	inx
-.loop
-	dex
-	lda (R0),y
-	sta STRING_WORKAREA,x
-	dey
-	bne .loop 
-	pla		; restore length
-	dex		
-	sta STRING_WORKAREA,x
-	dex
-	stx SP	; new stack pointer
-	rts
-	ENDIF
 		
 	; Concatenate top two strings on stack
 	MAC addstring
@@ -232,65 +234,4 @@ STR_CONCAT	SUBROUTINE
 	ldx SP
 	inx
 	sta STRING_WORKAREA,x
-	ENDIF
-	
-	; LEFT$ function
-	; A - length
-	IFCONST I_STR_LEFT_IMPORTED
-STR_LEFT SUBROUTINE
-	ldx SP
-	inx
-	cmp STRING_WORKAREA,x
-	bcs .wholestr
-	lda STRING_WORKAREA,x
-.wholestr 
- 	; A = Number of bytes to write
- 	sta STRING_WORKAREA,x
- 	tay
- 	stx .1 + 1
- 	; A = X + A
- 	stx R0
- 	clc
- 	adc R0 
- 	sta .2 + 1
- .loop
- .1	lda STRING_WORKAREA,y
- .2	sta STRING_WORKAREA,y
- 	dey
- 	bpl .loop
-	; TODO write new pointer
- 	; ...
-	rts
-	ENDIF
-	
-	; RIGHT$ function
-	; A - length
-	IFCONST I_STR_RIGHT_IMPORTED
-STR_RIGHT SUBROUTINE
-	ldx SP
-	inx
-	cmp STRING_WORKAREA,x
-	bcs .exit ; length >= string length
-	; X = X + len - A
-	sta R0
-	txa
-	clc
-	adc STRING_WORKAREA,x
-	sbc R0
- 	tax
- 	lda R0
- 	sta STRING_WORKAREA,x
- 	dex
- 	sta SP
-.exit
-	rts
-	ENDIF
-	
-	IFCONST I_STR_LEN_IMPORTED
-STR_LEN SUBROUTINE
-	ldx SP
-	inx
-	lda STRING_WORKAREA,x
-	sta $0000 ; TODO fn retval
-	rts
 	ENDIF

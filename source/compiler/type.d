@@ -64,6 +64,25 @@ class Type
     }
 
     /**
+     * Calculates a theoretic "penalty" score that comes
+     * with converting this type to another type.
+     * This score can be used to choose among overloaded functions
+     */
+    public int getConversionPenalty(Type that)
+    {
+        if(this.name == INT16 && that.name == UINT16) {
+            return 0;
+        }
+        if(this.length == that.length) {
+            return 0;
+        }
+        if(this.length < that.length) {
+            return that.length - this.length;
+        }
+        return (this.length - that.length) * 4;
+    }
+
+    /**
      * Add new field
      */
     public void addField(Variable field)

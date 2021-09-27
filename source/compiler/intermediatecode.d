@@ -14,7 +14,7 @@ class IntermediateCode
     /** Code segments as strings */
     private string[int] segments;
 
-    /** Reference to the Compiler class */
+    /** Reference to the Compiler object */
     private Compiler compiler;
 
     /** Class constructor */
@@ -22,8 +22,8 @@ class IntermediateCode
     {
         this.compiler = compiler;
         this.segments =  [
-            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH EQU 0\nFPULL EQU 0\n",
-            ROUTINE_SEGMENT : "routines_start:\n",
+            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH EQU 0\nFPULL EQU 0\n    spreset\n",
+            ROUTINE_SEGMENT : "routines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n",
             DATA_SEGMENT    : "data_start:\n",
             VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
         ];

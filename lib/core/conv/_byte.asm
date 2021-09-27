@@ -20,5 +20,15 @@
 	
 	; Convert byte on stack to float on stack
 	MAC F_cfloat_byte
-	; TODO
+	IF !FPULL
+	pla
+	ENDIF
+	sta FAC + 1
+	lda #$00
+	sta FAC + 2
+	ldx #$88
+	sec
+	import I_FPLIB
+	jsr FLOAT2
+	pfac
 	ENDM

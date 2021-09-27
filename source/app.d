@@ -66,11 +66,15 @@ void main(string[] args)
     const string fileName = args[1];
     const string outName = args[2];
 
-    // Compile the program
     Compiler compiler = new Compiler();
+    // Compile standard headers
+    const string stdHeadersName = getLibraryDir() ~ "/headers.bas";
+    SourceFile source = SourceFile.get(stdHeadersName);
+    compiler.compileSourceFile(source);
+    // Compile the program
     immutable string currentDir = getcwd();
     chdir(dirName(fileName));
-    SourceFile source = SourceFile.get(baseName(fileName));
+    source = SourceFile.get(baseName(fileName));
     compiler.compileSourceFile(source);
     chdir(currentDir);
         

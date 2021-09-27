@@ -21,14 +21,14 @@
 	IF !FPUSH
 	lda {1}
 	pha
-	lda {1}
+	lda {1} + 1
 	pha
-	lda {1}+2
+	lda {1} + 2
 	pha
 	ELSE
 	lda {1}
-	ldy {1}+1
-	ldx {1}+2
+	ldy {1} + 1
+	ldx {1} + 2
 	ENDIF
 	ENDM
 	

@@ -12,32 +12,14 @@ KERNAL_PLOT		EQU $e50a
 	
 	; Print int on stack as PETSCII string
 	MAC printint
-	import I_STDLIB_PRINT_INT
-	IF !FPULL
-	pla
-	sta R2 + 1
-	pla
-	sta R2
-	ELSE
-	sta R2
-	sty R2 + 1
-	ENDIF
-	jsr STDLIB_PRINT_INT
+	F_str@_int
+	printstring
 	ENDM
 	
 	; Print word on stack as PETSCII string
 	MAC printword
-	import I_STDLIB_PRINT_WORD 
-	IF !FPULL
-	pla
-	sta R2 + 1
-	pla
-	sta R2
-	ELSE
-	sta R2
-	sty R2 + 1
-	ENDIF
-	jsr STDLIB_PRINT_WORD
+	F_str@_word
+	printstring
 	ENDM
 	
 	; Print word on stack as PETSCII string
@@ -83,24 +65,13 @@ KERNAL_PLOT		EQU $e50a
 	
 	; Print int on stack as PETSCII string
 	MAC printlong
-	import I_STDLIB_PRINT_LONG
-	IF !FPULL
-	pla
-	sta R4 + 2
-	pla
-	sta R4 + 1
-	pla
-	sta R4
-	ELSE
-	sta R4
-	sty R4 + 1
-	stx R4 + 2
-	ENDIF
-	jsr STDLIB_PRINT_LONG
+	F_str@_long
+	printstring
 	ENDM
 	
 	MAC printfloat
 	import I_FPLIB
+	import I_FOUT
 	import I_STDLIB_PRINTSTR
 	plfloattofac
 	jsr FOUT
@@ -209,21 +180,6 @@ STDLIB_PRINT_BYTE SUBROUTINE
 	rts
 	ENDIF
 	
-; print int as petscii decimal
-; expects number in R2
-	IFCONST I_STDLIB_PRINT_INT_IMPORTED
-	import I_STDLIB_PRINT_WORD
-STDLIB_PRINT_INT SUBROUTINE
-	lda R2 + 1
-	bpl .1
-	lda #$2d ; - sign
-	jsr KERNAL_PRINTCHR
-	twoscplint R2
-.1
-	jsr STDLIB_PRINT_WORD
-	rts
-	ENDIF
-	
 	IFCONST I_STDLIB_PRINT_DECIMAL_IMPORTED
 STDLIB_PRINT_DECIMAL SUBROUTINE
 	ldx #1
@@ -242,128 +198,5 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	jsr KERNAL_PRINTCHR
 	dex
 	bpl .1
-	rts
-	ENDIF
-	
-; print word as petscii decimal
-; expects number in R2
-	IFCONST I_STDLIB_PRINT_WORD_IMPORTED
-STDLIB_PRINT_WORD SUBROUTINE
-	ldx #0
-	stx R0 ; if any digit has been printed
-.do
-	ldy #0
-	; Check if number < 10^n
-.do2
-	lda R2 + 1
-    cmp.wx stdlib_pten_16 + 1
-    bne .1
-    lda R2
-    cmp.wx stdlib_pten_16
-.1        
-	bcc .next 
-.sub	
-	; Count how many times 10^n can be subtracted
-	lda R2
-	sec
-	sbc.wx stdlib_pten_16
-	sta R2
-	lda R2 + 1
-	sbc.wx stdlib_pten_16 + 1
-	sta R2 + 1
-	iny
-	bne .do2
-.next
-	; Y now holds a decimal digit
-	tya
-	ora R0
-	beq .2
-	tya
-	clc
-	adc #$30
-	jsr KERNAL_PRINTCHR
-	inc R0
-.2
-	inx
-	inx
-	inx
-	cpx #12
-	bne .do
-	; Print last digit
-	lda R2
-	clc
-	adc #$30
-	jsr KERNAL_PRINTCHR
-	rts
-	ENDIF
-
-; Powers of ten on 24 bits	
-	IFCONST I_STDLIB_PRINT_WORD_IMPORTED || I_STDLIB_PRINT_LONG_IMPORTED	
-stdlib_pten_24
-	HEX 40 42 0F	;   1000000
-	HEX A0 86 01	;    100000
-stdlib_pten_16
-	HEX 10 27 00	;     10000
-	HEX E8 03 00	;      1000
-	HEX 64 00 00	;       100
-	HEX 0A 00 00	;        10
-	ENDIF
-	
-	IFCONST I_STDLIB_PRINT_LONG_IMPORTED
-STDLIB_PRINT_LONG SUBROUTINE
-	lda R4 + 2
-	bpl .pos
-	lda #$2d ; - sign
-	jsr KERNAL_PRINTCHR
-	twoscpllong R4
-.pos
-	ldx #0
-	stx R0 ; if any digit has been printed
-.do
-	ldy #0
-	; Check if number < 10^n
-.do2
-	lda R4 ; NUM1-NUM2
-	cmp.wx stdlib_pten_24
- 	lda R4 + 1
-  	sbc.wx stdlib_pten_24 + 1
- 	lda R4 + 2
-  	sbc.wx stdlib_pten_24 + 2
-  	bcc .next
-.sub	
-	; Count how many times 10^n can be subtracted
-	lda R4
-	sec
-	sbc.wx stdlib_pten_24
-	sta R4
-	lda R4 + 1
-	sbc.wx stdlib_pten_24 + 1
-	sta R4 + 1
-	lda R4 + 2
-	sbc.wx stdlib_pten_24 + 2
-	sta R4 + 2
-	iny
-	bne .do2
-.next
-	; Y now holds a decimal digit
-	tya
-	ora R0
-	beq .2
-	tya
-	clc
-	adc #$30
-	jsr KERNAL_PRINTCHR
-	inc R0
-.2
-	inx
-	inx
-	inx
-	cpx #18
-	bne .do
-	; Print last digit
-	lda R4
-	clc
-	adc #$30
-	jsr KERNAL_PRINTCHR
 	rts
 	ENDIF

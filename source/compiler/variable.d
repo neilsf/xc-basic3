@@ -66,14 +66,15 @@ class Variable
     /** Label for internal use */
     protected string getLabel()
     {
+        immutable string name = fixSymbol(this.name);
         if(this.visibility == Compiler.VIS_COMMON) {
-            return this.name;
+            return name;
         }
         else if(this.visibility == Compiler.VIS_GLOBAL) {
-            return this.fileId ~ "." ~ this.name;
+            return this.fileId ~ "." ~ name;
         }
         else {
-            return this.fileId ~ "." ~ this.procName ~ "." ~ this.name;
+            return this.fileId ~ "." ~ this.procName ~ "." ~ name;
         }
     }
 

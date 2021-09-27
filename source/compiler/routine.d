@@ -205,11 +205,11 @@ class RoutineCollection
     /** Find all variants of a routine by name */
     public Routine[] getVariants(string name)
     {
-        return find!(
+        return routines.filter!(
             routine =>
                 routine.name == toLower(name)
                 && (routine.isShared || routine.fileId == compiler.currentFileId)
-        )(routines);
+        ).array;
     }
 
     /** Check if routine exists by name */
@@ -371,59 +371,46 @@ class RoutineCall : AccessorInterface
 
     protected void findRoutine()
     {
+        import std.stdio;
         immutable string callerArgHash = getCallerArgHash();
-        Type[] callerArgTypes = getCallerArgTypes;
-        int i; bool match;
+        Type[] callerArgTypes = getCallerArgTypes();
+        int i, j;
+        int[int] score;
+        j = 0;
         // Best case: find exact match
         foreach (ref candidate; candidates) {
+            if(candidate.argTypes.length != callerArgTypes.length) {
+                score[j] = int.max;
+                continue;
+            }
             if(candidate.getArgsHash() == callerArgHash) {
+                // perfect match
                 routine = candidate;
                 return;
             }
-        }
-        // TODO pack the below two loops into a single function and call it twice
-
-        // 2nd chance: find a candidate where args can be implicitly promoted to
-        foreach (ref candidate; candidates) {
-            i = 0;
-            match = true;
-            if(candidate.arguments.length != callerArgTypes.length) {
-                continue;
-            }
-            foreach (ref arg; candidate.arguments) {
-                Type calleeType = arg.type;
+            score[j] = 0;
+            foreach (ref calleeType; candidate.argTypes) {
                 Type callerType = callerArgTypes[i];
-                if(!callerType.isConvertable(calleeType) || callerType.comparePrecedence(calleeType)) {
-                   match = false;
-                   break;
-                }
-                i++;
-            }
-            if(match) {
-                routine = candidate;
-                return;
-            }
-        }
-        // 3rd chance: find a candidate where args can be implicitly downcast to
-        foreach (ref candidate; candidates) {
-            i = 0;
-            match = true;
-            if(candidate.arguments.length != callerArgTypes.length) {
-                continue;
-            }
-            foreach (ref arg; candidate.arguments) {
-                Type calleeType = arg.type;
-                Type callerType = callerArgTypes[i];
+                //writeln("testing " ~ callerType.name ~ " against " ~ calleeType.name);
                 if(!callerType.isConvertable(calleeType)) {
-                   match = false;
+                   score[j] = int.max;
                    break;
                 }
-                i++;
+                else {
+                    score[j] += callerType.getConversionPenalty(calleeType);    
+                }
             }
-            if(match) {
-                routine = candidate;
-                return;
+            j++;
+        }
+        int minIx = -1; int minVal = int.max;
+        for(i = 0; i < j; i++) {
+            if(score[i] < minVal) {
+                minVal = score[i];
+                minIx = i;
             }
+        }
+        if(minVal < int.max) {
+            routine = candidates[minIx];
         }
     }
 

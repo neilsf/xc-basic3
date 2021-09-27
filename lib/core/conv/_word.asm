@@ -17,5 +17,18 @@
 	
 	; Convert word on stack to float
 	MAC F_cfloat_word
-	; TODO
+	IF !FPULL
+	pla	
+	sta FAC + 1
+	pla
+	sta FAC + 2
+	ELSE	
+	sta FAC + 2
+	sty FAC + 1
+	ENDIF
+	ldx #$90
+	import I_FPLIB
+	sec
+	jsr FLOAT2
+	pfac
 	ENDM

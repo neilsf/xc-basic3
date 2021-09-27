@@ -1,9 +1,14 @@
+; ======================================================
+; MS BASIC FLOATING POINT ROUTINES
+; https://github.com/mist64/msbasic/blob/master/float.s
+; ======================================================
+
 CONFIG_CBM_ALL EQU 1
-CONFIG_2B	 EQU 1
+CONFIG_2B	 EQU 0
 CONFIG_2A	 EQU 1
-CONFIG_2	 EQU 1
-CONFIG_11	 EQU 1
-CONFIG_10A	 EQU 1
+CONFIG_2	 EQU 0
+CONFIG_11	 EQU 0
+CONFIG_10A	 EQU 0
 CONFIG_SMALL EQU 1
 CONFIG_ROR_WORKAROUND EQU 0
 BYTES_FP	 EQU 4
@@ -13,8 +18,8 @@ KBD			 EQU 0
 MAX_EXPON	 EQU 10
 APPLE_BAD_BYTE EQU 0
 		
-		;SEG.U ZP
-		;ORG $57
+		SEG.U ZP
+		ORG $57
 CHARAC:
 		DS.B 1
 INDEX:
@@ -86,7 +91,8 @@ SGNCPR = STRNG1
 FACEXTENSION = STRNG1+1
 RESULT_LAST = RESULT + BYTES_FP-1
 
-		IFCONST I_FPLIB_IMPORTED
+	SEG "LIBRARY"
+	IFCONST I_FPLIB_IMPORTED
 ; ----------------------------------------------------------------------------
 ; ADD 0.5 TO FAC
 ; ----------------------------------------------------------------------------
@@ -111,7 +117,6 @@ FSUBT:
         eor     ARGSIGN
         sta     SGNCPR
         lda     FAC
-		import	FADDT
         jmp     FADDT
        
 ; ----------------------------------------------------------------------------
@@ -292,9 +297,9 @@ NORMALIZE_FAC6:
         ror     FAC+1
         ror     FAC+2
         ror     FAC+3
-          IF CONFIG_SMALL == 0
-        ror     FAC+4
-          ENDIF
+		  IF CONFIG_SMALL == 0
+		  ror     FAC+4
+		  ENDIF
         ror     FACEXTENSION
         ELSE
         lda     #$00
@@ -384,7 +389,7 @@ INCREMENT_FAC_MANTISSA:
 RTS12:
         rts
 OVERFLOW:
-		import  RUNTIME_ERROR
+		import  I_RUNTIME_ERROR
         lda     #ERR_OVERFLOW
         jmp     RUNTIME_ERROR
 
@@ -537,7 +542,7 @@ LOG:
         beq     GIQ
         bpl     LOG2
 GIQ:
-		import  RUNTIME_ERROR
+		import  I_RUNTIME_ERROR
         lda     #ERR_ILQTY
         jmp     RUNTIME_ERROR
 LOG2:
@@ -632,15 +637,15 @@ L38C3:
         IF CONFIG_ROR_WORKAROUND == 0
         ror     RESULT
         ror     RESULT+1
-        IF APPLE_BAD_BYTE
-; this seems to be a bad byte in the dump
+        	IF APPLE_BAD_BYTE
+			; this seems to be a bad byte in the dump
 		.byte	RESULT+2,RESULT+2 ; XXX BUG!
-        ELSE
+        	ELSE
         ror     RESULT+2
-        ENDIF
-        IF CONFIG_SMALL == 0
+        	ENDIF
+        	IF CONFIG_SMALL == 0
         ror     RESULT+3
-        ENDIF
+        	ENDIF
         ror     FACEXTENSION
         ELSE
         lda     #$00
@@ -818,7 +823,7 @@ FDIV:
 ; ----------------------------------------------------------------------------
 FDIVT:
         bne     FDIVT1
-        import  RUNTIME_ERROR
+        import  I_RUNTIME_ERROR
         lda     #ERR_DIVZERO
         jmp     RUNTIME_ERROR
 FDIVT1:
@@ -1073,7 +1078,7 @@ FLOAT:
         ldx     #$88
 
 ; ----------------------------------------------------------------------------
-; FLOAT UNSIGNED VALUE IN FAC+1,2
+; FLOAT UNSIGNED VALUE IN FAC+1,2 (HB-LB)
 ; (X) = EXPONENT
 ; ----------------------------------------------------------------------------
 FLOAT1:
@@ -1082,16 +1087,16 @@ FLOAT1:
         rol
 
 ; ----------------------------------------------------------------------------
-; FLOAT UNSIGNED VALUE IN FAC+1,2
+; FLOAT UNSIGNED VALUE IN FAC+1,2 (HB-LB)
 ; (X) = EXPONENT
 ; C=0 TO MAKE VALUE NEGATIVE
 ; C=1 TO MAKE VALUE POSITIVE
 ; ----------------------------------------------------------------------------
 FLOAT2:
-        lda     #$00
-        IF CONFIG_SMALL == 0
+ 		lda     #$00
+		IFNCONST CONFIG_SMALL
         sta     FAC+4
-        ENDIF
+		ENDIF
         sta     FAC+3
 LDB21:
         stx     FAC
@@ -1148,13 +1153,15 @@ FCOMP2:
         cmp     FACEXTENSION
         lda     (DEST),y
         sbc     FAC_LAST
-        beq     L3B32
+        beq     FCOMPEND
 L3B0A:
         lda     FACSIGN
         bcc     L3B10
         eor     #$FF
 L3B10:
         jmp     SIGN2
+FCOMPEND
+		rts
 
 ; ----------------------------------------------------------------------------
 ; QUICK INTEGER FUNCTION
@@ -1195,7 +1202,7 @@ QINT2:
         jsr     SHIFT_RIGHT4
         sty     SHIFTSIGNEXT
         rts
-
+		
 ; ----------------------------------------------------------------------------
 ; "INT" FUNCTION
 ;
@@ -1227,140 +1234,7 @@ QINT3:
         tay
 RTS17:
         rts
-
-; ----------------------------------------------------------------------------
-; CONVERT STRING TO FP VALUE IN FAC
-;
-; STRING POINTED TO BY TXTPTR
-; FIRST CHAR ALREADY SCANNED BY CHRGET
-; (A) = FIRST CHAR, C=0 IF DIGIT.
-; ----------------------------------------------------------------------------
-;FIN:
-;        ldy     #$00
-;        ldx     #SERLEN-TMPEXP
-;L3B6F:
-;        sty     TMPEXP,x
-;        dex
-;        bpl     L3B6F
-;        bcc     FIN2
-;        IF SYM1
-;        cmp     #$26
-;        bne     LDABB
-;        jmp     LCDFE
-;LDABB:
-;        ENDIF
-;        cmp     #$2D
-;        bne     L3B7E
-;        stx     SERLEN
-;        beq     FIN1
-;L3B7E:
-;        cmp     #$2B
-;        bne     FIN3
-;FIN1:
-;        jsr     CHRGET
-;FIN2:
-;        bcc     FIN9
-;FIN3:
-;        cmp     #$2E
-;        beq     FIN10
-;        cmp     #$45
-;        bne     FIN7
-;        jsr     CHRGET
-;        bcc     FIN5
-;        cmp     #$2d
-;        beq     L3BA6
-;        cmp     #$2D
-;        beq     L3BA6
-;        cmp     #$2b
-;        beq     FIN4
-;        cmp     #$2B
-;        beq     FIN4
-;        bne     FIN6
-;L3BA6:
-;        IFNCONST CONFIG_ROR_WORKAROUND
-;        ror     EXPSGN
-;        ELSE
-;        lda     #$00
-;        bcc     L3BAC
-;        lda     #$80
-;L3BAC:
-;        lsr     EXPSGN
-;        ora     EXPSGN
-;        sta     EXPSGN
-;        ENDIF
-;FIN4:
-;        jsr     CHRGET
-;FIN5:
-;        bcc     GETEXP
-;FIN6:
-;        bit     EXPSGN
-;        bpl     FIN7
-;        lda     #$00
-;        sec
-;        sbc     EXPON
-;        jmp     FIN8
-
-; ----------------------------------------------------------------------------
-; FOUND A DECIMAL POINT
-; ----------------------------------------------------------------------------
-;FIN10:
-;        IFNCONST CONFIG_ROR_WORKAROUND
-;        ror     LOWTR
-;        ELSE
-;        lda     #$00
-;        bcc     L3BC9
-;        lda     #$80
-;L3BC9:
-;        lsr     LOWTR
-;        ora     LOWTR
-;        sta     LOWTR
-;        ENDIF
-;        bit     LOWTR
-;        bvc     FIN1
-
-; ----------------------------------------------------------------------------
-; NUMBER TERMINATED, ADJUST EXPONENT NOW
-; ----------------------------------------------------------------------------
-;FIN7:
-;        lda     EXPON
-;FIN8:
-;        sec
-;        sbc     INDX
-;        sta     EXPON
-;        beq     L3BEE
-;        bpl     L3BE7
-;L3BDE:
-;        jsr     DIV10
-;        inc     EXPON
-;        bne     L3BDE
-;        beq     L3BEE
-;L3BE7:
-;        jsr     MUL10
-;        dec     EXPON
-;        bne     L3BE7
-;L3BEE:
-;        lda     SERLEN
-;        bmi     L3BF3
-;        rts
-;L3BF3:
-;        jmp     NEGOP
-
-; ----------------------------------------------------------------------------
-; ACCUMULATE A DIGIT INTO FAC
-; ----------------------------------------------------------------------------
-;FIN9:
-;        pha
-;        bit     LOWTR
-;        bpl     L3BFD
-;        inc     INDX
-;L3BFD:
-;        jsr     MUL10
-;        pla
-;        sec
-;        sbc     #$30
-;        jsr     ADDACC
-;        jmp     FIN1
-
+        
 ; ----------------------------------------------------------------------------
 ; ADD (A) TO FAC
 ; ----------------------------------------------------------------------------
@@ -1375,44 +1249,198 @@ ADDACC:
         ldx     FAC
         jmp     FADDT
 
+		IFCONST I_FIN_IMPORTED
+; ----------------------------------------------------------------------------
+; CONVERT STRING TO FP VALUE IN FAC
+;
+; STRING POINTER IN R0
+; STRING LENGTH IN RA
+; ----------------------------------------------------------------------------
+		
+FIN:
+        ldy     #$00
+        sty		RB
+        ldx     #SERLEN-TMPEXP
+L3B6F:
+        sty     TMPEXP,x
+        dex
+        bpl     L3B6F
+        jsr		CHRGET
+        bcc     FIN2
+        cmp     #$2D		; '-'
+        bne     L3B7E
+        stx     SERLEN
+        beq     FIN1
+L3B7E:
+        cmp     #$2B		; '+'
+        bne     FIN3
+FIN1:
+        jsr     CHRGET
+FIN2:
+        bcc     FIN9
+FIN3:
+        cmp     #$2E		; '.'
+        beq     FIN10
+        cmp     #$45		; 'e'
+        bne     FIN7
+        jsr     CHRGET
+        bcc     FIN5
+        cmp     #$2D		; '-'
+        beq     L3BA6
+        cmp     #$2D		; '-'
+        beq     L3BA6
+        cmp     #$2B		; '+'
+        beq     FIN4
+        cmp     #$2B		; '+'
+        beq     FIN4
+        bne     FIN6
+L3BA6:
+        IFNCONST CONFIG_ROR_WORKAROUND
+        ror     EXPSGN
+        ELSE
+        lda     #$00
+        bcc     L3BAC
+        lda     #$80
+L3BAC:
+        lsr     EXPSGN
+        ora     EXPSGN
+        sta     EXPSGN
+        ENDIF
+FIN4:
+        jsr     CHRGET
+FIN5:
+        bcc     GETEXP
+FIN6:
+        bit     EXPSGN
+        bpl     FIN7
+        lda     #$00
+        sec
+        sbc     EXPON
+        jmp     FIN8
+; ----------------------------------------------------------------------------
+; FOUND A DECIMAL POINT
+; ----------------------------------------------------------------------------
+FIN10:
+        IFNCONST CONFIG_ROR_WORKAROUND
+        ror     LOWTR
+        ELSE
+        lda     #$00
+        bcc     L3BC9
+        lda     #$80
+L3BC9:
+        lsr     LOWTR
+        ora     LOWTR
+        sta     LOWTR
+        ENDIF
+        bit     LOWTR
+        bvc     FIN1
+; ----------------------------------------------------------------------------
+; NUMBER TERMINATED, ADJUST EXPONENT NOW
+; ----------------------------------------------------------------------------
+FIN7:
+        lda     EXPON
+FIN8:
+        sec
+        sbc     INDX
+        sta     EXPON
+        beq     L3BEE
+        bpl     L3BE7
+L3BDE:
+        jsr     DIV10
+        inc     EXPON
+        bne     L3BDE
+        beq     L3BEE
+L3BE7:
+        jsr     MUL10
+        dec     EXPON
+        bne     L3BE7
+L3BEE:
+        lda     SERLEN
+        bmi     L3BF3
+        rts
+L3BF3:
+        jmp     NEGOP
+; ----------------------------------------------------------------------------
+; ACCUMULATE A DIGIT INTO FAC
+; ----------------------------------------------------------------------------
+FIN9:
+        pha
+        bit     LOWTR
+        bpl     L3BFD
+        inc     INDX
+L3BFD:
+        jsr     MUL10
+        pla
+        sec
+        sbc     #$30
+        jsr     ADDACC
+        jmp     FIN1
+
 ; ----------------------------------------------------------------------------
 ; ACCUMULATE DIGIT OF EXPONENT
 ; ----------------------------------------------------------------------------
-;GETEXP:
-;        lda     EXPON
-;        cmp     #MAX_EXPON
-;        bcc     L3C2C
-;        IF CONFIG_10A
-;        lda     #$64
-;        ENDIF
-;        bit     EXPSGN
-;        IF CONFIG_10A
-;        bmi     L3C3A
-;        ELSE
-;        bmi     LDC70
-;        ENDIF
-;        jmp     OVERFLOW
-;LDC70:
-;        IFNCONST CONFIG_10A
-;        lda     #$0B
-;        ENDIF
-;L3C2C:
-;        asl
-;        asl
-;        clc
-;        adc     EXPON
-;        asl
-;        clc
-;        ldy     #$00
-;        adc     (TXTPTR),y
-;        sec
-;        sbc     #$30
-;L3C3A:
-;        sta     EXPON
-;        jmp     FIN4
+GETEXP:
+        lda     EXPON
+        cmp     #MAX_EXPON
+        bcc     L3C2C
+        IF CONFIG_10A
+        lda     #$64
+        ENDIF
+        bit     EXPSGN
+        IF CONFIG_10A
+        bmi     L3C3A
+        ELSE
+        bmi     LDC70
+        ENDIF
+        jmp     OVERFLOW
+LDC70:
+        IFNCONST CONFIG_10A
+        lda     #$0B
+        ENDIF
+L3C2C:
+        asl
+        asl
+        clc
+        adc     EXPON
+        asl
+        clc
+        adc     (R0),y
+        sec
+        sbc     #$30
+L3C3A:
+        sta     EXPON
+        jmp     FIN4
 
+		; Custom chrget function		
+		; String pointer already stored in (R0)		
+		; String length in RA
+		; Temp index RB must be set to 0 before first invocation
+CHRGET	SUBROUTINE
+		inc RB ; tmp index
+		ldy RB
+		cpy RA
+		bcc .go
+		beq .go
+		; End of string, set zero flag and return
+		lda #0
+		rts
+.go
+		lda (R0),y
+		; Set carry if not a number
+		cmp #$3a
+		bcs .q
+		sec
+		sbc #$30
+		sec
+		sbc #$d0
+.q
+		rts
+		ENDIF
+		
 ; ----------------------------------------------------------------------------
-        IF CONFIG_SMALL
+        
+		IFCONST I_FOUT_IMPORTED
+		IF CONFIG_SMALL
 ; these values are /1000 of what the labels say
 CON_99999999_9:
         .byte   $91,$43,$4F,$F8
@@ -1451,7 +1479,7 @@ FOUT1:
         bpl     L3C73
         lda     #$2D
 L3C73:
-        sta     stack-1,y
+        sta     stack,y
         sta     FACSIGN
         sty     STRNG2
         iny
@@ -1501,6 +1529,7 @@ L3CB4:
 L3CBB:
         jsr     FADDH
 L3CBE:
+		import  I_QINT
         jsr     QINT
 ; ----------------------------------------------------------------------------
 ; FAC+1...FAC+4 IS NOW IN INTEGER FORM
@@ -1532,12 +1561,12 @@ L3CDF:
         ldy     STRNG2
         lda     #$2E
         iny
-        sta     stack-1,y
+        sta     stack,y
         txa
         beq     L3CF0
         lda     #$30
         iny
-        sta     stack-1,y
+        sta     stack,y
 L3CF0:
         sty     STRNG2
 ; ----------------------------------------------------------------------------
@@ -1587,12 +1616,12 @@ L3D23:
         iny
         tax
         and     #$7F
-        sta     stack-1,y
+        sta     stack,y
         dec     INDX
         bne     L3D3E
         lda     #$2E
         iny
-        sta     stack-1,y
+        sta     stack,y
 L3D3E:
         sty     STRNG2
         ldy     VARPNT
@@ -1614,7 +1643,7 @@ L3D3E:
 LDD96:
         ldy     STRNG2
 L3D4E:
-        lda     stack-1,y
+        lda     stack,y
         dey
         cmp     #$30
         beq     L3D4E
@@ -1632,9 +1661,9 @@ L3D5B:
         tax
         lda     #$2D
 L3D6B:
-        sta     stack+1,y
+        sta     stack+2,y
         lda     #$45
-        sta     stack,y
+        sta     stack+1,y
         txa
         ldx     #$2F
         sec
@@ -1643,29 +1672,28 @@ L3D77:
         sbc     #$0A
         bcs     L3D77
         adc     #$3A
-        sta     stack+3,y
-        txa
-        sta     stack+2,y
-        lda     #$00
         sta     stack+4,y
-        beq     L3D94
+        txa
+        sta     stack+3,y
+        ;lda     #$00
+        ;sta     stack+5,y
+        ;beq     L3D94
+        iny
+        iny
+        iny
+        iny
+        sty		stack
+        jmp		L3D94
 FOUT4:
-        sta     stack-1,y
-L3D8F:
-        lda     #$00
         sta     stack,y
+L3D8F:
+        ;lda     #$00
+        ;sta     stack,y
+        sty		stack
 L3D94:
         lda     #<stack
         ldy     #>stack
         rts
-
-; ----------------------------------------------------------------------------
-CON_HALF:
-        IF CONFIG_SMALL
-        .byte   $80,$00,$00,$00
-        ELSE
-        .byte   $80,$00,$00,$00,$00
-        ENDIF
 
 ; ----------------------------------------------------------------------------
 ; POWERS OF 10 FROM 1E8 DOWN TO 1,
@@ -1701,6 +1729,16 @@ DECTBL_END:
         ENDIF
         IF CONFIG_2
 C_ZERO = CON_HALF + 2
+        ENDIF
+
+		ENDIF ; /IFCONST I_FOUT_IMPORTED
+
+; ----------------------------------------------------------------------------
+CON_HALF:
+        IF CONFIG_SMALL
+        .byte   $80,$00,$00,$00
+        ELSE
+        .byte   $80,$00,$00,$00,$00
         ENDIF
 
 ; ----------------------------------------------------------------------------
@@ -1905,3 +1943,4 @@ L3ECB:
         bne     L3EBE
 RTS19:
         rts
+        ENDIF

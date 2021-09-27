@@ -26,3 +26,7 @@
 	INCLUDE "string/string.asm"
 	; Input-output library
 	INCLUDE "io/io.asm"
+	; Memory library
+	INCLUDE "mem/mem.asm"
+	; System library
+	INCLUDE "sys/sys.asm"

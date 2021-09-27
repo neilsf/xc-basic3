@@ -108,6 +108,13 @@ class Factor : AbstractExpression
                 this.type = compiler.getTypes().get(Type.STRING);
                 break;
 
+            case "XCBASIC.Expression":
+            case "XCBASIC.Parenthesis":
+                ParseTree expNode = (child.name == "XCBASIC.Expression" ? child : child.children[0]);
+                auto ex = new Expression(expNode, compiler);
+                this.type = ex.getType();
+                break;
+
             default:
                 throw new Exception("Add case for " ~ child.name);
         }
@@ -154,9 +161,9 @@ class Factor : AbstractExpression
                 immutable string identifier = join(v.children[0].matches);             
                 
                 // First check if it's a variable
-                Variable variable = this.compiler.getVars().findVisible(identifier);
+                const Variable variable = this.compiler.getVars().findVisible(identifier);
                 if(variable !is null) {
-                    VariableAccess access = new VariableAccess(node, compiler);
+                    VariableAccess access = new VariableAccess(node, compiler, false);
                     // Todo make VariableAccess class return an address                    
                     //this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
                     break;
@@ -175,46 +182,18 @@ class Factor : AbstractExpression
                     lbl = this.program.findProcedure(varname).getLabel();
                     this.asmcode ~= "    paddr " ~ lbl ~ "\n";
                 }
-                else if(this.program.labelExists(varname)) {
-                    // a label
-                    lbl = this.program.getLabelForCurrentScope(varname);
-                    this.asmcode ~= "    paddr " ~ lbl ~ "\n";
-                }
-                else if(this.program.is_variable(varname, sigil)) {
-                    // a variable
-                    Variable var = this.program.findVariable(varname, sigil);
-                    if(var.isConst) {
-                        this.program.error("A constant has no address");
-                    }
-                    lbl = var.getLabel();
-                    if(v.children.length == 2) {
-                        // single variable
-                        this.asmcode ~= "    paddr " ~ lbl ~ "\n";
-                    }
-                    else {
-                        // array
-                        auto subscript = v.children[2];
-                        XCBArray arr = new XCBArray(this.program, var, subscript);
-                        asmcode ~= arr.get_address();
-                    }
-                }
-                else {
-                    this.program.error("Undefined variable or label: " ~ varname);
-                }
-
 */
 
             break;
-/*
+
             case "XCBASIC.Expression":
             case "XCBASIC.Parenthesis":
-                ParseTree ex = ftype == "XCBASIC.Expression" ? this.node.children[0] : this.node.children[0].children[0];
-                auto Ex = new Expression(ex, this.program);
-                Ex.eval();
-                this.asmcode ~= to!string(Ex);
+                ParseTree expNode = (child.name == "XCBASIC.Expression" ? child : child.children[0]);
+                auto ex = new Expression(expNode, compiler);
+                ex.eval();
+                this.asmCode ~= ex.toString();
             break;
-
-         */   
+  
             case "XCBASIC.String":
                 string str = join(this.node.children[0].matches[1..$-1]);
                 StringLiteral sl = new StringLiteral(str, compiler);

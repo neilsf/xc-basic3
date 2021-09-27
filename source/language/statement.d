@@ -15,7 +15,7 @@ Statement stmtFactory(ParseTree node, Compiler compiler) {
                                 "If_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Goto_stmt",
                                 "Gosub_stmt", "Call_stmt", "Return_stmt", "Return_fn_stmt", "Do_stmt",
                                 "Loop_stmt", "Cont_stmt", "Exit_do_stmt", "For_stmt", "Next_stmt",
-                                "Data_stmt", "Rem_stmt", "Swap_stmt"]) {
+                                "Data_stmt", "Rem_stmt", "Swap_stmt", "Randomize_stmt"]) {
             mixin("case \"XCBASIC." ~ key ~"\": return new " ~ key ~ "(node, compiler);");
         }    
         default:

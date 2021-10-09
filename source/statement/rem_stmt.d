@@ -14,7 +14,9 @@ class Rem_stmt : Statement
 
     public void process()
     {
-        //
+        if(compiler.inlineAssembly) {
+            appendCode(node.children[0].matches[1] ~ "\n");
+        }
     }
 
     // Leave labels in accu

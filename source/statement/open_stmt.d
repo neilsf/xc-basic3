@@ -1,7 +1,5 @@
 module statement.open_stmt;
 
-import std.array, std.conv;
-
 import pegged.grammar;
 
 import compiler.compiler, compiler.type;
@@ -19,6 +17,9 @@ class Open_stmt : Statement
     void process()
     {
         ParseTree list = this.node.children[0].children[0];
+        if(list.children.length < 1) {
+            compiler.displayError("At least one parameter must be specified for OPEN");
+        }
         Expression[4] e;
         for(int i = 0; i < list.children.length; i++) {
             e[i] = new Expression(list.children[i], compiler);
@@ -28,8 +29,31 @@ class Open_stmt : Statement
             // SETNAM
             e[3].eval();
             appendCode(e[3].toString());
-            appendCode("    strtonullterm\n");
             appendCode("    setnam\n");
         }
+        // logical filenumber
+        e[0].eval();
+        appendCode(e[0].toString());
+        // device number
+        if(list.children.length > 1) {
+            e[1].eval();
+            appendCode(e[1].toString());
+        }
+        else {
+            // defaults to 1
+            appendCode("    pbyte 1\n");
+        }
+        // secondary number
+        if(list.children.length > 2) {
+            e[2].eval();
+            appendCode(e[2].toString());
+        }
+        else {
+            // defaults to 0
+            appendCode("    pbyte 0\n");
+        }
+        
+        appendCode("    setlfs\n");
+        appendCode("    open\n");
     }
 }

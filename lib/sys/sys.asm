@@ -1,5 +1,13 @@
 	; XC=BASIC system functions
 	
+	MAC begin
+	
+	ENDM
+	
+	MAC end
+	
+	ENDM
+	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti
 	php

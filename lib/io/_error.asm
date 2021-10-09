@@ -1,8 +1,35 @@
-ERR_DIVZERO	 EQU 17
-ERR_OVERFLOW EQU 18
-ERR_ILQTY	 EQU 19
-ERR_STRLONG	 EQU 20
+ERR_TOO_MANY_FILES		EQU $01
+ERR_FILE_OPEN 			EQU $02
+ERR_FILE_NOT_OPEN 		EQU $03
+ERR_FILE_NOT_FOUND 		EQU $04
+ERR_DEVICE_NOT_PRESENT 	EQU $05
+ERR_NOT_INPUT_FILE		EQU $06
+ERR_NOT_OUTPUT_FILE		EQU $07
+ERR_MISSING_FILENAME	EQU $08
+ERR_ILLEGAL_DEVICE_NO	EQU $09
+ERR_ILQTY	 			EQU $0e
+ERR_OVERFLOW			EQU $0f
+ERR_DIVZERO				EQU $14
+ERR_ILLEGAL_DIRECT		EQU $15
+ERR_STRLONG	 			EQU $17
+ERR_LOAD				EQU $1d
+
 SCINIT		 EQU $ff81	
+
+	MAC seterrhandler
+	lda #<{1}
+	sta ERR_VECTOR
+	lda #>{1}
+	sta ERR_VECTOR + 1
+	ENDM
+	
+	MAC error
+	IF !FPULL
+	pla
+	ENDIF
+	import I_RUNTIME_ERROR
+	jmp RUNTIME_ERROR
+	ENDM
 
 	; Default error handler
 	; redirect to custor handling routine if set
@@ -15,29 +42,22 @@ RUNTIME_ERROR SUBROUTINE
 	; No custom error handler, do default
 	pha
 	jsr SCINIT
-	pla
-	tax
-	lda .errmsg_hi,x
-	tay
-	lda .errmsg_lo,x	 
-	brk	; TODO brk should return to system
-		; Maybe better restore SP and rts
+	printnl
+	lda #<.err
+	ldy #>.err
+	import I_STDLIB_PRINTSTR
+	jsr STDLIB_PRINTSTR
+	printbyte ; pulls error code off of stack
+	jmp ($A002) ; Do BASIC cold start
 .custom
 	jmp (ERR_VECTOR)
 
-	; TODO KERNAL ERRORS
-.err0 DC.B 16 
-      DC.B "division by zero"
-.err1 DC.B 8 
-      DC.B "overflow"
-.err2 DC.B "illegal quantity"
-	  DC.B 0
-.err3 DC.B "string stack overflow"
-	
-.errmsg_lo DC.B #<.err0, #<.err1, #<.err2, #<.err3 
-.errmsg_hi DC.B #>.err0, #>.err1, #>.err2, #>.err3
-	ENDIF
-	
+	; "error "
+.err HEX 06 45 52 52 4f 52 20
+
 	; Error redirection vector
 	; If HB = 0 errors won't be redirected
 ERR_VECTOR HEX 00 00
+	ENDIF
+	
+	

@@ -1,5 +1,5 @@
 KERNAL_PRINTCHR	EQU $e716
-KERNAL_PLOT		EQU $e50a
+KERNAL_PLOT		EQU $FFF0
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte
@@ -114,7 +114,7 @@ STDLIB_TAB SUBROUTINE
 .tabs HEX 0A 14 1E 28 00
 	ENDIF
 
-; print null-terminated petscii string
+; print petscii string
 ; Pointer to string in AY
 ; At the end Y holds chars printed + 1
 	IFCONST I_STDLIB_PRINTSTR_IMPORTED
@@ -200,3 +200,34 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	bpl .1
 	rts
 	ENDIF
+	
+	MAC locate
+	IF !FPULL
+	pla
+	ENDIF
+	tax
+	pla
+	tay
+	clc
+	jsr KERNAL_PLOT
+	ENDM
+	
+	; DECLARE FUNCTION CSRLIN AS BYTE () SHARED STATIC INLINE
+	MAC F_csrlin
+	sec
+	jsr KERNAL_PLOT
+	txa
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM
+	
+	;DECLARE FUNCTION POS AS BYTE () SHARED STATIC INLINE
+	MAC F_pos
+	sec
+	jsr KERNAL_PLOT
+	tya
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM

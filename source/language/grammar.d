@@ -40,6 +40,7 @@ struct GenericXCBASIC(TParseTree)
         rules["Else_stmt"] = toDelegate(&Else_stmt);
         rules["Endif_stmt"] = toDelegate(&Endif_stmt);
         rules["Goto_stmt"] = toDelegate(&Goto_stmt);
+        rules["Error_stmt"] = toDelegate(&Error_stmt);
         rules["Swap_stmt"] = toDelegate(&Swap_stmt);
         rules["Input_stmt"] = toDelegate(&Input_stmt);
         rules["Gosub_stmt"] = toDelegate(&Gosub_stmt);
@@ -61,6 +62,7 @@ struct GenericXCBASIC(TParseTree)
         rules["Charat_stmt"] = toDelegate(&Charat_stmt);
         rules["Textat_stmt"] = toDelegate(&Textat_stmt);
         rules["Asm_stmt"] = toDelegate(&Asm_stmt);
+        rules["Endasm_stmt"] = toDelegate(&Endasm_stmt);
         rules["Incbin_stmt"] = toDelegate(&Incbin_stmt);
         rules["Include_stmt"] = toDelegate(&Include_stmt);
         rules["Exitfun_stmt"] = toDelegate(&Exitfun_stmt);
@@ -71,8 +73,9 @@ struct GenericXCBASIC(TParseTree)
         rules["Load_stmt"] = toDelegate(&Load_stmt);
         rules["Save_stmt"] = toDelegate(&Save_stmt);
         rules["Origin_stmt"] = toDelegate(&Origin_stmt);
-        rules["Curpos_stmt"] = toDelegate(&Curpos_stmt);
+        rules["Locate_stmt"] = toDelegate(&Locate_stmt);
         rules["On_stmt"] = toDelegate(&On_stmt);
+        rules["Branch_type"] = toDelegate(&Branch_type);
         rules["Wait_stmt"] = toDelegate(&Wait_stmt);
         rules["Watch_stmt"] = toDelegate(&Watch_stmt);
         rules["Pragma_stmt"] = toDelegate(&Pragma_stmt);
@@ -83,13 +86,12 @@ struct GenericXCBASIC(TParseTree)
         rules["Enableirq_stmt"] = toDelegate(&Enableirq_stmt);
         rules["Randomize_stmt"] = toDelegate(&Randomize_stmt);
         rules["Open_stmt"] = toDelegate(&Open_stmt);
+        rules["Get_stmt"] = toDelegate(&Get_stmt);
         rules["Close_stmt"] = toDelegate(&Close_stmt);
         rules["Type_stmt"] = toDelegate(&Type_stmt);
         rules["Field_def"] = toDelegate(&Field_def);
         rules["Endtype_stmt"] = toDelegate(&Endtype_stmt);
         rules["End_stmt"] = toDelegate(&End_stmt);
-        rules["Userdef_cmd"] = toDelegate(&Userdef_cmd);
-        rules["Branch_type"] = toDelegate(&Branch_type);
         rules["ExprList"] = toDelegate(&ExprList);
         rules["PrintableList"] = toDelegate(&PrintableList);
         rules["TabSep"] = toDelegate(&TabSep);
@@ -233,7 +235,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements)), "XCBASIC.Line")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing))), "XCBASIC.Line")(p);
         }
         else
         {
@@ -241,7 +243,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements)), "XCBASIC.Line"), "Line")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing))), "XCBASIC.Line"), "Line")(p);
                 memo[tuple(`Line`, p.end)] = result;
                 return result;
             }
@@ -252,12 +254,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements)), "XCBASIC.Line")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing))), "XCBASIC.Line")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements)), "XCBASIC.Line"), "Line")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing))), "XCBASIC.Line"), "Line")(TParseTree("", false,[], s));
         }
     }
     static string Line(GetName g)
@@ -305,7 +307,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Curpos_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Userdef_cmd, Spacing)), "XCBASIC.Statement")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Locate_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Error_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Get_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endasm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing)), "XCBASIC.Statement")(p);
         }
         else
         {
@@ -313,7 +315,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Curpos_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Userdef_cmd, Spacing)), "XCBASIC.Statement"), "Statement")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Locate_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Error_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Get_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endasm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing)), "XCBASIC.Statement"), "Statement")(p);
                 memo[tuple(`Statement`, p.end)] = result;
                 return result;
             }
@@ -324,12 +326,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Curpos_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Userdef_cmd, Spacing)), "XCBASIC.Statement")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Locate_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Error_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Get_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endasm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing)), "XCBASIC.Statement")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Curpos_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Userdef_cmd, Spacing)), "XCBASIC.Statement"), "Statement")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Const_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Let_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Print_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Goto_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Input_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Gosub_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Call_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Rem_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Poke_stmt, Spacing), pegged.peg.wrapAround!(Spacing, For_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Next_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Dim_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Charat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Data_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Textat_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Incbin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Include_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Sys_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Load_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Save_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Randomize_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Origin_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Swap_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Locate_stmt, Spacing), pegged.peg.wrapAround!(Spacing, On_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Error_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Wait_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Watch_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Pragma_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memset_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memcpy_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Memshift_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Open_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Close_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Get_stmt, Spacing), pegged.peg.wrapAround!(Spacing, If_sa_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endif_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Disableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Enableirq_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Fun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_fn_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Return_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exitfun_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Loop_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Asm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Endasm_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Cont_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Exit_do_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Type_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Field_def, Spacing), pegged.peg.wrapAround!(Spacing, Endtype_stmt, Spacing), pegged.peg.wrapAround!(Spacing, End_stmt, Spacing)), "XCBASIC.Statement"), "Statement")(TParseTree("", false,[], s));
         }
     }
     static string Statement(GetName g)
@@ -625,6 +627,42 @@ struct GenericXCBASIC(TParseTree)
         return "XCBASIC.Goto_stmt";
     }
 
+    static TParseTree Error_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Error_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Error_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Error_stmt"), "Error_stmt")(p);
+                memo[tuple(`Error_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Error_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Error_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Error_stmt"), "Error_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Error_stmt(GetName g)
+    {
+        return "XCBASIC.Error_stmt";
+    }
+
     static TParseTree Swap_stmt(TParseTree p)
     {
         if(__ctfe)
@@ -665,7 +703,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt")(p);
         }
         else
         {
@@ -673,7 +711,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt"), "Input_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt"), "Input_stmt")(p);
                 memo[tuple(`Input_stmt`, p.end)] = result;
                 return result;
             }
@@ -684,12 +722,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt"), "Input_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing)), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Accessor, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(";"), Spacing))), "XCBASIC.Input_stmt"), "Input_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Input_stmt(GetName g)
@@ -1025,7 +1063,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing))), "XCBASIC.Rem_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.fuse!(pegged.peg.wrapAround!(Spacing, pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing)), Spacing))), "XCBASIC.Rem_stmt")(p);
         }
         else
         {
@@ -1033,7 +1071,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing))), "XCBASIC.Rem_stmt"), "Rem_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.fuse!(pegged.peg.wrapAround!(Spacing, pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing)), Spacing))), "XCBASIC.Rem_stmt"), "Rem_stmt")(p);
                 memo[tuple(`Rem_stmt`, p.end)] = result;
                 return result;
             }
@@ -1044,12 +1082,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing))), "XCBASIC.Rem_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.fuse!(pegged.peg.wrapAround!(Spacing, pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing)), Spacing))), "XCBASIC.Rem_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing))), "XCBASIC.Rem_stmt"), "Rem_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("'"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing)), Spacing), pegged.peg.fuse!(pegged.peg.wrapAround!(Spacing, pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, eol, Spacing)), pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), Spacing)), Spacing))), "XCBASIC.Rem_stmt"), "Rem_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Rem_stmt(GetName g)
@@ -1349,7 +1387,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing)), "XCBASIC.Asm_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), "XCBASIC.Asm_stmt")(p);
         }
         else
         {
@@ -1357,7 +1395,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing)), "XCBASIC.Asm_stmt"), "Asm_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), "XCBASIC.Asm_stmt"), "Asm_stmt")(p);
                 memo[tuple(`Asm_stmt`, p.end)] = result;
                 return result;
             }
@@ -1368,17 +1406,53 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing)), "XCBASIC.Asm_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), "XCBASIC.Asm_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing)), "XCBASIC.Asm_stmt"), "Asm_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), "XCBASIC.Asm_stmt"), "Asm_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Asm_stmt(GetName g)
     {
         return "XCBASIC.Asm_stmt";
+    }
+
+    static TParseTree Endasm_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end asm"), Spacing), "XCBASIC.Endasm_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endasm_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end asm"), Spacing), "XCBASIC.Endasm_stmt"), "Endasm_stmt")(p);
+                memo[tuple(`Endasm_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endasm_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end asm"), Spacing), "XCBASIC.Endasm_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end asm"), Spacing), "XCBASIC.Endasm_stmt"), "Endasm_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endasm_stmt(GetName g)
+    {
+        return "XCBASIC.Endasm_stmt";
     }
 
     static TParseTree Incbin_stmt(TParseTree p)
@@ -1637,7 +1711,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), Spacing))), "XCBASIC.Load_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Load_stmt")(p);
         }
         else
         {
@@ -1645,7 +1719,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), Spacing))), "XCBASIC.Load_stmt"), "Load_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Load_stmt"), "Load_stmt")(p);
                 memo[tuple(`Load_stmt`, p.end)] = result;
                 return result;
             }
@@ -1656,12 +1730,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), Spacing))), "XCBASIC.Load_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Load_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), Spacing))), "XCBASIC.Load_stmt"), "Load_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Load_stmt"), "Load_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Load_stmt(GetName g)
@@ -1673,7 +1747,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Save_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Save_stmt")(p);
         }
         else
         {
@@ -1681,7 +1755,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Save_stmt"), "Save_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Save_stmt"), "Save_stmt")(p);
                 memo[tuple(`Save_stmt`, p.end)] = result;
                 return result;
             }
@@ -1692,12 +1766,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Save_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Save_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, String, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Save_stmt"), "Save_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, ExprList, Spacing)), "XCBASIC.Save_stmt"), "Save_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Save_stmt(GetName g)
@@ -1741,47 +1815,47 @@ struct GenericXCBASIC(TParseTree)
         return "XCBASIC.Origin_stmt";
     }
 
-    static TParseTree Curpos_stmt(TParseTree p)
+    static TParseTree Locate_stmt(TParseTree p)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Curpos_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Locate_stmt")(p);
         }
         else
         {
-            if (auto m = tuple(`Curpos_stmt`, p.end) in memo)
+            if (auto m = tuple(`Locate_stmt`, p.end) in memo)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Curpos_stmt"), "Curpos_stmt")(p);
-                memo[tuple(`Curpos_stmt`, p.end)] = result;
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Locate_stmt"), "Locate_stmt")(p);
+                memo[tuple(`Locate_stmt`, p.end)] = result;
                 return result;
             }
         }
     }
 
-    static TParseTree Curpos_stmt(string s)
+    static TParseTree Locate_stmt(string s)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Curpos_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Locate_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Curpos_stmt"), "Curpos_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.Locate_stmt"), "Locate_stmt")(TParseTree("", false,[], s));
         }
     }
-    static string Curpos_stmt(GetName g)
+    static string Locate_stmt(GetName g)
     {
-        return "XCBASIC.Curpos_stmt";
+        return "XCBASIC.Locate_stmt";
     }
 
     static TParseTree On_stmt(TParseTree p)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt")(p);
         }
         else
         {
@@ -1789,7 +1863,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt"), "On_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt"), "On_stmt")(p);
                 memo[tuple(`On_stmt`, p.end)] = result;
                 return result;
             }
@@ -1800,17 +1874,53 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt"), "On_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("on"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Branch_type, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.zeroOrMore!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Label_ref, Spacing)), Spacing))), "XCBASIC.On_stmt"), "On_stmt")(TParseTree("", false,[], s));
         }
     }
     static string On_stmt(GetName g)
     {
         return "XCBASIC.On_stmt";
+    }
+
+    static TParseTree Branch_type(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Branch_type`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type"), "Branch_type")(p);
+                memo[tuple(`Branch_type`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Branch_type(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type"), "Branch_type")(TParseTree("", false,[], s));
+        }
+    }
+    static string Branch_type(GetName g)
+    {
+        return "XCBASIC.Branch_type";
     }
 
     static TParseTree Wait_stmt(TParseTree p)
@@ -2173,6 +2283,42 @@ struct GenericXCBASIC(TParseTree)
         return "XCBASIC.Open_stmt";
     }
 
+    static TParseTree Get_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Var, Spacing)), "XCBASIC.Get_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Get_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Var, Spacing)), "XCBASIC.Get_stmt"), "Get_stmt")(p);
+                memo[tuple(`Get_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Get_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Var, Spacing)), "XCBASIC.Get_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!("#"), Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Expression, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, pegged.peg.literal!(","), Spacing)), Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Var, Spacing)), "XCBASIC.Get_stmt"), "Get_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Get_stmt(GetName g)
+    {
+        return "XCBASIC.Get_stmt";
+    }
+
     static TParseTree Close_stmt(TParseTree p)
     {
         if(__ctfe)
@@ -2351,78 +2497,6 @@ struct GenericXCBASIC(TParseTree)
     static string End_stmt(GetName g)
     {
         return "XCBASIC.End_stmt";
-    }
-
-    static TParseTree Userdef_cmd(TParseTree p)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, ExprList, Spacing))), "XCBASIC.Userdef_cmd")(p);
-        }
-        else
-        {
-            if (auto m = tuple(`Userdef_cmd`, p.end) in memo)
-                return *m;
-            else
-            {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, ExprList, Spacing))), "XCBASIC.Userdef_cmd"), "Userdef_cmd")(p);
-                memo[tuple(`Userdef_cmd`, p.end)] = result;
-                return result;
-            }
-        }
-    }
-
-    static TParseTree Userdef_cmd(string s)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, ExprList, Spacing))), "XCBASIC.Userdef_cmd")(TParseTree("", false,[], s));
-        }
-        else
-        {
-            forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, Label_ref, Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, ExprList, Spacing))), "XCBASIC.Userdef_cmd"), "Userdef_cmd")(TParseTree("", false,[], s));
-        }
-    }
-    static string Userdef_cmd(GetName g)
-    {
-        return "XCBASIC.Userdef_cmd";
-    }
-
-    static TParseTree Branch_type(TParseTree p)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type")(p);
-        }
-        else
-        {
-            if (auto m = tuple(`Branch_type`, p.end) in memo)
-                return *m;
-            else
-            {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type"), "Branch_type")(p);
-                memo[tuple(`Branch_type`, p.end)] = result;
-                return result;
-            }
-        }
-    }
-
-    static TParseTree Branch_type(string s)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type")(TParseTree("", false,[], s));
-        }
-        else
-        {
-            forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing)), "XCBASIC.Branch_type"), "Branch_type")(TParseTree("", false,[], s));
-        }
-    }
-    static string Branch_type(GetName g)
-    {
-        return "XCBASIC.Branch_type";
     }
 
     static TParseTree ExprList(TParseTree p)
@@ -3894,7 +3968,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing)), Spacing), "XCBASIC.Reserved")(p);
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), "XCBASIC.Reserved")(p);
         }
         else
         {
@@ -3902,7 +3976,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing)), Spacing), "XCBASIC.Reserved"), "Reserved")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), "XCBASIC.Reserved"), "Reserved")(p);
                 memo[tuple(`Reserved`, p.end)] = result;
                 return result;
             }
@@ -3913,12 +3987,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing)), Spacing), "XCBASIC.Reserved")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), "XCBASIC.Reserved")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("curpos"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing)), Spacing), "XCBASIC.Reserved"), "Reserved")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("const"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("let"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("print"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("if"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("then"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("goto"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("input"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("gosub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("return"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("call"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("end"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rem"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("for"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("to"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("next"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("dim"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("data"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("charat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("textat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("incbin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sys"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("and"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("origin"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("or"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("load"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("save"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("ferr"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("sub"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("function"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("asm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endasm"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("locate"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("wait"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("watch"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("pragma"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memset"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memcpy"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("memshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("while"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("endwhile"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("repeat"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("until"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("lshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("rshift"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("disableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("enableirq"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("step"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("randomize"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("open"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("close"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("get"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("error"), Spacing)), Spacing), "XCBASIC.Reserved"), "Reserved")(TParseTree("", false,[], s));
         }
     }
     static string Reserved(GetName g)

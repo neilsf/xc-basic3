@@ -53,6 +53,9 @@ final class Compiler
     /** Whether statements other than REM or PRAGMA were already encountered */
     private bool statementsBegan = false;
     
+    /** True if the current line should be copied varbatim to the intermediate code */
+    public bool inlineAssembly = false;
+
     /** Labels in the source code */
     private LabelCollection labels;
 
@@ -386,6 +389,18 @@ final class Compiler
         string lbls = currentLabels.join("\n") ~ "\n";
         currentLabels = [];
         return lbls;
+    }
+
+    /** Turn on inline assembly */
+    public void startInlineAssembly()
+    {
+        this.inlineAssembly = true;
+    }
+
+    /** Turn off inline assembly */
+    public void endInlineAssembly()
+    {
+        this.inlineAssembly = false;
     }
 }
 

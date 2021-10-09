@@ -10,12 +10,9 @@
 	cmp R0
 	bcs .phf
 	ptrue
-	IF !FPUSH
-	bcc * + 5
-	ELSE
-	bcc * + 4
-	ENDIF
-.phf: pfalse 
+	bne .q
+.phf: pfalse
+.q:
 	ENDM
 	
 	; Compare two bytes on stack for less than or equal
@@ -29,12 +26,9 @@
 	bcc .pht
 	beq .pht
 	pfalse
-	IF !FPUSH
-	bcs * + 5
-	ELSE
-	bcs * + 4
-	ENDIF
+	beq .q
 .pht: ptrue
+.q
 	ENDM
 	
 	; Compare two bytes on stack for greater than or equal
@@ -47,12 +41,9 @@
 	cmp R0
 	bcs .pht
 	pfalse
-	IF !FPUSH
-	bcc * + 5
-	ELSE
-	bcc * + 4
-	ENDIF
+	beq .q
 .pht: ptrue
+.q:
 	ENDM
 	
 	; Compare two bytes on stack for equality
@@ -65,12 +56,9 @@
 	cmp R0
 	beq .pht
 	pfalse
-	IF !FPUSH
-	beq * + 5
-	ELSE
-	beq * + 4
-	ENDIF
+	beq .q
 .pht: ptrue
+.q:
 	ENDM
 	
 	; Compare two bytes on stack for inequality
@@ -83,12 +71,9 @@
 	cmp R0
 	bne .pht
 	pfalse
-	IF !FPUSH
-	jmp * + 5
-	ELSE
-	jmp * + 4
-	ENDIF
+	beq .q
 .pht: ptrue
+.q:
 	ENDM
 	
 	; Compare two bytes on stack for greater than
@@ -102,10 +87,7 @@
 	bcc .phf
 	beq .phf
 	ptrue
-	IF !FPUSH
-	bcs * + 5
-	ELSE
-	bcs * + 4
-	ENDIF
+	bne .q
 .phf: pfalse
+.q:
 	ENDM

@@ -121,7 +121,26 @@ STR_MID SUBROUTINE
 	rts
 	ENDIF
 	
-	; DECLARE FUNCTION CHR$ AS STRING (charcode AS BYTE) SHARED STATIC INLINE
+	MAC bytetostr_or_empty
+	IF !FPUSH
+	pla
+	ENDIF
+	bne .nonz
+	ldx SP
+	sta STRING_WORKAREA,x
+	bne .q
+.nonz
+	ldx SP
+	sta STRING_WORKAREA,x
+	dex
+	lda #1
+	sta STRING_WORKAREA,x
+	dec SP
+.q
+	dec SP
+	ENDM
+	
+	; DECLARE FUNCTION CHR$ AS STRING (charcode AS BYTE) SHARED STATIC INLINE 
 	MAC F_chr@_byte
 	IF !FPUSH
 	pla

@@ -337,9 +337,138 @@ B EQU FAC
 	MAC F_sqr_float
 	plfloattofac
 	import I_FPLIB
-	jsr INT
+	jsr SQR
 	pfac
 	ENDM
+	
+	; DECLARE FUNCTION SQR AS BYTE (num AS WORD) SHARED STATIC INLINE
+	MAC F_sqr_word
+	IF !FPULL
+	pla
+	sta R0 + 1
+	pla
+	sta R0
+	ELSE
+	sta R0
+	sty R0 + 1
+	ENDIF
+	import I_SQRW
+	jsr SQRW
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM
+	
+	; DECLARE FUNCTION SQR AS BYTE (num AS INT) SHARED STATIC INLINE
+	MAC F_sqr_int
+	IF !FPULL
+	pla
+	sta R0 + 1
+	pla
+	sta R0
+	ELSE
+	sta R0
+	sty R0 + 1
+	ENDIF
+	lda R0 + 1 
+	bpl .ok
+	import I_RUNTIME_ERROR
+	lda #ERR_ILQTY
+	jmp RUNTIME_ERROR
+.ok
+	import I_SQRW
+	jsr SQRW
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM
+	
+	; Square root of a word in R0-R1
+	; Returns value in A
+	; Remainder in X
+	; https://codebase64.org/doku.php?id=base:16bit_and_24bit_sqrt
+	IFCONST I_SQRW_IMPORTED
+SQRW SUBROUTINE
+	ldy #$01
+	sty R2
+	dey
+	sty R3
+.do
+	sec
+	lda R0
+	tax 
+	sbc R2
+	sta R0
+	lda R1
+	sbc R3
+	sta R1
+	bcc .nomore
+	iny
+	lda R2
+	adc #$01
+	sta R2
+	bcc .do
+	inc R3
+	bcs .do
+.nomore
+	tya
+	rts
+	ENDIF
+	
+	; DECLARE FUNCTION SQR AS WORD (num AS LONG) OVERRIDE SHARED STATIC INLINE 
+	MAC F_sqr_long
+	pllongvar R0
+	import I_SQRL
+	jsr SQRL
+	pwordvar R8
+	ENDM
+	
+	; Square Root of a 24bit number
+	; by Verz - Jul2019
+	; Input in R0
+	; Result in AY
+	IFCONST I_SQRL_IMPORTED
+SQRL SUBROUTINE
+	ldy #1
+	sty R4
+	dey
+	sty R4 + 1
+	sty R4 + 2
+	sty R8
+	sty R8 + 1
+.do
+	sec
+	lda R0
+	sta RA
+	sbc R4
+	sta R0
+	lda R0 + 1
+	sta RA + 1
+	sbc R4 + 1
+	sta R0 + 1
+	lda R0 + 2
+	sbc R4 + 2
+	sta R0 + 2
+	bcc .nomore
+	inc R8
+	bne .1
+	inc R8 + 1
+.1
+	lda R4
+	adc #1
+	sta R4
+	bcc .do
+	lda R4 + 1
+	adc #0
+	sta R4 + 1
+	bcc .do
+	inc R4 + 2
+	bcs .do
+.nomore
+	lda R8
+	ldy R8 + 1
+	rts
+	ENDIF
 	
 	
 	IFCONST I_RANDOMIZE_IMPORTED || I_RND_IMPORTED

@@ -1,6 +1,6 @@
 module language.term;
 
-import std.conv;
+import std.conv, std.string;
 
 import pegged.grammar;
 
@@ -42,19 +42,23 @@ class Term : AbstractExpression
                     typeError();
                 }
                 if(f.getType().name == Type.DEC && this.node.children.length > 1) {
-                    compiler.displayError("Multiplication or division of decimals is not implemented");
+                    compiler.displayError("Multiplication or division of decimals is not supported");
                 }
                 this.asmCode ~= to!string(f);
             }
             else if(child.name == "XCBASIC.T_OP") {
                 const string op = child.matches[0];
-                final switch(op) {
+                final switch(toLower(op)) {
                     case "*":
                         this.asmCode ~= "    mul" ~ to!string(this.type) ~ "\n";
                     break;
 
                     case "/":
                         this.asmCode ~= "    div" ~ to!string(this.type) ~ "\n";
+                    break;
+
+                    case "mod":
+                        this.asmCode ~= "    mod" ~ to!string(this.type) ~ "\n";
                     break;
                 }
             }

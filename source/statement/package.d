@@ -7,4 +7,6 @@ public import   statement.dim_stmt, statement.let_stmt, statement.fun_stmt, stat
                 statement.data_stmt, statement.rem_stmt, statement.swap_stmt, statement.randomize_stmt,
                 statement.on_stmt, statement.error_stmt, statement.open_stmt, statement.get_stmt,
                 statement.close_stmt, statement.asm_stmt, statement.incbin_stmt, statement.input_stmt,
-                statement.locate_stmt, statement.load_stmt, statement.save_stmt;
+                statement.locate_stmt, statement.load_stmt, statement.save_stmt, statement.memset_stmt,
+                statement.memmove_stmt, statement.origin_stmt, statement.end_stmt, statement.poke_stmt,
+                statement.sys_stmt;

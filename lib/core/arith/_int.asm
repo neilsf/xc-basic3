@@ -55,6 +55,23 @@
 	pintvar R2
 	ENDM
 	
+	; Modulo of top 2 ints on stack
+	MAC modint
+	plwordvar R0
+	plwordvar R2
+	lda R0
+	bne .ok
+	lda R1
+	bne .ok
+	import I_RUNTIME_ERROR
+	lda #ERR_DIVZERO
+	jmp RUNTIME_ERROR
+.ok
+	import I_NUCLEUS_DIV16
+	jsr NUCLEUS_DIV16
+	pintvar R4
+	ENDM
+	
 	; Perform NOT on int on stack
 	MAC notint
 	notword

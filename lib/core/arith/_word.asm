@@ -73,6 +73,23 @@
 	jsr NUCLEUS_DIVU16
 	pwordvar R2
 	ENDM
+	
+	; Modulo of top 2 words on stack
+	MAC modword
+	plwordvar R0
+	plwordvar R2
+	lda R0
+	bne .ok
+	lda R1
+	bne .ok
+	import I_RUNTIME_ERROR
+	lda #ERR_DIVZERO
+	jmp RUNTIME_ERROR
+.ok
+	import I_NUCLEUS_DIVU16
+	jsr NUCLEUS_DIVU16
+	pwordvar R4
+	ENDM
 
 	; Perform NOT on word on stack
 	MAC notword

@@ -3,16 +3,19 @@ module statement.on_stmt;
 import std.string, std.conv;
 import pegged.grammar;
 
-import compiler.compiler;
+import compiler.compiler, compiler.type;
 import language.statement, language.expression;
 
 /** Compiles an ON .. GOTO / GOSUB statement */
 class On_stmt : Statement
 {
+    private static int counter = 0;
+
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
 	{
 		super(node, compiler);
+        counter++;
 	}
 
     /** Compiles the statement */
@@ -43,7 +46,27 @@ class On_stmt : Statement
             
         }
         else {
-
-        }
+            Expression ex = new Expression(e1, compiler);
+            ex.setExpectedType(compiler.getTypes().get(Type.UINT8));
+            ex.eval();
+            appendCode(ex.toString());
+            const string ctr = to!string(counter);
+            appendCode("    on" ~ branchType ~ " _ON_LB" ~ ctr ~ ", _ON_HB" ~ ctr ~ "\n");
+            if(branchType == "gosub") {
+                appendCode("    jmp _ON_END" ~ ctr ~ "\n");
+            }
+            string[] lbs, hbs;
+            for(int i = 2; i < args.length; i++) {
+                string lbl = join(args[i].matches);
+                if(!compiler.getLabels().exists(lbl)) {
+                    compiler.displayError("Label does not exist: " ~ lbl);
+                }
+                lbl = compiler.getLabels().toAsmLabel(lbl);
+                lbs ~= "<" ~ lbl; hbs ~= ">" ~ lbl;
+            }
+            appendCode("_ON_LB" ~ ctr ~ " DC.B " ~ lbs.join(",") ~ "\n");
+            appendCode("_ON_HB" ~ ctr ~ " DC.B " ~ hbs.join(",") ~ "\n");
+            appendCode("_ON_END" ~ ctr ~ "\n");
+        }   
     }
 }

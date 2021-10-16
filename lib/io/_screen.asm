@@ -1,6 +1,3 @@
-KERNAL_PRINTCHR	EQU $e716
-KERNAL_PLOT		EQU $FFF0
-
 	; Print byte on stack as PETSCII string
 	MAC printbyte
 	import I_STDLIB_PRINT_BYTE
@@ -87,14 +84,14 @@ KERNAL_PLOT		EQU $FFF0
 	; Print a newline character
 	MAC printnl
 	lda #13
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 	ENDM
 
 ; Move cursor to next tab
 	IFCONST I_STDLIB_TAB_IMPORTED
 STDLIB_TAB SUBROUTINE
 	sec
-	jsr KERNAL_PLOT
+	kerncall KERNAL_PLOT
 	tya
 	ldy #$ff
 .1
@@ -108,7 +105,7 @@ STDLIB_TAB SUBROUTINE
 .2	lda.wy .tabs
 	tay
 	clc
-	jsr KERNAL_PLOT
+	kerncall KERNAL_PLOT
 	rts
 
 .tabs HEX 0A 14 1E 28 00
@@ -128,7 +125,7 @@ STDLIB_PRINTSTR SUBROUTINE
     iny
 .1:
     lda (R0),y      ; get byte from string 
-    jsr KERNAL_PRINTCHR
+    kerncall KERNAL_CHROUT
     iny
     cpy R2
     bcc .1
@@ -164,7 +161,7 @@ STDLIB_PRINT_BYTE SUBROUTINE
 	tya
 	cmp #$30
 	beq .skip                                      
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 	inc R0
 .skip
 	txa
@@ -173,10 +170,10 @@ STDLIB_PRINT_BYTE SUBROUTINE
 	ldy R0
 	beq .skip2
 .printit	
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 .skip2
 	pla
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 	rts
 	ENDIF
 	
@@ -191,11 +188,11 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lsr
 	clc
 	adc #$30
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 	lda R2,x
 	and #%00001111
 	adc #$30
-	jsr KERNAL_PRINTCHR
+	kerncall KERNAL_CHROUT
 	dex
 	bpl .1
 	rts
@@ -209,13 +206,13 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	pla
 	tay
 	clc
-	jsr KERNAL_PLOT
+	kerncall KERNAL_PLOT
 	ENDM
 	
 	; DECLARE FUNCTION CSRLIN AS BYTE () SHARED STATIC INLINE
 	MAC F_csrlin
 	sec
-	jsr KERNAL_PLOT
+	kerncall KERNAL_PLOT
 	txa
 	IF !FPUSH
 	pha
@@ -225,7 +222,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	;DECLARE FUNCTION POS AS BYTE () SHARED STATIC INLINE
 	MAC F_pos
 	sec
-	jsr KERNAL_PLOT
+	kerncall KERNAL_PLOT
 	tya
 	IF !FPUSH
 	pha

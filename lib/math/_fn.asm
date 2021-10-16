@@ -309,104 +309,41 @@ B EQU FAC
 	pfac
 	ENDM
 	
-	; DECLARE FUNCTION COS AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_cos_float
+	; DECLARE FUNCTION EXP AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
+	MAC F_exp_float
 	plfloattofac
-	tsx
-	dex
-	dex
-	dex
-	dex
-	txs
-	plfloattoarg
-	import I_COS
-	jsr I_COS
+	import I_FPLIB
+	jsr EXP
 	pfac
 	ENDM
 	
-	; COS(x) function
-	; x in both ARG and FAC
-	; Result in FAC
-	IFCONST I_COS_IMPORTED
-I_COS SUBROUTINE
-	import I_FPLIB
-	lda FAC
-	jsr FMULTT
-	ldx #<.X2
-	ldy #>.X2
-	jsr STORE_FAC_AT_YX_ROUNDED
-	lda #<.C3
-	ldy #>.C3
-	jsr FMULT
-	lda #<.C2
-	ldy #>.C2
-	jsr FADD
-	lda #<.X2
-	ldy #>.X2
-	jsr FMULT
-	lda #<.C1
-	ldy #>.C1
-	jsr FADD
-	rts
-.X2 HEX 00 00 00 00 ; X**2
-.C1	HEX 80 7F D8 E0 ; 0.999403
-.C2 HEX 7F FD BC A9 ; -0.495580
-.C3 HEX 7C 16 B3 35 ; 0.036792
-	ENDIF
-	
-	; DECLARE FUNCTION SIN AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_sin_float
+	; DECLARE FUNCTION LOG AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
+	MAC F_log_float
 	plfloattofac
-	import I_SIN
-	jsr I_SIN
+	import I_FPLIB
+	jsr LOG
 	pfac
 	ENDM
 	
-	; SIN(x) function
-	; x in FAC
-	; Result in FAC
-	IFCONST I_SIN_IMPORTED
-I_SIN SUBROUTINE
-	import I_FPLIB
-	lda #<.halfpi
-	ldy #>.halfpi
-	jsr FSUB
-	jsr COPY_FAC_TO_ARG_ROUNDED
-	lda #$00
-    sta SGNCPR
-	import I_COS
-	jmp I_COS
-.halfpi HEX 81 49 0F D8
-	ENDIF
-	
-	; DECLARE FUNCTION MOD AS FLOAT (dividend AS FLOAT, divisor AS float) SHARED STATIC INLINE
-	MAC F_mod_float_float
+	; DECLARE FUNCTION INT AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
+	MAC F_int_float
 	plfloattofac
-	plfloattoarg
-	import I_FMOD
-	jsr I_FMOD
-	pfac
-	ENDM
-	
-	IFCONST I_FMOD_IMPORTED
-I_FMOD SUBROUTINE
-	ldx #<.tmp
-	ldy #>.tmp
 	import I_FPLIB
-	jsr STORE_FAC_AT_YX_ROUNDED
-	jsr FDIVT
-	jsr COPY_FAC_TO_ARG_ROUNDED
-	import I_INT
 	jsr INT
-	jsr FSUBT
-	lda #<.tmp
-	ldy #>.tmp
-	jmp FMULT
-.tmp HEX 00 00 00 00
-	ENDIF
+	pfac
+	ENDM
+	
+	; DECLARE FUNCTION SQR AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
+	MAC F_sqr_float
+	plfloattofac
+	import I_FPLIB
+	jsr INT
+	pfac
+	ENDM
+	
 	
 	IFCONST I_RANDOMIZE_IMPORTED || I_RND_IMPORTED
-MATH_RNDEXP HEX 80
+MATH_RND_EXP HEX 80
 MATH_RND HEX 00 00 00
 	ENDIF
 	
@@ -414,18 +351,13 @@ MATH_RND HEX 00 00 00
 	MAC F_rnd
 	import I_RND
 	jsr I_RND
-	lda #<MATH_RNDEXP
-	ldy #>MATH_RNDEXP
-	jsr LOAD_FAC_FROM_YA
-	sec
-	jsr NORMALIZE_FAC1
-	pfac
+	pfloatvar MATH_RND_EXP
 	ENDM
 	
 	; DECLARE FUNCTION RND AS LONG () SHARED STATIC INLINE
 	MAC F_rndl
-	import I_RND
-	jsr I_RND
+	import I_RNDL
+	jsr I_RNDL
 	IF !FPUSH
 	lda MATH_RND
 	pha
@@ -443,8 +375,8 @@ MATH_RND HEX 00 00 00
 	; 6502 LFSR PRNG - 24-bit
 	; Brad Smith, 2019
 	; http://rainwarrior.ca
-	IFCONST I_RND_IMPORTED
-I_RND SUBROUTINE
+	IFCONST I_RNDL_IMPORTED
+I_RNDL SUBROUTINE
 	; rotate the middle byte left
 	ldy MATH_RND + 1 ; will move to seed + 2 at the end
 	; compute seed + 1 ($1B>>1 = %1101)
@@ -474,6 +406,68 @@ I_RND SUBROUTINE
 	sta MATH_RND
 	rts
 	ENDIF
+	
+	IFCONST I_RND_IMPORTED
+I_RND SUBROUTINE
+	import I_FPLIB
+	lda #<MATH_RND_EXP
+	ldy #>MATH_RND_EXP
+	jsr LOAD_FAC_FROM_YA
+	lda #<.C1
+	ldy #>.C1
+	jsr FMULT
+	lda #<.C2
+	ldy #>.C2
+	jsr FADD
+	lda FAC + 1
+	ldx FAC + 3
+	sta FAC + 3
+	stx FAC + 1
+	lda #0
+	sta FACSIGN
+	lda FAC
+	sta FACEXTENSION
+	lda #$80
+	sta FAC
+	sec
+	jsr NORMALIZE_FAC1
+	ldx #<MATH_RND_EXP
+	ldy #>MATH_RND_EXP
+	jmp STORE_FAC_AT_YX_ROUNDED
+	
+.C1 HEX 98 35 44 7A
+.C2 HEX 68 28 B1 46
+	ENDIF
 
-
+	MAC F_shl_byte_byte
+	shlbyte
+	ENDM
+	
+	MAC F_shr_byte_byte
+	shrbyte
+	ENDM
+	
+	MAC F_shl_int_byte
+	shlint
+	ENDM
+	
+	MAC F_shr_int_byte
+	shrint
+	ENDM
+	
+	MAC F_shl_word_byte
+	shlword
+	ENDM
+	
+	MAC F_shr_word_byte
+	shrword
+	ENDM
+	
+	MAC F_shl_long_byte
+	shllong
+	ENDM
+	
+	MAC F_shr_long_byte
+	shrlong
+	ENDM
 	

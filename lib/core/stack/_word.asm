@@ -97,9 +97,9 @@
 	pla
 	ENDIF
 	tax
-	lda	{1}, x
+	lda	{1},x
 	pha
-	lda [{1} + 1], x
+	lda [{1} + 1],x
 	pha
 	ENDM
 	

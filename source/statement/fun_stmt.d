@@ -98,11 +98,17 @@ class Fun_stmt : Statement
         }
     }
 
+    private string getArgsHash()
+    {
+        import std.algorithm;
+        return argStubs.map!(argStub => argStub.type.name).array().join("_");
+    }
+
     // Add routine to collection and variable with same name (holder of the return value)
     private void addRoutine()
     {
         // Start routine 
-        compiler.setProc(this.name);
+        compiler.setProc(this.name ~ "_" ~ this.getArgsHash());
         compiler.currentProc = this.routine;
         if(!this.isDeclaration) {
             this.routine.isDefined = true;
@@ -244,7 +250,7 @@ class Fun_stmt : Statement
                 this.addRoutine();
             }
 
-            compiler.setProc(name);
+            compiler.setProc(name ~ "_" ~ this.getArgsHash());
             compiler.currentProc = this.routine;
             appendCode("    IFCONST I_" ~ this.routine.getLabel() ~ "_IMPORTED\n");
             appendCode(this.routine.getLabel() ~ " SUBROUTINE\n");

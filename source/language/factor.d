@@ -142,7 +142,7 @@ class Factor : AbstractExpression
 
             case "XCBASIC.Accessor":
                 try {
-                    AccessorFactory af = new AccessorFactory(child, compiler); 
+                    AccessorFactory af = new AccessorFactory(factor, compiler); 
                     AccessorInterface accessor = af.getAccessor();
                     this.asmCode = accessor.getPushCode();
                     if(accessor.isFunctionCall()) {

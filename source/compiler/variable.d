@@ -112,7 +112,7 @@ class Variable
         var.fileId = compiler.currentFileId;
         if(compiler.inProcedure) {
             var.visibility = compiler.VIS_LOCAL;
-            var.procName = compiler.currentProcName ~ "_" ~ compiler.currentProc.getArgsHash();
+            var.procName = compiler.currentProcName;
             if(!forceStatic && !compiler.currentProc.getIsStatic()) {
                 var.isDynamic = true;
                 compiler.currentProc.addDynamicVariable(var);
@@ -265,6 +265,11 @@ class VariableCollection
         }
 
         return null;
+    }
+
+    public Variable[] getAll()
+    {
+        return this.variables;
     }
 }
 

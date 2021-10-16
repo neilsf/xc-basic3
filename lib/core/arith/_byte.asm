@@ -107,6 +107,21 @@
 	ENDIF
 	ENDM
 	
+	; Modulo two bytes on stack
+	MAC modbyte
+	IF !FPULL
+	pla
+	ENDIF
+	sta R1
+	pla
+	sta R0
+	import I_NUCLEUS_DIVBYTE
+	jsr NUCLEUS_DIVBYTE
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM
+	
 	; Shift left with const number of binary places
 	MAC lshiftbytewconst
 	IF !FPULL
@@ -195,32 +210,23 @@ NUCLEUS_MULBYTE SUBROUTINE
 	ENDIF
 	
 ; Divide bytes
-; submitted by Graham at CSDb forum
+; By Whyte Flame
+; https://codebase64.org/doku.php?id=base:8bit_divide_8bit_product
 ; Dividend in R0
 ; Divisor in R1
 ; Result in R0
 	IFCONST I_NUCLEUS_DIVBYTE_IMPORTED
 NUCLEUS_DIVBYTE SUBROUTINE
-	asl R0
 	lda #$00
-	rol
-	ldx #$08
-.loop1
-	cmp R1
-	bcc *+4
-	sbc R1
-	rol R0
-	rol
-	dex
-	bne .loop1
-	ldx #$08
-.loop2
-   	cmp R1
-	bcc *+4
-	sbc R1
-	rol R2
-	asl
-	dex
-	bne .loop2
+ 	ldx #$07
+ 	clc
+.1 	rol R0
+  	rol
+  	cmp R1
+  	bcc .2
+   	sbc R1
+.2 	dex
+ 	bpl .1
+ 	rol R0
 	rts
 	ENDIF

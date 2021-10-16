@@ -41,14 +41,24 @@ RUNTIME_ERROR SUBROUTINE
 	bne .custom
 	; No custom error handler, do default
 	pha
-	jsr SCINIT
+	;jsr SCINIT
 	printnl
 	lda #<.err
 	ldy #>.err
 	import I_STDLIB_PRINTSTR
 	jsr STDLIB_PRINTSTR
 	printbyte ; pulls error code off of stack
+	IF TARGET == c64
+	; Bank in BASIC ROM
+	lda $01
+	ora #%00000001         
+	sta $01
+	ENDIF
+	IF TARGET & vic20
+	jmp ($C002)
+	ELSE
 	jmp ($A002) ; Do BASIC cold start
+	ENDIF
 .custom
 	jmp (ERR_VECTOR)
 
@@ -59,5 +69,3 @@ RUNTIME_ERROR SUBROUTINE
 	; If HB = 0 errors won't be redirected
 ERR_VECTOR HEX 00 00
 	ENDIF
-	
-	

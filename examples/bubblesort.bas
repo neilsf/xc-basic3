@@ -12,6 +12,7 @@ DO
     IF nums(i - 1) > nums(i) THEN SWAP nums(i - 1), nums(i) : swapped = 1
   NEXT
 LOOP WHILE swapped
+END
 
 FOR i = 1 TO 9 : PRINT nums(i) : NEXT
 

@@ -184,6 +184,42 @@
 	ENDIF
 	ENDM
 	
+	; Modulo of top 2 long ints on stack
+	MAC modlong
+	IF !FPULL
+	pla
+	sta R7 + 2
+	pla
+	sta R7 + 1
+	pla
+	sta R7
+	ELSE
+	sta R7
+	sty R7 + 1
+	stx R7 + 2
+	ENDIF
+	pla
+	sta R4 + 2
+	pla
+	sta R4 + 1
+	pla
+	sta R4
+	import I_NUCLEUS_DIV24
+	jsr NUCLEUS_DIV24
+	IF !FPUSH
+	lda R0
+	pha
+	lda R0 + 1
+	pha
+	lda R0 + 2
+	pha
+	ELSE
+	lda R0
+	ldy R0 + 1
+	ldx R0 + 2
+	ENDIF
+	ENDM
+	
 	; Perform NOT on long int on stack
 	MAC notlong
 	tsx

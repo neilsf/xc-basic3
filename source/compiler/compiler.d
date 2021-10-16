@@ -275,7 +275,13 @@ final class Compiler
                     case "XCBASIC.Fun_stmt":
                         if(toLower(stmt.matches.join())[0..7] != "declare" ) {
                             this.inProcedure = true;
-                            this.currentProcName = join(stmt.children[0].matches);
+                            string pName = stmt.children[0].matches[0] ~ "_";
+                            string[] argTypes;
+                            foreach (ref arg; stmt.children[1].children) {
+                                argTypes ~= toLower(arg.children[1].matches.join());
+                            }
+                            pName ~= argTypes.join("_");
+                            this.currentProcName = pName;
                         }
                         break;
 

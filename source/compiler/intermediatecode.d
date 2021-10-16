@@ -1,6 +1,8 @@
 module compiler.intermediatecode;
 
-import compiler.compiler, compiler.library;
+import std.conv;
+
+import globals, compiler.compiler, compiler.library;
 
 /** This class builds the intermediate assembly code */
 class IntermediateCode
@@ -22,7 +24,7 @@ class IntermediateCode
     {
         this.compiler = compiler;
         this.segments =  [
-            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH EQU 0\nFPULL EQU 0\n    spreset\n",
+            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\n_void_ EQU 0\nFPUSH EQU 0\nFPULL EQU 0\n    xbegin\n",
             ROUTINE_SEGMENT : "routines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n",
             DATA_SEGMENT    : "data_start:\n",
             VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
@@ -50,15 +52,31 @@ class IntermediateCode
 
     private string getStartUp()
     {
-        return 
+        // Target machine bits meaning
+        // Bits 15-4: base machine
+        // Bits 3-0: machine config 
+        string startUpCode =
 `    PROCESSOR 6502
+c64      EQU %0000000000010000
+vic20    EQU %0000000000100000
+vic20_3k EQU %0000000000100001
+vic20_8k EQU %0000000000100010
+c264     EQU %0000000001000000
+cplus4   EQU %0000000001000001
+c16      EQU %0000000001000010
+TARGET   EQU ` ~ target ~ `
     SEG "UPSTART"
-    ORG $0801
+    ORG $` ~ to!string(startAddress, 16) ~ "\n";
+        if(basicLoader) {
+            startUpCode ~= 
+`
     DC.W next_line, 2021
     DC.B $9e, [prg_start]d, 0
 next_line:
     DC.W 0
 `;
+        }
+        return startUpCode;
     }
 
     private string getIncludes()
@@ -73,7 +91,7 @@ next_line:
     public string getCode()
     {
         return  getStartUp() ~
-                getSegment(PROGRAM_SEGMENT) ~ "    rts\n\n" ~
+                getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~
                 getSegment(ROUTINE_SEGMENT) ~
                 getIncludes() ~
                 getSegment(DATA_SEGMENT) ~

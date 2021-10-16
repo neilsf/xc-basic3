@@ -7,7 +7,7 @@
  */
 
 import std.stdio, std.string, std.getopt, std.file, std.path,
-        std.conv, std.random, std.process;
+        std.conv, std.random, std.process, std.algorithm;
 import core.stdc.stdlib;
 
 import pegged.grammar;
@@ -15,8 +15,20 @@ import language.grammar;
 
 import compiler.compiler, compiler.library, compiler.sourcefile;
 
+import globals;
+
 // Program version
 const string APP_VERSION = "v3.0.0-alpha";
+
+/** Possible target options */
+const string[] targetOpts = [
+    "c64",      // Commodore-64
+    "vic20",    // Commodore VIC-20 (unexpanded)
+    "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
+    "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
+    //"cplus4",   // Commodore Plus/4 - not yet supported
+    //"c16",      // Commodore-16 - not yet supported
+];
 
 // Command line options
 private bool noopt = false;
@@ -43,6 +55,9 @@ void main(string[] args)
     GetoptResult helpInformation;
     try {
         helpInformation = getopt(args,
+            "target|t", &target,
+            "basic-loader|b", &basicLoader,
+            "start-address|o", &startAddress,
             "dasm|d", &dasm,
             "symbol|s", &symbolfile,
             "list|l", &listfile,
@@ -142,6 +157,39 @@ private void validateOptions(string[] args)
         stderr.writeln("Too few command line options. Use --help for more information.");
         exit(1);
     }
+
+    if(!canFind(targetOpts, target)) {
+        stderr.writeln("'" ~ target ~"' is not a valid target. Possible values are: " ~ targetOpts.join(", "));
+        exit(1);
+    }
+
+    if(basicLoader){
+        switch(target) {
+            case "c64":
+                startAddress = 0x0801;
+                break;
+
+            case "vic20":
+            case "cplus4":
+            case "c16":
+                startAddress = 0x1001;
+                break;
+
+            case "vic20_3k":
+            case "vic20_8k":
+            default:
+                startAddress = 0x1201;
+                break;
+        }
+    }
+    else if(startAddress == -1) {
+        startAddress = 0x1000;
+    }
+
+    if(startAddress < 0 || startAddress > 0xffff) {
+        stderr.writeln("Invalid start address: " ~ to!string(startAddress));
+        exit(1);
+    }
 }
 
 /**
@@ -155,6 +203,9 @@ XC=BASIC compiler version ` ~ APP_VERSION ~ `
 Copyright (c) 2019-2021 by Csaba Fekete
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
+   -t
+  --target =    Target machine. Possible values: ` ~ targetOpts.join(", ") ~ `. Defaults to c64.
+
    -f
   --format=     Output format: "prg" (default, will call DASM) or "asm"
 

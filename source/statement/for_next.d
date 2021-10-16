@@ -68,6 +68,10 @@ class For_stmt : Statement
             compiler.displayError("Counter of a FOR loop can not be a constant");
         }
 
+        if(counterVar.type.name == Type.STRING || counterVar.type.name == Type.DEC || !counterVar.type.isPrimitive) {
+            compiler.displayError("Counter of a FOR loop can not be of type " ~ counterVar.type.name);
+        }
+
         // Save variable for later check with NEXT
         counterVariables[block.getId()] = counterVar;
         
@@ -103,7 +107,7 @@ class For_stmt : Statement
         immutable string blockId = to!string(block.getId());
         appendCode("_FOR_" ~ blockId ~ ":\n");
         appendCode("    for" ~ counterVar.type.name ~ " " ~ blockId ~ ", " ~ counterVar.getAsmLabel() ~ 
-                ", " ~ limitVar.getAsmLabel() ~ (stepPresent ? (", " ~ stepVar.getAsmLabel()) : "") ~ "\n");
+                ", " ~ limitVar.getAsmLabel() ~ ", " ~ (stepPresent ? stepVar.getAsmLabel() : "_void_") ~ "\n");
         
     }
 }

@@ -1,3 +1,4 @@
+	INCLUDE "io/_kernal.asm"
 	INCLUDE "io/_screen.asm"
 	INCLUDE "io/_file.asm"
 	INCLUDE "io/_keyboard.asm"

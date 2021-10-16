@@ -12,7 +12,7 @@
 	sty .l + 2
 	ENDIF
 .l  lda $0000
-	IF FPUSH
+	IF !FPUSH
 	pha
 	ENDIF
 	ENDM 

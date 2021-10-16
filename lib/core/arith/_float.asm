@@ -35,3 +35,47 @@
 	jsr FDIVT
 	pfac
 	ENDM
+	
+	; Modulo of top 2 floats on stack
+	MAC modfloat
+	plfloattofac
+	plfloattoarg
+	import I_FMOD
+	jsr I_FMOD
+	pfac
+	ENDM
+	
+	; Negate float on stack
+	MAC negfloat
+	tsx
+	lda stack + 2,x
+	eor #%10000000
+	sta stack + 2,x
+	ENDM
+	
+	; Discard top float on stack
+	MAC discardfloat
+	tsx
+	inx
+	inx
+	inx
+	inx
+	txs
+	ENDM
+	
+	IFCONST I_FMOD_IMPORTED
+I_FMOD SUBROUTINE
+	ldx #<.tmp
+	ldy #>.tmp
+	import I_FPLIB
+	jsr STORE_FAC_AT_YX_ROUNDED
+	jsr FDIVT
+	jsr COPY_FAC_TO_ARG_ROUNDED
+	import I_INT
+	jsr INT
+	jsr FSUBT
+	lda #<.tmp
+	ldy #>.tmp
+	jmp FMULT
+.tmp HEX 00 00 00 00
+	ENDIF

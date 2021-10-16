@@ -3,6 +3,7 @@ module compiler.sourcefile;
 import std.conv, std.file, std.path, std.stdio, core.stdc.stdlib, pegged.grammar;
 
 import language.grammar;
+import compiler.library;
 
 /** This class is responsible for reading and parsing source files */
 class SourceFile
@@ -70,6 +71,11 @@ class SourceFile
 
         try {
             chdir(dir);
+            if(!exists(file)) {
+                // try in library dir
+                chdir(getLibraryDir());
+            }
+
             this.sourceCode = to!string(read(file));
         }
         catch(FileException e) {

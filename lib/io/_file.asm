@@ -1,16 +1,3 @@
-STATUS EQU $90 ; KERNAL I/O STATUS
-KERNAL_SETNAM EQU $FFBD
-KERNAL_SETLFS EQU $FFBA
-KERNAL_OPEN   EQU $FFC0
-KERNAL_READST EQU $FFB7
-KERNAL_CLOSE  EQU $FFC3
-KERNAL_GETIN  EQU $FFE4
-KERNAL_CHRIN  EQU $FFCF
-KERNAL_CHKIN  EQU $FFC6
-KERNAL_CLRCHN EQU $FFCC
-KERNAL_LOAD	  EQU $FFD5
-KERNAL_SAVE   EQU $FFD8
-
 	; Calls SETNAM with string on stack
 	MAC setnam
 	ldx SP
@@ -18,7 +5,7 @@ KERNAL_SAVE   EQU $FFD8
 	lda STRING_WORKAREA,x
 	inx
 	ldy #>STRING_WORKAREA
-	jsr KERNAL_SETNAM
+	kerncall KERNAL_SETNAM
 	import I_STRSCRATCH
 	jsr STRSCRATCH
 	ENDM
@@ -29,11 +16,11 @@ KERNAL_SAVE   EQU $FFD8
 	pla
 	tax
 	pla
-	jsr KERNAL_SETLFS
+	kerncall KERNAL_SETLFS
 	ENDM
 	
 	MAC open
-	jsr KERNAL_OPEN
+	kerncall KERNAL_OPEN
 	bcc .ok
 	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR
@@ -44,7 +31,7 @@ KERNAL_SAVE   EQU $FFD8
 	IF !FPULL
 	pla
 	ENDIF
-	jsr KERNAL_CLOSE
+	kerncall KERNAL_CLOSE
 	ENDM
 	
 	; GET#
@@ -55,10 +42,10 @@ KERNAL_SAVE   EQU $FFD8
 	pla
 	ENDIF
 	tax
-	jsr KERNAL_CHKIN
-	jsr KERNAL_CHRIN
+	kerncall KERNAL_CHKIN
+	kerncall KERNAL_CHRIN
 	pha
-	jsr KERNAL_CLRCHN
+	kerncall KERNAL_CLRCHN
 	ENDM
 	
 	MAC F_st
@@ -76,15 +63,14 @@ KERNAL_SAVE   EQU $FFD8
 	pla
 	ENDIF
 	tax
-	jsr KERNAL_CHKIN
+	kerncall KERNAL_CHKIN
 	ldy #0
-	jsr KERNAL_READST
 .loop
 	tya
 	pha
-	jsr KERNAL_CHRIN
+	kerncall KERNAL_CHRIN
 	tax
-	jsr KERNAL_READST
+	kerncall KERNAL_READST
 	bne .over
     pla
     tay
@@ -103,7 +89,44 @@ KERNAL_SAVE   EQU $FFD8
     bne .loop
 .over
 	sty STRING_BUFFER1
-    jmp KERNAL_CLRCHN
+    kerncall KERNAL_CLRCHN
+    rts
+	ENDM
+	
+	; PRINT#
+	; logical file# on stack
+	; string on string stack
+	; {1} = 1 : this is the last string in block
+	MAC print_hash
+	IF !FPULL
+	pla
+	ENDIF
+	tax
+	kerncall KERNAL_CHKIN
+	ldx SP
+	inx
+	lda STRING_WORKAREA,x
+	beq .q
+	sta R2
+	inx
+	stx R0
+	lda #>STRING_WORKAREA
+	sta R0 + 1
+	ldy #0
+.loop
+	lda (R0),y
+	kerncall KERNAL_CHROUT
+	iny
+	cpy R2
+	bne .loop
+.q
+	IF {1} == 1
+	lda #$0d ; Return
+	ELSE
+	lda #$2c ; Comma
+	ENDIF
+	kerncall KERNAL_CHROUT
+	rts
 	ENDM
 	
 	; Load routine
@@ -118,7 +141,7 @@ KERNAL_SAVE   EQU $FFD8
 	tax
 	ENDIF
 	lda #$00
-	jsr KERNAL_LOAD
+	kerncall KERNAL_LOAD
 	bcc .q
 	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR
@@ -142,7 +165,7 @@ KERNAL_SAVE   EQU $FFD8
 	pla
 	tax
 	lda #R0
-	jsr KERNAL_SAVE
+	kerncall KERNAL_SAVE
 	bcc .q
 	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR

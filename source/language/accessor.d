@@ -44,7 +44,13 @@ class AccessorFactory
     public AccessorInterface getAccessor()
     {
         // Last node is not ()
-        const ParseTree last = node.children[$ - 1];
+        ParseTree last;
+        try {
+            last = node.children[$ - 1];
+        } catch (Error e) {
+            import std.stdio; writeln(node);
+        }
+        
         if(last.name == "XCBASIC.Varname") {
             return new VariableAccess(node, compiler);
         }

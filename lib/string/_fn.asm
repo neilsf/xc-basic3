@@ -538,6 +538,7 @@ str_pten_16
 	HEX 64 00 00	;       100
 	HEX 0A 00 00	;        10
 	
+	
 STR_MOVE_REVSTR SUBROUTINE
 	; Move reversed string on stack to string workarea 
 	; Total number of chars in R0
@@ -557,3 +558,12 @@ STR_MOVE_REVSTR SUBROUTINE
 	stx SP
 	rts
 	ENDIF
+	
+	; DECLARE FUNCTION STR$ AS STRING (number AS FLOAT) OVERRIDE SHARED STATIC INLINE
+	MAC F_str@_float
+	plfloattofac
+	import I_FPLIB
+	import I_FOUT
+	jsr FOUT
+	pstringvar stack
+	ENDM

@@ -143,6 +143,9 @@ class Expression : AbstractExpression
         // Typecast if required
         if(this.expectedType !is null) {
             try {
+                if(this.expectedType.length < this.type.length) {
+                    compiler.displayWarning("Downcasting from " ~ this.type.name ~ " to " ~ this.expectedType.name ~ " truncates value");
+                }
                 this.asmCode ~= this.type.getCastCode(this.expectedType);
             }
             catch(Exception e) {

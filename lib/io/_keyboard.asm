@@ -1,7 +1,7 @@
 
     ; GET
 	MAC get
-	jsr KERNAL_GETIN
+	kerncall KERNAL_GETIN
 	IF !FPUSH
 	pha
 	ENDIF
@@ -24,11 +24,16 @@
     IFCONST I_IO_INPUT_IMPORTED
 IO_INPUT SUBROUTINE
 	ldy #0
+	IF TARGET == c64 || (TARGET & vic20)
 	sty $cc	; turn on cursor
+	ENDIF
+	IF TARGET & c254
+	
+	ENDIF
 .loop
 	tya
 	pha
-    jsr KERNAL_GETIN
+    kerncall KERNAL_GETIN
     tax
     pla
     tay
@@ -39,7 +44,7 @@ IO_INPUT SUBROUTINE
     cpy #0
     beq .loop
     dey
-    jsr KERNAL_PRINTCHR
+    kerncall KERNAL_CHROUT
     jmp .loop
 .1  cmp #$0d ; Return
     beq .q
@@ -56,7 +61,7 @@ IO_INPUT SUBROUTINE
     ; Write character
     sta.wy STRING_BUFFER1 + 1
     ; Echo it
-    jsr KERNAL_PRINTCHR
+    kerncall KERNAL_CHROUT
     iny
     jmp .loop
 .q

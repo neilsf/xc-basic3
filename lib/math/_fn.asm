@@ -162,9 +162,8 @@
 .end
 	ENDM
 	
-	; DECLARE FUNCTION POW AS LONG (base AS INT, exp AS BYTE) OVERRIDE SHARED STATIC INLINE
-	; TODO FIND BUG
-	MAC F_pow_int_byte
+	; DECLARE FUNCTION POW AS LONG (base AS WORD, exp AS BYTE) SHARED STATIC INLINE
+	MAC F_pow_word_byte
 	IF !FPULL
 	pla
 	ENDIF
@@ -176,6 +175,50 @@
 	txa
 	import I_EXP
 	jsr I_EXP
+	IF !FPUSH
+	lda R0
+	pha
+	lda R0 + 1
+	pha
+	lda R0 + 2
+	pha
+	ELSE
+	lda R0
+	ldy R0 + 1
+	ldx R0 + 2
+	ENDIF
+	ENDM
+	
+	; DECLARE FUNCTION POW AS LONG (base AS INT, exp AS BYTE) OVERRIDE SHARED STATIC INLINE
+	; TODO FIND BUG
+	MAC F_pow_int_byte
+.SIGN EQU ARG
+.EXP  EQU ARG + 1
+	IF !FPULL
+	pla
+	ENDIF
+	sta .EXP
+	pla
+	sta FAC + 1
+	pla
+	sta FAC
+	lda #0
+	sta .SIGN
+	lda FAC + 1
+	bpl .pos
+	twoscplint FAC
+	inc .SIGN
+.pos
+	lda .EXP
+	import I_EXP
+	jsr I_EXP
+	lda .SIGN
+	beq .q
+	lda .EXP
+	and #%00000001
+	beq .q
+	twoscpllong R0
+.q
 	IF !FPUSH
 	lda R0
 	pha
@@ -418,6 +461,12 @@ SQRW SUBROUTINE
 	; DECLARE FUNCTION SQR AS WORD (num AS LONG) OVERRIDE SHARED STATIC INLINE 
 	MAC F_sqr_long
 	pllongvar R0
+	lda R0 + 2
+	bpl .pos
+	import I_RUNTIME_ERROR
+	lda #ERR_ILQTY
+	jmp RUNTIME_ERROR
+.pos
 	import I_SQRL
 	jsr SQRL
 	pwordvar R8

@@ -24,9 +24,11 @@
 	ENDIF
 	beq * + 5
 	IFCONST {2}
-	jmp {2}ex
+	  IF {2} > 0
+	  jmp {2}
+	  ENDIF
 	ELSE
-	jmp {1}
+	  jmp {1}
 	ENDIF
 	ENDM
 	

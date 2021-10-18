@@ -63,7 +63,7 @@ class Loop_stmt : Statement
             Expression condition = new Expression(node.children[0].children[0], compiler);
             condition.eval();
             appendCode(to!string(condition));
-            appendCode("    " ~ (isWhile ? "cond_stmt" : "neg_cond_stmt") ~ " _ED_" ~ to!string(counter) ~ ", _void_\n");
+            appendCode("    " ~ (!isWhile ? "cond_stmt" : "neg_cond_stmt") ~ " _ED_" ~ to!string(counter) ~ ", _void_\n");
         }
         
         appendCode("    jmp _DO_" ~ to!string(counter) ~ "\n");

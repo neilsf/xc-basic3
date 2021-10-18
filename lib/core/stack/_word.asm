@@ -142,9 +142,9 @@
 	; (e.g this.something)
 	MAC plrelativewordvar
 	pla
-	ldy #{1}
+	ldy #[{1} + 1]
 	sta (TH),y
 	pla
-	iny
+	dey
 	sta (TH),y
 	ENDM

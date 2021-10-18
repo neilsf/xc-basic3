@@ -79,7 +79,14 @@ void main(string[] args)
 	validateOptions(args);
     
     const string fileName = args[1];
-    const string outName = args[2];
+    string outName;
+    if(args.length >= 3) {
+        outName = args[2];
+    }
+    else {
+        outName = to!string(fileName.withExtension("prg"));
+        stdout.writeln("** NOTE ** Output not specified, defaulting to " ~ outName);
+    }
 
     Compiler compiler = new Compiler();
     // Compile standard headers
@@ -153,7 +160,7 @@ private void validateOptions(string[] args)
         exit(1);
     }
 
-    if(args.length < 3) {
+    if(args.length < 2) {
         stderr.writeln("Too few command line options. Use --help for more information.");
         exit(1);
     }

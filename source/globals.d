@@ -6,3 +6,5 @@ string target = "c64";
 bool basicLoader = true;
 /** Program start address */
 int startAddress = -1;
+/** Maximum allowed string length */
+const int stringMaxLength = 96;

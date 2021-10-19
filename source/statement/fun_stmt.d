@@ -1,6 +1,6 @@
 module statement.fun_stmt;
 
-import std.conv, std.string, std.array, std.uni;
+import std.conv, std.string, std.array, std.uni, std.algorithm;
 import pegged.grammar;
 import language.statement;
 import compiler.compiler, compiler.routine, compiler.variable, compiler.type;
@@ -12,6 +12,7 @@ class Fun_stmt : Statement
     {
         string name;
         Type type;
+        ushort strLen;
     }
 
     private string keyword;
@@ -76,31 +77,18 @@ class Fun_stmt : Statement
     private void readArgs(ParseTree varList)
     {
         foreach (ref arg; varList) {
-            string argName = arg.children[0].matches.join("");
-            Type argType;
-            if(arg.children.length > 1) {
-                ParseTree varType = arg.children[1];
-                if(varType.name == "XCBASIC.Subscript") {
-                    compiler.displayError("Syntax error");
-                }
-                string typeName = varType.matches.join("");
-                if(!compiler.getTypes.defined(typeName)) {
-                    compiler.displayError("Undefined type: " ~ typeName);
-                }
-                argType = compiler.getTypes().get(typeName);
+            VariableReader reader = new VariableReader(arg, compiler);
+            Variable tmpVariable = reader.read(null, this.isStatic, !this.isInline);
+            if(tmpVariable.type.name == Type.VOID) {
+                compiler.displayError("Can't define param as VOID");
             }
-            if(argType is null) {
-                argType = compiler.getTypes().get(Type.INT16);
-            }
-
-            this.argStubs ~= ArgumentStub(argName, argType);
-            this.routine.addArgType(argType);
+            this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type, tmpVariable.strLen);
+            this.routine.addArgType(tmpVariable.type);
         }
     }
 
     private string getArgsHash()
     {
-        import std.algorithm;
         return argStubs.map!(argStub => argStub.type.name).array().join("_");
     }
 
@@ -118,8 +106,9 @@ class Fun_stmt : Statement
             foreach (ArgumentStub stub; argStubs) {
                 Variable argument = Variable.create(stub.name, stub.type, compiler);
                 argument.isDynamic = !this.isStatic;
+                argument.strLen = stub.strLen;
                 this.routine.addArgument(argument);
-                this.compiler.getVars().add(argument, false);    
+                this.compiler.getVars().add(argument, false);
             }
         }
         // Add storage for return value

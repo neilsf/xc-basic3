@@ -318,7 +318,11 @@ class RoutineCall : AccessorInterface
             asmCode ~= to!string(e);
             if(routine.isStatic && !routine.isInline) {
                 arg = routine.arguments[argNo];
-                asmCode ~= "    pl" ~ arg.type.name ~ "var " ~ arg.getAsmLabel() ~ "\n";
+                asmCode ~= "    pl" ~ arg.type.name ~ "var " ~ arg.getAsmLabel();
+                if(arg.type.name == Type.STRING) {
+                    asmCode ~= ", " ~ to!string(arg.strLen);
+                }
+                asmCode ~= "\n";
             }
             argNo++;
         }
@@ -327,7 +331,11 @@ class RoutineCall : AccessorInterface
             asmCode ~= "    framealloc " ~ to!string(routine.getStackFrameSize()) ~ "\n";
             for(argNo -= 1; argNo >= 0; argNo--) {
                 arg = routine.arguments[argNo];
-                asmCode ~= "    pldyn" ~ arg.type.name ~ "var " ~ arg.getAsmLabel() ~ "\n";
+                asmCode ~= "    pldyn" ~ arg.type.name ~ "var " ~ arg.getAsmLabel();
+                if(arg.type.name == Type.STRING) {
+                    asmCode ~= ", " ~ to!string(arg.strLen);
+                }
+                asmCode ~= "\n";
             }
         }
         return asmCode;

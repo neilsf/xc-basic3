@@ -6,6 +6,8 @@ import language.expression;
 import compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode,
         compiler.routine, compiler.helper;
 
+import globals;
+
 import pegged.grammar;
 
 private string getLabelInCurrentScope(string variableName, Compiler compiler) {
@@ -287,7 +289,7 @@ class VariableReader
     }
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
-    public Variable read(Type inferredType = null, bool forceStatic = false)
+    public Variable read(Type inferredType = null, bool forceStatic = false, bool stringLengthRequired = true)
     {
         ushort[3] dimensions = [1, 1, 1];
         string name;
@@ -364,13 +366,13 @@ class VariableReader
                     if(typeName == "") {
                         typeName = inferredType is null ? Type.INT16 : inferredType.name;
                     }                    
-                    else if(typeName == Type.STRING) {
+                    else if(typeName == Type.STRING && stringLengthRequired) {
                         if(child.children.length < 2) {
                             compiler.displayError("String length is required");
                         }
                         immutable int len = to!int(join(child.children[1].matches)[1..$]);
-                        if(len < 1 || len > 255) {
-                            compiler.displayError("String length must be between 1 and 255");
+                        if(len < 1 || len > stringMaxLength) {
+                            compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
                         }
                         strLen = to!ubyte(len);
                     }

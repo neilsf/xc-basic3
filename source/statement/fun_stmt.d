@@ -24,7 +24,7 @@ class Fun_stmt : Statement
     private bool isMethod = false;
     private bool isDeclaration = false;
     private bool isAlreadyDeclared = false;
-    private bool isOverride = false;
+    private bool isOverload = false;
     private bool isInline = false;
     private Routine routine;
     private ArgumentStub[] argStubs;
@@ -61,9 +61,9 @@ class Fun_stmt : Statement
             }
             else {
                 // Same name is only allowed when overriding
-                if(!isOverride) {
+                if(isOverload) {
                     this.compiler.displayError(
-                        "Use OVERRIDE keyword if you wish to override routine \"" ~ this.name ~ "\""
+                        "Use the OVERLOAD keyword if you wish to overload routine \"" ~ this.name ~ "\""
                     );
                 }
             }
@@ -156,8 +156,8 @@ class Fun_stmt : Statement
                         this.isShared = true;
                     break;
 
-                    case "OVERRIDE":
-                        this.isOverride = true;
+                    case "OVERLOAD":
+                        this.isOverload = true;
                     break;
 
                     case "INLINE":

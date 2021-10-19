@@ -1676,7 +1676,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("override"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("overload"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib")(p);
         }
         else
         {
@@ -1684,7 +1684,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("override"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib"), "Funcattrib")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("overload"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib"), "Funcattrib")(p);
                 memo[tuple(`Funcattrib`, p.end)] = result;
                 return result;
             }
@@ -1695,12 +1695,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("override"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("overload"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("override"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib"), "Funcattrib")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("private"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("shared"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("static"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("overload"), Spacing), pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("inline"), Spacing)), "XCBASIC.Funcattrib"), "Funcattrib")(TParseTree("", false,[], s));
         }
     }
     static string Funcattrib(GetName g)

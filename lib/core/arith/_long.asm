@@ -333,7 +333,7 @@ NUCLEUS_MUL24	SUBROUTINE
 	twoscpllong R7
 	inx
 .skip2
-	jsr NUCL_MULU24
+	jsr NUCLEUS_MULU24
 	txa
 	and #$01
 	beq .q

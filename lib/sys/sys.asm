@@ -7,6 +7,7 @@ SPREG EQU $030F
 	; Initial code that runs when the program is started
 	MAC xbegin
 	spreset
+	framereset
 	IF TARGET == c64
 	; Bank out BASIC ROM
 	lda $01

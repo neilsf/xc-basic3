@@ -1,6 +1,19 @@
 	PROCESSOR 6502
 	
 stack EQU $0100
+
+	IF TARGET == c64
+STACKFRAME_TOP EQU $CF00
+	ENDIF
+	IF TARGET == vic20
+STACKFRAME_TOP EQU $1C00	
+	ENDIF
+	IF TARGET == vic20_3k
+STACKFRAME_TOP EQU $0E00	
+	ENDIF
+	IF TARGET == vic20_8k || TARGET == c16 || TARGET == cplus4
+STACKFRAME_TOP EQU $3E00	
+	ENDIF
 	
 	; (private)
 	; Calculate variable address from address + index
@@ -76,6 +89,13 @@ stack EQU $0100
 	sta TH + 1
 	pla
 	sta TH
+	ENDM
+	
+	MAC framereset
+	lda #<STACKFRAME_TOP
+	sta RC
+	lda #>STACKFRAME_TOP
+	sta RC + 1
 	ENDM
 	
 	; Allocate a stack frame for a 

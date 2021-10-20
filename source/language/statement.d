@@ -56,6 +56,9 @@ abstract class Statement : StatementInterface
     // but this can be overridden if necessary
     protected void dumpLabels()
     {
-        this.compiler.getImCode().appendProgramSegment(compiler.getAndClearCurrentLabels());
+        const string labels = compiler.getAndClearCurrentLabels();
+        if(labels != "\n") {
+            this.compiler.getImCode().appendProgramSegment(labels);    
+        }
     }
 }

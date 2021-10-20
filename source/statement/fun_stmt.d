@@ -61,7 +61,7 @@ class Fun_stmt : Statement
             }
             else {
                 // Same name is only allowed when overriding
-                if(isOverload) {
+                if(!isOverload) {
                     this.compiler.displayError(
                         "Use the OVERLOAD keyword if you wish to overload routine \"" ~ this.name ~ "\""
                     );

@@ -15,15 +15,12 @@
 	DS.B 6, $e8 ; 6x inx
 	txs
 	ptrue
-	IF !FPUSH
-	bne *+13
-	ELSE
-	bne *+12
-	ENDIF
+	bne .q
 .false:
 	DS.B 6, $e8	; 6x inx	
 	txs
 	pfalse
+.q
 	ENDM
 	
 	; Compare two long ints on stack for inequality
@@ -41,15 +38,12 @@
 	DS.B 6, $e8 ; 6x inx
 	txs
 	pfalse
-	IF !FPUSH
-	beq *+13
-	ELSE
-	beq *+12
-	ENDIF
+	beq .q
 .true:
 	DS.B 6, $e8	; 6x inx	
 	txs
 	ptrue
+.q
 	ENDM
 	
 	; Helper macro for long int comparisons
@@ -72,15 +66,12 @@
 	DS.B 6, $e8 ; 6x inx
 	txs
 	pfalse
-	IF !FPUSH
-	beq *+13
-	ELSE
-	beq *+12
-	ENDIF
+	beq .q
 .true:
 	DS.B 6, $e8 ; 6x inx	
 	txs
 	ptrue
+.q
 	ENDM
 	
 	; Compare two long ints on stack for greater than or equal
@@ -90,15 +81,12 @@
 	DS.B 6, $e8 ; 6x inx
 	txs
 	pfalse
-	IF !FPUSH
-	beq *+13
-	ELSE
-	beq *+12
-	ENDIF
+	beq .q
 .true:
 	DS.B 6, $e8 ; 6x inx	
 	txs
 	ptrue
+.q
 	ENDM
 
 	; Compare two long ints on stack for less than or equal
@@ -119,15 +107,12 @@
 .3:	DS.B 6, $e8 ; 6x inx
 	txs
 	ptrue
-	IF !FPUSH
-	bne *+13
-	ELSE
-	bne *+12
-	ENDIF
+	bne .q
 .false:	
 	DS.B 6, $e8 ; 6x inx	
 	txs
 	pfalse
+.q
 	ENDM
 	
 	; Compare two long ints on stack for greater than
@@ -148,13 +133,10 @@
 .3:	DS.B 6, $e8 ; 6x inx
 	txs
 	pfalse
-	IF !FPUSH
-	beq *+13
-	ELSE
-	beq *+12
-	ENDIF
+	beq .q
 .true:	
 	DS.B 6, $e8 ; 6x inx	
 	txs
 	ptrue
+.q
 	ENDM

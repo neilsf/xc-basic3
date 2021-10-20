@@ -3,5 +3,5 @@ FUNCTION factorial AS LONG (n AS LONG)
 END FUNCTION
 
 FOR i AS LONG = 1 TO 10
-  PRINT i;"! =";factorial(i)
+  PRINT i; "! ="; factorial(i)
 NEXT i

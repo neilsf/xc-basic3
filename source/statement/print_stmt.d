@@ -65,22 +65,15 @@ class Print_hash_stmt : Statement
         fileNoExp.setExpectedType(compiler.getTypes().get(Type.UINT8));
         fileNoExp.eval();
         appendCode(fileNoExp.toString());
+        appendCode("    plbytevar R9\n");
+        appendCode("    chkout R9\n");
         Expression e;
-        bool isLast;
-        const bool noEOL = this.node.matches[$-1] != ";";
         for (int i = 1; i < exprCount; i++) {
             e = new Expression(exprList.children[i], compiler);
             e.eval();
-            if(!e.getType().isPrimitive) {
-                compiler.displayError("User-defined types are not allowed as operands of PRINT#");
-            }
             appendCode(e.toString());
-            if(e.getType().name != Type.STRING) {
-                appendCode("    F_str@_" ~ e.getType().name ~ "\n");
-            }
-            isLast = i == exprCount - 1 && !noEOL;
-            appendCode("    print_hash " ~ (isLast ? "1" : "0") ~ "\n");
+            appendCode("    print_hash " ~ to!string(e.getType().length) ~ "\n");
         }
-
+        appendCode("    clrchn\n");
     }
 }

@@ -242,3 +242,28 @@
 	iny
 	sta (RC),y
 	ENDM
+	
+	; Push relative word variable (e.g this.something)
+	MAC prelativefloatvar
+	ldy #{1}
+	lda (TH),y
+	pha
+	REPEAT 3
+	iny
+	lda (TH),y
+	pha
+	REPEND
+	ENDM
+	
+	; Pull int value and store in relative word variable
+	; (e.g this.something)
+	MAC plrelativefloatvar
+	pla
+	ldy #[{1} + 3]
+	sta (TH),y
+	REPEAT 3
+	pla
+	dey
+	sta (TH),y
+	REPEND
+	ENDM

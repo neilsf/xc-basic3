@@ -618,34 +618,34 @@ I_RND SUBROUTINE
 	ENDIF
 
 	MAC F_shl_byte_byte
-	shlbyte
+	lshiftbyte
 	ENDM
 	
 	MAC F_shr_byte_byte
-	shrbyte
+	rshiftbyte
 	ENDM
 	
 	MAC F_shl_int_byte
-	shlint
+	lshiftint
 	ENDM
 	
 	MAC F_shr_int_byte
-	shrint
+	rshiftint
 	ENDM
 	
 	MAC F_shl_word_byte
-	shlword
+	lshiftword
 	ENDM
 	
 	MAC F_shr_word_byte
-	shrword
+	wshiftword
 	ENDM
 	
 	MAC F_shl_long_byte
-	shllong
+	lshiftlong
 	ENDM
 	
 	MAC F_shr_long_byte
-	shrlong
+	wshiftlong
 	ENDM
 	

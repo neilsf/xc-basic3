@@ -128,9 +128,6 @@ class Expression : AbstractExpression
                 ExpressionInterface t = this.makeChild(child);
                 t.setExpectedType(this.type);
                 t.eval();
-                if(!t.getType().isIntegral() && count > 0) {
-                    compiler.displayError("Can't do bitwise operation on a(n) " ~ t.getType().name);
-                }
                 this.asmCode ~= to!string(t);
             }
             else if(child.name == "XCBASIC.BW_OP") {
@@ -138,6 +135,11 @@ class Expression : AbstractExpression
                 this.asmCode ~= "    " ~ op ~ to!string(this.type) ~ "\n";
             }
             count++;
+        }
+
+        // Check both types
+        if(!this.getType().isIntegral() && count > 1) {
+            compiler.displayError("Can't do bitwise operation on a(n) " ~ this.getType().name);
         }
 
         // Typecast if required

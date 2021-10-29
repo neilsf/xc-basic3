@@ -111,3 +111,26 @@ SPREG EQU $030F
 	sta SPREG
 	ENDIF
 	ENDM
+	
+	MAC wait
+.MASK EQU R2
+.TRIG EQU R3
+	IF !FPULL
+	pla
+	sta .loop + 2
+	pla
+	sta .loop + 1
+	ELSE
+	sta .loop + 1
+	sty .loop + 2
+	ENDIF
+	pla
+	sta .MASK
+	pla
+	sta .TRIG
+.loop
+	lda.w $0000
+	eor .TRIG
+	and .MASK
+	beq .loop
+	ENDM

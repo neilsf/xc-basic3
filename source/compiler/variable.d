@@ -650,11 +650,13 @@ class VariableAccess : AccessorInterface
         }
         else {
             asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName 
-                            ~ (isArray ? ("array" ~ (fastArrayAccess ? "fast" : "" )) : "var")
-                            ~ " " ~ variable.getAsmLabel();
+                            ~ (isArray ? ("array" ~ (fastArrayAccess ? "fast" : "" )) : "var");
         
             if(addressOffset > 0) {
-                asmCode ~= " + " ~ to!string(addressOffset);
+                asmCode ~= " [" ~ variable.getAsmLabel() ~ " + " ~ to!string(addressOffset) ~ "]";
+            }
+            else {
+                asmCode ~= " " ~ variable.getAsmLabel();
             }
             if(!this.getType().isPrimitive) {
                 asmCode ~= ", " ~ to!string(this.getType().length);

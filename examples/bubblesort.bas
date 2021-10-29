@@ -2,9 +2,12 @@ REM --
 REM -- Bubble sort
 REM --
 
-DIM nums(10) AS long @lbl
+DIM nums(10) AS long
 DIM swapped AS BYTE FAST
 DIM i AS BYTE FAST
+
+RANDOMIZE TI()
+FOR i = 0 TO 9 : nums(i) = RNDL() : NEXT
 
 DO
   swapped = 0
@@ -15,6 +18,3 @@ LOOP WHILE swapped
 END
 
 FOR i = 1 TO 9 : PRINT nums(i) : NEXT
-
-lbl:
-DATA AS LONG 5672010, -126566, 0, 1, 99, 100, 98659, -176000, -1, 1000000

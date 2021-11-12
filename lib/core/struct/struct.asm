@@ -7,12 +7,10 @@
 	pla
 	ENDIF
 	bne * + 5
-	IFCONST {2}
-	  IF {2} > 0
-	  jmp {2}
-	  ENDIF
+	IF {2} > 0
+	jmp {2}
 	ELSE
-	  jmp {1}
+	jmp {1}
 	ENDIF
 	ENDM
 	
@@ -23,19 +21,17 @@
 	pla
 	ENDIF
 	beq * + 5
-	IFCONST {2}
-	  IF {2} > 0
-	  jmp {2}
-	  ENDIF
+	IF {2} != "_void_"
+	jmp {2}
 	ELSE
-	  jmp {1}
+	jmp {1}
 	ENDIF
 	ENDM
 	
 	; Entry of FOR loop (integer counter)
 	; Usage: forint <block id>, <counter_var>, <limit_var>, <step_var>
 	MAC forint
-	IF {4} > 0
+	IFCONST {4}
 	; Check if step is negative
 	lda {4} + 1
 	; it is positive: do the regular comparison
@@ -64,7 +60,7 @@
 	; Usage: nextint <block id>, <counter_var>, <step_var>
 	MAC nextint
 	; increment index variable
-	IF {3} > 0
+	IFCONST {3}
 	; increment with step
 	clc
 	lda {3}
@@ -87,7 +83,7 @@
 	; Entry of FOR loop (long counter)
 	; Usage: forlong <block id>, <counter_var>, <limit_var>, <step_var>
 	MAC forlong
-	IF {4} > 0
+	IFCONST {4}
 	; Check if step is negative
 	lda {4} + 2
 	; it is positive: do the regular comparison
@@ -120,7 +116,7 @@
 	; Usage: nextint <block id>, <counter_var>, <step_var>
 	MAC nextlong
 	; increment index variable
-	IF {3} > 0
+	IFCONST {3}
 	; increment with step
 	clc
 	lda {3}
@@ -160,7 +156,7 @@
 	; Usage: nextb <block id>, <counter var>, <step var>
 	MAC nextword
 	; increment index variable
-	IF {3} > 0
+	IFCONST {3}
 	; increment with step
 	clc
 	lda {3}
@@ -199,7 +195,7 @@
 	; Usage: nextb <block id>, <counter var>, <step var>
 	MAC nextbyte
 	; increment index variable
-	IF {3} > 0
+	IFCONST {3}
 	; increment with step
 	clc
 	lda {3}
@@ -227,7 +223,7 @@
 	ldy #>{3}
 	jsr FCOMP
 	; result comparison in A
-	IF {4} > 0
+	IFCONST {4}
 	; Check if step is negative
 	ldx {4} + 1
 	bpl .upwards
@@ -250,7 +246,7 @@
 	ldy #>{2}
 	jsr LOAD_FAC_FROM_YA
 	; increment index variable
-	IF {3} > 0
+	IFCONST {3}
 	; increment with step
 	lda #<{3}
 	ldy #>{3}

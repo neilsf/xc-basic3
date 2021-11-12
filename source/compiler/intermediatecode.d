@@ -24,8 +24,8 @@ class IntermediateCode
     {
         this.compiler = compiler;
         this.segments =  [
-            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\n_void_ EQU 0\nFPUSH EQU 0\nFPULL EQU 0\n    xbegin\n",
-            ROUTINE_SEGMENT : "routines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n",
+            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH EQU 0\nFPULL EQU 0\n    xbegin\n",
+            ROUTINE_SEGMENT : "routines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n" ~ getIncludes(),
             DATA_SEGMENT    : "data_start:\n",
             VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
         ];
@@ -69,11 +69,11 @@ TARGET   EQU ` ~ target ~ `
     ORG $` ~ to!string(startAddress, 16) ~ "\n";
         if(basicLoader) {
             startUpCode ~= 
-`
-    DC.W next_line, 2021
+`    DC.W next_line, 2021
     DC.B $9e, [prg_start]d, 0
 next_line:
     DC.W 0
+
 `;
         }
         return startUpCode;
@@ -93,7 +93,6 @@ next_line:
         return  getStartUp() ~
                 getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~
                 getSegment(ROUTINE_SEGMENT) ~
-                getIncludes() ~
                 getSegment(DATA_SEGMENT) ~
                 getSegment(VAR_SEGMENT);
     }

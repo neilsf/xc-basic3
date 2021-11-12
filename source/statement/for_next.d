@@ -107,7 +107,7 @@ class For_stmt : Statement
         immutable string blockId = to!string(block.getId());
         appendCode("_FOR_" ~ blockId ~ ":\n");
         appendCode("    for" ~ counterVar.type.name ~ " " ~ blockId ~ ", " ~ counterVar.getAsmLabel() ~ 
-                ", " ~ limitVar.getAsmLabel() ~ ", " ~ (stepPresent ? stepVar.getAsmLabel() : "_void_") ~ "\n");
+                ", " ~ limitVar.getAsmLabel() ~ ", " ~ (stepPresent ? stepVar.getAsmLabel() : "\"_void_\"") ~ "\n");
         
     }
 }
@@ -143,7 +143,24 @@ class Next_stmt : Statement
         Variable stepVar = For_stmt.getStepVariable(block.getId());
         const string blockId = to!string(block.getId());
         appendCode("    next" ~ counterVar.type.name ~ " " ~ blockId ~
-                    ", " ~ counterVar.getAsmLabel() ~ (stepVar is null ? ", _void_" : ", " ~ stepVar.getAsmLabel()) ~ "\n");
+                    ", " ~ counterVar.getAsmLabel() ~ (stepVar is null ? ", \"_void_\"" : ", " ~ stepVar.getAsmLabel()) ~ "\n");
         appendCode("_ENDFOR_" ~ blockId ~ ":\n");
+    }
+}
+
+class Exit_for_stmt : Statement
+{
+    this(ParseTree node, Compiler compiler)
+	{
+		super(node, compiler);
+	}
+
+    public void process()
+    {
+        CodeBlock block = compiler.blockStack.closest([CodeBlock.TYPE_FOR]);
+        if(block is null) {
+            compiler.displayError("Not in a FOR block");
+        }
+        appendCode("    jmp _ENDFOR_" ~ to!string(block.getId()) ~ "\n");
     }
 }

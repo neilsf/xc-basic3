@@ -92,24 +92,27 @@
 	; Compare two long ints on stack for less than or equal
 	MAC cmplonglte
 	tsx
-	lda.wx stack+4
-	cmp.wx stack+1
-	beq .1
-	bpl .false
-.1:	lda.wx stack+5
-	cmp.wx stack+2
-	beq .2
-	bpl .false
-.2:	lda.wx stack+6
-	cmp.wx stack+3
-	beq .3
-	bpl .false
-.3:	DS.B 6, $e8 ; 6x inx
+	lda.wx stack+3
+	cmp.wx stack+6
+	lda.wx stack+2
+	cmp.wx stack+5
+	lda.wx stack+1
+	sbc.wx stack+4
+	bvc .1
+	eor #$80
+.1
+	bmi .phf	
+	inx
+	inx
+	inx
+	inx
 	txs
 	ptrue
 	bne .q
-.false:	
-	DS.B 6, $e8 ; 6x inx	
+.phf: inx
+	inx
+	inx
+	inx
 	txs
 	pfalse
 .q
@@ -118,24 +121,27 @@
 	; Compare two long ints on stack for greater than
 	MAC cmplonggt
 	tsx
-	lda.wx stack+4
-	cmp.wx stack+1
-	beq .1
-	bpl .true
-.1:	lda.wx stack+5
-	cmp.wx stack+2
-	beq .2
-	bpl .true
-.2:	lda.wx stack+6
-	cmp.wx stack+3
-	beq .3
-	bpl .true
-.3:	DS.B 6, $e8 ; 6x inx
+	lda.wx stack+3
+	cmp.wx stack+6
+	lda.wx stack+2
+	cmp.wx stack+5
+	lda.wx stack+1
+	sbc.wx stack+4
+	bvc .1
+	eor #$80
+.1
+	bmi .pht
+	inx
+	inx
+	inx
+	inx
 	txs
 	pfalse
 	beq .q
-.true:	
-	DS.B 6, $e8 ; 6x inx	
+.pht: inx
+	inx
+	inx
+	inx
 	txs
 	ptrue
 .q

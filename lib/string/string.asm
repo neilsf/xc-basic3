@@ -195,10 +195,8 @@ STRREMOV SUBROUTINE
 	bcc .skip
 	lda STRING_WORKAREA,x
 .skip
-	ldy #0
-	sta (R0),y
 	tay
-	; X = X + Y
+	; X = X + A
 	stx R2
 	clc
 	adc R2
@@ -209,7 +207,8 @@ STRREMOV SUBROUTINE
 	sta (R0),y
 	dex
 	dey
-	bne .loop
+	bpl .loop
+.end
 	rts
 	ENDIF
 	

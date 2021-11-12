@@ -22,16 +22,18 @@ class If_stmt : Statement
     void process()
     {
         ParseTree ifStatement = this.node.children[0];
+        const bool hasElse = ifStatement.children.length > 2;
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
         appendCode(to!string(condition));
-        appendCode("    cond_stmt _EI_" ~ to!string(counter) ~ ", _EL_" ~ to!string(counter) ~ "\n");
+        appendCode("    cond_stmt _EI_" ~ to!string(counter)
+                ~ (hasElse ? ", _EL_" ~ to!string(counter) : ", 0") ~ "\n");
         ParseTree thenBody = ifStatement.children[1];
         foreach (ref child; thenBody) {
             Statement stmt = stmtFactory(child, compiler);
             stmt.process();
         }
-        if(ifStatement.children.length > 2) {
+        if(hasElse) {
             ParseTree elseBody = ifStatement.children[2];
             appendCode("    jmp _EI_" ~ to!string(counter)  ~ "\n");
             appendCode("_EL_" ~ to!string(counter) ~ ":\n");
@@ -63,7 +65,12 @@ class If_sa_stmt : Statement
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
         appendCode(to!string(condition));
+        // This is trickier because we don't know if there's an ELSE at this point
+        appendCode("    IFCONST _EL_" ~ to!string(block.getId()) ~ "\n");
         appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");
+        appendCode("    ELSE\n");
+        appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", 0\n");
+        appendCode("    ENDIF\n");
     }
 }
 

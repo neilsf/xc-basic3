@@ -75,7 +75,7 @@
 	pha
 	ENDIF		
 	ENDM
-	
+		
 	; Multiply top 2 bytes on stack
 	MAC mulbyte
 	IF !FPULL

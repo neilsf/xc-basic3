@@ -204,16 +204,18 @@ class Factor : AbstractExpression
 
         // Apply unary operator ("not" | "-") if any
         if(unOp.length > 0) {
+            unOp = unOp.toUpper;
             if(!this.type.isNumeric()) {
-                compiler.displayError("Cannot negate a non-numeric type");
+                compiler.displayError("The " ~ unOp ~ " operator cannot be used with non-numeric types");
             }
-            if(this.type.name == Type.DEC) {
-                compiler.displayError("Cannot negate decimal type");
-            }
-            if(unOp.toLower == "not" && !this.type.isIntegral()) {
+            if(unOp == "-" && (this.type.name == Type.DEC || this.type.name == Type.UINT8 || this.type.name == Type.UINT16)) {
+                compiler.displayError("Cannot negate an unsigned type");
+            } 
+            if(unOp == "NOT" && !this.type.isIntegral()) {
                 compiler.displayError("The NOT operator only works on integer types");
             }
-            this.asmCode ~= "    neg" ~ to!(string)(this.type.name) ~ "\n";
+            const string opCode = unOp == "-" ? "neg" : "not";
+            this.asmCode ~= "    " ~ opCode ~ to!(string)(this.type.name) ~ "\n";
         }
 
         // Typecast if required

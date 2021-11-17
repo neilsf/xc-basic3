@@ -7,7 +7,7 @@
 	pla
 	ENDIF
 	bne * + 5
-	IF {2} > 0
+	IF {2} > 0 && {2} < $10000 ; Both values represent void
 	jmp {2}
 	ELSE
 	jmp {1}
@@ -21,7 +21,7 @@
 	pla
 	ENDIF
 	beq * + 5
-	IF {2} != "_void_"
+	IF {2} > 0 && {2} < $10000 ; Both values represent void
 	jmp {2}
 	ELSE
 	jmp {1}

@@ -212,6 +212,74 @@ STRREMOV SUBROUTINE
 	rts
 	ENDIF
 	
+	IFCONST I_STRREMOV_SC_IMPORTED
+	; Dest ptr to string in R0
+	; Max length in A
+	; Same as above but converts PETSCII to screencode
+	; and does not copy length indicator
+STRREMOV_SC SUBROUTINE
+	ldx SP
+	inx
+	cmp STRING_WORKAREA,x ; length of string on stack
+	bcc .skip
+	lda STRING_WORKAREA,x
+.skip
+	tay
+	; X = X + A
+	stx R2
+	clc
+	adc R2
+	tax
+	stx SP ; Move pointer to end of string
+	dey
+.loop
+	lda STRING_WORKAREA,x
+	import I_PET2SC
+	jsr PET2SC
+	sta (R0),y
+	dex
+	dey
+	bpl .loop
+.end
+	rts
+	ENDIF
+	
+	IFCONST I_PET2SC_IMPORTED
+	; PETSCII to screencode conversion
+	; By Mace
+PET2SC	SUBROUTINE
+	cmp #$20
+	bcc .ddRev
+	cmp #$60
+	bcc .dd1
+	cmp #$80
+	bcc .dd2
+	cmp #$a0
+	bcc .dd3
+	cmp #$c0
+	bcc .dd4
+	cmp #$ff
+	bcc .ddRev
+	lda #$7e
+	bne .ddEnd
+.dd2:
+	and #$5f
+	bne .ddEnd
+.dd3:
+	ora #$40
+	bne .ddEnd
+.dd4:	
+	eor #$c0
+	bne .ddEnd
+.dd1:
+	and #$3f
+	bpl .ddEnd
+.ddRev:
+	eor #$80
+.ddEnd:
+	rts
+	ENDIF
+	
 	IFCONST I_STRSCRATCH_IMPORTED
 	; Remove top string from stack without copying
 STRSCRATCH SUBROUTINE

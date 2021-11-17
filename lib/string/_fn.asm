@@ -333,6 +333,7 @@ STR_DTOS:
 	lsr
 	lsr
 	lsr
+	clc
 	adc #$30
 	sta STRING_WORKAREA,x
 	dex

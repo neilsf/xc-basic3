@@ -27,7 +27,7 @@ IO_INPUT SUBROUTINE
 	IF TARGET == c64 || (TARGET & vic20)
 	sty $cc	; turn on cursor
 	ENDIF
-	IF TARGET & c254
+	IF TARGET & c264
 	
 	ENDIF
 .loop

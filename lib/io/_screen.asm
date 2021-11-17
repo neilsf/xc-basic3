@@ -1,3 +1,19 @@
+; High byte of pointer to screen memory for screen input/output
+KERNAL_SCREEN_ADDR EQU $0288
+; Color RAM
+	IF TARGET == vic20_8k
+COLOR_RAM EQU $9400
+	ELSE
+		IF TARGET & vic20
+COLOR_RAM EQU $9600
+		ELSE	
+COLOR_RAM EQU $D800
+		ENDIF
+	ENDIF
+; Various C-64 registers
+VICII_MEMCONTROL EQU $D018
+CIA_DIRECTIONALR EQU $DD00
+
 	; Print byte on stack as PETSCII string
 	MAC printbyte
 	import I_STDLIB_PRINT_BYTE
@@ -229,19 +245,166 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	ENDIF
 	ENDM
 	
+	; [Color,] Char, Col, Row pushed on stack
+	; {1} = 1 color was pushed
 	MAC charat
-	nop
-	ENDM
-	
-	MAC textat
-	nop
-	ENDM
-	
-	IFCONST I_SCRPOINTERS_IMPORTED
-I_SCRPOINTERS
-COL EQU $0400
-	REPEAT SCREEN_ROWS
-	DC.B <COL, >COL
-COL SET COL + 40
-	REPEND
+	IF !FPULL
+	pla
 	ENDIF
+	import I_CALC_SCRROWPTR
+	jsr CALC_SCRROWPTR
+	pla
+	tay
+	pla
+	sta (R0),y
+	IF {1} == 1 ; Color was provided
+	pla
+	tax
+	lda R0 + 1
+	sec
+	sbc KERNAL_SCREEN_ADDR
+	clc
+	adc #>COLOR_RAM
+	sta R0 + 1
+	txa
+	sta (R0),y
+	ENDIF
+	ENDM
+	
+	; [Color,] Col, Row pushed on stack
+	; String on string stack
+	MAC textat
+	IF !FPULL
+	pla
+	ENDIF
+	import I_CALC_SCRROWPTR
+	jsr CALC_SCRROWPTR
+	pla
+	clc
+	adc R0
+	sta R0
+	bcc .2
+	inc R0 + 1
+.2
+	lda #$60
+	import I_STRREMOV_SC
+	jsr STRREMOV_SC
+	ENDM
+	
+	; Calculates a pointer to screen row
+	; Row number in A
+	; Outputs pointer in R0
+	IFCONST I_CALC_SCRROWPTR_IMPORTED
+CALC_SCRROWPTR SUBROUTINE
+	; 22-column screen
+	IF TARGET == vic20
+		REPEAT 2
+		asl
+		REPEND
+		tax		; A * 4
+		sta R0
+		lda #0
+		sta R0 + 1
+		REPEAT 2
+		asl R0
+		rol R0 + 1
+		REPEND ; A * 16
+		txa
+		clc
+		adc R0
+		sta R0
+		lda #0
+		adc R0 + 1
+		sta R0 + 1
+		txa
+		lsr
+		clc
+		adc R0
+		sta R0
+		lda #0
+		adc R0 + 1
+	; 40-column screen
+	ELSE
+	  	REPEAT 3
+		asl
+		REPEND
+		pha		; A * 8
+		sta R0
+		lda #0
+		sta R0 + 1
+		REPEAT 2
+		asl R0
+		rol R0 + 1
+		REPEND	; A * 32
+		pla
+		; A * 32 + A * 8 = A * 40
+		clc
+		adc R0
+		sta R0
+		lda #$00
+		adc R0 + 1
+	ENDIF
+	adc KERNAL_SCREEN_ADDR
+	sta R0 + 1
+	rts
+	ENDIF
+	
+	; Set Video Matrix Base Address
+	MAC screen
+	IF TARGET == c64
+	IF !FPULL
+	pla
+	ENDIF
+	asl
+	asl
+	sta KERNAL_SCREEN_ADDR
+	pha
+	lda CIA_DIRECTIONALR
+	and #%00000011
+	eor #%00000011
+	REPEAT 6
+	asl
+	REPEND
+	adc KERNAL_SCREEN_ADDR
+	sta KERNAL_SCREEN_ADDR
+	pla
+	asl
+	asl
+	sta R0
+	lda VICII_MEMCONTROL
+	and #%00001111
+	ora R0
+	sta VICII_MEMCONTROL
+	import I_RESET_SCRVECTORS
+	jsr RESET_SCRVECTORS
+	ENDIF
+	ENDM
+	
+	IFCONST I_RESET_SCRVECTORS_IMPORTED
+RESET_SCRVECTORS SUBROUTINE
+	lda KERNAL_SCREEN_ADDR
+	ora #$80
+	tay
+	lda #0
+	tax
+.loop
+	sty $D9,x
+	clc
+	adc #$28
+	bcc .skip
+	iny
+.skip
+	inx
+	cpx #$1a
+	bne .loop
+	lda #$ff
+	sta $D9,x
+	jmp $E566
+	ENDIF
+	
+	
+	; {1} = 1 screen no is pushed on stack
+	MAC cls
+	
+	ENDM
+	

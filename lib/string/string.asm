@@ -217,12 +217,14 @@ STRREMOV SUBROUTINE
 	; Max length in A
 	; Same as above but converts PETSCII to screencode
 	; and does not copy length indicator
+	; Leaves string length in R3
 STRREMOV_SC SUBROUTINE
 	ldx SP
 	inx
 	cmp STRING_WORKAREA,x ; length of string on stack
 	bcc .skip
 	lda STRING_WORKAREA,x
+	sta R3
 .skip
 	tay
 	; X = X + A

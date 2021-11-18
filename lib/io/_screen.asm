@@ -289,6 +289,24 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lda #$60
 	import I_STRREMOV_SC
 	jsr STRREMOV_SC
+	IF {1} == 1 ; Color was provided
+	pla
+	tax
+	lda R0 + 1
+	sec
+	sbc KERNAL_SCREEN_ADDR
+	clc
+	adc #>COLOR_RAM
+	sta R0 + 1
+	lda R3
+	tay
+	dey
+	txa
+.loop
+	sta (R0),y
+	dey
+	bpl .loop
+	ENDIF
 	ENDM
 	
 	; Calculates a pointer to screen row
@@ -401,10 +419,3 @@ RESET_SCRVECTORS SUBROUTINE
 	sta $D9,x
 	jmp $E566
 	ENDIF
-	
-	
-	; {1} = 1 screen no is pushed on stack
-	MAC cls
-	
-	ENDM
-	

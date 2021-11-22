@@ -1,51 +1,49 @@
-	PROCESSOR 6502
-	
 	; Push immediate int onto stack
-	MAC pint
+	MAC pint ; @push
 	pword {1}
 	ENDM
 			
 	; Push one int variable onto stack
-	MAC pintvar
+	MAC pintvar ; @push
 	pwordvar {1}
 	ENDM
 	
 	; Pull int on stack to variable
-	MAC plintvar
+	MAC plintvar ; @pull
 	plwordvar {1}
 	ENDM
 	
 	; Push int of an array onto stack
 	; (indexed by a word)
-	MAC pintarray
+	MAC pintarray ; @pull
 	pwordarray {1}
 	ENDM
 		
 	; Push int of an array onto stack
 	; (indexed by a byte)
-	MAC pintarrayfast
+	MAC pintarrayfast ; @pull @push
 	pwordarrayfast {1}
 	ENDM
 	
 	; Pull int off of stack and store in array
 	; (indexed by a word)
-	MAC plintarray
+	MAC plintarray ; @pull
 	plwordarray {1}
 	ENDM
 	
 	; Pull int off of stack and store in array
 	; (indexed by a byte)
-	MAC plintarrayfast
+	MAC plintarrayfast ; @pull
 	plwordarrayfast {1}
 	ENDM
 	
 	; Pull dynamic int on stack to variable
-	MAC pldynintvar
+	MAC pldynintvar ; @pull
 	pldynwordvar {1}
 	ENDM
 	
 	; Push one dynamic word variable onto stack
-	MAC pdynintvar
+	MAC pdynintvar ; @push
 	pdynwordvar {1}
 	ENDM
 	

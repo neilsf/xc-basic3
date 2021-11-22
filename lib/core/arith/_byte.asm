@@ -1,5 +1,5 @@
 	; Add top 2 bytes on stack
-	MAC addbyte
+	MAC addbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -13,7 +13,7 @@
 	ENDM
 	
 	; Substract top 2 bytes on stack
-	MAC subbyte
+	MAC subbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -27,7 +27,7 @@
 	ENDM
 	
 	; Perform OR on top 2 bytes of stack
-    MAC orbyte
+    MAC orbyte ; @pull @push
     IF !FPULL
     pla
     ENDIF
@@ -40,7 +40,7 @@
     ENDM
 
     ; Perform AND on top 2 bytes of stack
-    MAC andbyte
+    MAC andbyte ; @pull @push
     IF !FPULL
     pla
     ENDIF
@@ -53,7 +53,7 @@
     ENDM
 
     ; Perform XOR on top 2 bytes of stack
-    MAC xorbyte
+    MAC xorbyte ; @pull @push
     IF !FPULL
     pla
     ENDIF
@@ -66,7 +66,7 @@
     ENDM
     
     ; Perform NOT on byte on stack
-	MAC notbyte
+	MAC notbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -77,7 +77,7 @@
 	ENDM
 		
 	; Multiply top 2 bytes on stack
-	MAC mulbyte
+	MAC mulbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -92,7 +92,7 @@
 	ENDM
 	
 	; Divide two bytes on stack
-	MAC divbyte
+	MAC divbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -108,7 +108,7 @@
 	ENDM
 	
 	; Modulo two bytes on stack
-	MAC modbyte
+	MAC modbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -123,7 +123,7 @@
 	ENDM
 	
 	; Shift left with const number of binary places
-	MAC lshiftbytewconst
+	MAC lshiftbytewconst ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -136,7 +136,7 @@
 	ENDM
 	
 	; Shift right with const number of binary places
-	MAC rshiftbytewconst
+	MAC rshiftbytewconst ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -150,7 +150,7 @@
 	
 	; Shift left with number of binary places
 	; stored in a byte on top of stack
-	MAC lshiftbyte
+	MAC lshiftbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -170,7 +170,7 @@
 	
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
-	MAC rshiftbyte
+	MAC rshiftbyte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF

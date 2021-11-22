@@ -29,7 +29,7 @@
 	; (indexed by a word)
 	; Variable label in {1}
 	; Number of bytes in {2}
-	MAC pudtarray
+	MAC pudtarray ; @pull
 	getaddr {1}
 	; Load and push
 	ldy #0
@@ -45,7 +45,7 @@
 	; (indexed by a byte)
 	; Variable label in {1}
 	; Number of bytes in {2}
-	MAC pudtarrayfast
+	MAC pudtarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -64,7 +64,7 @@
 	
 	; Pull value of user defined type off of stack
 	; and store in array (indexed by a word)
-	MAC pludtarray
+	MAC pludtarray ; @pull
 	getaddr [{1} - 1]
 	ldy #{2}
 .do
@@ -76,7 +76,7 @@
 	
 	; Pull value of user defined type off of stack
 	; and store in array (indexed by a byte)
-	MAC pludtarrayfast
+	MAC pludtarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -91,4 +91,43 @@
 	dey
 	cpy R0
 	bcs .do
+	ENDM
+	
+	; Push one dynamic udt variable onto stack
+	; Relative address of var in {1}
+	; Type length in {2}
+	MAC pdynudtvar
+	ldy #{1}
+.loop
+	lda (RC),y
+	pha
+	iny
+	cpy #[{1} + {2}]
+	bcc .loop
+	ENDM
+	
+	; Pull dynamic udt on stack to variable
+	; Relative address of var in {1}
+	; Type length in {2}
+	MAC _old_pldynudtvar
+	ldy #{1}
+.loop
+	pla
+	sta (RC),y
+	iny
+	cpy #[{1} + {2}]
+	bcc .loop
+	ENDM
+	
+	; Pull dynamic udt on stack to variable
+	; Relative address of var in {1}
+	; Type length in {2}
+	MAC pldynudtvar
+	ldy #[{1} + {2} - 1]
+.loop
+	pla
+	sta (RC),y
+	dey
+	cpy #{1}
+	bpl .loop
 	ENDM

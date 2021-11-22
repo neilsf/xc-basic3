@@ -1,7 +1,5 @@
-	PROCESSOR 6502
-	
 	; Push immediate decimal onto stack
-	MAC pdecimal
+	MAC pdecimal ; @push
 	IF !FPUSH
 	lda #${1}
 	pha
@@ -14,45 +12,56 @@
 	ENDM
 		
 	; Push one decimal variable onto stack
-	MAC pdecimalvar
+	MAC pdecimalvar ; @push
 	pwordvar {1}
 	ENDM
 	
 	; Pull decimal on stack to variable
-	MAC pldecimalvar
+	MAC pldecimalvar ; @pull
 	plwordvar {1}
 	ENDM
 	
 	; Push decimal of an array onto stack
 	; (indexed by a word)
-	MAC pdecimalarray
+	MAC pdecimalarray ; @pull
 	pwordarray {1}
 	ENDM
 	
 	; Push decimal of an array onto stack
 	; (indexed by a byte)
-	MAC pdecimalarrayfast
+	MAC pdecimalarrayfast ; @pull @push
 	pwordarrayfast {1}
 	ENDM
 	
 	; Pull decimal off of stack and store in array
 	; (indexed by a word)
-	MAC pldecimalarray
+	MAC pldecimalarray ; @pull
 	plwordarray {1}
 	ENDM
 	
 	; Pull decimal off of stack and store in array
 	; (indexed by a byte)
-	MAC pldecimalarrayfast
+	MAC pldecimalarrayfast ; @pull
 	plwordarrayfast {1}
 	ENDM
 	
 	; Pull dynamic decimal on stack to variable
-	MAC pldyndecimalvar
+	MAC pldyndecimalvar ; @pull
 	pldynwordvar {1}
 	ENDM
 	
 	; Push one dynamic decimal variable onto stack
-	MAC pdyndecimalvar
+	MAC pdyndecimalvar ; @push
 	pdynwordvar {1}
+	ENDM
+	
+	; Push relative decimal variable (e.g this.something)
+	MAC prelativedecimalvar
+	prelativewordvar {1}
+	ENDM
+	
+	; Pull decimal value and store in relative decimal variable
+	; (e.g this.something)
+	MAC plrelativedecimalvar
+	plrelativewordvar {1}
 	ENDM

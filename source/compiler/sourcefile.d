@@ -91,7 +91,9 @@ class SourceFile
         this.ast = XCBASIC(this.sourceCode);
         // Parser error, display error msg and exit
         if(!this.ast.successful) {
-            stderr.writeln(ast);
+            debug(1) {
+                stderr.writeln(ast);
+            }
             auto errorFormatter = delegate(Position pos, string left, string right, const ParseTree p) {
                 return this.fileName ~ ":" ~ to!string(pos.line + 1) ~ "." ~ to!string(pos.col) 
                 ~ ": syntax error near '" ~ right

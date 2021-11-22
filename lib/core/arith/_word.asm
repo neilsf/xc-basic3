@@ -30,7 +30,7 @@
 	ENDM
 	
 	; Multiply top 2 words on stack
-	MAC mulword
+	MAC mulword ; @pull @push
 	IF !FPULL
 	pla
 	sta R1

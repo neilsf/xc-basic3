@@ -15,7 +15,7 @@ VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
 
 	; Print byte on stack as PETSCII string
-	MAC printbyte
+	MAC printbyte ; @pull
 	import I_STDLIB_PRINT_BYTE
 	IF !FPULL
 	pla

@@ -100,7 +100,7 @@ class Routine
     protected void increaseStackFrameSize(int incSize)
     {
         this.stackFrameSize += incSize;
-        if(this.stackFrameSize > 256) {
+        if(this.stackFrameSize > 128) {
             compiler.displayError("Maximum stack frame size of function exceeded");
         }
     }
@@ -318,9 +318,13 @@ class RoutineCall : AccessorInterface
             asmCode ~= to!string(e);
             if(routine.isStatic && !routine.isInline) {
                 arg = routine.arguments[argNo];
-                asmCode ~= "    pl" ~ arg.type.name ~ "var " ~ arg.getAsmLabel();
+                const string argTypeName = arg.type.isPrimitive ? arg.type.name : "udt";
+                asmCode ~= "    pl" ~ argTypeName ~ "var " ~ arg.getAsmLabel();
                 if(arg.type.name == Type.STRING) {
                     asmCode ~= ", " ~ to!string(arg.strLen);
+                }
+                else if(!arg.type.isPrimitive) {
+                    asmCode ~= ", " ~ to!string(arg.type.length);
                 }
                 asmCode ~= "\n";
             }
@@ -331,9 +335,13 @@ class RoutineCall : AccessorInterface
             asmCode ~= "    framealloc " ~ to!string(routine.getStackFrameSize()) ~ "\n";
             for(argNo -= 1; argNo >= 0; argNo--) {
                 arg = routine.arguments[argNo];
-                asmCode ~= "    pldyn" ~ arg.type.name ~ "var " ~ arg.getAsmLabel();
+                const string argTypeName = arg.type.isPrimitive ? arg.type.name : "udt";
+                asmCode ~= "    pldyn" ~ argTypeName ~ "var " ~ arg.getAsmLabel();
                 if(arg.type.name == Type.STRING) {
                     asmCode ~= ", " ~ to!string(arg.strLen);
+                }
+                 else if(!arg.type.isPrimitive) {
+                    asmCode ~= ", " ~ to!string(arg.type.length);
                 }
                 asmCode ~= "\n";
             }
@@ -360,7 +368,9 @@ class RoutineCall : AccessorInterface
     protected string getPullCode()
     {
         if(routine.type.name != Type.VOID && !routine.isInline) {
-            return "    p" ~ routine.type.name ~ "var " ~ routine.returnValue.getAsmLabel() ~ "\n";
+            const string returnTypeName = routine.type.isPrimitive ? routine.type.name : "udt";
+            const string length = routine.type.isPrimitive ? "" : (", " ~ to!string(routine.type.length));
+            return "    p" ~ returnTypeName ~ "var " ~ routine.returnValue.getAsmLabel() ~ length ~ "\n";
         }
         return "";
     }

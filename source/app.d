@@ -15,7 +15,7 @@ import language.grammar;
 
 import compiler.compiler, compiler.library, compiler.sourcefile;
 
-import globals;
+import globals, optimizer;
 
 // Program version
 const string APP_VERSION = "v3.0.0-alpha";
@@ -113,7 +113,10 @@ void main(string[] args)
 
     string asmFilename = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".asm";
     File outfile = File(asmFilename, "w");
-    outfile.write(compiler.getImCode().getCode());
+    OptimizerPass optimizer = new Optimizer();
+    optimizer.setInCode(compiler.getImCode().getCode());
+    optimizer.run();
+    outfile.write(optimizer.getOutCode());
     outfile.close();
 
     // Call DASM to compile intermediate code to exacutable
@@ -137,7 +140,11 @@ void main(string[] args)
         cmd ~= " -l" ~ listfile;
     }
     auto dasm_cmd = executeShell(cmd);
-    //remove(asmFilename);
+    
+    debug(0) {
+        remove(asmFilename);
+    }
+    
     if(dasm_cmd.status != 0) {
         stderr.writeln("** ERROR ** There has been an error while trying to execute DASM, please see the bellow message.");
         stderr.writeln("Tried to execute: " ~ cmd);

@@ -11,7 +11,7 @@
 	ENDM
 	
 	; Multiply top 2 ints on stack
-	MAC mulint
+	MAC mulint ; @pull @push
 	IF !FPULL
 	pla
 	sta R1

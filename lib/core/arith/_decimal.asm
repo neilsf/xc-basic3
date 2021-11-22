@@ -20,7 +20,7 @@
 	
 	; Perform AND on top 2 decimals on stack
 	MAC anddecimal
-	adnword
+	andword
 	ENDM
 	
 	; Perform OR on top 2 decimals on stack

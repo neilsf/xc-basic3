@@ -1,7 +1,5 @@
-	PROCESSOR 6502
-	
 	; Push immediate word onto stack
-	MAC pword
+	MAC pword ; @push
 	IF !FPUSH
 	lda #<{1}
 	pha
@@ -14,7 +12,7 @@
 	ENDM
 		
 	; Push one word variable onto stack
-	MAC pwordvar
+	MAC pwordvar ; @push
 	IF !FPUSH
 	lda {1}
 	pha
@@ -27,18 +25,18 @@
 	ENDM
 		
 	; Push one dynamic word variable onto stack
-	MAC pdynwordvar
-	ldy #[{1} + 1]
+	MAC pdynwordvar ; @push
+	ldy #{1}
 	IF !FPUSH
 	lda (RC),y
 	pha
-	dey
+	iny
 	lda (RC),y
 	pha
 	ELSE
 	lda (RC),y
 	tax
-	dey
+	iny
 	lda (RC),y
 	tay
 	txa
@@ -46,7 +44,7 @@
 	ENDM
 	
 	; Pull word on stack to variable
-	MAC plwordvar
+	MAC plwordvar ; @pull
 	IF !FPULL
 	pla
 	sta {1}+1
@@ -60,26 +58,17 @@
 	
 	; Pull dynamic word on stack to variable
 	MAC pldynwordvar
-	IF !FPULL
-	ldy #{1}
+	ldy #[{1} + 1]
 	pla
 	sta (RC),y
 	pla
-	iny
+	dey
 	sta (RC),y
-	ELSE
-	sty R0
-	ldy #{1}
-	sta (RC),y
-	lda R0
-	iny
-	sta (RC),y
-	ENDIF
 	ENDM
 	
 	; Push word of an array onto stack
 	; (indexed by a word)
-	MAC pwordarray
+	MAC pwordarray ; @pull
 	getaddr {1}
 	; Load and push
 	ldy #0
@@ -92,20 +81,25 @@
 	
 	; Push word of an array onto stack
 	; (indexed by a byte)
-	MAC pwordarrayfast
+	MAC pwordarrayfast ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
 	tax
+	IF !FPUSH
 	lda	{1},x
 	pha
 	lda [{1} + 1],x
 	pha
+	ELSE
+	lda {1},x
+	ldy [{1} + 1],x
+	ENDIF
 	ENDM
 	
 	; Pull word off of stack and store in array
 	; (indexed by a word)
-	MAC plwordarray
+	MAC plwordarray ; @pull
 	getaddr {1}
 	pla
 	ldy #1
@@ -117,7 +111,7 @@
 	
 	; Pull word off of stack and store in array
 	; (indexed by a byte)
-	MAC plwordarrayfast
+	MAC plwordarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF

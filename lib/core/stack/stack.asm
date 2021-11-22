@@ -20,7 +20,7 @@ STACKFRAME_TOP EQU $3E00
 	; Index on stack
 	; Var address is {1}
 	; Result in (R0)
-	MAC getaddr
+	MAC getaddr ; @pull
 	; Get index
 	IF !FPULL
 	pla
@@ -45,7 +45,7 @@ STACKFRAME_TOP EQU $3E00
 	; Calculate dynamic variable address from frame pointer + index
 	; Index on stack (one byte)
 	; Result in (R0)
-	MAC getdynaddr
+	MAC getdynaddr ; @pull
 	IF !FPULL
 	pla
 	ENDIF

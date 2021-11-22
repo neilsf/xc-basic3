@@ -1,7 +1,5 @@
-	PROCESSOR 6502
-	
 	; Push a long int onto the stack
-	MAC plong
+	MAC plong ; @push
 	IF !FPUSH
 	lda #<{1}
 	pha
@@ -17,7 +15,7 @@
 	ENDM
 	
 	; Push a long int variable on the stack
-	MAC plongvar
+	MAC plongvar ; @push
 	IF !FPUSH
 	lda {1}
 	pha
@@ -59,7 +57,7 @@
 	ENDM
 	
 	; Pull long int to variable
-	MAC pllongvar
+	MAC pllongvar ; @pull
 	IF !FPULL
 	pla
 	sta {1}+2
@@ -76,7 +74,7 @@
 	
 	; Push longint of an array onto stack
 	; (indexed by a word)
-	MAC plongarray
+	MAC plongarray ; @pull
 	getaddr {1}
 	; Load and push
 	ldy #0
@@ -92,7 +90,7 @@
 	
 	; Push long int of an array onto stack
 	; (indexed by a byte)
-	MAC plongarrayfast
+	MAC plongarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -107,7 +105,7 @@
 	
 	; Pull long int off of stack and store in array
 	; (indexed by a word)
-	MAC pllongarray
+	MAC pllongarray ; @pull
 	getaddr {1}
 	ldy #2
 	pla
@@ -122,7 +120,7 @@
 	
 	; Pull long int off of stack and store in array
 	; (indexed by a byte)
-	MAC pllongarrayfast
+	MAC pllongarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -133,4 +131,31 @@
 	sta [{1} + 1],x
 	pla
 	sta {1},x
+	ENDM
+	
+	; Push relative long variable (e.g this.something)
+	MAC prelativelongvar
+	ldy #{1}
+	lda (TH),y
+	pha
+	iny
+	lda (TH),y
+	pha
+	iny
+	lda (TH),y
+	pha
+	ENDM
+	
+	; Pull long value and store in relative long variable
+	; (e.g this.something)
+	MAC plrelativelongvar
+	pla
+	ldy #[{1} + 2]
+	sta (TH),y
+	pla
+	dey
+	sta (TH),y
+	pla
+	dey
+	sta (TH),y
 	ENDM

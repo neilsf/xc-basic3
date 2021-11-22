@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Push true onto stack
-	MAC ptrue
+	MAC ptrue ; @push
 	lda #$FF
 	IF !FPUSH
 	pha
@@ -9,7 +9,7 @@
 	ENDM
 	
 	; Push false onto stack
-	MAC pfalse
+	MAC pfalse ; @push
 	lda #$00
 	IF !FPUSH
 	pha
@@ -17,7 +17,7 @@
 	ENDM
 	
 	; Push immediate byte onto stack
-	MAC pbyte
+	MAC pbyte ; @push
 	lda #{1}
 	IF !FPUSH
 	pha
@@ -25,7 +25,7 @@
 	ENDM
 	
 	; Push byte variable onto stack
-	MAC pbytevar
+	MAC pbytevar ; @push
 	lda {1}
 	IF !FPUSH
 	pha
@@ -33,7 +33,7 @@
 	ENDM
 	
 	; Push dynamic byte variable onto stack
-	MAC pdynbytevar
+	MAC pdynbytevar ; @push
 	ldy #{1}
 	lda (RC),y
 	IF !FPUSH
@@ -42,7 +42,7 @@
 	ENDM
 	
 	; Pull byte on stack to variable
-	MAC plbytevar
+	MAC plbytevar ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -50,7 +50,7 @@
 	ENDM
 	
 	; Pull dynamic byte on stack to variable
-	MAC pldynbytevar
+	MAC pldynbytevar ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -60,7 +60,7 @@
 	
 	; Push byte of an array onto stack
 	; (indexed by a word)
-	MAC pbytearray
+	MAC pbytearray ; @push
 	getaddr {1}
 	; Load and push
 	ldy #0
@@ -72,7 +72,7 @@
 	
 	; Push byte of an array onto stack
 	; (indexed by a byte)
-	MAC pbytearrayfast
+	MAC pbytearrayfast ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -86,7 +86,7 @@
 	; Push byte of a dynamic array onto stack
 	; (indexed by a byte)
 	; Variable name (offset) in {1}
-	MAC pdynbytearrayfast
+	MAC pdynbytearrayfast ; @pull @push
 	getdynaddr
 	ldy #{1}
 	lda (R0),y
@@ -97,7 +97,7 @@
 	
 	; Pull byte off of stack and store in array
 	; (indexed by a word)
-	MAC plbytearray
+	MAC plbytearray ; @pull
 	getaddr {1}
 	pla
 	ldy #0
@@ -106,7 +106,7 @@
 	
 	; Pull byte off of stack and store in array
 	; (indexed by a byte)
-	MAC plbytearrayfast
+	MAC plbytearrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -117,7 +117,7 @@
 	
 	; Pull byte off of stack and store in dynamic array
 	; (indexed by a byte)
-	MAC pldynbytearrayfast
+	MAC pldynbytearrayfast ; @pull
 	getdynaddr
 	ldy #{1}
 	pla
@@ -125,7 +125,7 @@
 	ENDM
 	
 	; Push relative byte variable (e.g this.something)
-	MAC prelativebytevar
+	MAC prelativebytevar ; @push
 	ldy #{1}
 	lda (TH),y
 	IF !FPUSH
@@ -135,7 +135,7 @@
 	
 	; Pull byte value and store in relative byte variable
 	; (e.g this.something)
-	MAC plrelativebytevar
+	MAC plrelativebytevar ; @pull
 	IF !FPULL
 	pla
 	ENDIF

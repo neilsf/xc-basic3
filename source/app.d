@@ -146,7 +146,7 @@ void main(string[] args)
     }
     auto dasm_cmd = executeShell(cmd);
     
-    debug(0) {
+    debug(1) {} else {
         remove(asmFilename);
     }
     

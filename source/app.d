@@ -239,7 +239,7 @@ Options:
   --list=       List file name. This is passed to DASM as it is.
 
    -p
-  --optimize    Output optimized (faster and smaller) code. Turned on by default.
+  --optimize    Output optimized (faster and smaller) code. Turned on by default (true).
 
    -a
   --dump-ast    Do not compile, just dump the Abstract Syntax Tree

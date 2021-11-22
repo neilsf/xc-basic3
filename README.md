@@ -31,7 +31,11 @@ We need to fix as many bugs as possible to be able to have an official release. 
 7. Write an example program of your interest. Try to keep it small in the beginning.
 8. Compile it:
 
-       xcbasic3 example.bas example.prg --target=vic20|c64
+       xcbasic3 example.bas example.prg
+
+or, for VIC-20:
+
+       xcbasic3 example.bas example.prg --target=vic20
 
 9. If you get a compilation error and you think it's a bug, please report it on GitHub. Please include the full BASIC listing in your report.
 10. If the program is comiled but you think it doesn't do what it's supposed to, please report it.

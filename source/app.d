@@ -31,7 +31,7 @@ const string[] targetOpts = [
 ];
 
 // Command line options
-private bool noopt = false;
+private bool optimize = true;
 private string outputFormat = "prg";
 version(Windows) {
 	private string dasm = "dasm.exe";
@@ -61,7 +61,7 @@ void main(string[] args)
             "dasm|d", &dasm,
             "symbol|s", &symbolfile,
             "list|l", &listfile,
-            "noopt|n", &noopt,
+            "optimize|n", &optimize,
             "format|f", &outputFormat,
             "dump-ast|a", &dumpast,
             "verbosity|v", &verbosity
@@ -113,10 +113,15 @@ void main(string[] args)
 
     string asmFilename = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".asm";
     File outfile = File(asmFilename, "w");
-    OptimizerPass optimizer = new Optimizer();
-    optimizer.setInCode(compiler.getImCode().getCode());
-    optimizer.run();
-    outfile.write(optimizer.getOutCode());
+    if(optimize) {
+        OptimizerPass optimizer = new Optimizer();
+        optimizer.setInCode(compiler.getImCode().getCode());
+        optimizer.run();
+        outfile.write(optimizer.getOutCode());
+    } else {
+        outfile.write(compiler.getImCode().getCode());
+    }
+    
     outfile.close();
 
     // Call DASM to compile intermediate code to exacutable
@@ -233,8 +238,8 @@ Options:
    -l
   --list=       List file name. This is passed to DASM as it is.
 
-   -n
-  --noopt       Do NOT run the optimizer
+   -p
+  --optimize    Output optimized (faster and smaller) code. Turned on by default.
 
    -a
   --dump-ast    Do not compile, just dump the Abstract Syntax Tree

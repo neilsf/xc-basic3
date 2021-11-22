@@ -109,24 +109,38 @@
 	; Pull dynamic udt on stack to variable
 	; Relative address of var in {1}
 	; Type length in {2}
-	MAC _old_pldynudtvar
-	ldy #{1}
-.loop
-	pla
-	sta (RC),y
-	iny
-	cpy #[{1} + {2}]
-	bcc .loop
-	ENDM
-	
-	; Pull dynamic udt on stack to variable
-	; Relative address of var in {1}
-	; Type length in {2}
 	MAC pldynudtvar
 	ldy #[{1} + {2} - 1]
 .loop
 	pla
 	sta (RC),y
+	dey
+	cpy #{1}
+	bpl .loop
+	ENDM
+	
+	; Push relative udt variable (e.g this.something)
+	; Relative address of var in {1}
+	; Type length in {2}
+	MAC prelativewordvar
+	ldy #{1}
+.loop
+	lda (TH),y
+	pha
+	iny
+	cpy #[{1} + {2}]
+	bcc .loop
+	ENDM
+	
+	; Pull int value and store in relative word variable
+	; (e.g this.something)
+	; Relative address of var in {1}
+	; Type length in {2}
+	MAC plrelativewordvar
+	ldy #[{1} + {2} - 1]
+.loop
+	pla
+	sta (TH),y
 	dey
 	cpy #{1}
 	bpl .loop

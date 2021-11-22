@@ -5,7 +5,7 @@
 	; TO ALLOW DIRECT COMPARISON OF NUMBERS 
 	; IN FAC AND ON STACK, FLOATS ARE
 	; PUSHED IN REVERSE ORDER, M3-M2-M1-E
-	MAC pfloat
+	MAC pfloat ; @push
 	lda #${4}
 	pha
 	IF !FPUSH
@@ -23,7 +23,7 @@
 	ENDM
 	
 	; Push float variable on stack
-	MAC pfloatvar
+	MAC pfloatvar ; @push
 	lda {1} + 3
 	pha
 	IF !FPUSH
@@ -41,7 +41,7 @@
 	ENDM
 	
 	; Pull float on stack to variable
-	MAC plfloatvar
+	MAC plfloatvar ; @pull
 	IF !FPULL
 	pla
 	sta {1}
@@ -60,7 +60,7 @@
 	
 	; Push float of an array onto stack
 	; (indexed by a word)
-	MAC pfloatarray
+	MAC pfloatarray ; @pull
 	getaddr {1}
 	; Load and push
 	ldy #3
@@ -79,7 +79,7 @@
 	
 	; Push float of an array onto stack
 	; (indexed by a byte)
-	MAC pfloatarrayfast
+	MAC pfloatarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -96,7 +96,7 @@
 	
 	; Pull long int off of stack and store in array
 	; (indexed by a word)
-	MAC plfloatarray
+	MAC plfloatarray ; @pull
 	getaddr {1}
 	ldy #0
 	pla
@@ -114,7 +114,7 @@
 	
 	; Pull float off of stack and store in array
 	; (indexed by a byte)
-	MAC plfloatarrayfast
+	MAC plfloatarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -130,7 +130,7 @@
 	ENDM
 	
 	; Pull float off of stack into FAC
-	MAC plfloattofac
+	MAC plfloattofac ; @pull
 	IF !FPULL
 	pla
 	sta FAC
@@ -155,7 +155,7 @@
 	ENDM
 	
 	; Pull float off of stack into ARG
-	MAC plfloattoarg
+	MAC plfloattoarg ; @pull
 	IF !FPULL
 	pla
 	sta ARG
@@ -185,7 +185,7 @@
 	ENDM
 	
 	; Round and push float in FAC onto stack
-	MAC pfac
+	MAC pfac ; @push
 	import I_FPLIB
 	jsr ROUND_FAC
 	lda #$00
@@ -216,15 +216,11 @@
 	ldy #[{1} + 3]
 	lda (RC),y
 	pha
+	REPEAT 3
 	dey
 	lda (RC),y
 	pha
-	dey
-	lda (RC),y
-	pha
-	dey
-	lda (RC),y
-	pha
+	REPEND
 	ENDM
 	
 	; Pull dynamic float on stack to variable
@@ -232,24 +228,20 @@
 	ldy #{1}
 	pla
 	sta (RC),y
+	REPEAT 3
 	pla
 	iny
 	sta (RC),y
-	pla
-	iny
-	sta (RC),y
-	pla
-	iny
-	sta (RC),y
+	REPEND
 	ENDM
 	
 	; Push relative word variable (e.g this.something)
 	MAC prelativefloatvar
-	ldy #{1}
+	ldy #[{1} + 3]
 	lda (TH),y
 	pha
 	REPEAT 3
-	iny
+	dey
 	lda (TH),y
 	pha
 	REPEND
@@ -258,12 +250,12 @@
 	; Pull int value and store in relative word variable
 	; (e.g this.something)
 	MAC plrelativefloatvar
+	ldy #{1}
 	pla
-	ldy #[{1} + 3]
 	sta (TH),y
 	REPEAT 3
 	pla
-	dey
+	iny
 	sta (TH),y
 	REPEND
 	ENDM

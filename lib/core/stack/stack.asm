@@ -57,11 +57,16 @@ STACKFRAME_TOP EQU $3E00
 	ENDM
 	
 	; Push current THIS pointer on stack
-	MAC pthis
+	MAC pthis ; @push
+	IF !FPUSH
 	lda TH
 	pha
 	lda TH + 1
 	pha
+	ELSE
+	lda TH
+	ldy TH + 1
+	ENDIF
 	ENDM
 	
 	; Set THIS pointer to {1} 
@@ -84,11 +89,16 @@ STACKFRAME_TOP EQU $3E00
 	ENDM
 	
 	; Pull THIS pointer off of stack
-	MAC plthis
+	MAC plthis ; @pull
+	IF !FPULL
 	pla
 	sta TH + 1
 	pla
 	sta TH
+	ELSE
+	sta TH
+	sty TH + 1
+	ENDIF
 	ENDM
 	
 	MAC framereset

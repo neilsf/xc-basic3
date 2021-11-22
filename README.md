@@ -14,6 +14,8 @@ We need to fix as many bugs as possible to be able to have an official release. 
 
        sudo snap install --classic dmd
        sudo snap install --classic dub
+       
+(If you're on Windows, follow [these](https://dlang.org/dmd-windows.html) and [these](https://dub.pm/) instructions.)
 
 4. Clone this repo:
 
@@ -25,7 +27,7 @@ We need to fix as many bugs as possible to be able to have an official release. 
 
        dub build
 
-6. Now you have an executable called //xcbasic3//
+6. Now you have an executable called _xcbasic3_ or _xcbasic3.exe_
 7. Write an example program of your interest. Try to keep it small in the beginning.
 8. Compile it:
 

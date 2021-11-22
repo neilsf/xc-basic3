@@ -61,7 +61,7 @@ void main(string[] args)
             "dasm|d", &dasm,
             "symbol|s", &symbolfile,
             "list|l", &listfile,
-            "optimize|n", &optimize,
+            "optimize|p", &optimize,
             "format|f", &outputFormat,
             "dump-ast|a", &dumpast,
             "verbosity|v", &verbosity

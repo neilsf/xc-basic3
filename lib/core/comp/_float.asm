@@ -1,6 +1,6 @@
 	PROCESSOR 6502
 	
-	MAC cmpfloateq
+	MAC cmpfloateq ; @pull @push
 	plfloattofac
 	tsx
 	inx
@@ -21,7 +21,7 @@
 	ptrue
 	ENDM
 	
-	MAC cmpfloatneq
+	MAC cmpfloatneq ; @pull @push
 	plfloattofac
 	tsx
 	inx
@@ -43,7 +43,7 @@
 	ENDM
 	
 	; Compare top 2 floats on stack for greater than
-	MAC cmpfloatgt
+	MAC cmpfloatgt ; @pull @push
 	plfloattofac
 	tsx
 	inx
@@ -65,7 +65,7 @@
 	ENDM
 	
 	; Compare top 2 floats on stack for less than
-	MAC cmpfloatlt
+	MAC cmpfloatlt ; @pull @push
 	plfloattofac
 	tsx
 	inx
@@ -88,7 +88,7 @@
 	ENDM
 	
 	; Compare top 2 floats on stack for less than or equal
-	MAC cmpfloatlte
+	MAC cmpfloatlte ; @pull @push
 	plfloattofac
 	tsx
 	inx
@@ -110,7 +110,7 @@
 	ENDM
 	
 	; Compare top 2 floats on stack for greater than or equal
-	MAC cmpfloatgte
+	MAC cmpfloatgte ; @pull @push
 	plfloattofac
 	tsx
 	inx

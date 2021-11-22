@@ -34,6 +34,6 @@
     ENDM
     
 	; Perform NOT on top 2 decimals of stack
-    MAC notdecimal
+    MAC notdecimal ; @pull
     notword
     ENDM

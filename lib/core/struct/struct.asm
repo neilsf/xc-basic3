@@ -2,7 +2,7 @@
 	; can be used for if, while, until
 	; usage:
 	; cond_stmt <false_label> [, <else_label>]
-	MAC cond_stmt
+	MAC cond_stmt ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -16,7 +16,7 @@
 	
 	; Same as above but it enters block if
 	; Contidion evals to false
-	MAC neg_cond_stmt
+	MAC neg_cond_stmt ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -266,7 +266,7 @@
 	
 	; ON GOTO statement
 	; Usage: ongoto {lowbytes of labels}, {hibytes of labels}
-	MAC ongoto
+	MAC ongoto ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -281,7 +281,7 @@
 	
 	; ON GOSUB statement
 	; Usage: ongosub {lowbytes of labels}, {hibytes of labels}
-	MAC ongosub
+	MAC ongosub ; @pull
 	IF !FPULL
 	pla
 	ENDIF

@@ -58,7 +58,7 @@
 	ENDM
 	
 	; Divide top 2 words on stack
-	MAC divword
+	MAC divword ; @pull @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -75,7 +75,7 @@
 	ENDM
 	
 	; Modulo of top 2 words on stack
-	MAC modword
+	MAC modword ; @pull @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -92,7 +92,7 @@
 	ENDM
 
 	; Perform NOT on word on stack
-	MAC notword
+	MAC notword ; @pull
 	IF !FPULL
 	tsx
 	lda.wx stack + 1
@@ -152,7 +152,7 @@
     
     ; Shift left with number of binary places
 	; stored in a byte on top of stack
-	MAC lshiftword
+	MAC lshiftword ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -180,7 +180,7 @@
 	
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
-	MAC rshiftword
+	MAC rshiftword @pull
 	IF !FPULL
 	pla
 	ENDIF

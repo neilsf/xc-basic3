@@ -39,7 +39,7 @@
 	ENDM
 	
 	; Divide top 2 ints on stack
-	MAC divint
+	MAC divint ; @pull @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -56,7 +56,7 @@
 	ENDM
 	
 	; Modulo of top 2 ints on stack
-	MAC modint
+	MAC modint ; @pull @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -73,7 +73,7 @@
 	ENDM
 	
 	; Perform NOT on int on stack
-	MAC notint
+	MAC notint ; @pull
 	notword
 	ENDM
 	
@@ -108,7 +108,7 @@
 	ENDM
 	
 	; Negate int on stack
-	MAC negint
+	MAC negint ; @pull
 	IF !FPULL
 	pla
 	tay
@@ -134,7 +134,7 @@
 	
 	; Shift left with number of binary places
 	; stored in a byte on top of stack
-	MAC lshiftint
+	MAC lshiftint ; @pull
 	lshiftword
 	ENDM
 	
@@ -146,7 +146,7 @@
 	
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
-	MAC rshiftint
+	MAC rshiftint ; @pull
 	rshiftword
 	ENDM
 	

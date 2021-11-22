@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Convert float on stack to byte
-	MAC F_cbyte_float
+	MAC F_cbyte_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr QINT
@@ -12,7 +12,7 @@
 	ENDM
 	
 	; Convert float on stack to int
-	MAC F_cint_float
+	MAC F_cint_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr QINT
@@ -28,12 +28,12 @@
 	ENDM
 	
 	; Convert float on stack to word
-	MAC F_cword_float
+	MAC F_cword_float ; @pull @push
 	F_cint_float
 	ENDM
 	
 	; Convert float on stack to long
-	MAC F_clong_float
+	MAC F_clong_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr QINT

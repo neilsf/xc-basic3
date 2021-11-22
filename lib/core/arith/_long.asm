@@ -113,7 +113,7 @@
 	ENDM
 	
 	; Multiply top 2 long ints on stack
-	MAC mullong
+	MAC mullong ; @pull @push
 	IF !FPULL
 	pla
 	sta R6
@@ -149,7 +149,7 @@
 	ENDM
 	
 	; Divide top 2 long ints on stack
-	MAC divlong
+	MAC divlong  ; @pull @push
 	IF !FPULL
 	pla
 	sta R7 + 2
@@ -185,7 +185,7 @@
 	ENDM
 	
 	; Modulo of top 2 long ints on stack
-	MAC modlong
+	MAC modlong  ; @pull @push
 	IF !FPULL
 	pla
 	sta R7 + 2
@@ -257,7 +257,7 @@
 	
 	; Shift left with number of binary places
 	; stored in a byte on top of stack
-	MAC lshiftlong
+	MAC lshiftlong ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -287,7 +287,7 @@
 	
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
-	MAC rshiftlong
+	MAC rshiftlong ; @pull
 	IF !FPULL
 	pla
 	ENDIF

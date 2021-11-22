@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Compare two long ints on stack for equality
-	MAC cmplongeq
+	MAC cmplongeq ; @push
 	tsx
 	lda.wx stack+6
 	cmp.wx stack+3
@@ -24,7 +24,7 @@
 	ENDM
 	
 	; Compare two long ints on stack for inequality
-	MAC cmplongneq
+	MAC cmplongneq ; @push
 	tsx
 	lda.wx stack+6
 	cmp.wx stack+3
@@ -60,7 +60,7 @@
 	ENDM
 
 	; Compare two long ints on stack for less than
-	MAC cmplonglt
+	MAC cmplonglt ; @push
 	_lcomparison
 	bmi .true
 	DS.B 6, $e8 ; 6x inx
@@ -75,7 +75,7 @@
 	ENDM
 	
 	; Compare two long ints on stack for greater than or equal
-	MAC cmplonggte
+	MAC cmplonggte ; @push
 	_lcomparison
 	bpl .true
 	DS.B 6, $e8 ; 6x inx
@@ -90,7 +90,7 @@
 	ENDM
 
 	; Compare two long ints on stack for less than or equal
-	MAC cmplonglte
+	MAC cmplonglte ; @push
 	tsx
 	lda.wx stack+3
 	cmp.wx stack+6
@@ -119,7 +119,7 @@
 	ENDM
 	
 	; Compare two long ints on stack for greater than
-	MAC cmplonggt
+	MAC cmplonggt ; @push
 	tsx
 	lda.wx stack+3
 	cmp.wx stack+6

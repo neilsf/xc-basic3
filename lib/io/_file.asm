@@ -27,7 +27,7 @@
 .ok
 	ENDM
 
-	MAC close
+	MAC close ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -37,7 +37,7 @@
 	; GET#
 	; logical file# on stack
 	; returns char on stack
-	MAC get_hash
+	MAC get_hash ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -48,7 +48,7 @@
 	kerncall KERNAL_CLRCHN
 	ENDM
 	
-	MAC F_st
+	MAC F_st ; @push
 	jsr KERNAL_READST
 	IF !FPUSH
 	pha
@@ -59,7 +59,7 @@
 	; Logical file# on stack
 	; Number of bytes in {1}
 	; Output on stack
-	MAC input_hash
+	MAC input_hash ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -80,7 +80,7 @@
 	; INPUT# (strings)
 	; Logical file# on stack
 	; Output on string stack
-	MAC input_hash_str
+	MAC input_hash_str; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -201,7 +201,7 @@ I_BINREAD SUBROUTINE
 	; logical file# on stack
 	; string on string stack
 	; {1} = 1 : this is the last string in block
-	MAC print_hash_str
+	MAC print_hash_str; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -248,7 +248,7 @@ I_BINREAD SUBROUTINE
 	ENDM
 	
 	; Save routine
-	MAC save
+	MAC save; @pull
 	; get start address
 	IF !FPULL
 	pla

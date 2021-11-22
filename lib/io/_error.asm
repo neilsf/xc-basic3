@@ -23,7 +23,7 @@ SCINIT		 EQU $ff81
 	sta ERR_VECTOR + 1
 	ENDM
 	
-	MAC error
+	MAC error ; @pull
 	IF !FPULL
 	pla
 	ENDIF

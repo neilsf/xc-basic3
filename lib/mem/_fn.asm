@@ -1,7 +1,7 @@
 	; XC=BASIC memory functions
 	
 	; DECLARE FUNCTION PEEK AS BYTE (address AS WORD) SHARED STATIC INLINE
-	MAC F_peek_word
+	MAC F_peek_word ; @push @pull
 	IF !FPULL
 	pla
 	sta .l + 2

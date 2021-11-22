@@ -13,7 +13,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION RIGHT$ AS STRING (instr$ AS STRING, length AS BYTE) SHARED STATIC INLINE
-	MAC F_right@_string_byte
+	MAC F_right@_string_byte ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -45,7 +45,7 @@ STR_RIGHT SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION LEFT$ AS STRING (instr$ AS STRING, length AS BYTE) SHARED STATIC INLINE
-	MAC F_left@_string_byte
+	MAC F_left@_string_byte ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -84,7 +84,7 @@ STR_LEFT SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION MID$ AS STRING (instr$ AS STRING, pos AS BYTE, length AS BYTE) SHARED STATIC INLINE
-	MAC F_mid@_string_byte_byte
+	MAC F_mid@_string_byte_byte ; @pull
 	IF !FPULL
 	pla
 	tay
@@ -121,8 +121,8 @@ STR_MID SUBROUTINE
 	rts
 	ENDIF
 	
-	MAC bytetostr_or_empty
-	IF !FPUSH
+	MAC bytetostr_or_empty  ; @pull
+	IF !FPULL
 	pla
 	ENDIF
 	bne .nonz
@@ -141,8 +141,8 @@ STR_MID SUBROUTINE
 	ENDM
 	
 	; DECLARE FUNCTION CHR$ AS STRING (charcode AS BYTE) SHARED STATIC INLINE 
-	MAC F_chr@_byte
-	IF !FPUSH
+	MAC F_chr@_byte ; @pull
+	IF !FPULL
 	pla
 	ENDIF
 	ldx SP
@@ -239,7 +239,7 @@ STR_UCASE SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION VAL AS FLOAT (instr$ AS string) SHARED STATIC INLINE
-	MAC F_val_string
+	MAC F_val_string ; @push
 	ldx SP
 	inx
 	stx R0
@@ -254,7 +254,7 @@ STR_UCASE SUBROUTINE
 	ENDM
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS BYTE) SHARED STATIC INLINE
-	MAC F_str@_byte
+	MAC F_str@_byte ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -303,7 +303,7 @@ STR_BTOS SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS DECIMAL) OVERRIDE SHARED STATIC INLINE
-	MAC F_str@_decimal
+	MAC F_str@_decimal ; @pull
 	IF !FPULL
 	pla
 	sta R0
@@ -348,7 +348,7 @@ STR_DTOS:
 	ENDIF
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS WORD) OVERRIDE SHARED STATIC INLINE
-	MAC F_str@_word
+	MAC F_str@_word ; @pull
 	IF !FPULL
 	pla
 	sta R2 + 1
@@ -364,7 +364,7 @@ STR_DTOS:
 	ENDM
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS INT) OVERRIDE SHARED STATIC INLINE
-	MAC F_str@_int
+	MAC F_str@_int ; @pull
 	IF !FPULL
 	pla
 	sta R2 + 1
@@ -447,7 +447,7 @@ STR_WTOS SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS LONG) OVERRIDE SHARED STATIC INLINE
-	MAC F_str@_long
+	MAC F_str@_long ; @pull
 	IF !FPULL
 	pla
 	sta R4 + 2
@@ -561,7 +561,7 @@ STR_MOVE_REVSTR SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION STR$ AS STRING (number AS FLOAT) OVERRIDE SHARED STATIC INLINE
-	MAC F_str@_float
+	MAC F_str@_float ; @pull
 	plfloattofac
 	import I_FPLIB
 	import I_FOUT

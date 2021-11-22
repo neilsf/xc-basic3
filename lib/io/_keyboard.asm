@@ -1,6 +1,6 @@
 
     ; GET
-	MAC get
+	MAC get ; @push
 	kerncall KERNAL_GETIN
 	IF !FPUSH
 	pha

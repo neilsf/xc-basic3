@@ -16,7 +16,7 @@
 	ENDM
 	
 	; Convert word on stack to float
-	MAC F_cfloat_word
+	MAC F_cfloat_word ; @pull @push
 	IF !FPULL
 	pla	
 	sta FAC + 1

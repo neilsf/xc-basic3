@@ -16,7 +16,7 @@
 	ENDM
 	
 	; Convert int on stack to float
-	MAC F_cfloat_int
+	MAC F_cfloat_int ; @pull @push
 	IF !FPULL
 	pla	
 	sta FAC + 1

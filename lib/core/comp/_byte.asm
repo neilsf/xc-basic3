@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Compare two bytes on stack for less than
-	MAC cmpbytelt
+	MAC cmpbytelt ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -16,7 +16,7 @@
 	ENDM
 	
 	; Compare two bytes on stack for less than or equal
-	MAC cmpbytelte
+	MAC cmpbytelte  ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -32,7 +32,7 @@
 	ENDM
 	
 	; Compare two bytes on stack for greater than or equal
-	MAC cmpbytegte
+	MAC cmpbytegte  ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF                 
@@ -47,7 +47,7 @@
 	ENDM
 	
 	; Compare two bytes on stack for equality
-	MAC cmpbyteeq
+	MAC cmpbyteeq  ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF                 
@@ -62,7 +62,7 @@
 	ENDM
 	
 	; Compare two bytes on stack for inequality
-	MAC cmpbyteneq
+	MAC cmpbyteneq  ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF                 
@@ -77,7 +77,7 @@
 	ENDM
 	
 	; Compare two bytes on stack for greater than
-	MAC cmpbytegt
+	MAC cmpbytegt  ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF                 

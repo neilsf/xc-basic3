@@ -1,17 +1,17 @@
 	PROCESSOR 6502
 	
 	; Compare top 2 ints on stack for equality
-	MAC cmpinteq
+	MAC cmpinteq ; @pull @push
 	cmpwordeq
 	ENDM
 	
 	; Compare top 2 ints on stack for inequality
-	MAC cmpintneq
+	MAC cmpintneq ; @pull @push
 	cmpwordneq
 	ENDM
 	
 	; Compare two ints on stack for less than
-	MAC cmpintlt
+	MAC cmpintlt ; @push
 	tsx
 	lda.wx stack+4
 	cmp.wx stack+2
@@ -42,7 +42,7 @@
 	ENDM
 	
 	; Compare two words on stack for greater than or equal
-	MAC cmpintgte
+	MAC cmpintgte ; @push
 	tsx
 	lda.wx stack+4
 	cmp.wx stack+2
@@ -72,7 +72,7 @@
 	ENDM
 	
 	; Compare two ints on stack for greater than
-	MAC cmpintgt
+	MAC cmpintgt ; @push
 	tsx
 	lda.wx stack+2
 	cmp.wx stack+4
@@ -102,7 +102,7 @@
 	ENDM
 
 	; Compare two ints on stack for less than or equal
-	MAC cmpintlte
+	MAC cmpintlte ; @push
 	tsx
 	lda.wx stack+2
 	cmp.wx stack+4

@@ -40,11 +40,11 @@ SPREG EQU $030F
 	ENDM
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
-	MAC F_ti
+	MAC F_ti ; @push
 	php
 	sei
 	lda $a2
-	IF !FPULL
+	IF !FPUSH
 	pha
 	lda $a1
 	pha
@@ -55,11 +55,12 @@ SPREG EQU $030F
 	ldx $a0
 	ENDIF
 	plp
+	cli
 	ENDM
 	
 	; SYS Command
 	; Use SYS 1 for fast call, SYS 0 for regular call
-	MAC sys
+	MAC sys ; @pull
 	IF !FPULL
 	pla
 	sta .jsr + 2
@@ -112,7 +113,7 @@ SPREG EQU $030F
 	ENDIF
 	ENDM
 	
-	MAC wait
+	MAC wait ; @pull
 .MASK EQU R2
 .TRIG EQU R3
 	IF !FPULL

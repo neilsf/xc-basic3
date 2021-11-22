@@ -1,5 +1,5 @@
 	; Compare top two strings on stack for equality
-	MAC cmpstringeq
+	MAC cmpstringeq ; @push
 	import I_STRCMP
 	jsr I_STRCMP
 	beq .true
@@ -11,7 +11,7 @@
 	ENDM
 	
 	; Compare top two strings on stack for inequality
-	MAC cmpstringneq
+	MAC cmpstringneq ; @push
 	import I_STRCMP
 	jsr I_STRCMP
 	bne .true

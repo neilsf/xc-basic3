@@ -30,7 +30,7 @@ MEMSET	SUBROUTINE
 .md4    rts
 	ENDIF
 
-	MAC memset
+	MAC memset ; @pull
 	IF !FPULL
 	pla
 	sta R1
@@ -85,7 +85,7 @@ MEMCPY	SUBROUTINE
 .md4    rts
 	ENDIF
 	
-	MAC memcpy
+	MAC memcpy ; @pull
 	IF !FPULL
 	pla
 	sta R1
@@ -152,7 +152,7 @@ MEMSHIFT SUBROUTINE
     rts
     ENDIF
     
-    MAC memshift
+    MAC memshift ; @pull
 	IF !FPULL
 	pla
 	sta R1
@@ -174,7 +174,7 @@ MEMSHIFT SUBROUTINE
 	jsr MEMSHIFT
 	ENDM
 	
-	MAC poke
+	MAC poke ; @pull
 	IF !FPULL
 	pla
 	sta .l + 2
@@ -189,7 +189,7 @@ MEMSHIFT SUBROUTINE
 	ENDM
 	
 	; usage: poke {const address}
-	MAC poke_constaddr
+	MAC poke_constaddr ; @pull
 	IF !FPULL
 	pla
 	ENDIF

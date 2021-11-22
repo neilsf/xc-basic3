@@ -19,7 +19,7 @@
 	ENDM
 	
 	; Convert byte on stack to float on stack
-	MAC F_cfloat_byte
+	MAC F_cfloat_byte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF

@@ -56,7 +56,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION SGN AS INT (num AS BYTE) SHARED STATIC INLINE
-	MAC F_sgn_byte
+	MAC F_sgn_byte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -73,7 +73,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION SGN AS INT (num AS INT) SHARED STATIC INLINE
-	MAC F_sgn_int
+	MAC F_sgn_int ; @push
 	pla
 	bmi .neg
 	beq .plz
@@ -93,7 +93,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION SGN AS INT (num AS WORD) SHARED STATIC INLINE
-	MAC F_sgn_word
+	MAC F_sgn_word ; @push
 	pla
 	beq .plz
 	pla
@@ -108,7 +108,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION SGN AS INTEGER (num AS LONG) SHARED STATIC INLINE
-	MAC F_sgn_long
+	MAC F_sgn_long ; @push
 	pla
 	bmi .neg
 	pla	
@@ -129,7 +129,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION SGN AS INTEGER (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_sgn_float
+	MAC F_sgn_float ; @pull @push
 	IF !FPULL
 	pla
 	sta R0
@@ -163,7 +163,7 @@
 	ENDM
 	
 	; DECLARE FUNCTION POW AS LONG (base AS WORD, exp AS BYTE) SHARED STATIC INLINE
-	MAC F_pow_word_byte
+	MAC F_pow_word_byte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
@@ -191,7 +191,7 @@
 	
 	; DECLARE FUNCTION POW AS LONG (base AS INT, exp AS BYTE) OVERRIDE SHARED STATIC INLINE
 	; TODO FIND BUG
-	MAC F_pow_int_byte
+	MAC F_pow_int_byte  ; @pull @push
 .SIGN EQU ARG
 .EXP  EQU ARG + 1
 	IF !FPULL
@@ -344,7 +344,7 @@ B EQU FAC
 	ENDIF
 	
 	; DECLARE FUNCTION POW AS FLOAT (base AS FLOAT, exp AS FLOAT) SHARED STATIC INLINE
-	MAC F_pow_float_float
+	MAC F_pow_float_float ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FPLIB
@@ -353,7 +353,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION EXP AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_exp_float
+	MAC F_exp_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr EXP
@@ -361,7 +361,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION LOG AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_log_float
+	MAC F_log_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr LOG
@@ -369,7 +369,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION INT AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_int_float
+	MAC F_int_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr INT
@@ -377,7 +377,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION SQR AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_sqr_float
+	MAC F_sqr_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr SQR
@@ -385,7 +385,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION SQR AS BYTE (num AS WORD) SHARED STATIC INLINE
-	MAC F_sqr_word
+	MAC F_sqr_word ; @pull @push
 	IF !FPULL
 	pla
 	sta R0 + 1
@@ -403,7 +403,7 @@ B EQU FAC
 	ENDM
 	
 	; DECLARE FUNCTION SQR AS BYTE (num AS INT) SHARED STATIC INLINE
-	MAC F_sqr_int
+	MAC F_sqr_int ; @pull @push
 	IF !FPULL
 	pla
 	sta R0 + 1
@@ -459,7 +459,7 @@ SQRW SUBROUTINE
 	ENDIF
 	
 	; DECLARE FUNCTION SQR AS WORD (num AS LONG) OVERRIDE SHARED STATIC INLINE 
-	MAC F_sqr_long
+	MAC F_sqr_long ; @pull @push
 	pllongvar R0
 	lda R0 + 2
 	bpl .pos
@@ -526,14 +526,14 @@ MATH_RND HEX 00 00 00
 	ENDIF
 	
 	; DECLARE FUNCTION RND AS FLOAT () SHARED STATIC INLINE
-	MAC F_rnd
+	MAC F_rnd ; @push
 	import I_RND
 	jsr I_RND
 	pfloatvar MATH_RND_EXP
 	ENDM
 	
 	; DECLARE FUNCTION RND AS LONG () SHARED STATIC INLINE
-	MAC F_rndl
+	MAC F_rndl ; @push
 	import I_RNDL
 	jsr I_RNDL
 	IF !FPUSH
@@ -617,35 +617,35 @@ I_RND SUBROUTINE
 .C2 HEX 68 28 B1 46
 	ENDIF
 
-	MAC F_shl_byte_byte
+	MAC F_shl_byte_byte ; @pull @push
 	lshiftbyte
 	ENDM
 	
-	MAC F_shr_byte_byte
+	MAC F_shr_byte_byte ; @pull @push
 	rshiftbyte
 	ENDM
 	
-	MAC F_shl_int_byte
+	MAC F_shl_int_byte ; @pull
 	lshiftint
 	ENDM
 	
-	MAC F_shr_int_byte
+	MAC F_shr_int_byte ; @pull
 	rshiftint
 	ENDM
 	
-	MAC F_shl_word_byte
+	MAC F_shl_word_byte ; @pull
 	lshiftword
 	ENDM
 	
-	MAC F_shr_word_byte
-	wshiftword
+	MAC F_shr_word_byte ; @pull
+	rshiftword
 	ENDM
 	
-	MAC F_shl_long_byte
+	MAC F_shl_long_byte ; @pull
 	lshiftlong
 	ENDM
 	
-	MAC F_shr_long_byte
-	wshiftlong
+	MAC F_shr_long_byte ; @pull
+	rshiftlong
 	ENDM
 	

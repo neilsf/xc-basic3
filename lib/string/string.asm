@@ -91,7 +91,7 @@ STRING_BUFFER2  EQU $039D
 	
 	; Push string of an array onto stack
 	; (indexed by a word)
-	MAC pstringarray
+	MAC pstringarray ; @pull
 	getaddr {1}
 	ldy #0
 	lda (R0),y	; get string length
@@ -101,7 +101,7 @@ STRING_BUFFER2  EQU $039D
 	
 	; Push string of an array onto stack
 	; (indexed by a byte)
-	MAC pstringarrayfast
+	MAC pstringarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -120,7 +120,7 @@ STRING_BUFFER2  EQU $039D
 	; Pull string off of stack and store in array
 	; (indexed by a word)
 	; Max length in {2}
-	MAC plstringarray
+	MAC plstringarray ; @pull
 	getaddr {1}
 	lda #{2}
 	import I_STRREMOV
@@ -130,7 +130,7 @@ STRING_BUFFER2  EQU $039D
 	; Pull string off of stack and store in array
 	; (indexed by a byte)
 	; Max length in {2}
-	MAC plstringarrayfast
+	MAC plstringarrayfast ; @pull
 	IF !FPULL
 	pla
 	ENDIF

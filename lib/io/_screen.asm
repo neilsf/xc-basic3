@@ -24,19 +24,19 @@ CIA_DIRECTIONALR EQU $DD00
 	ENDM
 	
 	; Print int on stack as PETSCII string
-	MAC printint
+	MAC printint ; @pull
 	F_str@_int
 	printstring
 	ENDM
 	
 	; Print word on stack as PETSCII string
-	MAC printword
+	MAC printword ; @pull
 	F_str@_word
 	printstring
 	ENDM
 	
 	; Print word on stack as PETSCII string
-	MAC printdecimal
+	MAC printdecimal ; @pull
 	import I_STDLIB_PRINT_DECIMAL 
 	IF !FPULL
 	pla
@@ -51,7 +51,7 @@ CIA_DIRECTIONALR EQU $DD00
 	ENDM
 	
 	; Print string in memory (pointer on stack)
-	MAC printstaticstring
+	MAC printstaticstring ; @pull
 	IF !FPULL
 	pla
 	tay
@@ -77,12 +77,12 @@ CIA_DIRECTIONALR EQU $DD00
 	ENDM
 	
 	; Print int on stack as PETSCII string
-	MAC printlong
+	MAC printlong ; @pull
 	F_str@_long
 	printstring
 	ENDM
 	
-	MAC printfloat
+	MAC printfloat ; @pull
 	import I_FPLIB
 	import I_FOUT
 	import I_STDLIB_PRINTSTR
@@ -247,7 +247,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	
 	; [Color,] Char, Col, Row pushed on stack
 	; {1} = 1 color was pushed
-	MAC charat
+	MAC charat ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -273,7 +273,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	
 	; [Color,] Col, Row pushed on stack
 	; String on string stack
-	MAC textat
+	MAC textat ; @pull
 	IF !FPULL
 	pla
 	ENDIF
@@ -368,7 +368,7 @@ CALC_SCRROWPTR SUBROUTINE
 	ENDIF
 	
 	; Set Video Matrix Base Address
-	MAC screen
+	MAC screen ; @pull
 	IF TARGET == c64
 	IF !FPULL
 	pla

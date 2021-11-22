@@ -280,11 +280,11 @@ class RemoveStackOps: OptimizerPass
         bool pullf = false;
         for(int i=0; i<lines.length; i++) {
             string line = lines[i];
-            if(line == "\t; !!opt_start!!") {
+            if(line == "    ; !!opt_start!!") {
                 opt_enabled = true;
                 continue;
             }
-            else if(line == "\t; !!opt_end!!") {
+            else if(line == "    ; !!opt_end!!") {
                 opt_enabled = false;
                 continue;
             }
@@ -348,7 +348,7 @@ class RemoveStackOps: OptimizerPass
         if(line == "") {
             return "";
         }
-        string[] parts = line.split!isWhite;
+        string[] parts = line.strip.split!isWhite;
         if(this.isPuller(parts[0]) || this.isPusher(parts[0])) {
             return parts[0];
         }

@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Add top 2 floats on stack
-	MAC addfloat
+	MAC addfloat ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FPLIB
@@ -10,7 +10,7 @@
 	ENDM
 	
 	; Subtract top 2 floats on stack
-	MAC subfloat
+	MAC subfloat ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FPLIB
@@ -19,7 +19,7 @@
 	ENDM
 	
 	; Multiply top 2 floats on stack
-	MAC mulfloat
+	MAC mulfloat ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FPLIB
@@ -28,7 +28,7 @@
 	ENDM
 	
 	; Divide top 2 floats on stack
-	MAC divfloat
+	MAC divfloat ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FPLIB
@@ -37,7 +37,7 @@
 	ENDM
 	
 	; Modulo of top 2 floats on stack
-	MAC modfloat
+	MAC modfloat ; @pull @push
 	plfloattofac
 	plfloattoarg
 	import I_FMOD

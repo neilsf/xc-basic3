@@ -17,9 +17,8 @@
 	ENDM
 	
 	; Convert long int on stack to float
-	; TODO it doesn't work yet
-	MAC F_cfloat_long
-	IF !FPUSH
+	MAC F_cfloat_long ; @pull @push
+	IF !FPULL
 	pla
 	sta FAC + 1
 	eor #$FF

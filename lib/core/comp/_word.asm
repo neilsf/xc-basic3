@@ -1,7 +1,7 @@
 	PROCESSOR 6502
 	
 	; Compare two words on stack for equality
-	MAC cmpwordeq
+	MAC cmpwordeq ; @pull @push
 	IF !FPULL
 	pla
 	sta R2
@@ -29,7 +29,7 @@
 	ENDM
 	
 	; Compare two words on stack for inequality
-	MAC cmpwordneq
+	MAC cmpwordneq ; @pull @push
 	IF !FPULL
 	pla
 	sta R2
@@ -58,7 +58,7 @@
 	
 	; Compare two words on stack for less than
 	; older < newer
-	MAC cmpwordlt
+	MAC cmpwordlt ; @pull @push
 	IF !FPULL
 	pla
 	sta R0 + 1
@@ -85,7 +85,7 @@
 	
 	; Compare two words on stack for greater than or equal
 	; older >= newer
-	MAC cmpwordgte
+	MAC cmpwordgte ; @pull @push
 	IF !FPULL
 	pla
 	sta R0 + 1
@@ -112,7 +112,7 @@
 	
 	; Compare two words on stack for greater than
 	; older > newer
-	MAC cmpwordgt
+	MAC cmpwordgt ; @push
 	tsx
 	lda.wx stack+2
 	cmp.wx stack+4
@@ -141,7 +141,7 @@
 	
 	; Compare two words on stack for less than or equal
 	; older <= newer
-	MAC cmpwordlte
+	MAC cmpwordlte ; @pull @push
 	IF !FPULL
 	pla
 	sta R0 + 1

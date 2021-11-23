@@ -12,12 +12,18 @@
 	lda.wx stack+4
 	cmp.wx stack+1
 	bne .false
-	DS.B 6, $e8 ; 6x inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	ptrue
 	bne .q
 .false:
-	DS.B 6, $e8	; 6x inx	
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 .q
@@ -35,12 +41,18 @@
 	lda.wx stack+4
 	cmp.wx stack+1
 	bne .true
-	DS.B 6, $e8 ; 6x inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 	beq .q
 .true:
-	DS.B 6, $e8	; 6x inx	
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	ptrue
 .q
@@ -63,12 +75,18 @@
 	MAC cmplonglt ; @push
 	_lcomparison
 	bmi .true
-	DS.B 6, $e8 ; 6x inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 	beq .q
 .true:
-	DS.B 6, $e8 ; 6x inx	
+	txa
+	clc
+	adc #6
+	tax	
 	txs
 	ptrue
 .q
@@ -78,12 +96,18 @@
 	MAC cmplonggte ; @push
 	_lcomparison
 	bpl .true
-	DS.B 6, $e8 ; 6x inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 	beq .q
 .true:
-	DS.B 6, $e8 ; 6x inx	
+	txa
+	clc
+	adc #6
+	tax	
 	txs
 	ptrue
 .q
@@ -95,24 +119,25 @@
 	lda.wx stack+3
 	cmp.wx stack+6
 	lda.wx stack+2
-	cmp.wx stack+5
+	sbc.wx stack+5
 	lda.wx stack+1
 	sbc.wx stack+4
 	bvc .1
 	eor #$80
 .1
 	bmi .phf	
-	inx
-	inx
-	inx
-	inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	ptrue
 	bne .q
-.phf: inx
-	inx
-	inx
-	inx
+.phf:
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 .q
@@ -124,24 +149,25 @@
 	lda.wx stack+3
 	cmp.wx stack+6
 	lda.wx stack+2
-	cmp.wx stack+5
+	sbc.wx stack+5
 	lda.wx stack+1
 	sbc.wx stack+4
 	bvc .1
 	eor #$80
 .1
 	bmi .pht
-	inx
-	inx
-	inx
-	inx
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	pfalse
 	beq .q
-.pht: inx
-	inx
-	inx
-	inx
+.pht:
+	txa
+	clc
+	adc #6
+	tax
 	txs
 	ptrue
 .q

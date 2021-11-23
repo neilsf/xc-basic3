@@ -25,8 +25,8 @@ class IntermediateCode
         this.compiler = compiler;
         this.segments =  [
             PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
-            ROUTINE_SEGMENT : "routines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n" ~ getIncludes() ~ "\n    ; !!opt_end!!\n",
-            DATA_SEGMENT    : "data_start:\n",
+            ROUTINE_SEGMENT : "\n    ; !!opt_end!!\nroutines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n" ~ getIncludes() ~ "\n    ; !!opt_start!!\n",
+            DATA_SEGMENT    : "\n    ; !!opt_end!!\ndata_start:\n",
             VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
         ];
     }

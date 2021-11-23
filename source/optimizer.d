@@ -286,6 +286,8 @@ class RemoveStackOps: OptimizerPass
             }
             else if(line == "    ; !!opt_end!!") {
                 opt_enabled = false;
+                this.outCode ~= "FPUSH\tSET 0\n";
+                this.outCode ~= "FPULL\tSET 0\n";
                 continue;
             }
 

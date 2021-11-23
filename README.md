@@ -21,6 +21,7 @@ We need to fix as many bugs as possible to be able to have an official release. 
 
        git clone https://github.com/neilsf/xc-basic3.git
        cd xc-basic3
+       git submodule init
        git submodule update
     
 5. Compile:

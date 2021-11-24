@@ -165,7 +165,7 @@ class Factor : AbstractExpression
                 if(variable !is null) {
                     VariableAccess access = new VariableAccess(node, compiler, false);
                     // Todo make VariableAccess class return a proper address                    
-                    this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
+                    //this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
                     break;
                 }
 

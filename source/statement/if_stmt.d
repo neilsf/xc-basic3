@@ -66,11 +66,10 @@ class If_sa_stmt : Statement
         condition.eval();
         appendCode(to!string(condition));
         // This is trickier because we don't know if there's an ELSE at this point
-        appendCode("    IFCONST _EL_" ~ to!string(block.getId()) ~ "\n");
-        appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");
-        appendCode("    ELSE\n");
-        appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", 0\n");
+        appendCode("    IFNCONST _EL_" ~ to!string(block.getId()) ~ "\n");
+        appendCode("_EL_" ~ to!string(block.getId()) ~ " SET 0\n");
         appendCode("    ENDIF\n");
+        appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");        
     }
 }
 

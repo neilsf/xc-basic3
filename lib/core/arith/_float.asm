@@ -3,6 +3,7 @@
 	; Add top 2 floats on stack
 	MAC addfloat ; @pull @push
 	plfloattofac
+FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FADDT
@@ -12,6 +13,7 @@
 	; Subtract top 2 floats on stack
 	MAC subfloat ; @pull @push
 	plfloattofac
+FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FSUBT
@@ -21,6 +23,7 @@
 	; Multiply top 2 floats on stack
 	MAC mulfloat ; @pull @push
 	plfloattofac
+FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FMULTT
@@ -30,6 +33,7 @@
 	; Divide top 2 floats on stack
 	MAC divfloat ; @pull @push
 	plfloattofac
+FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FDIVT
@@ -39,6 +43,7 @@
 	; Modulo of top 2 floats on stack
 	MAC modfloat ; @pull @push
 	plfloattofac
+FPULL SET 0
 	plfloattoarg
 	import I_FMOD
 	jsr I_FMOD

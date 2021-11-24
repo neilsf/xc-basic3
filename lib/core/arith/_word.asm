@@ -180,7 +180,7 @@
 	
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
-	MAC rshiftword @pull
+	MAC rshiftword ; @pull
 	IF !FPULL
 	pla
 	ENDIF

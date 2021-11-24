@@ -164,12 +164,13 @@ class Factor : AbstractExpression
                 const Variable variable = this.compiler.getVars().findVisible(identifier);
                 if(variable !is null) {
                     VariableAccess access = new VariableAccess(node, compiler, false);
-                    // Todo make VariableAccess class return an address                    
-                    //this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
+                    // Todo make VariableAccess class return a proper address                    
+                    this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
                     break;
                 }
 
                 // Check if it's a label
+                import std.stdio; writeln("looking for " ~ identifier);
                 if(this.compiler.getLabels().exists(identifier)) {
                     this.asmCode = "    paddr " ~ this.compiler.getLabels().toAsmLabel(identifier);
                     break;

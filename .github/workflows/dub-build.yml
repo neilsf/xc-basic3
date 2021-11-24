@@ -28,7 +28,7 @@ jobs:
               shell: bash
 
             - name: Move executable
-              run: cp xcbasic3* bin/${{runner.os}}/
+              run: mv xcbasic3* bin/${{runner.os}}/
               shell: bash
 
             - name: Commit changes

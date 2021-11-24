@@ -1,5 +1,6 @@
 .dub
 /xcbasic3
+/xcbasic3.exe
 xc-basic3.so
 xc-basic3.dylib
 xc-basic3.dll

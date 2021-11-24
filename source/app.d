@@ -189,12 +189,12 @@ private void validateOptions(string[] args)
                 break;
 
             case "vic20":
+            case "vic20_3k":
             case "cplus4":
             case "c16":
                 startAddress = 0x1001;
                 break;
 
-            case "vic20_3k":
             case "vic20_8k":
             default:
                 startAddress = 0x1201;

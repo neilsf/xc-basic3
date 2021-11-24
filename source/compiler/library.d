@@ -33,5 +33,5 @@ public string getLibraryDir()
             }
         }
     }
-    return dirName(path) ~ "/lib";
+    return buildNormalizedPath(dirName(path) ~ "/../../lib");
 }

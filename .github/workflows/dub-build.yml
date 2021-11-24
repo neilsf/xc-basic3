@@ -1,0 +1,37 @@
+name: Build project
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+    build:
+        name: DUB Build
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest, macos-latest]
+                dc: [dmd-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Install D compiler
+              uses: dlang-community/setup-dlang@v1
+              with:
+                  compiler: ${{ matrix.dc }}
+
+            - name: Build
+              run: dub build --force -v
+
+            - name: Create bin dir
+              run: mkdir -p bin/${{runner.os}}
+              shell: bash
+
+            - name: Move executable
+              run: cp xcbasic64* bin/${{runner.os}}/
+              shell: bash
+
+            - name: Commit changes
+              uses: EndBug/add-and-commit@v7
+              with:
+               default_author: github_actions

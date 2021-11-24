@@ -6,7 +6,6 @@ xc-basic3.dll
 xc-basic3.a
 xc-basic3.lib
 xc-basic3-test-*
-*.exe
 *.o
 *.obj
 *.lst

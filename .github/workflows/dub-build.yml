@@ -31,6 +31,12 @@ jobs:
               run: cp xcbasic3* bin/${{runner.os}}/
               shell: bash
 
+            - name: Upload
+              uses: actions/upload-artifact@v1
+              with:
+                 name: compiled_${{ matrix.os }}
+                 path: bin/${{runner.os}}
+
             - name: Commit changes
               uses: EndBug/add-and-commit@v7.4.0
               with:

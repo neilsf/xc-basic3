@@ -128,7 +128,7 @@ void main(string[] args)
     version(Windows) {
         dasm = `"` ~ dasm ~ `"`;
         asmFilename = `"` ~ asmFilename ~ `"`;
-        outname = `"` ~ outname ~ `"`;
+        outName = `"` ~ outName ~ `"`;
         if(symbolfile != "") {
             symbolfile = `"` ~ symbolfile ~ `"`;
         }

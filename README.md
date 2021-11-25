@@ -21,11 +21,9 @@ or, for VIC-20:
        xcbasic3 example.bas example.prg --target=vic20
 
 6. If you get a compilation error and you think it's a bug, please report it on GitHub. Please include the full BASIC listing in your report.
-7. If the program crashes, try compiling without optimizing. In many cases it solves the problem and it means that the bug is in the optimizer:
+7. If the program crashes, try compiling without optimizing. In many cases it solves the problem and it means that the bug is in the optimizer.
 
        xcbasic3 example.bas example.prg --optimize=false
-
-8. I'll be very thankful if you report any errors here on GitHub.
 
 ## Compiling from source
 

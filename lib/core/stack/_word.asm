@@ -10,7 +10,12 @@
 	ldy #>{1}
 	ENDIF
 	ENDM
-		
+	
+	; Push address to stack
+	MAC paddr ; @push
+	pword {1}
+	ENDM
+	
 	; Push one word variable onto stack
 	MAC pwordvar ; @push
 	IF !FPUSH

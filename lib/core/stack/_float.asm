@@ -50,9 +50,9 @@
 	pla
 	sta {1} + 2
 	ELSE
-	sta {1}
+	stx {1}
 	sty {1} + 1
-	stx {1} + 2
+	sta {1} + 2
 	ENDIF
 	pla
 	sta {1} + 3
@@ -141,12 +141,12 @@
 	pla
 	sta FAC + 2
 	ELSE
-	sta FAC
+	sta FAC + 2
 	tya
 	sta FACSIGN
     ora #%10000000
     sta FAC + 1
-    stx FAC + 2
+	stx FAC
 	ENDIF
 	pla
 	sta FAC + 3

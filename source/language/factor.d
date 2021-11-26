@@ -170,9 +170,8 @@ class Factor : AbstractExpression
                 }
 
                 // Check if it's a label
-                import std.stdio; writeln("looking for " ~ identifier);
-                if(this.compiler.getLabels().exists(identifier)) {
-                    this.asmCode = "    paddr " ~ this.compiler.getLabels().toAsmLabel(identifier);
+                if(this.compiler.getLabels().exists(identifier, false)) {
+                    this.asmCode = "    paddr " ~ this.compiler.getLabels().getReferenceToLabel(identifier) ~ "\n";
                     break;
                 }
 

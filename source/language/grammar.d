@@ -141,7 +141,6 @@ struct GenericXCBASIC(TParseTree)
         rules["Reserved"] = toDelegate(&Reserved);
         rules["WS"] = toDelegate(&WS);
         rules["EOI"] = toDelegate(&EOI);
-        rules["NL"] = toDelegate(&NL);
         rules["Spacing"] = toDelegate(&Spacing);
     }
 
@@ -205,7 +204,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(NL), Line)), EOI), "XCBASIC.Program")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program")(p);
         }
         else
         {
@@ -213,7 +212,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(NL), Line)), EOI), "XCBASIC.Program"), "Program")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program"), "Program")(p);
                 memo[tuple(`Program`, p.end)] = result;
                 return result;
             }
@@ -224,12 +223,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(NL), Line)), EOI), "XCBASIC.Program")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(NL), Line)), EOI), "XCBASIC.Program"), "Program")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program"), "Program")(TParseTree("", false,[], s));
         }
     }
     static string Program(GetName g)
@@ -4292,42 +4291,6 @@ struct GenericXCBASIC(TParseTree)
     static string EOI(GetName g)
     {
         return "XCBASIC.EOI";
-    }
-
-    static TParseTree NL(TParseTree p)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.literal!("~")), pegged.peg.oneOrMore!(pegged.peg.keywords!("\r", "\n", "\r\n"))), "XCBASIC.NL")(p);
-        }
-        else
-        {
-            if (auto m = tuple(`NL`, p.end) in memo)
-                return *m;
-            else
-            {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.literal!("~")), pegged.peg.oneOrMore!(pegged.peg.keywords!("\r", "\n", "\r\n"))), "XCBASIC.NL"), "NL")(p);
-                memo[tuple(`NL`, p.end)] = result;
-                return result;
-            }
-        }
-    }
-
-    static TParseTree NL(string s)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.literal!("~")), pegged.peg.oneOrMore!(pegged.peg.keywords!("\r", "\n", "\r\n"))), "XCBASIC.NL")(TParseTree("", false,[], s));
-        }
-        else
-        {
-            forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.literal!("~")), pegged.peg.oneOrMore!(pegged.peg.keywords!("\r", "\n", "\r\n"))), "XCBASIC.NL"), "NL")(TParseTree("", false,[], s));
-        }
-    }
-    static string NL(GetName g)
-    {
-        return "XCBASIC.NL";
     }
 
     static TParseTree Spacing(TParseTree p)

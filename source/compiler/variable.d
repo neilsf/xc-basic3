@@ -574,8 +574,8 @@ class VariableAccess : AccessorInterface
             }
             else {
                 int varLen = variable.getSingleLength();
-                fastArrayAccess = variable.getLength() < 256;
-                string indexTypeName = fastArrayAccess ? Type.UINT8 : Type.UINT8;
+                fastArrayAccess = variable.getLength() <= 256;
+                string indexTypeName = fastArrayAccess ? Type.UINT8 : Type.UINT16;
                 Type indexType = compiler.getTypes.get(indexTypeName);
 
                 bool hasThird = false;

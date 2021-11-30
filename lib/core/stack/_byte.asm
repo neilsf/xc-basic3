@@ -60,7 +60,7 @@
 	
 	; Push byte of an array onto stack
 	; (indexed by a word)
-	MAC pbytearray ; @push
+	MAC pbytearray ; @pull @push
 	getaddr {1}
 	; Load and push
 	ldy #0

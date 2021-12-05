@@ -1,7 +1,7 @@
 module optimizer;
 
 import std.string, std.array, std.uni, std.regex, std.stdio, std.file;
-import std.algorithm.mutation, std.algorithm.searching;
+import std.algorithm;
 
 import compiler.library;
 
@@ -38,7 +38,7 @@ final class Optimizer: OptimizerPass
     this()
     {
         this.passes = [
-            //new ReplaceSequences(),
+            new ReplaceSequences(),
             new RemoveStackOps()
         ];
     }
@@ -61,53 +61,27 @@ final class Optimizer: OptimizerPass
  */
 class ReplaceSequences: OptimizerPass
 {
-    private string[string] sequences;
+    private string[] sequences;
 
-    private struct opcode {
+    private struct opCode {
         string op;
         string arg;
     }
 
-    private void fetch_sequences()
+    private void fetchSequences()
     {
-        string[] lines = splitLines(""); //TODO!!
-        bool fetch = false;
-        string macname;
-        foreach(line; lines) {
-            if(line == "\t; [OPT_MACRO]") {
-                fetch = true;
-                continue;
-            }
-
-            if(line == "\t; [/OPT_MACRO]") {
-                fetch = false;
-                continue;
-            }
-
-            if(!fetch) {
-                continue;
-            }
-
-            auto expr = regex(r"\tMAC\s([a-z_]+)");
-            auto match = matchFirst(line, expr);
-            if(match) {
-                macname = match[1];
-                continue;
-            }
-
-            expr = regex(r"\t;\s\>\s([a-z0-9_\+]+)");
-            match = matchFirst(line, expr);
-            if(match) {
-                this.sequences[match[1]] = macname;
-                continue;
-            }
+        immutable string libDir = getLibraryDir();
+        auto pusherR = ctRegex!(`MAC\s+opt_([a-zA-Z0-9_]+)\s+.+`);
+        immutable string contents = readText(libDir ~ "/opt/opt.asm");
+        foreach (c; matchAll(contents, pusherR)) {
+            this.sequences ~= c[1];
         }
     }
 
-    private bool match_sequences(string candidate)
+    private bool matchSequences(string candidate)
     {
         uint len = cast(uint)candidate.length;
-        foreach(item; this.sequences.byKey()) {
+        foreach(item; this.sequences) {
             if(len <= item.length && item[0..len] == candidate) {
                 return true;
             }
@@ -115,127 +89,107 @@ class ReplaceSequences: OptimizerPass
         return false;
     }
 
-    private bool full_match(string candidate)
+    private bool fullMatch(string candidate)
     {
-        foreach(item; this.sequences.byKey()) {
-            if(item == candidate) {
-                return true;
-            }
-        }
-        return false;
+        return canFind(this.sequences, candidate);
     }
 
-    private string stringify_sequence(opcode[] sequence)
+    private string stringifySequence(opCode[] sequence)
     {
-        string retval = "";
-        for(int i = 0; i < sequence.length; i++) {
-            if(i > 0) {
-                retval ~= "+";
-            }
-            retval ~= sequence[i].op;
-        }
-        return retval;
+        return sequence.map!(op => op.op).join("_");
     }
 
-    private string stringify_args(opcode[] sequence)
+    private string stringifyArgs(opCode[] sequence)
     {
-        string retval = "";
-        bool first = true;
-        for(int i = 0; i < sequence.length; i++) {
-            if(sequence[i].arg != "") {
-                if(!first) {
-                    retval ~= ", ";
-                }
-                retval ~= sequence[i].arg;
-                first = false;
-            }
-        }
-        return retval;
+        return sequence.filter!(op => op.arg != "").map!(op => op.arg).join(", ");
     }
 
-    private bool replace_seqs()
+    private int replaceSequences()
     {
-        bool opt_enabled = false;
-        bool replacements_made = false;
+        bool optEnabled = false;
+        int replacementsMade = false;
         string[] lines = splitLines(this.inCode);
-        opcode[] accumulated_sequence;
-        string[] accumulated_code;
+        opCode[] accumulatedSequence;
+        string[] accumulatedCode;
 
         this.outCode = "";
-        for(int i=0; i<lines.length; i++) {
+        for(int i = 0; i < lines.length; i++) {
             string line = lines[i];
-            if(line == "\t; !!opt_start!!") {
-                opt_enabled = true;
+            if(line == "    ; !!opt_start!!") {
+                optEnabled = true;
                 this.outCode ~= line ~ "\n";
                 continue;
             }
-            else if(line == "\t; !!opt_end!!") {
-                opt_enabled = false;
-                this.outCode ~= join(accumulated_code, "\n") ~ "\n" ~ line ~ "\n";
-                accumulated_sequence = [];
-                accumulated_code = [];
-                this.outCode ~= line ~ "\n";
-                continue;
-            }
-
-            if(!opt_enabled) {
+            else if(line == "    ; !!opt_end!!") {
+                optEnabled = false;
+                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
+                accumulatedSequence = [];
+                accumulatedCode = [];
                 this.outCode ~= line ~ "\n";
                 continue;
             }
 
-            auto expr = regex(r"\t([a-z0-9_]+)(\s.+)?");
+            if(!optEnabled) {
+                this.outCode ~= line ~ "\n";
+                continue;
+            }
+
+            auto expr = regex(r"\s+([a-z0-9_]+)(\s.+)?");
             auto match = matchFirst(line, expr);
-            if(match) {
-                accumulated_code ~= line;
+            if(match && !this.fullMatch(match[1])) {
+                accumulatedCode ~= line;
                 string opcodeStr = match[1];
                 string arg = "";
                 if(match.length > 2) {
                     arg = match[2];
                 }
 
-                opcode op = {opcodeStr, arg};
-                accumulated_sequence ~= op;
-                string seqstring = this.stringify_sequence(accumulated_sequence);
+                opCode op = {opcodeStr, arg};
+                accumulatedSequence ~= op;
+                string seqString = this.stringifySequence(accumulatedSequence);
 
-                if(this.match_sequences(seqstring)) {
-                    //stderr.writeln("match: " ~ seqstring);
-                    if(this.full_match(seqstring)) {
-                        //stderr.writeln("full match: " ~ seqstring);
-                        this.outCode ~= "\t" ~ this.sequences[seqstring] ~ " " ~ this.stringify_args(accumulated_sequence) ~ "\n";
-                        accumulated_sequence = [];
-                        accumulated_code = [];
-                        replacements_made = true;
+                if(this.matchSequences(seqString)) {
+                    //stderr.writeln("match: " ~ seqString);
+                    if(this.fullMatch(seqString)) {
+                        //stderr.writeln("replace: " ~ seqString);
+                        this.outCode ~= "    opt_" ~ seqString ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n";
+                        accumulatedSequence = [];
+                        accumulatedCode = [];
+                        replacementsMade++;
                     }
                 }
                 else {
-                    //stderr.writeln("no match: " ~ seqstring);
-                    this.outCode ~= accumulated_code[0] ~ "\n";
-                    accumulated_sequence = accumulated_sequence.remove(0);
-                    accumulated_code = accumulated_code.remove(0);
+                    //stderr.writeln("no match: " ~ seqString);
+                    this.outCode ~= accumulatedCode[0] ~ "\n";
+                    accumulatedSequence = accumulatedSequence.remove(0);
+                    accumulatedCode = accumulatedCode.remove(0);
                 }
             }
             else {
-                this.outCode ~= join(accumulated_code, "\n") ~ "\n" ~ line ~ "\n";
-                accumulated_sequence = [];
-                accumulated_code = [];
+                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
+                accumulatedSequence = [];
+                accumulatedCode = [];
             }
         }
 
-        return replacements_made;
+        return replacementsMade;
     }
 
     override void run()
     {
-        this.fetch_sequences();
-        bool success;
-        this.replace_seqs();
+        this.fetchSequences();
+        int replacementsMade;
+        int i = 0;
         do {
-            success = this.replace_seqs();
-            if(success) {
+            i++;
+            replacementsMade = this.replaceSequences();
+            import std.conv;
+            //stderr.writeln("Pass " ~ to!string(i) ~ ": " ~ to!string(replacementsMade));
+            if(replacementsMade) {
                 this.inCode = this.outCode;
             }
         }
-        while(success);
+        while(replacementsMade > 0);
     }
 }
 

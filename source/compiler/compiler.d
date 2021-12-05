@@ -170,6 +170,13 @@ final class Compiler
         ParseTree statements;
         bool hasStatement = false;
 
+        if(line.children.length > 1 && line.children[0].name == "XCBASIC.Asmline") {
+            writeln("--ASM--");
+            writeln(line);
+            writeln("--/ASM--");
+            return;
+        }
+
         if(line.children.length > 1) {
             statements = line.children[1];
             hasStatement = true;
@@ -277,10 +284,12 @@ final class Compiler
                             this.inProcedure = true;
                             string pName = stmt.children[0].matches[0] ~ "_";
                             string[] argTypes;
-                            foreach (ref arg; stmt.children[1].children) {
-                                argTypes ~= toLower(arg.children[1].matches.join());
+                            if(stmt.children.length > 0) {
+                                foreach (ref arg; stmt.children[1].children) {
+                                    argTypes ~= toLower(arg.children[1].matches.join());
+                                }
+                                pName ~= argTypes.join("_");
                             }
-                            pName ~= argTypes.join("_");
                             this.currentProcName = pName;
                         }
                         break;

@@ -48,13 +48,11 @@ SUB doplasma (sc AS WORD) STATIC
   DIM cursor AS WORD
   
   c1a = g_c1a : c1b = g_c1b
-  
   for i = 0 TO 24
     ybuf(i) = sntable(c1a) + sntable(c1b)
     c1a = c1a + 4
     c1b = c1b + 9
   NEXT
-  
   g_c1a = g_c1a + 3
   g_c1b = g_c1b - 5
   

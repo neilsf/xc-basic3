@@ -30,3 +30,5 @@
 	INCLUDE "mem/mem.asm"
 	; System library
 	INCLUDE "sys/sys.asm"
+	; Optimizer
+	INCLUDE "opt/opt.asm"

@@ -81,15 +81,23 @@ class For_stmt : Statement
         this.appendCode(to!string(initExp));
         this.appendCode(access.getPullCode());
 
-        // Create endValue variable and evaluate endValue
-        Variable limitVar = Variable.create("FORLIM" ~ to!string(block.getId()), counterVar.type, compiler, true);
-        limitVar.isPrivate = true;
-        compiler.getVars.add(limitVar, false);
+        // evaluate endValue and create endValue variable (if necessary)
+        string limitValue; bool isLimitConstant;
         limitExp.setExpectedType(counterVar.type);
         limitExp.eval();
-        this.appendCode(to!string(limitExp));
-        this.appendCode("    pl" ~ counterVar.type.name ~ "var " ~ limitVar.getAsmLabel() ~ "\n");
-
+        if(limitExp.isConstant() && counterVar.type.isIntegral()) {
+            limitValue = to!string(limitExp.getConstVal());
+            isLimitConstant = true;
+        } else {
+            Variable limitVar = Variable.create("FORLIM" ~ to!string(block.getId()), counterVar.type, compiler, true);
+            limitVar.isPrivate = true;
+            compiler.getVars.add(limitVar, false);
+            this.appendCode(to!string(limitExp));
+            this.appendCode("    pl" ~ counterVar.type.name ~ "var " ~ limitVar.getAsmLabel() ~ "\n");
+            limitValue = limitVar.getAsmLabel();
+            isLimitConstant = false;
+        }
+        
         Variable stepVar;
         if(stepPresent) {
             // Create stepValue variable and evaluate stepValue
@@ -107,7 +115,8 @@ class For_stmt : Statement
         immutable string blockId = to!string(block.getId());
         appendCode("_FOR_" ~ blockId ~ ":\n");
         appendCode("    for" ~ counterVar.type.name ~ " " ~ blockId ~ ", " ~ counterVar.getAsmLabel() ~ 
-                ", " ~ limitVar.getAsmLabel() ~ ", " ~ (stepPresent ? stepVar.getAsmLabel() : "\"_void_\"") ~ "\n");
+                ", " ~ limitValue ~ ", " ~ (stepPresent ? stepVar.getAsmLabel() : "\"_void_\"")
+                ~ ", " ~ (isLimitConstant ? "1" : "0") ~ "\n");
         
     }
 }

@@ -48,6 +48,7 @@ SUB doplasma (sc AS WORD) STATIC
   DIM cursor AS WORD
   
   c1a = g_c1a : c1b = g_c1b
+  
   for i = 0 TO 24
     ybuf(i) = sntable(c1a) + sntable(c1b)
     c1a = c1a + 4
@@ -84,7 +85,7 @@ SUB makecharset () STATIC
   DIM s AS BYTE
   DIM b AS BYTE
   
-  print "{CLR}"
+  print "{RED}{CLR}"
   textat 15,10,"loading..."
   
   FOR c = 0 TO 255
@@ -100,9 +101,9 @@ SUB makecharset () STATIC
 
 END SUB
 
-poke BORDER, 6 : poke BACKGR, 6
-memset COLOR, 1000, 0
+poke BORDER, 7 : poke BACKGR, 7
 call makecharset ()
+memset COLOR, 1000, 2
 loop:
   call doplasma(SC1)
   poke $d018, %10101000

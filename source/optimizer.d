@@ -134,7 +134,7 @@ class ReplaceSequences: OptimizerPass
                 continue;
             }
 
-            auto expr = regex(r"\s+([a-z0-9_]+)(\s.+)?");
+            auto expr = regex(r"\s+([a-zA-Z0-9_@]+)(\s.+)?");
             auto match = matchFirst(line, expr);
             if(match && !this.fullMatch(match[1])) {
                 accumulatedCode ~= line;
@@ -166,6 +166,7 @@ class ReplaceSequences: OptimizerPass
                 }
             }
             else {
+                //stderr.writeln("break: " ~ line);
                 this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
                 accumulatedSequence = [];
                 accumulatedCode = [];

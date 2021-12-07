@@ -29,7 +29,7 @@
 	ENDM
 	
 	; Entry of FOR loop (integer counter)
-	; Usage: forint <block id>, <counter_var>, <limit_var>, <step_var>
+	; Usage: forint <block id>, <counter_var>, <limit>, <step_var>, <is_limit_const>
 	MAC forint
 	IFCONST {4}
 	; Check if step is negative
@@ -37,20 +37,34 @@
 	; it is positive: do the regular comparison
 	bpl .cmp
 .neg
-	; compare counter var to limit var (downwards)
+	; compare counter var to limit (downwards)
+	IF {5} == 1 ; Limit is constant
+	lda {2}
+	cmp #<{3}
+	lda {2} + 1
+	sbc #>{3}
+	ELSE
 	lda {2}
 	cmp {3}
 	lda {2} + 1
 	sbc {3} + 1
+	ENDIF
 	bpl .enter					; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 	ENDIF
 .cmp
 	; compare counter var to limit var (upwards)
+	IF {5} == 1 ; Limit is constant
+	lda #<{3}
+	cmp {2}
+	lda #>{3}
+	sbc {2} + 1
+	ELSE
 	lda {3}
 	cmp {2}
 	lda {3} + 1
 	sbc {2} + 1
+	ENDIF
 	bpl .enter					; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 .enter
@@ -81,7 +95,7 @@
 	ENDM
 	
 	; Entry of FOR loop (long counter)
-	; Usage: forlong <block id>, <counter_var>, <limit_var>, <step_var>
+	; Usage: forlong <block id>, <counter_var>, <limit_var>, <step_var>, <is_limit_const>
 	MAC forlong
 	IFCONST {4}
 	; Check if step is negative
@@ -90,23 +104,41 @@
 	bpl .cmp
 .neg
 	; compare counter var to limit var (downwards)
+	IF {5} == 1 ; Limit is constant
+	lda {2}
+	cmp #<{3}
+	lda {2} + 1
+	sbc #>{3}
+	lda {2} + 2
+	sbc #[{3} >> 16]
+	ELSE
 	lda {2}
 	cmp {3}
 	lda {2} + 1
 	sbc {3} + 1
 	lda {2} + 2
 	sbc {3} + 2
+	ENDIF
 	bpl .enter				; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 	ENDIF
 .cmp
 	; compare counter var to limit var (upwards)
+	IF {5} == 1 ; Limit is constant
+	lda #<{3}
+	cmp {2}
+	lda #>{3}
+	sbc {2} + 1
+	lda #[{3} >> 16]
+	sbc {2} + 2
+	ELSE
 	lda {3}
 	cmp {2}
 	lda {3} + 1
 	sbc {2} + 1
 	lda {3} + 2
 	sbc {2} + 2
+	ENDIF
 	bpl .enter					; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 .enter
@@ -141,12 +173,20 @@
 	jmp _FOR_{1}
 	ENDM
 	
+	; Usage: forword <block id>, <counter_var>, <limit_var>, <step_var>, <is_limit_const>
 	MAC forword
 	; compare index to max
+	IF {5} == 1 ; Constant limit
+	lda #<{3}
+	cmp {2}
+	lda #>{3}
+	sbc {2} + 1
+	ELSE
 	lda {3}
 	cmp {2}
 	lda {3} + 1
 	sbc {2} + 1
+	ENDIF
 	bpl .enter					; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 .enter
@@ -180,10 +220,14 @@
 	ENDM
 	
 	; Entry of FOR loop (byte index)
-	; Usage: forb <block id>, <counter_var>, <limit_var>
+	; Usage: forbyte <block id>, <counter_var>, <limit_var>, <step_var>, <is_limit_const>
 	MAC forbyte
 	; compare index to max
+	IF {5} == 1
+	lda #{3}
+	ELSE
 	lda {3}
+	ENDIF
 	cmp {2}
 	bcs .enter
 	;index is gte, exit loop

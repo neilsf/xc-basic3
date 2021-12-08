@@ -307,11 +307,11 @@ STR_CONCAT	SUBROUTINE
 	plstringvar STRING_BUFFER2, 96
 	; Pull string1
 	plstringvar STRING_BUFFER1, 96
-	; Push string1
-	pstringvar STRING_BUFFER1
+	; Push string2
+	pstringvar STRING_BUFFER2
 	; Adjust pointer and push string2
 	inc SP
-	pstringvar STRING_BUFFER2
+	pstringvar STRING_BUFFER1
 	; Calculate and write total length
 	lda STRING_BUFFER1
 	clc
@@ -319,6 +319,7 @@ STR_CONCAT	SUBROUTINE
 	ldx SP
 	inx
 	sta STRING_WORKAREA,x
+	rts
 	ENDIF
 	
 	; Returns pointer (XY) and length (A) to null-terminated

@@ -1,6 +1,6 @@
 module optimizer;
 
-import std.string, std.array, std.uni, std.regex, std.stdio, std.file;
+import std.string, std.array, std.uni, std.regex, std.stdio, std.file, std.path;
 import std.algorithm;
 
 import compiler.library;
@@ -72,7 +72,7 @@ class ReplaceSequences: OptimizerPass
     {
         immutable string libDir = getLibraryDir();
         auto pusherR = ctRegex!(`MAC\s+opt_([a-zA-Z0-9_]+)\s+.+`);
-        immutable string contents = readText(libDir ~ "/opt/opt.asm");
+        immutable string contents = readText(buildNormalizedPath(libDir ~ "/opt/opt.asm"));
         foreach (c; matchAll(contents, pusherR)) {
             this.sequences ~= c[1];
         }

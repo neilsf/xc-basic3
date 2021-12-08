@@ -11,7 +11,7 @@
 	sta .l + 1
 	sty .l + 2
 	ENDIF
-.l  lda $0000
+.l  lda $FFFF
 	IF !FPUSH
 	pha
 	ENDIF

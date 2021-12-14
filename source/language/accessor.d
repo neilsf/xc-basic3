@@ -82,7 +82,7 @@ class AccessorFactory
             return new VariableAccess(node, compiler);
         }
 
-
+        compiler.displayError("Unknown identifier: " ~ node.matches[0]);
         assert(0);
     }
 }

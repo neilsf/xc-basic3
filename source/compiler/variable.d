@@ -647,6 +647,9 @@ class VariableAccess : AccessorInterface
       
         if(cast(ThisVariable)variable) {
             asmCode ~= "    " ~ direction ~ "relative" ~ typeName ~ "var " ~ to!string(addressOffset);
+            if(!this.getType().isPrimitive) {
+                asmCode ~= ", " ~ to!string(this.getType().length);
+            }
         }
         else {
             asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName 

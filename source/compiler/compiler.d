@@ -139,8 +139,7 @@ final class Compiler
         size_t charPos = this.currentNode.begin;
         SourceFile file = SourceFile.findInContainer(this.currentFileName);
         immutable ulong lineNo = count(file.getSourceCode()[0..charPos], newline) + 1;
-        stderr.writeln(this.currentFileName ~ ":" ~ to!string(lineNo) ~ "." ~ 0
-             ~ msgType ~ ": " ~ msg
+        stderr.writeln(this.currentFileName ~ ":" ~ to!string(lineNo) ~ ".0: " ~ msgType ~ ": " ~ msg
         );
         if(!isRecoverable) {
             exit(1);
@@ -284,11 +283,13 @@ final class Compiler
                             this.inProcedure = true;
                             string pName = stmt.children[0].matches[0] ~ "_";
                             string[] argTypes;
-                            if(stmt.children.length > 0) {
-                                foreach (ref arg; stmt.children[1].children) {
-                                    argTypes ~= toLower(arg.children[1].matches.join());
+                            if(stmt.children.length > 1) {
+                                if(stmt.children[1].name == "XCBASIC.VarList") {
+                                    foreach (ref arg; stmt.children[1].children) {
+                                        argTypes ~= toLower(arg.children[1].matches.join());
+                                    }
+                                    pName ~= argTypes.join("_");
                                 }
-                                pName ~= argTypes.join("_");
                             }
                             this.currentProcName = pName;
                         }

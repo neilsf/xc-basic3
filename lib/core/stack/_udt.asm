@@ -122,7 +122,7 @@
 	; Push relative udt variable (e.g this.something)
 	; Relative address of var in {1}
 	; Type length in {2}
-	MAC prelativewordvar
+	MAC prelativeudtvar
 	ldy #{1}
 .loop
 	lda (TH),y
@@ -132,11 +132,11 @@
 	bcc .loop
 	ENDM
 	
-	; Pull int value and store in relative word variable
+	; Pull udt value and store in relative udt variable
 	; (e.g this.something)
 	; Relative address of var in {1}
 	; Type length in {2}
-	MAC plrelativewordvar
+	MAC plrelativeudtvar
 	ldy #[{1} + {2} - 1]
 .loop
 	pla

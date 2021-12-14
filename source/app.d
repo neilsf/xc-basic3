@@ -154,6 +154,7 @@ void main(string[] args)
         stderr.writeln("** ERROR ** There has been an error while trying to execute DASM, please see the bellow message.");
         stderr.writeln("Tried to execute: " ~ cmd);
         stderr.writeln(dasm_cmd.output);
+        stderr.writeln("Please submit this bug to https://github.com/neilsf/xc-basic3/issues");
         exit(1);
     }
     else {

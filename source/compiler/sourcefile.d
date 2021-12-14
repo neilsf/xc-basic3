@@ -1,6 +1,7 @@
 module compiler.sourcefile;
 
 import std.conv, std.file, std.path, std.stdio, core.stdc.stdlib, pegged.grammar;
+import std.string;
 
 import language.grammar;
 import compiler.library;
@@ -91,12 +92,9 @@ class SourceFile
         this.ast = XCBASIC(this.sourceCode);
         // Parser error, display error msg and exit
         if(!this.ast.successful) {
-            debug(1) {
-                stderr.writeln(ast);
-            }
             auto errorFormatter = delegate(Position pos, string left, string right, const ParseTree p) {
                 return this.fileName ~ ":" ~ to!string(pos.line + 1) ~ "." ~ to!string(pos.col) 
-                ~ ": syntax error near '" ~ right
+                ~ ": syntax error near '" ~ right.splitLines()[0]
                 ~ "' in file " ~ this.fileName ~ " in line "
                 ~ to!string(pos.line + 1);
             };

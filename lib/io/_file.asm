@@ -74,6 +74,7 @@
 	dex
 	bne .loop
 	kerncall KERNAL_CLRCHN
+.over
     rts
 	ENDM
 	

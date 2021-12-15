@@ -94,4 +94,10 @@ struct Stack
         }
         return null;
     }
+
+    /** Returns wether the stack is empty */
+    bool isEmpty()
+    {
+        return this.elements.length == 0;
+    }
 }

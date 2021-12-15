@@ -329,6 +329,10 @@ final class Compiler
         this.currentFileName = file.getFileName();
         this.currentFileId = file.getFileId();
         this.processAst(file.getAst());
+        // Check for unclosed blocks
+        if(!blockStack.isEmpty()) {
+            this.displayError("Premature end of file (unclosed " ~ blockStack.top().getTypeString() ~ " block)");
+        }
     }
 
     /** Recursively walks through the AST and passes each line for further processing */

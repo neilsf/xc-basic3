@@ -58,20 +58,14 @@ class Input_stmt : Statement
                 compiler.displayError("Not a variable");
             }
             Variable var = access.getVariable();
-            
+            if(var.type.name != Type.STRING) {
+                compiler.displayError("Only strings are allowed in INPUT statement, got " ~ var.type.name);
+            }
+
             if(hashStatement) {
-                if(var.type.name == Type.STRING) {
-                    appendCode("    input_hash_str\n");
-                }
-                else {
-                    const int length = var.getLength();
-                    appendCode("    input_hash " ~ to!string(length) ~ "\n");
-                }
+                appendCode("    input_hash\n");
             }
             else {
-                if(var.type.name != Type.STRING) {
-                    compiler.displayError("Variable of type " ~ var.type.name ~ " cannot be used in an INPUT statement");
-                }
                 appendCode("    input\n");
                 if(args.matches[$-1] != ";") {
                     appendCode("    printnl\n");

@@ -56,12 +56,8 @@
 	ENDM
 	
 	; INPUT#
-	; Logical file# on stack
 	; Output on string stack
-	MAC input_hash ; @pull
-	IF !FPULL
-	pla
-	ENDIF
+	MAC input_hash
 	import I_STRREAD
 	jsr I_STRREAD
 	ENDM
@@ -209,19 +205,27 @@ I_BINREAD SUBROUTINE
 	; logical file no in A
 	IFCONST I_STRREAD_IMPORTED
 I_STRREAD SUBROUTINE
-	tax
-	kerncall KERNAL_CHKIN
-	lda #0
-	sta R0 ; Quote off
 	ldx #0
+	stx R0 ; Quote off
 .loop
 	kerncall KERNAL_CHRIN
 	; Is it <EOL> ?
 	cmp #$0d
 	beq .over
-	; Is it ',' ?
+	; Is it '"' ?
+	cmp #$22
+	bne .1
+	lda R0
+	eor #$ff
+	sta R0
+	jmp .loop
+.1
+	; Is it ',' and quote off ?
 	cmp #$2c
+	bne .2
+	ldy R0
 	beq .over
+.2
 	sta [STRING_BUFFER1 + 1],x
 	inx
 	cpx #95

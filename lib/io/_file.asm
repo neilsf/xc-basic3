@@ -55,65 +55,11 @@
 	ENDIF
 	ENDM
 	
-	; INPUT# (fixed size values)
-	; Logical file# on stack
-	; Number of bytes in {1}
-	; Output on stack
-	MAC input_hash ; @pull
-	IF !FPULL
-	pla
-	ENDIF
-	tax
-	kerncall KERNAL_CHKIN
-	ldx #{1}
-.loop
-	kerncall KERNAL_CHRIN
-	pha
-	kerncall KERNAL_READST
-	bne .over
-	dex
-	bne .loop
-	kerncall KERNAL_CLRCHN
-.over
-    rts
-	ENDM
-	
-	; INPUT# (strings)
-	; Logical file# on stack
+	; INPUT#
 	; Output on string stack
-	MAC input_hash_str; @pull
-	IF !FPULL
-	pla
-	ENDIF
-	tax
-	kerncall KERNAL_CHKIN
-	kerncall KERNAL_CHRIN
-	sta R0 ; length
-	lda SP
-	sec
-	sbc R0
-	; a holds start
-	sta R2
-	inc R2
-	sta SP
-	dec SP
-	lda #>STRING_WORKAREA
-	sta R2 + 1
-	; (R2) holds pointer
-	ldy #0
-.loop
-	sty R4 ; tmp save
-	kerncall KERNAL_CHRIN
-	ldy R4
-	sta (R2),y
-	kerncall KERNAL_READST
-	bne .over
-	iny
-	cpy R0
-	bne .loop
-.over
-	kerncall KERNAL_CLRCHN
-    rts
+	MAC input_hash
+	import I_STRREAD
+	jsr I_STRREAD
 	ENDM
 	
 	; Set file as default input
@@ -198,35 +144,18 @@ I_BINREAD SUBROUTINE
 	rts
 	ENDIF
 	
-	; PRINT# (string)
-	; logical file# on stack
-	; string on string stack
-	; {1} = 1 : this is the last string in block
-	MAC print_hash_str; @pull
-	IF !FPULL
-	pla
-	ENDIF
-	tax
-	kerncall KERNAL_CHKIN
-	ldx SP
-	inx
-	lda STRING_WORKAREA,x
-	sta R2
+	; Output single character to opened file
+	; {1} - char
+	MAC chrout
+	lda #{1}
+	kerncall KERNAL_CHROUT
+	ENDM
 	
-	inx
-	stx R0
-	lda #>STRING_WORKAREA
-	sta R0 + 1
-	ldy #0
-.loop
-	lda (R0),y
-	kerncall KERNAL_CHROUT
-	iny
-	cpy R2
-	bne .loop
-.q
-	kerncall KERNAL_CHROUT
-	rts
+	; PRINT# (string)
+	; string on string stack
+	MAC print_hash
+	import I_STRWRITE
+	jsr I_STRWRITE
 	ENDM
 	
 	; Load routine
@@ -271,3 +200,63 @@ I_BINREAD SUBROUTINE
 	jmp RUNTIME_ERROR
 .q:
 	ENDM
+	
+	; Read string from file
+	; logical file no in A
+	IFCONST I_STRREAD_IMPORTED
+I_STRREAD SUBROUTINE
+	ldx #0
+	stx R0 ; Quote off
+.loop
+	kerncall KERNAL_CHRIN
+	; Is it <EOL> ?
+	cmp #$0d
+	beq .over
+	; Is it '"' ?
+	cmp #$22
+	bne .1
+	lda R0
+	eor #$ff
+	sta R0
+	jmp .loop
+.1
+	; Is it ',' and quote off ?
+	cmp #$2c
+	bne .2
+	ldy R0
+	beq .over
+.2
+	sta [STRING_BUFFER1 + 1],x
+	inx
+	cpx #95
+	bne .loop
+.over	
+	stx STRING_BUFFER1
+	pstringvar STRING_BUFFER1
+	rts
+	ENDIF
+	
+	; Write string to file
+	; Logical file no in X
+	; String on string stack
+	IFCONST I_STRWRITE_IMPORTED
+I_STRWRITE SUBROUTINE
+	ldx SP
+	inx
+	lda STRING_WORKAREA,x
+	sta R2
+	inx
+	stx R0
+	lda #>STRING_WORKAREA
+	sta R0 + 1
+	ldy #0
+.loop
+	lda (R0),y
+	kerncall KERNAL_CHROUT
+	iny
+	cpy R2
+	bne .loop
+.q
+	kerncall KERNAL_CHROUT
+	rts
+	ENDIF

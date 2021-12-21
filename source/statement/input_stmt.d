@@ -29,6 +29,8 @@ class Input_stmt : Statement
             fileIdExp.setExpectedType(compiler.getTypes().get(Type.UINT8));
             fileIdExp.eval();
             appendCode(fileIdExp.toString());
+            appendCode("    plbytevar R9\n");
+            appendCode("    chkin R9\n");
         }
         else {
             hashStatement = false;
@@ -49,38 +51,41 @@ class Input_stmt : Statement
         if(args.children.length < varIndex) {
             compiler.displayError("Syntax error");
         }
-        try {
-            VariableAccess access = new VariableAccess(args.children[varIndex], compiler);
-            if(access.isConstant()) {
-                compiler.displayError("Can't use a constant in an INPUT statement");
-            }
-            if(access.isFunctionCall()) {
-                compiler.displayError("Not a variable");
-            }
-            Variable var = access.getVariable();
-            
-            if(hashStatement) {
-                if(var.type.name == Type.STRING) {
-                    appendCode("    input_hash_str\n");
+        ParseTree accessorList = args.children[varIndex];
+        if(!hashStatement && accessorList.children.length > 1) {
+            compiler.displayError("INPUT currently only supports one variable");
+        }
+        foreach (accessor; accessorList.children) {
+            try {
+                VariableAccess access = new VariableAccess(accessor, compiler);
+                if(access.isConstant()) {
+                    compiler.displayError("Can't use a constant in an INPUT statement");
+                }
+                if(access.isFunctionCall()) {
+                    compiler.displayError("Not a variable");
+                }
+                Variable var = access.getVariable();
+                if(var.type.name != Type.STRING) {
+                    compiler.displayError("Only strings are allowed in INPUT statement, got " ~ var.type.name);
+                }
+
+                if(hashStatement) {
+                    appendCode("    input_hash\n");
                 }
                 else {
-                    const int length = var.getLength();
-                    appendCode("    input_hash " ~ to!string(length) ~ "\n");
+                    appendCode("    input\n");
+                    if(args.matches[$-1] != ";") {
+                        appendCode("    printnl\n");
+                    }
                 }
+                appendCode(access.getPullCode());
             }
-            else {
-                if(var.type.name != Type.STRING) {
-                    compiler.displayError("Variable of type " ~ var.type.name ~ " cannot be used in an INPUT statement");
-                }
-                appendCode("    input\n");
-                if(args.matches[$-1] != ";") {
-                    appendCode("    printnl\n");
-                }
-            }
-            appendCode(access.getPullCode());
+            catch (Exception e) {
+                compiler.displayError(e.msg);
+            }    
         }
-        catch (Exception e) {
-            compiler.displayError(e.msg);
+        if(hashStatement) {
+            appendCode("    clrchn\n");
         }
     }
 }

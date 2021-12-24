@@ -1,6 +1,6 @@
 module compiler.petscii;
 
-import std.string, std.conv, std.array, std.algorithm.searching;
+import std.string, std.conv, std.array, std.algorithm.searching, std.regex;
 import std.regex;
 
 private char[] petscii = [
@@ -27,66 +27,66 @@ private string[string] escapeSequences;
 static this()
 {
     escapeSequences = [
-    "{CLR}":        "\x93",
-    "{CLEAR}":      "\x93",
-    "{HOME}":       "\x13",
-    "{INSERT}":     "\x94",
-    "{INS}":        "\x94",
-    "{DELETE}":     "\x14",
-    "{DEL}":        "\x14",
-    "{CR}":         "\x0d",
-    "{RETURN}":     "\x0d",
-    "{REV_ON}":     "\x12",
-    "{REVERSE ON}": "\x12",
-    "{REV_OFF}":    "\x92",
-    "{REVERSE OFF}":"\x92",
-    "{CRSR_UP}":    "\x91",
-    "{UP}":         "\x91",
-    "{CRSR_DOWN}":  "\x11",
-    "{DOWN}":       "\x11",
-    "{CRSR_LEFT}":  "\x9d",
-    "{LEFT}":       "\x9d",
-    "{CRSR_RIGHT}": "\x1d",
-    "{RIGHT}":      "\x1d",
-    "{SPACE}":      "\x20",
-    "{WHITE}":      "\x05",
-    "{RED}":        "\x1c",
-    "{GREEN}":      "\x1e",
-    "{BLUE}":       "\x1f",
-    "{ORANGE}":     "\x81",
-    "{BLACK}":      "\x90",
-    "{BROWN}":      "\x95",
-    "{LIGHT_RED}":  "\x96",
-    "{PINK}":       "\x96",
-    "{DARK_GRAY}":  "\x97",
-    "{DARK GRAY}":  "\x97",
-    "{MED_GRAY}":   "\x98",
-    "{GRAY}":       "\x98",
-    "{LIGHT_GREEN}":"\x99",
-    "{LIGHT GREEN}":"\x99",
-    "{LIGHT_BLUE}": "\x9a",
-    "{LIGHT BLUE}": "\x9a",
-    "{LIGHT_GRAY}": "\x9b",
-    "{LIGHT GRAY}": "\x9b",
-    "{PURPLE}":     "\x9c",
-    "{YELLOW}":     "\x9e",
-    "{CYAN}":       "\x9f",
-    "{LOWER_CASE}": "\x0e",
-    "{UPPER_CASE}": "\x8e",
-    "{F1}":         "\x85",
-    "{F2}":         "\x86",
-    "{F3}":         "\x87",
-    "{F4}":         "\x88",
-    "{F5}":         "\x89",
-    "{F6}":         "\x8a",
-    "{F7}":         "\x8b",
-    "{F8}":         "\x8c",
-    "{POUND}":      "\x5c",
-    "{ARROW UP}":   "\x5e",
-    "{ARROW_UP}":   "\x5e",
-    "{ARROW LEFT}": "\x5f",
-    "{ARROW_LEFT}": "\x5f",
-    "{PI}":         "\xff"
+    "CLR":        "\x93",
+    "CLEAR":      "\x93",
+    "HOME":       "\x13",
+    "INSERT":     "\x94",
+    "INS":        "\x94",
+    "DELETE":     "\x14",
+    "DEL":        "\x14",
+    "CR":         "\x0d",
+    "RETURN":     "\x0d",
+    "REV_ON":     "\x12",
+    "REVERSE ON": "\x12",
+    "REV_OFF":    "\x92",
+    "REVERSE OFF":"\x92",
+    "CRSR_UP":    "\x91",
+    "UP":         "\x91",
+    "CRSR_DOWN":  "\x11",
+    "DOWN":       "\x11",
+    "CRSR_LEFT":  "\x9d",
+    "LEFT":       "\x9d",
+    "CRSR_RIGHT": "\x1d",
+    "RIGHT":      "\x1d",
+    "SPACE":      "\x20",
+    "WHITE":      "\x05",
+    "RED":        "\x1c",
+    "GREEN":      "\x1e",
+    "BLUE":       "\x1f",
+    "ORANGE":     "\x81",
+    "BLACK":      "\x90",
+    "BROWN":      "\x95",
+    "LIGHT_RED":  "\x96",
+    "PINK":       "\x96",
+    "DARK_GRAY":  "\x97",
+    "DARK GRAY":  "\x97",
+    "MED_GRAY":   "\x98",
+    "GRAY":       "\x98",
+    "LIGHT_GREEN":"\x99",
+    "LIGHT GREEN":"\x99",
+    "LIGHT_BLUE": "\x9a",
+    "LIGHT BLUE": "\x9a",
+    "LIGHT_GRAY": "\x9b",
+    "LIGHT GRAY": "\x9b",
+    "PURPLE":     "\x9c",
+    "YELLOW":     "\x9e",
+    "CYAN":       "\x9f",
+    "LOWER_CASE": "\x0e",
+    "UPPER_CASE": "\x8e",
+    "F1":         "\x85",
+    "F2":         "\x86",
+    "F3":         "\x87",
+    "F4":         "\x88",
+    "F5":         "\x89",
+    "F6":         "\x8a",
+    "F7":         "\x8b",
+    "F8":         "\x8c",
+    "POUND":      "\x5c",
+    "ARROW UP":   "\x5e",
+    "ARROW_UP":   "\x5e",
+    "ARROW LEFT": "\x5f",
+    "ARROW_LEFT": "\x5f",
+    "PI":         "\xff"
     ];
 }
 
@@ -95,49 +95,64 @@ private char asciiToPetscii(char asciiChar)
     return petscii[asciiChar];
 }
 
-private char[] replacePetsciiEscapes(string s)
+private string asciiStringToPetsciiString(string asciiString)
 {
-    string ret = s.dup;
-    foreach(key, value; escapeSequences) {
-        ret = replace(ret, key, value);
-    }
-    return ret.dup;
-}
-
-private char[] replaceNumericEscapes(char[] s) {
-    char[] r;
-    bool esc = false;
-    string num = "";
-    for (ubyte i = 0; i < s.length; i++) {
-        if(!esc && s[i] != '{' && s[i] != '}') {
-            r ~= s[i];
+    char[] petsciiString;
+    bool escaped = false;
+    for(int i = 0; i < asciiString.length; i++) {
+        char curChar = asciiString[i];
+        if(curChar == '{') {
+            escaped = true;
+            petsciiString ~= curChar;
         }
-        else if(s[i] == '{') {
-            esc = true;
-        }
-        else if(s[i] == '}') {
-            r ~= to!ubyte(num);
-            esc = false;
-            num = "";
+        else if(curChar == '}') {
+            escaped = false;
+            petsciiString ~= curChar;
         }
         else {
-            num = num ~ to!string(s[i]);
+            if(escaped) {
+                petsciiString ~= curChar;
+            } else {
+                petsciiString ~= asciiToPetscii(curChar);
+            }
         }
     }
-    
-    return r;
+    return to!string(petsciiString);
 }
 
-/** Translates ASCII string to PETSCII HEX series */
+private string replacerFn(Captures!(string) m)
+{
+    ubyte chr;
+    string seq = m[0][1..$-1];
+    if(isNumeric(seq)) {
+        try {
+            chr = to!ubyte(seq); 
+            return [chr];
+        } catch(Exception e) {
+            return m.hit;
+        }
+    }
+    else {
+        string ret = escapeSequences.get(toUpper(seq), "");
+        return ret == "" ? m.hit : ret;
+    }
+}
+
+private string replaceEscapes(string input)
+{    
+    return replaceAll!(replacerFn)(input, regex(`\x7b([a-zA-Z0-9]+)\x7d`));
+}
+
+/** Translates ASCII string to PETSCII HEX expression */
 string asciiToPetsciiHex(string asciiString, bool newline = true)
 {
-    char[] asciiRepl = replaceNumericEscapes(replacePetsciiEscapes(asciiString));
+    string asciiRepl = replaceEscapes(asciiStringToPetsciiString(asciiString));
     immutable ulong length = asciiRepl.length + (newline ? 1 : 0);
     string hex = "HEX " ~ rightJustify(to!string(length, 16), 2, '0') ~ " ";
 
     int counter = 0;
     for(ubyte i = 0; i < asciiRepl.length; i++) {
-        hex ~= rightJustify(to!string(to!int(asciiToPetscii(asciiRepl[i])), 16), 2, '0') ~ " ";
+        hex ~= rightJustify(to!string(to!int(asciiRepl[i]), 16), 2, '0') ~ " ";
         counter++;
         if(counter == 16 && (i + 1 < asciiRepl.length)) {
             hex ~= "\n\tHEX ";
@@ -151,56 +166,3 @@ string asciiToPetsciiHex(string asciiString, bool newline = true)
     
     return hex;
 }
-/*
-string ascii_to_screencode_hex(string asciiString)
-{
-    string hex = "HEX ";
-    int counter=0;
-    for(ubyte i=0; i<asciiS
-tring.length; i++) {
-        hex ~= rightJustify(to!string(petscii_to_screencode(ascii_to_petscii(asciiS
-    tring[i])), 16), 2, '0') ~ " ";
-        counter++;
-        if(counter == 16 && i < asciiS
-    tring.length-1) {
-            hex ~= "\n\tHEX ";
-            counter = 0;
-        }
-    }
-    hex ~= "00";
-    return hex;
-}
-
-int petscii_to_screencode(ubyte petscii_code)
-{
-    if(petscii_code < 32) {
-        return petscii_code + 128;
-    }
-
-    if(petscii_code < 64) {
-        return petscii_code;
-    }
-
-    if(petscii_code < 96) {
-        return petscii_code - 64;
-    }
-
-    if(petscii_code < 128) {
-        return petscii_code - 32;
-    }
-
-    if(petscii_code < 160) {
-        return petscii_code + 64;
-    }
-
-    if(petscii_code < 192) {
-        return petscii_code - 64;
-    }
-
-    if(petscii_code < 255) {
-        return petscii_code - 128;
-    }
-
-    return petscii_code - 94;
-}
-*/

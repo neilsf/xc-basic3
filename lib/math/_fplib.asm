@@ -1,6 +1,7 @@
 ; ======================================================
 ; MS BASIC FLOATING POINT ROUTINES
-; https://github.com/mist64/msbasic/blob/master/float.s
+; https://github.com/mist64/msbasic
+; License: 2-clause BSD
 ; ======================================================
 
 CONFIG_CBM_ALL EQU 1

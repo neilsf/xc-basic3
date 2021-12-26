@@ -420,6 +420,17 @@ NUCLEUS_DIVU24	SUBROUTINE
 .divisor 		EQU R7
 .remainder 		EQU R0
 .pztemp 	 	EQU R3
+
+	lda .divisor
+	bne .ok
+	lda .divisor + 1
+	bne .ok
+	lda .divisor + 2
+	bne .ok
+	import I_RUNTIME_ERROR
+	lda #ERR_DIVZERO
+	jmp RUNTIME_ERROR
+.ok
 	lda #0
 	sta .remainder
 	sta .remainder + 1

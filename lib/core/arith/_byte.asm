@@ -96,6 +96,11 @@
 	IF !FPULL
 	pla
 	ENDIF
+	bne .ok
+	lda #ERR_DIVZERO
+	import I_RUNTIME_ERROR
+	jmp RUNTIME_ERROR
+.ok
 	sta R1
 	pla
 	sta R0

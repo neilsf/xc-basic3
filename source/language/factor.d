@@ -157,33 +157,23 @@ class Factor : AbstractExpression
             break;
 
             case "XCBASIC.Address":
-                ParseTree v = factor;
-                immutable string identifier = join(v.children[0].matches);             
-                
-                // First check if it's a variable
-                const Variable variable = this.compiler.getVars().findVisible(identifier);
-                if(variable !is null) {
-                    VariableAccess access = new VariableAccess(node, compiler, false);
-                    // Todo make VariableAccess class return a proper address                    
-                    //this.asmCode = "    paddr " ~ variable.getAsmLabel() ~ "\n";
-                    break;
+                // First check if it's a variable or routine call
+                try {
+                    AccessorFactory af = new AccessorFactory(factor.children[0], compiler); 
+                    AccessorInterface accessor = af.getAccessor();
+                    this.asmCode = accessor.getPushAddressCode();
                 }
-
-                // Check if it's a label
-                if(this.compiler.getLabels().exists(identifier, false)) {
-                    this.asmCode = "    paddr " ~ this.compiler.getLabels().getReferenceToLabel(identifier) ~ "\n";
-                    break;
+                catch(Exception e) {
+                    // No, maybe a label
+                    ParseTree v = factor.children[0];
+                    immutable string identifier = join(v.children[0].matches);
+                    if(this.compiler.getLabels().exists(identifier, false)) {
+                        this.asmCode = "    paddr " ~ this.compiler.getLabels().getReferenceToLabel(identifier) ~ "\n";
+                    } else {
+                        // Not a label, we give up
+                        compiler.displayError(e.msg);
+                    }
                 }
-
-                // TODO implement the rest
-/*
-                if(this.program.procExists(varname)) {
-                    // a procedure
-                    lbl = this.program.findProcedure(varname).getLabel();
-                    this.asmcode ~= "    paddr " ~ lbl ~ "\n";
-                }
-*/
-
             break;
 
             case "XCBASIC.Expression":

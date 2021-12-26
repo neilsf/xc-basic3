@@ -381,6 +381,12 @@ class RoutineCall : AccessorInterface
         return getPushArgs() ~ getExecCode() ~ getPullCode();
     }
 
+    public string getPushAddressCode()
+    {
+        return  "    import I_" ~ routine.getLabel() ~ "\n"
+                ~ "    pword " ~ routine.getLabel() ~ "\n";
+    }
+
     protected void findCandidates()
     {
         routineName = node.children[0].matches.join("");

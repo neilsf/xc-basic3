@@ -442,6 +442,8 @@ interface AccessorInterface
     public Type getType();
     /** Assembly code that pushes the evaluated value on stack */
     public string getPushCode();
+    /** Assembly code that pushes the address on stack */
+    public string getPushAddressCode();
     /** Is it a constant expression */
     public bool isConstant();
     /** Returns the value if it's a constant */

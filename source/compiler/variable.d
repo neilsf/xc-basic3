@@ -415,6 +415,10 @@ class VariableAccess : AccessorInterface
     private ParseTree node;
     private Variable variable;
     private Type type;
+    private bool isConstantSubscript;
+    private Expression[3] indices;
+    private int[3] constSubscript = [0, 0, 0];
+    private bool fastArrayAccess = false;
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler, bool failIfNotFound = true)
@@ -468,30 +472,6 @@ class VariableAccess : AccessorInterface
         return variable.constVal;
     }
 
-    /** How far the accessed field is from the start of the variable */
-    private ushort getFieldOffset()
-    {
-        ushort addressOffset = 0;
-        const int ix = findChild(node, "XCBASIC.Varname", 1);
-        if(ix != -1) {
-            string dotNotation = "";
-            for(int i = ix; i < node.children.length; i++) {
-                dotNotation ~= node.children[i].matches.join("");
-                if(i + 1 < node.children.length) {
-                    dotNotation ~= ".";
-                }
-            }
-            try {
-                addressOffset += variable.type.getMemberOffset(dotNotation);
-            }
-            catch(Exception e) {
-                compiler.displayError(e.msg);
-            }
-        }
-
-        return addressOffset;
-    }
-
     /** Returns assembly source for accessing variable for writing */
     public string getPullCode()
     {
@@ -526,21 +506,75 @@ class VariableAccess : AccessorInterface
         return this.getCode("p");
     }
 
-    // direction: "p" means push, "pl" means pull
-    private string getCode(string direction)
-    {
-        string asmCode;        
-        ushort addressOffset = this.getFieldOffset();
+    public string getPushAddressCode()
+    {      
+        if(hasSubscript()) {
+            parseSubscript();
+            if(isConstantSubscript) {
+                ushort offset = cast(ushort)(getFieldOffset() + getAddressOffset());
+                return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(offset) ~ "]\n";
+            }
+            else {
+                string asmCode;
+                asmCode ~= getArrayOffsetCode();
+                if(fastArrayAccess) {
+                    asmCode ~= "    F_cword_byte\n";
+                }
+                asmCode ~= "    pword " ~ variable.getAsmLabel() ~ "\n";
+                asmCode ~= "    addword\n";
+                return asmCode;
+            }
+        }
+        else {
+            return "    pword " ~ variable.getAsmLabel() ~ "\n";
+        }
+    }
 
-        bool isConstantSubscript = true;
-        bool fastArrayAccess = false;
-        if(node.children.length > 1 && node.children[1].name == "XCBASIC.Subscript") {
-            // An array
-            // If constant, we can calculate address in compile time
-            // otherwise the library has to do it in runtime
+    /** How far the accessed field is from the start of the variable */
+    private ushort getFieldOffset()
+    {
+        ushort addressOffset = 0;
+        const int ix = findChild(node, "XCBASIC.Varname", 1);
+        if(ix != -1) {
+            string dotNotation = "";
+            for(int i = ix; i < node.children.length; i++) {
+                dotNotation ~= node.children[i].matches.join("");
+                if(i + 1 < node.children.length) {
+                    dotNotation ~= ".";
+                }
+            }
+            try {
+                addressOffset += variable.type.getMemberOffset(dotNotation);
+            }
+            catch(Exception e) {
+                compiler.displayError(e.msg);
+            }
+        }
+
+        return addressOffset;
+    }
+
+    /**
+     * How far the accessed array member is from the start of the variable
+     * (in case array indices are constant)
+     */
+    private ushort getAddressOffset()
+    {
+        return  to!ushort(variable.getSingleLength() * (constSubscript[0] 
+                + variable.dimensions[0] * constSubscript[1]
+                + (variable.dimensions[0] * variable.dimensions[1]) * constSubscript[2]));
+    }
+
+    private bool hasSubscript()
+    {
+        return node.children.length > 1 && node.children[1].name == "XCBASIC.Subscript";
+    }
+
+    private void parseSubscript()
+    {
+        isConstantSubscript = true;
+        if(hasSubscript()) {
             ParseTree ptSubscript = node.children[1];
-            int[3] constSubscript = [0, 0, 0];
-            Expression[3] indices;
             if(ptSubscript.children.length != variable.dimCount) {
                 compiler.displayError("Bad subscript");
             }
@@ -566,79 +600,101 @@ class VariableAccess : AccessorInterface
                     indices[i] = e;
                 }
             }
-            
-            if(isConstantSubscript) {
-                addressOffset  += variable.getSingleLength() * (constSubscript[0] 
-                                + variable.dimensions[0] * constSubscript[1]
-                                + (variable.dimensions[0] * variable.dimensions[1]) * constSubscript[2]);
+        }
+    }
+
+    /** Creates runtime code to calculate offset */
+    private string getArrayOffsetCode()
+    {
+        if(!hasSubscript()) {
+            assert(0, "getArrayOffsetCode was called with no array subscript");
+        }
+        string asmCode = "";
+        
+        int varLen = variable.getSingleLength();
+        fastArrayAccess = variable.getLength() <= 256;
+        string indexTypeName = fastArrayAccess ? Type.UINT8 : Type.UINT16;
+        Type indexType = compiler.getTypes.get(indexTypeName);
+        ParseTree ptSubscript = node.children[1];
+
+        bool hasThird = false;
+        // third dimension
+        if(ptSubscript.children.length > 2) {
+            hasThird = true;
+            if(constSubscript[2] > 0) {
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]
+                            * constSubscript[2]) ~ "\n";
             }
             else {
-                int varLen = variable.getSingleLength();
-                fastArrayAccess = variable.getLength() <= 256;
-                string indexTypeName = fastArrayAccess ? Type.UINT8 : Type.UINT16;
-                Type indexType = compiler.getTypes.get(indexTypeName);
+                indices[2].setExpectedType(indexType);
+                indices[2].eval();
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]) ~ "\n";
+                asmCode ~= to!string(indices[2]);
+                asmCode ~= "    mul" ~ indexTypeName ~ "\n";
+            }
+        }
 
-                bool hasThird = false;
-                // third dimension
-                if(ptSubscript.children.length > 2) {
-                    hasThird = true;
-                    if(constSubscript[2] > 0) {
-                        asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]
-                                    * constSubscript[2]) ~ "\n";
-                    }
-                    else {
-                        indices[2].setExpectedType(indexType);
-                        indices[2].eval();
-                        asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]) ~ "\n";
-                        asmCode ~= to!string(indices[2]);
-                        asmCode ~= "    mul" ~ indexTypeName ~ "\n";
-                    }
-                }
+        bool hasSecond = false;
+        // second dimension
+        if(ptSubscript.children.length > 1) {
+            hasSecond = true;
+            if(constSubscript[1] > 0) {
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * constSubscript[1]) ~ "\n";
+            }
+            else {
+                indices[1].setExpectedType(indexType);
+                indices[1].eval();
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0]) ~ "\n";
+                asmCode ~= to!string(indices[1]);
+                asmCode ~= "    mul" ~ indexTypeName ~ "\n";
+            }
+        }
 
-                bool hasSecond = false;
-                // second dimension
-                if(ptSubscript.children.length > 1) {
-                    hasSecond = true;
-                    if(constSubscript[1] > 0) {
-                        asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * constSubscript[1]) ~ "\n";
-                    }
-                    else {
-                        indices[1].setExpectedType(indexType);
-                        indices[1].eval();
-                        asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0]) ~ "\n";
-                        asmCode ~= to!string(indices[1]);
-                        asmCode ~= "    mul" ~ indexTypeName ~ "\n";
-                    }
-                }
+        if(hasThird && hasSecond) {
+            asmCode ~= "    add" ~ indexTypeName ~ "\n";
+        }
 
-                if(hasThird && hasSecond) {
-                    asmCode ~= "    add" ~ indexTypeName ~ "\n";
-                }
+        // first dimension
+        if(constSubscript[0] > 0) {
+            asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(constSubscript[0]) ~ "\n";
+        }
+        else {
+            indices[0].setExpectedType(indexType);
+            indices[0].eval();
+            asmCode ~= to!string(indices[0]);
+        }
 
-                // first dimension
-                if(constSubscript[0] > 0) {
-                    asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(constSubscript[0]) ~ "\n";
-                }
-                else {
-                    indices[0].setExpectedType(indexType);
-                    indices[0].eval();
-                    asmCode ~= to!string(indices[0]);
-                }
+        if(hasSecond) {
+            asmCode ~= "    add" ~ indexTypeName ~ "\n";
+        }
 
-                if(hasSecond) {
-                    asmCode ~= "    add" ~ indexTypeName ~ "\n";
-                }
+        // optimize if variable length is power of two
+        if(ceil(log2(varLen)) == floor(log2(varLen))) {
+            if(varLen > 1) { // No need to do anything if it's 1
+                asmCode ~= "    lshift" ~ indexTypeName ~ "wconst "  ~ to!string(log2(varLen)) ~ "\n";
+            }
+        }
+        else {
+            asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(varLen) ~ "\n";
+            asmCode ~= "    mul" ~ indexTypeName ~ "\n";
+        }
+        
+        return asmCode;
+    }
 
-                // optimize if variable length is power of two
-                if(ceil(log2(varLen)) == floor(log2(varLen))) {
-                    if(varLen > 1) { // No need to do anything if it's 1
-                        asmCode ~= "    lshift" ~ indexTypeName ~ "wconst "  ~ to!string(log2(varLen)) ~ "\n";
-                    }
-                }
-                else {
-                    asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(varLen) ~ "\n";
-                    asmCode ~= "    mul" ~ indexTypeName ~ "\n";
-                }
+    // direction: "p" means push, "pl" means pull
+    private string getCode(string direction)
+    {
+        string asmCode;        
+        ushort offset = this.getFieldOffset();
+
+        if(hasSubscript()) {
+            parseSubscript();
+            if(isConstantSubscript) {
+                offset += getAddressOffset();
+            }
+            else {
+                asmCode ~= getArrayOffsetCode();
             }
         }
         
@@ -646,7 +702,7 @@ class VariableAccess : AccessorInterface
         const string typeName = this.getType().isPrimitive ? this.getType().name : "udt";
       
         if(cast(ThisVariable)variable) {
-            asmCode ~= "    " ~ direction ~ "relative" ~ typeName ~ "var " ~ to!string(addressOffset);
+            asmCode ~= "    " ~ direction ~ "relative" ~ typeName ~ "var " ~ to!string(offset);
             if(!this.getType().isPrimitive) {
                 asmCode ~= ", " ~ to!string(this.getType().length);
             }
@@ -655,8 +711,8 @@ class VariableAccess : AccessorInterface
             asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName 
                             ~ (isArray ? ("array" ~ (fastArrayAccess ? "fast" : "" )) : "var");
         
-            if(addressOffset > 0) {
-                asmCode ~= " [" ~ variable.getAsmLabel() ~ " + " ~ to!string(addressOffset) ~ "]";
+            if(offset > 0) {
+                asmCode ~= " [" ~ variable.getAsmLabel() ~ " + " ~ to!string(offset) ~ "]";
             }
             else {
                 asmCode ~= " " ~ variable.getAsmLabel();

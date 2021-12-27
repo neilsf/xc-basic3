@@ -703,9 +703,6 @@ class VariableAccess : AccessorInterface
       
         if(cast(ThisVariable)variable) {
             asmCode ~= "    " ~ direction ~ "relative" ~ typeName ~ "var " ~ to!string(offset);
-            if(!this.getType().isPrimitive) {
-                asmCode ~= ", " ~ to!string(this.getType().length);
-            }
         }
         else {
             asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName 
@@ -717,14 +714,14 @@ class VariableAccess : AccessorInterface
             else {
                 asmCode ~= " " ~ variable.getAsmLabel();
             }
-            if(!this.getType().isPrimitive) {
-                asmCode ~= ", " ~ to!string(this.getType().length);
-            }
-            if(direction == "pl" && this.getType().name == Type.STRING) {
-                asmCode ~= ", " ~ to!string(this.variable.getSingleLength());
-            }
         }
-        
+        if(!this.getType().isPrimitive) {
+            asmCode ~= ", " ~ to!string(this.getType().length);
+        }
+        else if(direction == "pl" && this.getType().name == Type.STRING) {
+            asmCode ~= ", " ~ to!string(this.variable.getSingleLength());
+        }
+
         return asmCode ~ "\n";   
     }
 

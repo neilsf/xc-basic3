@@ -3,6 +3,7 @@ module statement.fun_stmt;
 import std.conv, std.string, std.array, std.uni, std.algorithm;
 import pegged.grammar;
 import language.statement;
+import globals;
 import compiler.compiler, compiler.routine, compiler.variable, compiler.type;
 
 /** Parses and compiles a (DECLARE) FUNCTION or (DECLARE) SUB statement */
@@ -115,6 +116,7 @@ class Fun_stmt : Statement
         if(this.type.name != Type.VOID && !this.isInline) {
             Variable v = Variable.create(this.name, this.type, compiler, true);
             v.isFnRetVal = true;
+            import std.stdio;
             compiler.getVars().add(v, false);
             this.routine.returnValue = v;
         }
@@ -185,6 +187,19 @@ class Fun_stmt : Statement
                     compiler.displayError("Undefined type: " ~ typeName);
                 }
                 this.type = compiler.getTypes().get(typeName);
+                if(this.type.name == Type.STRING) {
+                    if(procType.children.length == 1 && !this.isInline) {
+                        compiler.displayError("String length is required");
+                    }
+                    
+                    if(procType.children.length > 1) {
+                        immutable int len = to!int(join(procType.children[1].matches)[1..$]);
+                        if(len < 1 || len > stringMaxLength) {
+                            compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
+                        }
+                        this.type.length = to!ubyte(len);
+                    }
+                }
             }
         }
         else {

@@ -76,7 +76,7 @@ class Variable
             return this.fileId ~ "." ~ name;
         }
         else {
-            return this.fileId ~ "." ~ this.procName ~ "." ~ name;
+            return this.fileId ~ "." ~this.procName ~ "." ~ name;
         }
     }
 

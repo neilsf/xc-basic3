@@ -36,10 +36,11 @@ STR_RIGHT SUBROUTINE
 	adc STRING_WORKAREA,x
 	sbc R0
  	tax
+ 	inx
  	lda R0
  	sta STRING_WORKAREA,x
  	dex
- 	sta SP
+ 	stx SP
 .exit
 	rts
 	ENDIF

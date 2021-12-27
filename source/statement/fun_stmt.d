@@ -3,7 +3,7 @@ module statement.fun_stmt;
 import std.conv, std.string, std.array, std.uni, std.algorithm;
 import pegged.grammar;
 import language.statement;
-import globals;
+import globals, compiler.helper;
 import compiler.compiler, compiler.routine, compiler.variable, compiler.type;
 
 /** Parses and compiles a (DECLARE) FUNCTION or (DECLARE) SUB statement */
@@ -97,7 +97,7 @@ class Fun_stmt : Statement
     private void addRoutine()
     {
         // Start routine 
-        compiler.setProc(this.name ~ "_" ~ this.getArgsHash());
+        compiler.setProc(fixSymbol(this.name) ~ "_" ~ this.getArgsHash());
         compiler.currentProc = this.routine;
         if(!this.isDeclaration) {
             this.routine.isDefined = true;
@@ -254,7 +254,7 @@ class Fun_stmt : Statement
                 this.addRoutine();
             }
 
-            compiler.setProc(name ~ "_" ~ this.getArgsHash());
+            compiler.setProc(fixSymbol(name) ~ "_" ~ this.getArgsHash());
             compiler.currentProc = this.routine;
             appendCode("    IFCONST I_" ~ this.routine.getLabel() ~ "_IMPORTED\n");
             appendCode(this.routine.getLabel() ~ " SUBROUTINE\n");

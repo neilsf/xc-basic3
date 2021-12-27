@@ -64,11 +64,9 @@ class Input_stmt : Statement
                 if(access.isFunctionCall()) {
                     compiler.displayError("Not a variable");
                 }
-                Variable var = access.getVariable();
-                if(var.type.name != Type.STRING) {
-                    compiler.displayError("Only strings are allowed in INPUT statement, got " ~ var.type.name);
+                if(access.getType().name != Type.STRING) {
+                    compiler.displayError("Only strings are allowed in INPUT statement, got " ~ access.getType().name);
                 }
-
                 if(hashStatement) {
                     appendCode("    input_hash\n");
                 }

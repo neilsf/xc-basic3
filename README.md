@@ -2,7 +2,7 @@
 
 A BASIC cross compiler for MOS 6502-based machines
 
-**This software is in pre-release (currently aplha) state. Nothing is guranteed to work.**
+**This software is in pre-release (currently beta) state and may contain bugs.**
 
 ## Please help testing
 

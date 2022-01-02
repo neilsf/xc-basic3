@@ -62,22 +62,30 @@ STR_LEFT SUBROUTINE
 	inx
 	cmp STRING_WORKAREA,x
 	bcs .end ; length >= str length, leave string as it is
- 	; A = Number of bytes to write
- 	sta STRING_WORKAREA,x
- 	tay
- 	stx .1 + 1
- 	; A = X + A + 1
- 	inx
- 	stx R0
- 	clc
- 	adc R0 
- 	sta .2 + 1
+	; Pointer to left part in RA
+ 	stx RA
+	ldy #>STRING_WORKAREA
+ 	sty RA + 1
+	; Y = X + len - A + 1
+	sta R0
+	txa
+	clc
+	adc STRING_WORKAREA,x
+	sec
+	sbc R0
+ 	; Pointer to destination in RC
+ 	sta RC
  	sta SP
+	lda #>STRING_WORKAREA
+ 	sta RC + 1
+ 	ldy R0
 .loop
-.1	lda STRING_WORKAREA,y
-.2	sta STRING_WORKAREA,y
- 	dey
- 	bpl .loop
+	lda (RA),y
+	sta (RC),y
+	dey
+ 	bne .loop
+ 	lda R0
+ 	sta (RC),y
 	; write new pointer
  	dec SP
 .end

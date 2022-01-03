@@ -87,7 +87,7 @@ struct Stack
     /** Returns the closest element that meets type criterion or null if none found */
     CodeBlock closest(int[] types)
     {
-        foreach (CodeBlock key; reverse(elements)) {
+        foreach (CodeBlock key; reverse(elements.dup)) {
             if(any!(type => type == key.getType())(types)) {
                 return key;
             }

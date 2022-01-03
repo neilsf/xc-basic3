@@ -484,6 +484,9 @@ class MethodCall : RoutineCall
         else if(toLower(varName) == "this") {
             // THIS.member...method()
             t = compiler.currentTypeDef;
+            if(t is null) {
+                compiler.displayError("The THIS keyword may only be used in a TYPE block");
+            }
             callToOtherType = true;
         }
         else {

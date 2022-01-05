@@ -224,26 +224,32 @@ Copyright (c) 2019-2021 by Csaba Fekete
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t
-  --target =    Target machine. Possible values: ` ~ targetOpts.join(", ") ~ `. Defaults to c64.
+  --target =        Target machine. Possible values: ` ~ targetOpts.join(", ") ~ `. Defaults to c64.
+
+   -b
+  --basic-loader=   Include a BASIC loader. Turned on by default (true).
+
+   -o
+  --start-address=  Change the default start address. Please provide a decimal number.
 
    -f
-  --format=     Output format: "prg" (default, will call DASM) or "asm"
+  --format=         Output format: "prg" (default, will call DASM) or "asm"
 
    -d
-  --dasm=       Path to the DASM executable.
-                Not required if DASM is in your PATH or in the working dir.
+  --dasm=           Path to the DASM executable.
+                    Not required if DASM is in your PATH or in the working dir.
 
    -s
-  --symbol=     Symbol dump file name. This is passed to DASM as it is.
+  --symbol=         Symbol dump file name. This is passed to DASM as it is.
 
    -l
-  --list=       List file name. This is passed to DASM as it is.
+  --list=           List file name. This is passed to DASM as it is.
 
    -p
-  --optimize    Output optimized (faster and smaller) code. Turned on by default (true).
+  --optimize        Output optimized (faster and smaller) code. Turned on by default (true).
 
    -a
-  --dump-ast    Do not compile, just dump the Abstract Syntax Tree
+  --dump-ast        Do not compile, just dump the Abstract Syntax Tree
 
    -h
   --help        Show this help

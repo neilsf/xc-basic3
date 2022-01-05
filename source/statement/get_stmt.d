@@ -37,7 +37,15 @@ class Get_stmt : Statement
         if(args.children.length < varIndex) {
             compiler.displayError("Syntax error");
         }
-        VariableAccess access = new VariableAccess(args.children[varIndex], compiler);
+
+        VariableAccess access;
+        try {
+            access = new VariableAccess(args.children[varIndex], compiler);
+        }
+        catch(Exception e) {
+            compiler.displayError(e.msg);
+        }
+        
         if(access.isConstant()) {
             compiler.displayError("Can't use a constant in a GET statement");
         }

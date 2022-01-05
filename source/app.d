@@ -252,7 +252,7 @@ Options:
   --dump-ast        Do not compile, just dump the Abstract Syntax Tree
 
    -h
-  --help        Show this help
+  --help            Show this help
 `
     );
     exit(exitCode);

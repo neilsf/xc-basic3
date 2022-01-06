@@ -18,20 +18,5 @@ public string getLibraryPath()
  */
 public string getLibraryDir()
 {
-    string path = thisExePath();
-    version(Posix) {
-        if(isSymlink(path)) {
-            const string target = readLink(path);
-            if(isAbsolute(target)) {
-                path = target;
-            }
-            else {
-                const string currentDir = getcwd();
-                chdir(dirName(path));
-                path = absolutePath(target);
-                chdir(currentDir);
-            }
-        }
-    }
-    return buildNormalizedPath(dirName(path) ~ "/../../lib");
+    return buildNormalizedPath(dirName(thisExePath()) ~ "/../../lib");
 }

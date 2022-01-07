@@ -3,7 +3,7 @@ module compiler.number;
 import std.stdio, std.conv, std.string, std.algorithm, std.math, std.system,
         std.array, std.range, std.format;
 import pegged.grammar;
-import compiler.compiler, /* compiler.petscii, */ compiler.type;
+import compiler.compiler, compiler.petscii, compiler.type;
 
 /** Parses a numeric literal */
 class Number
@@ -25,18 +25,16 @@ class Number
         int num;
         final switch(node.children[0].name) {
             case "XCBASIC.Charlit":
-            /* TODO
-                this.type = compiler.types.get(Type.UINT8);
+                this.type = compiler.getTypes().get(Type.UINT8);
                 string chrlit = join(node.children[0].matches);
                 char chr = chrlit[1];
                 if(chr != 123) {    // not a "{" character
-                    this.intval = to!int(asciiToPetscii(chr));
+                    this.intVal = to!int(asciiToPetscii(chr));
                 }
                 else {
-                    char[] replaced_chrlit = replacePetsciiEscapes(chrlit[1..$-1]);
-                    this.intval = to!int(replaced_chrlit[0]);
+                    string replaced_chrlit = convertToPetscii(chrlit[1..$-1]);
+                    this.intVal = to!int(replaced_chrlit[0]);
                 }
-            */
                 break;
 
             case "XCBASIC.Integer":

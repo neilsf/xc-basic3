@@ -96,9 +96,9 @@ STR_LEFT SUBROUTINE
 	MAC F_mid@_string_byte_byte ; @pull
 	IF !FPULL
 	pla
+	ENDIF
 	tay
 	pla
-	ENDIF
 	import I_STR_MID
 	jsr STR_MID
 	ENDM
@@ -120,8 +120,17 @@ STR_MID SUBROUTINE
 	sbc R0
 	bpl .ok
 	; P >= LEN(x$), return empty string
-	; TODO
+	stx R0
+	lda STRING_WORKAREA,x
+	clc
+	adc R0
+	tax
+	lda #0
+	sta STRING_WORKAREA,x
+	dex
+	stx SP
 	rts
+	; P < LEN(x$), do MID$
 .ok
 	sty R1
 	jsr STR_RIGHT

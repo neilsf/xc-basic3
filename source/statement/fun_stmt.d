@@ -222,8 +222,6 @@ class Fun_stmt : Statement
             compiler.displayError("The PRIVATE modifier can only be applied to type methods");
         }
 
-        // TODO continue from here
-
         this.routine = new Routine(
             name, isShared, compiler.currentFileId,
             compiler, this.keyword, isStatic, isMethod,

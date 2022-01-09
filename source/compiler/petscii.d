@@ -90,7 +90,7 @@ static this()
     ];
 }
 
-private char asciiToPetscii(char asciiChar)
+public char asciiToPetscii(char asciiChar)
 {
     return petscii[asciiChar];
 }
@@ -146,7 +146,7 @@ private string replaceEscapes(string input)
 /** Translates ASCII string to PETSCII HEX expression */
 string asciiToPetsciiHex(string asciiString, bool newline = true)
 {
-    string asciiRepl = replaceEscapes(asciiStringToPetsciiString(asciiString));
+    string asciiRepl = convertToPetscii(asciiString);
     immutable ulong length = asciiRepl.length + (newline ? 1 : 0);
     string hex = "HEX " ~ rightJustify(to!string(length, 16), 2, '0') ~ " ";
 
@@ -165,4 +165,8 @@ string asciiToPetsciiHex(string asciiString, bool newline = true)
     }
     
     return hex;
+}
+
+string convertToPetscii(string asciiString) {
+    return replaceEscapes(asciiStringToPetsciiString(asciiString));
 }

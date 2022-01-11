@@ -21,7 +21,6 @@ private string getLabelInGlobalScope(string variableName, Compiler compiler) {
 }
 
 /** Holds data about a variable */
-// TODO shared and common variables
 class Variable
 {
     /** Variable name */

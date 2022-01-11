@@ -64,7 +64,8 @@ void main(string[] args)
             "optimize|p", &optimize,
             "format|f", &outputFormat,
             "dump-ast|a", &dumpast,
-            "verbosity|v", &verbosity
+            "verbosity|v", &verbosity,
+            "inline-data|i", &inlineData
         );
     }
 	catch(Exception e) {
@@ -253,6 +254,10 @@ Options:
 
    -h
   --help            Show this help
+
+   -i
+  --inline-data=    If set to true, DATA statements are compiled at the current origin.
+                    Otherwise, they get compiled after code. Defaults to false.
 `
     );
     exit(exitCode);

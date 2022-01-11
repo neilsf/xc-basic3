@@ -6,6 +6,8 @@ import pegged.grammar;
 
 import language.statement, compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode;
 
+import globals;
+
 class Data_stmt : Statement
 {
     private Type type;
@@ -63,7 +65,7 @@ class Data_stmt : Statement
             }
         }
         compiler.getImCode().appendSegment(
-            IntermediateCode.DATA_SEGMENT,
+            inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
             "    DC.B " ~ listItems.join(",") ~ "\n"
         );
     }
@@ -72,7 +74,7 @@ class Data_stmt : Statement
     override protected void dumpLabels()
     {
         compiler.getImCode().appendSegment(
-            IntermediateCode.DATA_SEGMENT,
+            inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
             compiler.getAndClearCurrentLabels()
         );
     }

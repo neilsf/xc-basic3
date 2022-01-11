@@ -198,12 +198,6 @@ final class Compiler
                                 this.clearProc();
                                 break;
 
-                            /** DATA statements are not precompiled any more
-                            case "XCBASIC.Data_stmt":
-                                Statement stmt = stmtFactory(statement, this);
-                                stmt.process();
-                                break;
-                            */
                             default:
                                 break;
                         }

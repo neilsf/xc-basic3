@@ -8,3 +8,5 @@ bool basicLoader = true;
 int startAddress = -1;
 /** Maximum allowed string length */
 const int stringMaxLength = 96;
+/** Whether to compile DATA statements at the current origin */
+bool inlineData = false;

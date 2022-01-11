@@ -5,7 +5,7 @@ import language.statement, language.expression;
 import compiler.compiler, compiler.type, compiler.variable, compiler.codeblock;
 import pegged.grammar;
 
-import std.uni, std.conv;
+import std.uni, std.conv, std.array;
 
 class Do_stmt : Statement
 {
@@ -81,7 +81,15 @@ class Cont_stmt : Statement
 
     public void process()
     {
-        CodeBlock block = compiler.blockStack.closest([CodeBlock.TYPE_DO, CodeBlock.TYPE_FOR]);
+        int[] types;
+        if(toLower(join(node.matches)[$-2..$]) == "do") {
+            types = [CodeBlock.TYPE_DO];
+        } else if(toLower(join(node.matches)[$-3..$]) == "for") {
+            types = [CodeBlock.TYPE_FOR];
+        } else {
+            types = [CodeBlock.TYPE_DO, CodeBlock.TYPE_FOR];
+        }
+        CodeBlock block = compiler.blockStack.closest(types);
         if(block is null) {
             compiler.displayError("CONTINUE without DO or FOR");
         }

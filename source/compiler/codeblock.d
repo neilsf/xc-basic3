@@ -14,6 +14,8 @@ class CodeBlock
     protected int id;
     protected int type;
 
+    public bool hasElse = false;
+
     /** Class constructor */
     this(int type)
     {

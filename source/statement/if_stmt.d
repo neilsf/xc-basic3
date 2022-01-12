@@ -65,10 +65,6 @@ class If_sa_stmt : Statement
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
         appendCode(to!string(condition));
-        // This is trickier because we don't know if there's an ELSE at this point
-        appendCode("    IFNCONST _EL_" ~ to!string(block.getId()) ~ "\n");
-        appendCode("_EL_" ~ to!string(block.getId()) ~ " SET 0\n");
-        appendCode("    ENDIF\n");
         appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");        
     }
 }
@@ -91,6 +87,7 @@ class Else_stmt : Statement
              if(block.getType() != CodeBlock.TYPE_IF) {
                 compiler.displayError("Unclosed " ~ block.getTypeString() ~ " block before ELSE");
             }
+            block.hasElse = true;
             label = to!string(block.getId());
         }
         catch(Exception e) {
@@ -119,6 +116,9 @@ class Endif_stmt : Statement
                 compiler.displayError("Unclosed " ~ block.getTypeString() ~ " block before END IF");
             }
 
+            if(!block.hasElse) {
+                appendCode("_EL_" ~ to!string(block.getId()) ~ ":\n");        
+            }
             appendCode("_EI_" ~ to!string(block.getId()) ~ ":\n");    
         }
         catch(Exception e) {

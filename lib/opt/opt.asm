@@ -620,3 +620,271 @@
     pha
     ENDIF
     ENDM
+    
+    ; Quick comparison of bytes
+    
+	MAC opt_pbyte_pbyte_cmpbyteeq ; @push
+	lda #{1}
+	cmp #{2}
+	beq .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpbyteeq ; @push
+	lda {1}
+	cmp #{2}
+	beq .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpbyteeq ; @push
+	lda #{1}
+	cmp {2}
+	beq .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpbyteeq ; @push
+	lda {1}
+	cmp {2}
+	beq .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbyte_cmpytebneq ; @push
+	lda #{1}
+	cmp #{2}
+	bne .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpytebneq ; @push
+	lda {1}
+	cmp #{2}
+	bne .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpytebneq ; @push
+	lda #{1}
+	cmp {2}
+	bne .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpytebneq ; @push
+	lda {1}
+	cmp {2}
+	bne .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+
+	MAC opt_pbyte_pbyte_cmpbytelt ; @push
+	lda #{1}
+	cmp #{2}
+	bcs .false
+	ptrue
+	bne .end
+.false:
+	pfalse
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpbytelt ; @push
+	lda {1}
+	cmp #{2}
+	bcs .false
+	ptrue
+	bne .end
+.false:
+	pfalse
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpbytelt ; @push
+	lda #{1}
+	cmp {2}
+	bcs .false
+	ptrue
+	bne .end
+.false:
+	pfalse
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpbytelt ; @push
+	lda {1}
+	cmp {2}
+	bcs .false
+	ptrue
+	bne .end
+.false:
+	pfalse
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbyte_cmpbytelte ; @push
+	lda #{2}
+	cmp #{1}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpbytelte ; @push
+	lda {2}
+	cmp #{1}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpbytelte ; @push
+	lda #{2}
+	cmp {1}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpbytelte ; @push
+	lda {2}
+	cmp {1}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbyte_cmpbbytegte ; @push
+	lda #{1}
+	cmp #{2}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpbbytegte ; @push
+	lda {1}
+	cmp #{2}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpbbytegte ; @push
+	lda #{1}
+	cmp {2}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpbytegte ; @push
+	lda {1}
+	cmp {2}
+	bcs .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbyte_cmpbytegt ; @push
+	lda #{2}
+	cmp #{1}
+	bcc .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbyte_pbytevar_cmpbytegt ; @push
+	lda {2}
+	cmp #{1}
+	bcc .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbyte_cmpbytegt ; @push
+	lda #{2}
+	cmp {1}
+	bcc .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	MAC opt_pbytevar_pbytevar_cmpbytegt ; @push
+	lda {2}
+	cmp {1}
+	bcc .true
+	pfalse
+	beq .end
+.true:
+	ptrue
+.end
+	ENDM
+	
+	 ; Quick comparison and branching

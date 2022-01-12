@@ -151,6 +151,8 @@ class Next_stmt : Statement
         }
         Variable stepVar = For_stmt.getStepVariable(block.getId());
         const string blockId = to!string(block.getId());
+        // A label where CONTINUE can jump to
+        appendCode("_CO_" ~ blockId ~ ":\n");
         appendCode("    next" ~ counterVar.type.name ~ " " ~ blockId ~
                     ", " ~ counterVar.getAsmLabel() ~ (stepVar is null ? ", \"_void_\"" : ", " ~ stepVar.getAsmLabel()) ~ "\n");
         appendCode("_ENDFOR_" ~ blockId ~ ":\n");

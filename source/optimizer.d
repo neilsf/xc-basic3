@@ -129,7 +129,7 @@ class ReplaceSequences: OptimizerPass
                 continue;
             }
 
-            if(!optEnabled) {
+            if(!optEnabled || indexOf(line, "@opt_ignore") != -1) {
                 this.outCode ~= line ~ "\n";
                 continue;
             }
@@ -233,7 +233,7 @@ class RemoveStackOps: OptimizerPass
         bool opt_enabled = false;
         bool pushf = false;
         bool pullf = false;
-        for(int i=0; i<lines.length; i++) {
+        for(int i = 0; i < lines.length; i++) {
             string line = lines[i];
             if(line == "    ; !!opt_start!!") {
                 opt_enabled = true;
@@ -246,7 +246,7 @@ class RemoveStackOps: OptimizerPass
                 continue;
             }
 
-            if(!opt_enabled) {
+            if(!opt_enabled || indexOf(line, "@opt_ignore") != -1) {
                 this.outCode ~= line ~ "\n";
                 continue;
             }
@@ -259,8 +259,8 @@ class RemoveStackOps: OptimizerPass
 
             string next_opc = "";
             string next_line = "";
-            if(i+1 < lines.length) {
-                int j = i+1;
+            if(i + 1 < lines.length) {
+                int j = i + 1;
                 do {
                     next_line = lines[j];
                     next_opc = this.getOpcode(next_line);

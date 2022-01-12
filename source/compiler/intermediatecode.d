@@ -12,6 +12,7 @@ class IntermediateCode
     enum ROUTINE_SEGMENT = 1;
     enum VAR_SEGMENT     = 2;
     enum DATA_SEGMENT    = 3;
+    enum LIBRARY_SEGMENT = 4;
     
     /** Code segments as strings */
     private string[int] segments;
@@ -25,8 +26,9 @@ class IntermediateCode
         this.compiler = compiler;
         this.segments =  [
             PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
-            ROUTINE_SEGMENT : "\n    ; !!opt_end!!\nroutines_start:\n    SEG \"LIBRARY\"\n    ORG routines_start\n" ~ getIncludes() ~ "\n    ; !!opt_start!!\n",
-            DATA_SEGMENT    : "\n    ; !!opt_end!!\ndata_start:\n",
+            ROUTINE_SEGMENT : "\nroutines_start:\n",
+            LIBRARY_SEGMENT : "\n    ; !!opt_end!!\nlibrary_start:\n    SEG \"LIBRARY\"\n    ORG library_start\n" ~ getIncludes() ~ "\n",
+            DATA_SEGMENT    : "\ndata_start:\n",
             VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
         ];
     }
@@ -93,7 +95,9 @@ next_line:
         return  getStartUp() ~
                 getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~
                 getSegment(ROUTINE_SEGMENT) ~
+                getSegment(LIBRARY_SEGMENT) ~
                 getSegment(DATA_SEGMENT) ~
-                getSegment(VAR_SEGMENT);
+                getSegment(VAR_SEGMENT) ~
+                "vars_end:\n";
     }
 }

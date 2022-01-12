@@ -86,7 +86,9 @@ void main(string[] args)
     }
     else {
         outName = to!string(fileName.withExtension("prg"));
-        stdout.writeln("** NOTE ** Output not specified, defaulting to " ~ outName);
+        if(verbosity >= VERBOSITY_NOTICE) {
+            stdout.writeln("** NOTICE ** Output file not specified, defaulting to " ~ outName);
+        }
     }
 
     Compiler compiler = new Compiler();
@@ -113,6 +115,8 @@ void main(string[] args)
     }
 
     string asmFilename = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".asm";
+    string tmpSymbolfile = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".sym";
+
     File outfile = File(asmFilename, "w");
     if(optimize) {
         OptimizerPass optimizer = new Optimizer();
@@ -138,10 +142,8 @@ void main(string[] args)
         }
     }
 
-    string cmd = dasm ~ " " ~ asmFilename ~ " -o" ~ outName;
-    if(symbolfile != "") {
-        cmd ~= " -s" ~ symbolfile;
-    }
+    string cmd = dasm ~ " " ~ asmFilename ~ " -o" ~ outName ~ " -s" ~ tmpSymbolfile;
+
     if(listfile != "") {
         cmd ~= " -l" ~ listfile;
     }
@@ -159,7 +161,13 @@ void main(string[] args)
         exit(1);
     }
     else {
-        stdout.write(dasm_cmd.output);
+        if(verbosity == VERBOSITY_INFO) {
+            displayInformation(tmpSymbolfile);
+        }
+        if(symbolfile != "") {
+            copy(tmpSymbolfile, symbolfile);
+            remove(tmpSymbolfile);
+        }
         exit(0);
     }
 }
@@ -271,5 +279,46 @@ private void checkLibrary()
     if(!exists(getLibraryPath())) {
         stderr.writeln("XC=BASIC library was not found in \"" ~ getLibraryDir() ~ "\". Please make sure the directory exists and contains the library files.");
         exit(1);
+    }
+}
+
+/**
+ * Display information about the compiled program
+ */
+private void displayInformation(string tmpSymbolfile)
+{
+    bool hasVars = false;
+    string asHex(int number) {
+        return to!string(rightJustifier(to!string(number, 16), 4, '0'));
+    }    
+
+    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
+    int[string] symbols;
+    auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
+    foreach (key, value; lines) {
+        if(canFind(symbolNames, value[0])) {
+            symbols[value[0]] = to!int(value[1], 16);
+        }
+    }
+    const string separator = "+---------------+-------+-------+"; 
+    stdout.writeln("Complete. (0)");
+    stdout.writeln(separator ~ "\n|    Segment    | Start |  End  |\n" ~ separator);
+    if(basicLoader) {
+        stdout.writeln("|BASIC Loader   | $" ~ asHex(startAddress) ~ " | $" ~ asHex(symbols["prg_start"] - 1) ~ " |");
+    }
+    stdout.writeln("|Program code   | $" ~ asHex(symbols["prg_start"]) ~ " | $" ~ asHex(symbols["library_start"] - 1) ~ " |");
+    if(symbols["data_start"] > symbols["library_start"]) {
+        stdout.writeln("|Library        | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
+    }
+    if(symbols["vars_start"] > symbols["data_start"]) {
+        stdout.writeln("|Data & Strings | $" ~ asHex(symbols["data_start"]) ~ " | $" ~ asHex(symbols["vars_start"] - 1) ~ " |");
+    }
+    if(symbols["vars_end"] > symbols["vars_start"]) {
+        stdout.writeln("|Variables*     | $" ~ asHex(symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
+        hasVars = true;
+    }
+    stdout.writeln(separator);
+    if(hasVars) {
+        stdout.writeln("(*) Uninitialized segment.");
     }
 }

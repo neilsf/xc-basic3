@@ -213,8 +213,8 @@ class RemoveStackOps: OptimizerPass
     private void findPseudoOps()
     {
         immutable string libDir = getLibraryDir();
-        auto pusherR = ctRegex!(`MAC\s+([a-zA-Z0-9_]+)\s+.+@push`);
-        auto pullerR = ctRegex!(`MAC\s+([a-zA-Z0-9_]+)\s+.+@pull`);
+        auto pusherR = ctRegex!(`MAC\s+([a-zA-Z0-9_@]+)\s+.+@push`);
+        auto pullerR = ctRegex!(`MAC\s+([a-zA-Z0-9_@]+)\s+.+@pull`);
         foreach (string fileName; dirEntries(libDir, "*.asm", SpanMode.depth)) {
             immutable string contents = readText(fileName);
             foreach (c; matchAll(contents, pusherR)) {

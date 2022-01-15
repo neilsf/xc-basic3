@@ -10,9 +10,26 @@
 	ENDM
 
 	; Convert int on stack to long
-	MAC F_clong_int
+	MAC F_clong_int ; @pull @push 
+	IF !FPULL
+	tsx
+	lda stack + 1,x
+	bpl .pos
+	lda #$ff
+	bmi .end
+.pos
 	lda #$00
+.end
 	pha
+	ELSE
+	bpl .pos
+	ldx #$ff
+	bmi .end
+.pos
+	ldx #$00
+	beq .end
+.end
+	ENDIF
 	ENDM
 	
 	; Convert int on stack to float

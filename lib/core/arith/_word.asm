@@ -241,8 +241,7 @@ NUCLEUS_DIVU16 SUBROUTINE
 .divisor 	EQU R0
 .dividend 	EQU R2
 .remainder 	EQU R4
-.result 	EQU R0 ; save memory by reusing divident to store the result
-
+.result 	EQU .dividend ; save memory by reusing divident to store the result
 	lda #0	        ;preset remainder to 0
 	sta .remainder
 	sta .remainder+1
@@ -265,6 +264,6 @@ NUCLEUS_DIVU16 SUBROUTINE
 	inc .result		;and INCrement result cause divisor fit in 1 times
 .skip:
 	dex
-	bne .divloop	
+	bne .divloop		
 	rts
 	ENDIF

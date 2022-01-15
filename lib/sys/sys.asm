@@ -41,7 +41,6 @@ SPREG EQU $030F
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	php
 	sei
 	lda $a2
 	IF !FPUSH
@@ -54,7 +53,6 @@ SPREG EQU $030F
 	ldy $a1
 	ldx $a0
 	ENDIF
-	plp
 	cli
 	ENDM
 	

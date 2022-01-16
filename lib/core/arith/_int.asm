@@ -39,7 +39,7 @@
 	ENDM
 	
 	; Divide top 2 ints on stack
-	MAC divint ; @pull @push
+	MAC divint ; @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -56,7 +56,7 @@
 	ENDM
 	
 	; Modulo of top 2 ints on stack
-	MAC modint ; @pull @push
+	MAC modint ; @push
 	plwordvar R0
 	plwordvar R2
 	lda R0

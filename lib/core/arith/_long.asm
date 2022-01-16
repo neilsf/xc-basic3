@@ -5,13 +5,13 @@
     tsx
     lda.wx stack + 4
     ora.wx stack + 1
-    sta.wx stack + 1
+    sta.wx stack + 4
     lda.wx stack + 5
     ora.wx stack + 2
-    sta.wx stack + 2
+    sta.wx stack + 5
     lda.wx stack + 6
     ora.wx stack + 3
-    sta.wx stack + 3
+    sta.wx stack + 6
     inx
     inx
     inx
@@ -23,13 +23,13 @@
     tsx
     lda.wx stack + 4
     and.wx stack + 1
-    sta.wx stack + 1
+    sta.wx stack + 4
     lda.wx stack + 5
     and.wx stack + 2 
-    sta.wx stack + 2
+    sta.wx stack + 5
     lda.wx stack + 6
     and.wx stack + 3
-    sta.wx stack + 3
+    sta.wx stack + 6
     inx
     inx
     inx
@@ -41,13 +41,13 @@
     tsx
     lda.wx stack + 4
     eor.wx stack + 1
-    sta.wx stack + 1
+    sta.wx stack + 4
     lda.wx stack + 5
     eor.wx stack + 2
-    sta.wx stack + 2
+    sta.wx stack + 5
     lda.wx stack + 6
     eor.wx stack + 3
-    sta.wx stack + 3
+    sta.wx stack + 6
     inx
     inx
     inx

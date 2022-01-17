@@ -519,7 +519,7 @@ class VariableAccess : AccessorInterface
                 if(fastArrayAccess) {
                     asmCode ~= "    F_cword_byte\n";
                 }
-                asmCode ~= "    pword " ~ variable.getAsmLabel() ~ "\n";
+                asmCode ~= "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(getFieldOffset()) ~"]\n";
                 asmCode ~= "    addword\n";
                 return asmCode;
             }

@@ -134,9 +134,6 @@ void main(string[] args)
         dasm = `"` ~ dasm ~ `"`;
         asmFilename = `"` ~ asmFilename ~ `"`;
         outName = `"` ~ outName ~ `"`;
-        if(symbolfile != "") {
-            symbolfile = `"` ~ symbolfile ~ `"`;
-        }
         if(listfile != "") {
             listfile = `"` ~ listfile ~ `"`;
         }
@@ -166,8 +163,8 @@ void main(string[] args)
         }
         if(symbolfile != "") {
             copy(tmpSymbolfile, symbolfile);
-            remove(tmpSymbolfile);
         }
+        remove(tmpSymbolfile);
         exit(0);
     }
 }

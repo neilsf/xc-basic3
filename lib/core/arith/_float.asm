@@ -1,9 +1,8 @@
 	PROCESSOR 6502
 	
 	; Add top 2 floats on stack
-	MAC addfloat ; @pull @push
+	MAC addfloat ; @push
 	plfloattofac
-FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FADDT
@@ -11,9 +10,8 @@ FPULL SET 0
 	ENDM
 	
 	; Subtract top 2 floats on stack
-	MAC subfloat ; @pull @push
+	MAC subfloat ; @push
 	plfloattofac
-FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FSUBT
@@ -21,9 +19,8 @@ FPULL SET 0
 	ENDM
 	
 	; Multiply top 2 floats on stack
-	MAC mulfloat ; @pull @push
+	MAC mulfloat ; @push
 	plfloattofac
-FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FMULTT
@@ -31,9 +28,8 @@ FPULL SET 0
 	ENDM
 	
 	; Divide top 2 floats on stack
-	MAC divfloat ; @pull @push
+	MAC divfloat ; @push
 	plfloattofac
-FPULL SET 0
 	plfloattoarg
 	import I_FPLIB
 	jsr FDIVT
@@ -41,9 +37,8 @@ FPULL SET 0
 	ENDM
 	
 	; Modulo of top 2 floats on stack
-	MAC modfloat ; @pull @push
+	MAC modfloat ; @push
 	plfloattofac
-FPULL SET 0
 	plfloattoarg
 	import I_FMOD
 	jsr I_FMOD

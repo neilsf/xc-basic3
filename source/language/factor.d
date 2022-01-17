@@ -29,7 +29,6 @@ class Factor : AbstractExpression
                 return false;
 
             case "XCBASIC.Number":
-            case "XCBASIC.Address":
                 return true;
 
             case "XCBASIC.Accessor":

@@ -22,18 +22,19 @@ class On_stmt : Statement
     void process()
     {
         ParseTree[] args = this.node.children[0].children;
-        ParseTree e1 = args[0];
-        const string branchType = toLower(join(args[1].matches));
-        if(toLower(join(e1.matches)) == "error") {
+        string branchType;
+        const string m1 = node.children[0].matches[1];
+        if(toLower(m1) == "error") {
+            branchType = toLower(join(args[0].matches));
             // It must be a GOTO
             if(branchType != "goto") {
                 compiler.displayError("ON ERROR must be followed by GOTO");
             }
             // Only one label allowed
-            if(args.length > 3) {
+            if(args.length > 2) {
                 compiler.displayError("ON ERROR GOTO must be followed by only one label");
             }
-            const string lbl = join(args[2].matches);
+            const string lbl = join(args[1].matches);
             if(lbl == "0") {
                 appendCode("    seterrhandler 0\n") ;
             }
@@ -46,6 +47,8 @@ class On_stmt : Statement
             
         }
         else {
+            branchType = toLower(join(args[1].matches));
+            ParseTree e1 = args[0];
             Expression ex = new Expression(e1, compiler);
             ex.setExpectedType(compiler.getTypes().get(Type.UINT8));
             ex.eval();

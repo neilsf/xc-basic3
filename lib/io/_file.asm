@@ -25,6 +25,25 @@
 	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR
 .ok
+	; Check status
+	import I_IO_READST
+	jsr IO_READST
+	beq .ok2
+	; Now we have a DOS error code that
+	; has to be mapped to an XC=BASIC error
+	cmp #74 ; Drive not ready
+	bne .1
+	lda #ERR_DEVICE_NOT_READY
+	jmp RUNTIME_ERROR
+.1
+	cmp #62 ; File not found
+	bne .2
+	lda #ERR_FILE_NOT_FOUND
+	jmp RUNTIME_ERROR
+.2  		; Generic "read error"
+	lda #ERR_READ_ERROR
+	jmp RUNTIME_ERROR
+.ok2
 	ENDM
 
 	MAC close ; @pull
@@ -259,4 +278,51 @@ I_STRWRITE SUBROUTINE
 .q
 	kerncall KERNAL_CHROUT
 	rts
+	ENDIF
+	
+	; Read disk status
+	; Partly taken from
+	; https://codebase64.org/doku.php?id=base:reading_the_error_channel_of_a_disk_drive
+	IFCONST I_IO_READST_IMPORTED
+IO_READST SUBROUTINE
+	lda #0      ; no filename
+	tax
+	tay
+	sta R0		; will hold status code
+	kerncall KERNAL_SETNAM
+	lda #15      ; file number 15
+    ldx $BA      ; last used device number
+   	bne .skip
+    ldx #8       ; default to device 8
+.skip
+	ldy #15      ; secondary address 15 (error channel)
+    kerncall KERNAL_SETLFS
+    kerncall KERNAL_OPEN
+    bcs .error
+    ldx #15      ; filenumber 15
+    kerncall KERNAL_CHKIN
+	kerncall KERNAL_CHRIN ; first decimal byte in A
+	sec
+	sbc #$30
+	asl         ; multiply by 10
+    sta R0
+	asl
+	asl
+	clc
+	adc R0
+	sta R0
+	kerncall KERNAL_CHRIN ; second decimal byte in A
+	sec
+	sbc #$30
+	clc
+	adc R0
+	sta R0
+	lda #15      ; filenumber 15
+	kerncall KERNAL_CLOSE ; call CLOSE
+    kerncall KERNAL_CLRCHN
+    lda R0
+    rts
+.error
+	import I_RUNTIME_ERROR
+	jmp RUNTIME_ERROR
 	ENDIF

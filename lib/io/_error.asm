@@ -7,6 +7,8 @@ ERR_NOT_INPUT_FILE		EQU $06
 ERR_NOT_OUTPUT_FILE		EQU $07
 ERR_MISSING_FILENAME	EQU $08
 ERR_ILLEGAL_DEVICE_NO	EQU $09
+ERR_DEVICE_NOT_READY 	EQU $0a
+ERR_READ_ERROR		 	EQU $0b
 ERR_ILQTY	 			EQU $0e
 ERR_OVERFLOW			EQU $0f
 ERR_DIVZERO				EQU $14
@@ -28,6 +30,16 @@ SCINIT		 EQU $ff81
 	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR
 	ENDM
+	
+	MAC F_err ; @push
+	lda ERRNO
+	IF !FPUSH
+	pha
+	ENDIF
+	ENDM
+
+	; Return value of the ERR() function
+ERRNO HEX 00
 
 	; Default error handler
 	; redirect to custor handling routine if set
@@ -35,6 +47,7 @@ SCINIT		 EQU $ff81
 	; display error message and end program
 	IFCONST I_RUNTIME_ERROR_IMPORTED
 RUNTIME_ERROR SUBROUTINE
+	sta ERRNO
 	ldy ERR_VECTOR + 1
 	bne .custom
 	; No custom error handler, do default

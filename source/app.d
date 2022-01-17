@@ -225,8 +225,8 @@ private void displayHelp(int exitCode, string errorMsg = "")
 {
     stdout.writeln(errorMsg ~
 `
-XC=BASIC compiler version ` ~ APP_VERSION ~ `
-Copyright (c) 2019-2021 by Csaba Fekete
+XC=BASIC compiler version ` ~ APP_VERSION ~ " (" ~ __DATE__ ~ ")" ~ `
+Copyright (c) 2019-2022 by Csaba Fekete (see LICENSE)
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t

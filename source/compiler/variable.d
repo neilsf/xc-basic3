@@ -145,9 +145,9 @@ class VariableCollection
     private Compiler compiler;
 
     /** Lower bound of free ZP area */
-    static const ubyte zpLow  = 0x14;
+    static const ubyte zpLow  = 0x16;
     /** Upper bound of free ZP area */
-    static const ubyte zpHigh = 0x2a;
+    static const ubyte zpHigh = 0x53;
     /** Points to the next free addr in ZP area */
     static ubyte zpPtr = zpLow;
 

@@ -177,7 +177,7 @@ class Factor : AbstractExpression
 
             case "XCBASIC.Expression":
             case "XCBASIC.Parenthesis":
-                ParseTree expNode = (child.name == "XCBASIC.Expression" ? child : child.children[0]);
+                ParseTree expNode = (factor.name == "XCBASIC.Expression" ? factor : factor.children[0]);
                 auto ex = new Expression(expNode, compiler);
                 ex.eval();
                 this.asmCode ~= ex.toString();

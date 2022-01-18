@@ -92,7 +92,7 @@
 	ENDM
 
 	; Perform NOT on word on stack
-	MAC notword ; @pull
+	MAC notword ; @pull @push
 	IF !FPULL
 	tsx
 	lda.wx stack + 1
@@ -108,6 +108,11 @@
 	tay
 	txa
 	eor #$ff
+	IF !FPUSH
+	pha
+	tya
+	pha
+	ENDIF
 	ENDIF
 	ENDM
 	

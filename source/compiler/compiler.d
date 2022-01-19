@@ -229,6 +229,7 @@ final class Compiler
                     foreach(ref child; statements.children) {
                         Statement stmt = stmtFactory(child, this);
                         if(this.inTypeDef && !this.inMethod
+                            && stmt.classinfo.name != "statement.rem_stmt.Rem_stmt"
                             && stmt.classinfo.name != "statement.type_stmt.Field_def"
                             && stmt.classinfo.name != "statement.fun_stmt.Fun_stmt"
                             && stmt.classinfo.name != "statement.type_stmt.Field_def"

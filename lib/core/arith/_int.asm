@@ -73,7 +73,7 @@
 	ENDM
 	
 	; Perform NOT on int on stack
-	MAC notint ; @pull
+	MAC notint ; @pull @push
 	notword
 	ENDM
 	

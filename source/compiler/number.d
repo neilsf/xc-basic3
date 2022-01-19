@@ -24,19 +24,6 @@ class Number
         string numString = join(node.matches);
         int num;
         final switch(node.children[0].name) {
-            case "XCBASIC.Charlit":
-                this.type = compiler.getTypes().get(Type.UINT8);
-                string chrlit = join(node.children[0].matches);
-                char chr = chrlit[1];
-                if(chr != 123) {    // not a "{" character
-                    this.intVal = to!int(asciiToPetscii(chr));
-                }
-                else {
-                    string replaced_chrlit = convertToPetscii(chrlit[1..$-1]);
-                    this.intVal = to!int(replaced_chrlit[0]);
-                }
-                break;
-
             case "XCBASIC.Integer":
                 num = to!int(numString);
                 if(num < intRangeLow || num > intRangeHigh) {

@@ -147,13 +147,34 @@
 	; Shift right with number of binary places
 	; stored in a byte on top of stack
 	MAC rshiftint ; @pull
-	rshiftword
+	IF !FPULL
+	pla
+	ENDIF
+	tay
+	tsx
+.loop
+	cpy #$00
+	beq .endloop
+	; Move sign to carry
+	lda.wx stack + 1
+	asl
+	ror.wx stack + 1
+	ror.wx stack + 2
+	dey
+	bpl .loop ; = branch always
+.endloop
 	ENDM
 	
 	; RSHIFT() function
 	; with constant argument
 	MAC rshiftintwconst
-	rshiftwordwconst {1}
+	tsx
+	REPEAT {1}
+	lda.wx stack + 1
+	asl
+	ror.wx stack + 1
+	ror.wx stack + 2
+	REPEND
 	ENDM
 	
 	; Signed 16-bit multiplication

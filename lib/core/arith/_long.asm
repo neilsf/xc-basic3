@@ -296,7 +296,9 @@
 .loop
 	cpy #$00
 	beq .endloop
-	lsr.wx stack + 1
+	lda.wx stack + 1
+	asl
+	ror.wx stack + 1
 	ror.wx stack + 2
 	ror.wx stack + 3
 	dey
@@ -309,7 +311,9 @@
 	MAC rshiftlongwconst
 	tsx
 	REPEAT {1}
-	lsr.wx stack + 1
+	lda.wx stack + 1
+	asl
+	ror.wx stack + 1
 	ror.wx stack + 2
 	ror.wx stack + 3
 	REPEND

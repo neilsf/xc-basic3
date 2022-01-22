@@ -11,7 +11,6 @@
 
 	; Convert int on stack to long
 	MAC F_clong_int
-	IF !FPULL
 	tsx
 	lda stack + 1,x
 	bpl .pos

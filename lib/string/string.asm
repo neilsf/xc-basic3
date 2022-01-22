@@ -170,14 +170,16 @@ STRING_BUFFER2  EQU $039D
 	IFCONST I_STRMOV_IMPORTED
 STRMOV SUBROUTINE
 	pha		; save length
-	tay
 	ldx SP	; current stack pointer
+	tay
+	beq .writelen
 .loop
 	lda (R0),y
 	sta STRING_WORKAREA,x
 	dex
 	dey
-	bne .loop 
+	bne .loop
+.writelen
 	pla		; restore length	
 	sta STRING_WORKAREA,x
 	dex

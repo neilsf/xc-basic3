@@ -27,9 +27,11 @@ SPREG EQU $030F
 	; Do BASIC cold start
 	IF TARGET & vic20
 	jmp ($C002)
-	ELSE IF TARGET == cplus4 || TARGET == c16
+	ENDIF
+	IF TARGET == cplus4 || TARGET == c16
 	jmp $8003
-	ELSE
+	ENDIF
+	IF TARGET == c64
 	jmp ($A002)
 	ENDIF
 	ENDM

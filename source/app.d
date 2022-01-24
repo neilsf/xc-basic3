@@ -26,8 +26,8 @@ const string[] targetOpts = [
     "vic20",    // Commodore VIC-20 (unexpanded)
     "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
-    //"cplus4",   // Commodore Plus/4 - not yet supported
-    //"c16",      // Commodore-16 - not yet supported
+    "cplus4",   // Commodore Plus/4 - not yet supported
+    "c16",      // Commodore-16 - not yet supported
 ];
 
 // Command line options
@@ -41,7 +41,6 @@ else {
 }
 private string symbolfile="";
 private string listfile="";
-private bool dumpast = false;
 private int verbosity = VERBOSITY_INFO;
 
 /**
@@ -58,12 +57,12 @@ void main(string[] args)
             "target|t", &target,
             "basic-loader|b", &basicLoader,
             "start-address|o", &startAddress,
+            "max-address|m", &topAddress,
             "dasm|d", &dasm,
             "symbol|s", &symbolfile,
             "list|l", &listfile,
             "optimize|p", &optimize,
             "format|f", &outputFormat,
-            "dump-ast|a", &dumpast,
             "verbosity|v", &verbosity,
             "inline-data|i", &inlineData
         );
@@ -175,7 +174,7 @@ void main(string[] args)
 private void validateOptions(string[] args)
 {
 	if(outputFormat != "prg" && outputFormat != "asm") {
-        stderr.writeln("Invalid value for option -o. Use --help for more information.");
+        stderr.writeln("Invalid value for option -f. Use --help for more information.");
         exit(1);
     }
 
@@ -191,12 +190,15 @@ private void validateOptions(string[] args)
 
     if(basicLoader){
         switch(target) {
+            case "vic20_3k":
+                startAddress = 0x0401;
+                break;
+            
             case "c64":
                 startAddress = 0x0801;
                 break;
 
             case "vic20":
-            case "vic20_3k":
             case "cplus4":
             case "c16":
                 startAddress = 0x1001;
@@ -216,6 +218,12 @@ private void validateOptions(string[] args)
         stderr.writeln("Invalid start address: " ~ to!string(startAddress));
         exit(1);
     }
+
+    if(topAddress < -1 || topAddress > 0xffff) {
+        stderr.writeln("Invalid max address: " ~ to!string(topAddress));
+        exit(1);
+    }
+
 }
 
 /**
@@ -230,13 +238,20 @@ Copyright (c) 2019-2022 by Csaba Fekete (see LICENSE)
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t
-  --target =        Target machine. Possible values: ` ~ targetOpts.join(", ") ~ `. Defaults to c64.
+  --target=         Target machine. Possible values: ` ~ targetOpts.join(", ") ~ `.
+                    Defaults to "c64".
 
    -b
   --basic-loader=   Include a BASIC loader. Turned on by default (true).
 
    -o
   --start-address=  Change the default start address. Please provide a decimal number.
+
+   -m
+  --max-address=    Change the default top address. The default value is the top of the
+                    function stack minus 64 bytes. See https://xc-basic.net/doku.php?id=v3:memory_model
+                    If the program and its data overgrow the top address, compilation will fail.
+                    Please provide a decimal number.
 
    -f
   --format=         Output format: "prg" (default, will call DASM) or "asm"
@@ -246,16 +261,13 @@ Options:
                     Not required if DASM is in your PATH or in the working dir.
 
    -s
-  --symbol=         Symbol dump file name. This is passed to DASM as it is.
+  --symbol=         Symbol dump file name. Provide a file name if you want to generate a symbol dump.
 
    -l
   --list=           List file name. This is passed to DASM as it is.
 
    -p
   --optimize        Output optimized (faster and smaller) code. Turned on by default (true).
-
-   -a
-  --dump-ast        Do not compile, just dump the Abstract Syntax Tree
 
    -h
   --help            Show this help
@@ -280,6 +292,23 @@ private void checkLibrary()
 }
 
 /**
+ * Fetch symbol addresses from the symbol list provided by DASM
+ * Extend the list in symbolNames to get more
+ */
+private int[string] getSymbols(string tmpSymbolfile)
+{
+    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
+    int[string] symbols;
+    auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
+    foreach (key, value; lines) {
+        if(canFind(symbolNames, value[0])) {
+            symbols[value[0]] = to!int(value[1], 16);
+        }
+    }
+    return symbols;
+}
+
+/**
  * Display information about the compiled program
  */
 private void displayInformation(string tmpSymbolfile)
@@ -289,14 +318,8 @@ private void displayInformation(string tmpSymbolfile)
         return to!string(rightJustifier(to!string(number, 16), 4, '0'));
     }    
 
-    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
-    int[string] symbols;
-    auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
-    foreach (key, value; lines) {
-        if(canFind(symbolNames, value[0])) {
-            symbols[value[0]] = to!int(value[1], 16);
-        }
-    }
+    int[string] symbols = getSymbols(tmpSymbolfile);
+    
     const string separator = "+---------------+-------+-------+"; 
     stdout.writeln("Complete. (0)");
     stdout.writeln(separator ~ "\n|    Segment    | Start |  End  |\n" ~ separator);

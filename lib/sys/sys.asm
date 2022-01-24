@@ -14,10 +14,6 @@ SPREG EQU $030F
 	and #%11111110
 	sta $01
 	ENDIF
-	IF TARGET == cplus4
-	; Switch on RAM bank
-	sta $FF3F
-	ENDIF
 	ENDM
 	
 	; Final code that runs when the program is terminated
@@ -28,14 +24,13 @@ SPREG EQU $030F
 	ora #%00000001         
 	sta $01
 	ENDIF
-	IF TARGET == cplus4
-	; Switch on ROM bank
-	sta $FF3E
-	ENDIF
+	; Do BASIC cold start
 	IF TARGET & vic20
 	jmp ($C002)
+	ELSE IF TARGET == cplus4 || TARGET == c16
+	jmp $8003
 	ELSE
-	jmp ($A002) ; Do BASIC cold start
+	jmp ($A002)
 	ENDIF
 	ENDM
 	

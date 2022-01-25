@@ -525,7 +525,7 @@ class VariableAccess : AccessorInterface
             }
         }
         else {
-            return "    pword " ~ variable.getAsmLabel() ~ "\n";
+            return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(getFieldOffset()) ~ "]\n";
         }
     }
 

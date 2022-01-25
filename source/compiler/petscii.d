@@ -140,7 +140,7 @@ private string replacerFn(Captures!(string) m)
 
 private string replaceEscapes(string input)
 {    
-    return replaceAll!(replacerFn)(input, regex(`\x7b([a-zA-Z0-9]+)\x7d`));
+    return replaceAll!(replacerFn)(input, regex(`\x7b([a-zA-Z0-9_]+)\x7d`));
 }
 
 /** Translates ASCII string to PETSCII HEX expression */

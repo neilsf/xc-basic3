@@ -525,7 +525,18 @@ class VariableAccess : AccessorInterface
             }
         }
         else {
-            return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(getFieldOffset()) ~ "]\n";
+            ushort fOffset = getFieldOffset();
+            if(cast(ThisVariable)variable) {
+                string asmCode = "    pthis\n";
+                if(fOffset > 0) {
+                    asmCode ~= "    pword " ~ to!string(fOffset) ~ "\n";
+                    asmCode ~= "    addword\n";
+                }
+                return asmCode;
+            }
+            else {
+                return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(fOffset) ~ "]\n";
+            }
         }
     }
 

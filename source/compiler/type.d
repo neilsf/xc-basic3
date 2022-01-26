@@ -131,14 +131,14 @@ class Type
         Variable field;
         Type t = this;
         for(int i = 0; i < chain.length; i++) {
-            string key = chain[i];
+            string key = toLower(chain[i]);
             if(t.hasField(key)) {
                 field = t.getField(key);
                 len += field.offsetWithinType;
                 t = field.type;
             }
             else {
-                throw new Exception("Unknown member " ~ key ~ " in type " ~ this.name);
+                throw new Exception("Unknown field " ~ key ~ " in type " ~ this.name);
             }
         }
         return len;
@@ -153,12 +153,12 @@ class Type
         string[] chain = dotNotation.split(".");
         Type t = this;
         for(int i = 0; i < chain.length; i++) {
-            string key = chain[i];
+            string key = toLower(chain[i]);
             if(t.hasField(key)) {
                 t = t.getField(key).type;
             }
             else {
-                throw new Exception("Unknown member " ~ key ~ " in type " ~ this.name);
+                throw new Exception("Unknown field " ~ key ~ " in type " ~ this.name);
             }
         }
         return t;

@@ -17,15 +17,5 @@ STATUS EQU $90 ; KERNAL I/O STATUS
 	; Calls a KERNAL routine
 	; Routine address in {1}
 	MAC kerncall
-	;IF TARGET == cplus4
-	; Switch on ROM bank
-	;sei
-	;sta $FF3E
-	;ENDIF
 	jsr {1}
-	;IF TARGET == cplus4
-	; Switch on RAM bank
-	;sta $FF3F
-	;cli
-	;ENDIF
 	ENDM

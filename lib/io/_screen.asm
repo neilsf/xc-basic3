@@ -362,13 +362,18 @@ CALC_SCRROWPTR SUBROUTINE
 		lda #$00
 		adc R0 + 1
 	ENDIF
+	IF TARGET & c264 
+	adc #$0c ; high byte is always 0C on plus4
+	ELSE
 	adc KERNAL_SCREEN_ADDR
+	ENDIF
 	sta R0 + 1
 	rts
 	ENDIF
 	
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
+	; Set VIC-II on C64
 	IF TARGET == c64
 	IF !FPULL
 	pla
@@ -395,6 +400,10 @@ CALC_SCRROWPTR SUBROUTINE
 	sta VICII_MEMCONTROL
 	import I_RESET_SCRVECTORS
 	jsr RESET_SCRVECTORS
+	ENDIF
+	; Set TED on C264
+	IF TARGET & c264
+	
 	ENDIF
 	ENDM
 	

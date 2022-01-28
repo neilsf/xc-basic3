@@ -29,6 +29,6 @@ RD  EQU $10
 RE	EQU $11
 RF	EQU $12
 ; Pointer to "this"
-TH  EQU $14
+TH  EQU $13
 ; Pointer to current string in work area
 SP	EQU $15

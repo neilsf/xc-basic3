@@ -26,8 +26,9 @@ class SourceFile
     protected this(string fileName)
     {
         this.fileName = fileName;
-        this.readSourceFile();
-        this.parseSourceCode();
+        readSourceFile();
+        commentInlineAsm();
+        parseSourceCode();
 
         // increment file identifier
         fileCounter += 1;
@@ -87,6 +88,30 @@ class SourceFile
         chdir(currentDir);
     }
 
+    private void commentInlineAsm()
+    {
+        import std.stdio;
+        bool inAsmBlock = false;
+        bool hasAsmBlock = false;
+        string[] lines = splitLines(this.sourceCode);
+        for(int i = 0; i < lines.length; i++) {
+            string line = lines[i];
+            if(toLower(strip(line)) == "asm") {
+                inAsmBlock = true;
+                hasAsmBlock = true;
+            }
+            else if(toLower(strip(line)) == "end asm") {
+                inAsmBlock = false;
+            }
+            else if(inAsmBlock) {
+                lines[i] = "REM " ~ line;
+            }
+        }
+        if(hasAsmBlock) {
+            this.sourceCode = lines.join("\n");
+        }
+    }
+
     private void parseSourceCode()
     {
         this.ast = XCBASIC(this.sourceCode);
@@ -100,6 +125,7 @@ class SourceFile
             };
             string msg = this.ast.failMsg(errorFormatter);
             stderr.writeln(msg);
+            stderr.writeln(ast);
             exit(1);
         }
     }

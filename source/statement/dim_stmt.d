@@ -18,7 +18,7 @@ class Dim_stmt : Statement
 		super(node, compiler);
 	}
 
-    private const string ATTR_COMMON = "common";
+    private const string ATTR_COMMON = "shared";
     private const string ATTR_FAST   = "fast";
 
     private bool isFast = false;

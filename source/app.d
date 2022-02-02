@@ -32,7 +32,7 @@ const string[] targetOpts = [
 
 // Command line options
 private bool optimize = true;
-private string outputFormat = "prg";
+private bool keepImCode = false;
 version(Windows) {
 	private string dasm = "dasm.exe";
 }
@@ -62,7 +62,7 @@ void main(string[] args)
             "symbol|s", &symbolfile,
             "list|l", &listfile,
             "optimize|p", &optimize,
-            "format|f", &outputFormat,
+            "keep-imcode|k", &keepImCode,
             "verbosity|v", &verbosity,
             "inline-data|i", &inlineData
         );
@@ -145,8 +145,10 @@ void main(string[] args)
     }
     auto dasm_cmd = executeShell(cmd);
     
-    debug(1) {} else {
+    if(!keepImCode) {
         remove(asmFilename);
+    } else {
+        stdout.writeln("File containing intermediate code kept in " ~ asmFilename);
     }
     
     if(dasm_cmd.status != 0) {
@@ -173,11 +175,6 @@ void main(string[] args)
  */
 private void validateOptions(string[] args)
 {
-	if(outputFormat != "prg" && outputFormat != "asm") {
-        stderr.writeln("Invalid value for option -f. Use --help for more information.");
-        exit(1);
-    }
-
     if(args.length < 2) {
         stderr.writeln("Too few command line options. Use --help for more information.");
         exit(1);
@@ -253,8 +250,9 @@ Options:
                     If the program and its data overgrow the top address, compilation will fail.
                     Please provide a decimal number.
 
-   -f
-  --format=         Output format: "prg" (default, will call DASM) or "asm"
+   -k
+  --keep-imcode=    By default, the intermediate assembly code will be deleted after successful
+                    assembly. Set this to TRUE if you wan to keep it.
 
    -d
   --dasm=           Path to the DASM executable.

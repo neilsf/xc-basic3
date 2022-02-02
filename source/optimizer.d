@@ -71,7 +71,7 @@ class ReplaceSequences: OptimizerPass
     private void fetchSequences()
     {
         immutable string libDir = getLibraryDir();
-        auto pusherR = ctRegex!(`MAC\s+opt_([a-zA-Z0-9_]+)\s+.+`);
+        auto pusherR = ctRegex!(`MAC\s+([a-zA-Z0-9_@]+)\s+.+`);
         immutable string contents = readText(buildNormalizedPath(libDir ~ "/opt/opt.asm"));
         foreach (c; matchAll(contents, pusherR)) {
             this.sequences ~= c[1];
@@ -152,7 +152,7 @@ class ReplaceSequences: OptimizerPass
                     //stderr.writeln("match: " ~ seqString);
                     if(this.fullMatch(seqString)) {
                         //stderr.writeln("replace: " ~ seqString);
-                        this.outCode ~= "    opt_" ~ seqString ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n";
+                        this.outCode ~= "    " ~ seqString ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n";
                         accumulatedSequence = [];
                         accumulatedCode = [];
                         replacementsMade++;

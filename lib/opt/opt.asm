@@ -5,7 +5,7 @@
     ; BYTES
     
     ; Quick addition
-    MAC opt_pbytevar_pbyte_addbyte; @push
+    MAC pbytevar_pbyte_addbyte; @push
     lda {1}
     clc
     adc #{2}
@@ -14,7 +14,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_addbyte ; @push
+    MAC pbyte_pbytevar_addbyte ; @push
     lda #{1}
     clc
     adc {2}
@@ -23,7 +23,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbytevar_pbytevar_addbyte ; @push
+    MAC pbytevar_pbytevar_addbyte ; @push
     lda {1}
     clc
     adc {2}
@@ -33,7 +33,7 @@
     ENDM
     
     ; Quick subtraction
-    MAC opt_pbytevar_pbyte_subbyte; @push
+    MAC pbytevar_pbyte_subbyte; @push
     lda {1}
     sec
     sbc #{2}
@@ -42,7 +42,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_subbyte ; @push
+    MAC pbyte_pbytevar_subbyte ; @push
     lda #{1}
     sec
     sbc {2}
@@ -51,7 +51,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbytevar_pbytevar_subbyte ; @push
+    MAC pbytevar_pbytevar_subbyte ; @push
     lda {1}
     sec
     sbc {2}
@@ -61,7 +61,7 @@
     ENDM
     
     ; Increase instad of addition
-    MAC opt_pbytevar_pbyte_addbyte_plbytevar
+    MAC pbytevar_pbyte_addbyte_plbytevar
     IF {1} == {3} && {2} == 1 ; Same vars and addend = 1
     inc {1}
     ELSE
@@ -72,7 +72,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_addbyte_plbytevar
+    MAC pbyte_pbytevar_addbyte_plbytevar
     IF {2} == {3} && {1} == 1 ; Same vars and addend = 1
     inc {2}
     ELSE
@@ -84,7 +84,7 @@
     ENDM
     
     ; Decrease instad of subtraction
-    MAC opt_pbytevar_pbyte_subbyte_plbytevar
+    MAC pbytevar_pbyte_subbyte_plbytevar
     IF {1} == {3} && {2} == 1 ; Same vars and addend = 1
     dec {1}
     ELSE
@@ -96,7 +96,7 @@
     ENDM
     
     ; Quick OR
-    MAC opt_pbytevar_pbyte_orbyte ; @push
+    MAC pbytevar_pbyte_orbyte ; @push
     lda {1}
     ora #{2}
     IF !FPUSH
@@ -104,7 +104,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_orbyte ; @push
+    MAC pbyte_pbytevar_orbyte ; @push
     lda #{1}
     ora {2}
     IF !FPUSH
@@ -112,7 +112,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbytevar_pbytevar_orbyte ; @push
+    MAC pbytevar_pbytevar_orbyte ; @push
     lda {1}
     ora {2}
     IF !FPUSH
@@ -121,7 +121,7 @@
     ENDM
     
     ; Quick AND
-    MAC opt_pbytevar_pbyte_andbyte ; @push
+    MAC pbytevar_pbyte_andbyte ; @push
     lda {1}
     and #{2}
     IF !FPUSH
@@ -129,7 +129,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_andbyte ; @push
+    MAC pbyte_pbytevar_andbyte ; @push
     lda #{1}
     and {2}
     IF !FPUSH
@@ -137,7 +137,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbytevar_pbytevar_andbyte ; @push
+    MAC pbytevar_pbytevar_andbyte ; @push
     lda {1}
     and {2}
     IF !FPUSH
@@ -146,7 +146,7 @@
     ENDM
     
     ; Quick XOR
-    MAC opt_pbytevar_pbyte_xorbyte ; @push
+    MAC pbytevar_pbyte_xorbyte ; @push
     lda {1}
     eor #{2}
     IF !FPUSH
@@ -154,7 +154,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_pbytevar_xorbyte ; @push
+    MAC pbyte_pbytevar_xorbyte ; @push
     lda #{1}
     eor {2}
     IF !FPUSH
@@ -162,7 +162,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pbytevar_pbytevar_xorbyte ; @push
+    MAC pbytevar_pbytevar_xorbyte ; @push
     lda {1}
     eor {2}
     IF !FPUSH
@@ -173,7 +173,7 @@
     ; WORDS, INTS and DECIMALS
     
     ; Quick addition
-    MAC opt_pint_pintvar_addint ; @push
+    MAC pint_pintvar_addint ; @push
     lda #<{1}
     clc
     adc {2}
@@ -192,19 +192,19 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_F_cint_byte_pintvar_addint ; @push
-    opt_pint_pintvar_addint {1}, {2}
+    MAC pbyte_F_cint_byte_pintvar_addint ; @push
+    pint_pintvar_addint {1}, {2}
     ENDM
     
-    MAC opt_pword_pwordvar_addword ; @push
-    opt_pint_pintvar_addint {1}, {2}
+    MAC pword_pwordvar_addword ; @push
+    pint_pintvar_addint {1}, {2}
     ENDM
     
-    MAC opt_pbyte_F_cword_byte_pwordvar_addword ; @push
-    opt_pint_pintvar_addint {1}, {2}
+    MAC pbyte_F_cword_byte_pwordvar_addword ; @push
+    pint_pintvar_addint {1}, {2}
     ENDM
     
-    MAC opt_pdecimal_pdecimalvar_adddecimal ; @push
+    MAC pdecimal_pdecimalvar_adddecimal ; @push
     sei
     sed
     lda #{1}
@@ -227,7 +227,7 @@
     cli
     ENDM
     
-    MAC opt_pint_pintvar_addint_plintvar
+    MAC pint_pintvar_addint_plintvar
     IF {1} == 1 && {2} == {3}
     inc {2}
     bne .1
@@ -244,19 +244,19 @@
     ENDIF
     ENDM
     
-    MAC opt_pbyte_F_cint_byte_pintvar_addint_plintvar
-    opt_pint_pintvar_addint_plintvar {1}, {2}, {3}
+    MAC pbyte_F_cint_byte_pintvar_addint_plintvar
+    pint_pintvar_addint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_pword_pwordvar_addword_plwordvar
-    opt_pint_pintvar_addint_plintvar {1}, {2}, {3}
+    MAC pword_pwordvar_addword_plwordvar
+    pint_pintvar_addint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_pbyte_F_cword_byte_pwordvar_addword_plwordvar
-    opt_pint_pintvar_addint_plintvar {1}, {2}, {3}
+    MAC pbyte_F_cword_byte_pwordvar_addword_plwordvar
+    pint_pintvar_addint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_pdecimal_pdecimalvar_adddecimal_pldecimalvar
+    MAC pdecimal_pdecimalvar_adddecimal_pldecimalvar
     sei
     sed
     lda #{1}
@@ -270,7 +270,7 @@
     cli
     ENDM
     
-    MAC opt_pintvar_pint_addint ; @push
+    MAC pintvar_pint_addint ; @push
     lda {1}
     clc
     adc #<{2}
@@ -289,19 +289,19 @@
     ENDIF
     ENDM
     
-    MAC opt_pintvar_pbyte_F_cint_byte_addint ; @push
-    opt_pintvar_pint_addint {1}, {2}
+    MAC pintvar_pbyte_F_cint_byte_addint ; @push
+    pintvar_pint_addint {1}, {2}
     ENDM
     
-    MAC opt_pwordvar_pword_addword ; @push
-    opt_pintvar_pint_addint {1}, {2}
+    MAC pwordvar_pword_addword ; @push
+    pintvar_pint_addint {1}, {2}
     ENDM
     
-    MAC opt_pwordvar_pbyte_F_cword_byte_addword ; @push
-    opt_pintvar_pint_addint {1}, {2}
+    MAC pwordvar_pbyte_F_cword_byte_addword ; @push
+    pintvar_pint_addint {1}, {2}
     ENDM
     
-    MAC opt_pdecimalvar_pdecimal_adddecimal ; @push
+    MAC pdecimalvar_pdecimal_adddecimal ; @push
     lda {1}
     clc
     adc #{2}
@@ -320,7 +320,7 @@
     ENDIF
     ENDM
     
-    MAC opt_pintvar_pint_addint_plintvar
+    MAC pintvar_pint_addint_plintvar
     IF {2} == 1 && {1} == {3}
     inc {1}
     bne .1
@@ -337,19 +337,19 @@
     ENDIF
     ENDM
     
-    MAC opt_opt_pintvar_pbyte_F_cint_byte_addint_plintvar
-    opt_pintvar_pint_addint_plintvar {1}, {2}, {3}
+    MAC pintvar_pbyte_F_cint_byte_addint_plintvar
+    pintvar_pint_addint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_opt_pwordvar_pword_addword_plwordvar
-    opt_pintvar_pint_addint_plintvar {1}, {2}, {3}
+    MAC pwordvar_pword_addword_plwordvar
+    pintvar_pint_addint_plintvar {1}, {2}, {3}
     ENDM
         
-    MAC opt_opt_pwordvar_pbyte_F_cword_byte_addword_plwordvar
-    opt_pintvar_pint_addint_plintvar {1}, {2}, {3}
+    MAC pwordvar_pbyte_F_cword_byte_addword_plwordvar
+    pintvar_pint_addint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_pdecimalvar_pdecimal_addecimal_pldecimalvar
+    MAC pdecimalvar_pdecimal_addecimal_pldecimalvar
     sei
     sed
     lda {1}
@@ -363,7 +363,7 @@
     cli
     ENDM
     
-    MAC opt_pintvar_pintvar_addint ; @push
+    MAC pintvar_pintvar_addint ; @push
     lda {1}
     clc
     adc {2}
@@ -382,15 +382,15 @@
     ENDIF
     ENDM
     
-    MAC opt_pwordvar_pwordvar_addword ; @push
-    opt_pintvar_pintvar_addint {1}, {2}
+    MAC pwordvar_pwordvar_addword ; @push
+    pintvar_pintvar_addint {1}, {2}
     ENDM
     
-    MAC opt_pdecimalvar_pdecimalvar_adddecimal ; @push
-    opt_pintvar_pintvar_addint {1}, {2}
+    MAC pdecimalvar_pdecimalvar_adddecimal ; @push
+    pintvar_pintvar_addint {1}, {2}
     ENDM
     
-    MAC opt_pintvar_pintvar_addint_plintvar
+    MAC pintvar_pintvar_addint_plintvar
     lda {1}
     clc
     adc {2}
@@ -400,21 +400,21 @@
     sta {3} + 1
     ENDM
     
-    MAC opt_pwordvar_pwordvar_addword_plwordvar ; @push
-    opt_pintvar_pintvar_addint {1}, {2}, {3}
+    MAC pwordvar_pwordvar_addword_plwordvar ; @push
+    pintvar_pintvar_addint {1}, {2}, {3}
     ENDM
     
-    MAC opt_pdecimalvar_pdecimalvar_adddecimal_pldecimalvar; @push
+    MAC pdecimalvar_pdecimalvar_adddecimal_pldecimalvar; @push
     sei
     sed
-    opt_pintvar_pintvar_addint {1}, {2}, {3}
+    pintvar_pintvar_addint {1}, {2}, {3}
     cld
     cli
     ENDM
     
     ; Quick subtraction
     
-    MAC opt_pint_pintvar_subint ; @push
+    MAC pint_pintvar_subint ; @push
     lda #<{1}
     sec
     sbc {2}
@@ -433,11 +433,11 @@
     ENDIF
     ENDM
     
-    MAC opt_pword_pwordvar_subword ; @push
-    opt_pint_pintvar_subint {1}, {2}
+    MAC pword_pwordvar_subword ; @push
+    pint_pintvar_subint {1}, {2}
     ENDM
     
-    MAC opt_pdecimal_pdecimalvar_subdecimal ; @push
+    MAC pdecimal_pdecimalvar_subdecimal ; @push
     sei
     sed
     lda #{1}
@@ -460,7 +460,7 @@
     cli
     ENDM
     
-    MAC opt_pint_pintvar_subint_plintvar
+    MAC pint_pintvar_subint_plintvar
     lda #<{1}
     sec
     sbc {2}
@@ -470,11 +470,11 @@
     sta {3} + 1
     ENDM
     
-    MAC opt_pword_pwordvar_subword_plwordvar
-    opt_pint_pintvar_subint_plintvar {1}, {2}, {3}
+    MAC pword_pwordvar_subword_plwordvar
+    pint_pintvar_subint_plintvar {1}, {2}, {3}
     ENDM
     
-    MAC opt_pdecimal_pdecimalvar_subdecimal_pldecimalvar
+    MAC pdecimal_pdecimalvar_subdecimal_pldecimalvar
     sei
     sed
     lda #{1}
@@ -488,7 +488,7 @@
     cli
     ENDM
     
-    MAC opt_pintvar_pint_subint ; @push
+    MAC pintvar_pint_subint ; @push
     lda {1}
     sec
     sbc #<{2}
@@ -507,11 +507,11 @@
     ENDIF
     ENDM
     
-    MAC opt_pwordvar_pword_subword ; @push
-    opt_pintvar_pint_subint {1}, {2}
+    MAC pwordvar_pword_subword ; @push
+    pintvar_pint_subint {1}, {2}
     ENDM
     
-    MAC opt_pdecimalvar_pdecimal_subdecimal ; @push
+    MAC pdecimalvar_pdecimal_subdecimal ; @push
     sei
     sed
     lda {1}
@@ -534,7 +534,7 @@
     cli
     ENDM
     
-    MAC opt_pintvar_pint_subint_plintvar
+    MAC pintvar_pint_subint_plintvar
     lda {1}
     sec
     sbc #<{2}
@@ -544,11 +544,11 @@
     sta {3} + 1
     ENDM
     
-    MAC opt_pwordvar_pword_subword_plwordvar
-    opt_pintvar_pint_subint_plintvar
+    MAC pwordvar_pword_subword_plwordvar
+    pintvar_pint_subint_plintvar
     ENDM
     
-    MAC opt_pdecimalvar_pdecimal_subdecimal_pldecimalvar
+    MAC pdecimalvar_pdecimal_subdecimal_pldecimalvar
     lda {1}
     sec
     sbc #{2}
@@ -558,7 +558,7 @@
     sta {4} + 1
     ENDM
     
-    MAC opt_pintvar_pintvar_subint ; @push
+    MAC pintvar_pintvar_subint ; @push
     lda {1}
     sec
     sbc {2}
@@ -577,19 +577,19 @@
     ENDIF
     ENDM
     
-    MAC opt_pwordvar_pwordvar_subword ; @push
-    opt_pintvar_pintvar_subint
+    MAC pwordvar_pwordvar_subword ; @push
+    pintvar_pintvar_subint
     ENDM
     
-    MAC opt_pdecimalvar_pdecimalvar_subdecimal ; @push
+    MAC pdecimalvar_pdecimalvar_subdecimal ; @push
     sei
     sed
-    opt_pintvar_pintvar_subint
+    pintvar_pintvar_subint
     cld
     cli
     ENDM
     
-    MAC opt_pintvar_pintvar_subint_plintvar
+    MAC pintvar_pintvar_subint_plintvar
     lda {1}
     sec
     sbc {2}
@@ -599,21 +599,21 @@
     sta {3} + 1
     ENDM
     
-    MAC opt_pwordvar_pwordvar_subword_plwordvar
-    opt_pintvar_pintvar_subint_plintvar
+    MAC pwordvar_pwordvar_subword_plwordvar
+    pintvar_pintvar_subint_plintvar
     ENDM
     
-    MAC opt_pdecimalvar_pdecimalvar_subdecimal_pldecimalvar
+    MAC pdecimalvar_pdecimalvar_subdecimal_pldecimalvar
     sei
     sed
-    opt_pintvar_pintvar_subint_plintvar
+    pintvar_pintvar_subint_plintvar
     cld
     cli
     ENDM
     
     ; Array access
     
-    MAC opt_pbytevar_pbytearrayfast ; @push
+    MAC pbytevar_pbytearrayfast ; @push
     ldx {1}
     lda {2},x
     IF !FPUSH
@@ -623,7 +623,7 @@
     
     ; Quick comparison of bytes
     
-	MAC opt_pbyte_pbyte_cmpbyteeq ; @push
+	MAC pbyte_pbyte_cmpbyteeq ; @push
 	lda #{1}
 	cmp #{2}
 	beq .true
@@ -634,7 +634,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpbyteeq ; @push
+	MAC pbytevar_pbyte_cmpbyteeq ; @push
 	lda {1}
 	cmp #{2}
 	beq .true
@@ -645,7 +645,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpbyteeq ; @push
+	MAC pbyte_pbytevar_cmpbyteeq ; @push
 	lda #{1}
 	cmp {2}
 	beq .true
@@ -656,7 +656,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpbyteeq ; @push
+	MAC pbytevar_pbytevar_cmpbyteeq ; @push
 	lda {1}
 	cmp {2}
 	beq .true
@@ -667,7 +667,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbyte_cmpytebneq ; @push
+	MAC pbyte_pbyte_cmpytebneq ; @push
 	lda #{1}
 	cmp #{2}
 	bne .true
@@ -678,7 +678,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpytebneq ; @push
+	MAC pbytevar_pbyte_cmpytebneq ; @push
 	lda {1}
 	cmp #{2}
 	bne .true
@@ -689,7 +689,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpytebneq ; @push
+	MAC pbyte_pbytevar_cmpytebneq ; @push
 	lda #{1}
 	cmp {2}
 	bne .true
@@ -700,7 +700,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpytebneq ; @push
+	MAC pbytevar_pbytevar_cmpytebneq ; @push
 	lda {1}
 	cmp {2}
 	bne .true
@@ -711,7 +711,7 @@
 .end
 	ENDM
 
-	MAC opt_pbyte_pbyte_cmpbytelt ; @push
+	MAC pbyte_pbyte_cmpbytelt ; @push
 	lda #{1}
 	cmp #{2}
 	bcs .false
@@ -722,7 +722,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpbytelt ; @push
+	MAC pbytevar_pbyte_cmpbytelt ; @push
 	lda {1}
 	cmp #{2}
 	bcs .false
@@ -733,7 +733,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpbytelt ; @push
+	MAC pbyte_pbytevar_cmpbytelt ; @push
 	lda #{1}
 	cmp {2}
 	bcs .false
@@ -744,7 +744,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpbytelt ; @push
+	MAC pbytevar_pbytevar_cmpbytelt ; @push
 	lda {1}
 	cmp {2}
 	bcs .false
@@ -755,7 +755,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbyte_cmpbytelte ; @push
+	MAC pbyte_pbyte_cmpbytelte ; @push
 	lda #{2}
 	cmp #{1}
 	bcs .true
@@ -766,7 +766,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpbytelte ; @push
+	MAC pbyte_pbytevar_cmpbytelte ; @push
 	lda {2}
 	cmp #{1}
 	bcs .true
@@ -777,7 +777,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpbytelte ; @push
+	MAC pbytevar_pbyte_cmpbytelte ; @push
 	lda #{2}
 	cmp {1}
 	bcs .true
@@ -788,7 +788,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpbytelte ; @push
+	MAC pbytevar_pbytevar_cmpbytelte ; @push
 	lda {2}
 	cmp {1}
 	bcs .true
@@ -799,7 +799,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbyte_cmpbbytegte ; @push
+	MAC pbyte_pbyte_cmpbbytegte ; @push
 	lda #{1}
 	cmp #{2}
 	bcs .true
@@ -810,7 +810,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpbbytegte ; @push
+	MAC pbytevar_pbyte_cmpbbytegte ; @push
 	lda {1}
 	cmp #{2}
 	bcs .true
@@ -821,7 +821,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpbbytegte ; @push
+	MAC pbyte_pbytevar_cmpbbytegte ; @push
 	lda #{1}
 	cmp {2}
 	bcs .true
@@ -832,7 +832,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpbytegte ; @push
+	MAC pbytevar_pbytevar_cmpbytegte ; @push
 	lda {1}
 	cmp {2}
 	bcs .true
@@ -843,7 +843,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbyte_cmpbytegt ; @push
+	MAC pbyte_pbyte_cmpbytegt ; @push
 	lda #{2}
 	cmp #{1}
 	bcc .true
@@ -854,7 +854,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbyte_pbytevar_cmpbytegt ; @push
+	MAC pbyte_pbytevar_cmpbytegt ; @push
 	lda {2}
 	cmp #{1}
 	bcc .true
@@ -865,7 +865,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbyte_cmpbytegt ; @push
+	MAC pbytevar_pbyte_cmpbytegt ; @push
 	lda #{2}
 	cmp {1}
 	bcc .true
@@ -876,7 +876,7 @@
 .end
 	ENDM
 	
-	MAC opt_pbytevar_pbytevar_cmpbytegt ; @push
+	MAC pbytevar_pbytevar_cmpbytegt ; @push
 	lda {2}
 	cmp {1}
 	bcc .true
@@ -888,3 +888,291 @@
 	ENDM
 	
 	 ; Quick comparison and branching
+	
+	MAC pbyte_pbyte_cmpbyteeq_cond_stmt
+	lda #{1}
+	cmp #{2}
+	beq .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true:
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpbyteeq_cond_stmt
+	lda {1}
+	cmp #{2}
+	beq .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true:
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpbyteeq_cond_stmt
+	lda #{1}
+	cmp {2}
+	beq .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true:
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpbyteeq_cond_stmt
+	lda {1}
+	cmp {2}
+	beq .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true:
+	ENDM
+	
+	MAC pbyte_pbyte_cmpytebneq_cond_stmt
+	lda #{1}
+	cmp #{2}
+	bne .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpytebneq_cond_stmt
+	lda {1}
+	cmp #{2}
+	bne .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpytebneq_cond_stmt
+	lda #{1}
+	cmp {2}
+	bne .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpytebneq_cond_stmt
+	lda {1}
+	cmp {2}
+	bne .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+
+	MAC pbyte_pbyte_cmpbytelt_cond_stmt
+	lda #{1}
+	cmp #{2}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpbytelt_cond_stmt
+	lda {1}
+	cmp #{2}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpbytelt_cond_stmt
+	lda #{1}
+	cmp {2}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpbytelt_cond_stmt
+	lda {1}
+	cmp {2}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbyte_cmpbytelte_cond_stmt
+	lda #{2}
+	cmp #{1}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpbytelte_cond_stmt
+	lda {2}
+	cmp #{1}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpbytelte_cond_stmt
+	lda #{2}
+	cmp {1}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpbytelte_cond_stmt
+	lda {2}
+	cmp {1}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbyte_cmpbbytegte_cond_stmt
+	lda #{1}
+	cmp #{2}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpbbytegte_cond_stmt
+	lda {1}
+	cmp #{2}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpbbytegte_cond_stmt
+	lda #{1}
+	cmp {2}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpbytegte_cond_stmt
+	lda {1}
+	cmp {2}
+	bcs .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbyte_cmpbytegt_cond_stmt
+	lda #{2}
+	cmp #{1}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbyte_pbytevar_cmpbytegt_cond_stmt
+	lda {2}
+	cmp #{1}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbyte_cmpbytegt_cond_stmt
+	lda #{2}
+	cmp {1}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM
+	
+	MAC pbytevar_pbytevar_cmpbytegt_cond_stmt
+	lda {2}
+	cmp {1}
+	bcc .true
+	IF {4} > 0 && {2} < $10000
+	jmp {4}
+	ELSE
+	jmp {3}
+	ENDIF
+.true
+	ENDM

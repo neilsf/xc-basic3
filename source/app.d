@@ -146,7 +146,14 @@ void main(string[] args)
     auto dasm_cmd = executeShell(cmd);
     
     if(!keepImCode) {
-        remove(asmFilename);
+        try {
+            remove(asmFilename);
+        }
+        catch(Exception e) {
+            // There has been an error while removing the file
+            // it's okay, since it's in a temp dir, it'll be removed anyway
+        }
+        
     } else {
         stdout.writeln("File containing intermediate code kept in " ~ asmFilename);
     }

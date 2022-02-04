@@ -1,8 +1,8 @@
 module statement.rem_stmt;
 
+import std.regex;
 import pegged.grammar;
-
-import language.statement, compiler.compiler;
+import language.statement, compiler.compiler, compiler.variable;
 
 class Rem_stmt : Statement
 {
@@ -15,7 +15,17 @@ class Rem_stmt : Statement
     public void process()
     {
         if(compiler.inlineAssembly) {
-            appendCode(node.children[0].matches[1] ~ "\n");
+            string line = node.children[0].matches[1];
+            auto r = regex(r"\{[a-zA-Z_0-9]+\}");
+            auto match = matchFirst(line, r);
+            if(match) {
+                string varName = match[0][1..$-1];
+                Variable v = compiler.getVars().findVisible(varName);
+                if(!(v is null)) {
+                    line = replaceFirst(line, r, v.getAsmLabel());
+                }
+            }
+            appendCode(line ~ "\n");
         }
     }
 

@@ -1,6 +1,6 @@
 module compiler.variable;
 
-import std.algorithm.searching, std.conv, std.array, std.string, std.math;
+import std.algorithm, std.conv, std.array, std.string, std.math;
 
 import language.expression;
 import compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode,
@@ -170,7 +170,7 @@ class VariableCollection
 
         if(existsInOuterScope(variable.name)) {
             this.compiler.displayWarning(
-                "'" ~ variable.name ~ "' shadows global or common variable with the same name"
+                "'" ~ variable.name ~ "' shadows GLOBAL or SHARED variable with the same name"
             );
         }
 
@@ -238,6 +238,7 @@ class VariableCollection
     public Variable findVisible(string name)
     {
         name = toLower(name);
+        Variable[] candidates;
         foreach (Variable var; variables) {
             if(var.name != name) {
                 continue;
@@ -261,11 +262,17 @@ class VariableCollection
             }
 
             if(visible) {
-                return var;
+                candidates ~= var;
             }
         }
 
-        return null;
+        if(candidates.length == 0) {
+            return null;
+        }
+
+        // Prefer local variable over global if both exist
+        sort!((a, b) => a.visibility < b.visibility)(candidates);
+        return candidates[0];
     }
 
     public Variable[] getAll()

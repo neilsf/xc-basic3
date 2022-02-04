@@ -17,6 +17,7 @@ class Asm_stmt : Statement
     void process()
     {
         compiler.startInlineAssembly();
+        appendCode("    ; !!opt_end!!");
     }
 }
 
@@ -32,6 +33,7 @@ class Endasm_stmt : Statement
     /** Compiles the statement */
     void process()
     {
+        appendCode("    ; !!opt_start!!");
         compiler.endInlineAssembly();
     }
 }

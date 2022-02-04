@@ -306,6 +306,9 @@ class RemoveStackOps: OptimizerPass
             return "";
         }
         string[] parts = line.strip.split!isWhite;
+        if(parts.length == 0) {
+            return "";
+        }
         if(this.isPuller(parts[0]) || this.isPusher(parts[0])) {
             return parts[0];
         }

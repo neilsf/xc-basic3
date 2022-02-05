@@ -104,7 +104,7 @@ class SourceFile
                 inAsmBlock = false;
             }
             else if(inAsmBlock) {
-                lines[i] = "REM" ~ line;
+                lines[i] = "REM " ~ line;
             }
         }
         if(hasAsmBlock) {

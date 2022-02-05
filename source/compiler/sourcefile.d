@@ -104,7 +104,7 @@ class SourceFile
                 inAsmBlock = false;
             }
             else if(inAsmBlock) {
-                lines[i] = "REM " ~ line;
+                lines[i] = "REM" ~ line;
             }
         }
         if(hasAsmBlock) {
@@ -125,7 +125,7 @@ class SourceFile
             };
             string msg = this.ast.failMsg(errorFormatter);
             stderr.writeln(msg);
-            stderr.writeln(ast);
+            //stderr.writeln(ast);
             exit(1);
         }
     }

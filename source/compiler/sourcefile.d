@@ -125,7 +125,7 @@ class SourceFile
             };
             string msg = this.ast.failMsg(errorFormatter);
             stderr.writeln(msg);
-            stderr.writeln(ast);
+            //stderr.writeln(ast);
             exit(1);
         }
     }

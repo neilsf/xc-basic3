@@ -20,30 +20,11 @@
 	ENDM
 	
 	MAC open
+	import I_RUNTIME_ERROR
 	kerncall KERNAL_OPEN
 	bcc .ok
-	import I_RUNTIME_ERROR
 	jmp RUNTIME_ERROR
 .ok
-	; Check status
-	import I_IO_READST
-	jsr IO_READST
-	beq .ok2
-	; Now we have a DOS error code that
-	; has to be mapped to an XC=BASIC error
-	cmp #74 ; Drive not ready
-	bne .1
-	lda #ERR_DEVICE_NOT_READY
-	jmp RUNTIME_ERROR
-.1
-	cmp #62 ; File not found
-	bne .2
-	lda #ERR_FILE_NOT_FOUND
-	jmp RUNTIME_ERROR
-.2  		; Generic "read error"
-	lda #ERR_READ_ERROR
-	jmp RUNTIME_ERROR
-.ok2
 	ENDM
 
 	MAC close ; @pull

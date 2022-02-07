@@ -118,8 +118,11 @@ class SourceFile
         // Parser error, display error msg and exit
         if(!this.ast.successful) {
             auto errorFormatter = delegate(Position pos, string left, string right, const ParseTree p) {
+                string[] r_lines = right.splitLines();
+                string[] l_lines = left.splitLines();
+                string errorLine = r_lines.length > 0 ? r_lines[0] : l_lines[0];
                 return this.fileName ~ ":" ~ to!string(pos.line + 1) ~ "." ~ to!string(pos.col) 
-                ~ ": syntax error near '" ~ right.splitLines()[0]
+                ~ ": syntax error near '" ~ errorLine
                 ~ "' in file " ~ this.fileName ~ " in line "
                 ~ to!string(pos.line + 1);
             };

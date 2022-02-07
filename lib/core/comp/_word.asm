@@ -16,16 +16,13 @@
 	bne .phf
 	pla
 	cmp R1
-	bne .phf+1
+	bne .phf + 1
 	ptrue
-	IF !FPUSH
-	bne * + 6
-	ELSE
-	bne * + 5
-	ENDIF
+	bne .q
 .phf: 
 	pla
 	pfalse
+.q
 	ENDM
 	
 	; Compare two words on stack for inequality
@@ -46,14 +43,11 @@
 	cmp R1
 	bne .pht+1
 	pfalse
-	IF !FPUSH
-	beq * + 6
-	ELSE
-	beq * + 5
-	ENDIF
+	beq .q
 .pht:
 	pla
 	ptrue
+.q
 	ENDM
 	
 	; Compare two words on stack for less than
@@ -74,13 +68,10 @@
 	sbc R0
 	bcs .false
 	ptrue
-	IF !FPUSH
-	beq * + 6
-	ELSE
-	beq * + 5
-	ENDIF
+	bne .q
 .false:
 	pfalse
+.q
 	ENDM
 	
 	; Compare two words on stack for greater than or equal
@@ -101,13 +92,10 @@
 	sbc R0
 	bcs .true
 	pfalse
-	IF !FPUSH
-	beq * + 6
-	ELSE
-	beq * + 5
-	ENDIF
+	beq .q
 .true:
 	ptrue
+.q
 	ENDM
 	
 	; Compare two words on stack for greater than
@@ -125,11 +113,7 @@
 	inx
 	txs
 	pfalse
-	IF !FPUSH
-	beq * + 10
-	ELSE
-	beq * + 9
-	ENDIF
+	beq .q
 .true:
 	inx
 	inx
@@ -137,6 +121,7 @@
 	inx
 	txs
 	ptrue
+.q
 	ENDM
 	
 	; Compare two words on stack for less than or equal
@@ -160,11 +145,8 @@
 	bne .false ; higher
 .true
 	ptrue
-	IF !FPUSH
-	beq * + 6
-	ELSE
-	beq * + 5
-	ENDIF
+	bne .q
 .false:
 	pfalse
+.q
 	ENDM

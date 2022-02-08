@@ -224,19 +224,36 @@ final class Compiler
                 }
 
                 // line has statement(s) excluding an INCLUDE directive
-                if(hasStatement && statements.children[0].children[0].name != "XCBASIC.Include_stmt") {
+                if(hasStatement) {
                     // process all statements in line
                     foreach(ref child; statements.children) {
-                        Statement stmt = stmtFactory(child, this);
-                        if(this.inTypeDef && !this.inMethod
-                            && stmt.classinfo.name != "statement.rem_stmt.Rem_stmt"
-                            && stmt.classinfo.name != "statement.type_stmt.Field_def"
-                            && stmt.classinfo.name != "statement.fun_stmt.Fun_stmt"
-                            && stmt.classinfo.name != "statement.type_stmt.Field_def"
-                            && stmt.classinfo.name != "statement.type_stmt.Endtype_stmt") {
-                            this.displayError("TYPE blocks can only contain field or method definitions");
+                        if(child.children[0].name == "XCBASIC.Include_stmt") {
+                            if(this.inProcedure) {
+                                this.displayError("INCLUDE is not allowed inside a SUB or FUNCTION");
+                            }
+                            // save current filename & id
+                            immutable string savedFileName = this.currentFileName;
+                            immutable string savedFileId = this.currentFileId;
+                            // parse included file
+                            string fileName = join(child.children[0].children[0].matches)[1..$-1];
+                            SourceFile file = SourceFile.get(fileName);
+                            this.compileSourceFile(file);
+                            // restore current filename & id
+                            this.currentFileName = savedFileName;
+                            this.currentFileId = savedFileId;
                         }
-                        stmt.process();
+                        else {
+                            Statement stmt = stmtFactory(child, this);
+                            if(this.inTypeDef && !this.inMethod
+                                && stmt.classinfo.name != "statement.rem_stmt.Rem_stmt"
+                                && stmt.classinfo.name != "statement.type_stmt.Field_def"
+                                && stmt.classinfo.name != "statement.fun_stmt.Fun_stmt"
+                                && stmt.classinfo.name != "statement.type_stmt.Field_def"
+                                && stmt.classinfo.name != "statement.type_stmt.Endtype_stmt") {
+                                this.displayError("TYPE blocks can only contain field or method definitions");
+                            }
+                            stmt.process();
+                        }
                     }
 
                 }
@@ -293,22 +310,6 @@ final class Compiler
                     case "XCBASIC.Endproc_stmt":
                     case "XCBASIC.Endfun_stmt":
                         this.clearProc();
-                        break;
-                        
-                    case "XCBASIC.Include_stmt":
-                        if(this.inProcedure) {
-                            this.displayError("INCLUDE is not allowed inside a procedure or function");
-                        }
-                        // save current filename & id
-                        immutable string savedFileName = this.currentFileName;
-                        immutable string savedFileId = this.currentFileId;
-                        // parse included file
-                        string fileName = join(stmt.children[0].matches)[1..$-1];
-                        SourceFile file = SourceFile.get(fileName);
-                        this.compileSourceFile(file);
-                        // restore current filename & id
-                        this.currentFileName = savedFileName;
-                        this.currentFileId = savedFileId;
                         break;
 
                     default:

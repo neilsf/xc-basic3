@@ -38,7 +38,7 @@ class Dim_stmt : Statement
         }
         else if(attr == ATTR_COMMON) {
             if(compiler.inProcedure) {
-                compiler.displayError("Local variables cannot be COMMON");
+                compiler.displayError("Local variables cannot be SHARED");
             }
             this.isCommon = true;
         }

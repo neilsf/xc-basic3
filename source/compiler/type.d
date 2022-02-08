@@ -217,6 +217,12 @@ class Type
     {
         return this.isNumeric() && this.name != FLOAT;
     }
+
+    /** Whether this is a signed type */
+    public bool isSigned()
+    {
+        return this.isNumeric() && this.name != UINT8 && this.name != UINT16 && this.name != DEC;
+    }
 }
 
 /** Holds all types defined in the program */

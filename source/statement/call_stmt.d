@@ -23,6 +23,9 @@ class Call_stmt : Statement
         try {
             AccessorFactory factory = new AccessorFactory(node.children[0].children[0], compiler, false);
             AccessorInterface call = factory.getAccessor();
+            if(call.getRoutine().type.name != Type.VOID) {
+                compiler.displayError("Only SUBs can be called using the CALL statement");
+            }
             appendCode(call.getPushCode());
             if(call.getRoutine() !is null) {
                 if(call.getRoutine() == compiler.currentProc) {

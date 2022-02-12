@@ -26,7 +26,7 @@ class Return_fn_stmt : Statement
         Type functionType = compiler.currentProc.type;
 
         if(functionType.name == Type.VOID) {
-            compiler.displayError("Void function " ~ compiler.currentProcName ~ " cannot return anything");
+            compiler.displayError("A SUB cannot return anything");
         }
 
         VariableAccess access = new VariableAccess(ParseTree(), compiler, false);

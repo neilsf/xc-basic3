@@ -47,7 +47,7 @@ class Field_def : Statement
     void process()
     {
         if(!compiler.inTypeDef) {
-            compiler.displayError("Field definition is not allowed here");
+            compiler.displayError("Syntax error");
         }
 
         ParseTree var = this.node.children[0].children[0];

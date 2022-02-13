@@ -236,6 +236,7 @@ STRREMOV_SC SUBROUTINE
 	tax
 	stx SP ; Move pointer to end of string
 	dey
+	bmi .end
 .loop
 	lda STRING_WORKAREA,x
 	import I_PET2SC

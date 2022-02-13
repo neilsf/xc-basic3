@@ -106,6 +106,9 @@ class For_stmt : Statement
             compiler.getVars.add(stepVar, false);
             stepExp.setExpectedType(counterVar.type);
             stepExp.eval();
+            if(!counterVar.type.isSigned() && stepExp.isConstant() && stepExp.getConstVal() < 0) {
+                compiler.displayWarning("FOR loop with unsigned index will never be entered if STEP is negative. Use a signed type.");
+            }
             this.appendCode(to!string(stepExp));
             this.appendCode("    pl" ~ counterVar.type.name ~ "var " ~ stepVar.getAsmLabel() ~ "\n");
         }

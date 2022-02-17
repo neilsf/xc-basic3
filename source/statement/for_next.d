@@ -56,12 +56,17 @@ class For_stmt : Statement
                 compiler.displayError("Variable " ~ join(varNode.children[0].matches) ~ " used in FOR statement is not defined. Please use the syntax 'FOR <varname> AS <type>' or use a predefined variable.");
             }
             VariableReader reader = new VariableReader(varNode, compiler);
-            counterVar = reader.read();
+            counterVar = reader.read(null, true);
             access.setVariable(counterVar);
             compiler.getVars().add(counterVar, false);
+            compiler.displayNotice("Variable " ~ counterVar.name ~ " auto-defined as STATIC because it is the counter of a FOR loop");
         }
         else {
             counterVar = access.getVariable();
+            if(counterVar.isDynamic) {
+                compiler.displayError("Using a dynamic variable as counter in a FOR loop is not supported. Please define "
+                ~ counterVar.name ~ " as STATIC");
+            }
         }
 
         if(counterVar.isConst) {

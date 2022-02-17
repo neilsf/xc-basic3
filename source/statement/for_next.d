@@ -59,7 +59,7 @@ class For_stmt : Statement
             counterVar = reader.read(null, true);
             access.setVariable(counterVar);
             compiler.getVars().add(counterVar, false);
-            if(compiler.inProcedure && !compiler.currentProc.isStatic) {
+            if(compiler.inProcedure && !compiler.currentProc.getIsStatic()) {
                 compiler.displayNotice("Variable " ~ counterVar.name ~ " auto-defined as STATIC because it is the counter of a FOR loop");
             }
         }

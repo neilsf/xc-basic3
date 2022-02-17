@@ -1,10 +1,11 @@
 module statement.data_stmt;
 
-import std.array;
+import std.array, std.conv;
 
 import pegged.grammar;
 
-import language.statement, compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode;
+import language.statement, compiler.petscii,
+        compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode;
 
 import globals;
 
@@ -23,19 +24,44 @@ class Data_stmt : Statement
         const ParseTree varTypeNode = node.children[0].children[0];
         string typeName = varTypeNode.children[0].matches.join("");
         if(!compiler.getTypes().defined(typeName)) {
-            compiler.displayError("Only primitive types are allowed in a DATA statement");
+            compiler.displayError("Unknown type: " ~ typeName);
         }
         type = compiler.getTypes().get(typeName);
         if(!type.isPrimitive) {
             compiler.displayError("Only primitive types are allowed in a DATA statement");
         }
+        ubyte strLen;
+        if(type.name == Type.STRING) {
+            if(varTypeNode.children.length < 2) {
+                compiler.displayError("String length must be specified");
+            }
+            immutable int len = to!int(join(varTypeNode.children[1].matches)[1..$]);
+            if(len < 1 || len > stringMaxLength) {
+                compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
+            }
+            strLen = to!ubyte(len);
+        }
 
         const ParseTree dataListNode = node.children[0].children[1];
         string[] listItems;
+        bool truncated;
         foreach (datum; dataListNode.children) {
             if(type.name == Type.STRING) {
                 if(datum.name != "XCBASIC.String") {
                     compiler.displayError("Type mismatch: expected string, got number");
+                }
+                // TODO
+                // * Truncate
+                // * Warn if truncated
+                // * Write here, not at the end
+                //int strLen;
+                //listItems ~= asciiToPetsciiHex(join(datum.matches[1..$-1]), true, strLen);
+                compiler.getImCode().appendSegment(
+                    inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
+                    "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated) ~ "\n"
+                );
+                if(truncated) {
+                    compiler.displayWarning("String truncated to " ~ to!string(strLen) ~ " characters");
                 }
             }
             else {

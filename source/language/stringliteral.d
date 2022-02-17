@@ -21,15 +21,10 @@ class StringLiteral
     }
 
     /** Registers a string literal and outputs it in hex data to data segment */
-    void register(bool newline = false, bool inScreencode = false)
+    void register()
     {
-        string data;
-        if(inScreencode) {
-        //    data = asc(this.str);
-        }
-        else {
-            data = asciiToPetsciiHex(this.str, newline);
-        }
+        bool truncated;
+        immutable data = asciiToPetsciiHex(this.str, 0UL, truncated);
         compiler.getImCode().appendSegment(
             IntermediateCode.DATA_SEGMENT,
             "_S" ~ to!string(id) ~ " " ~ data ~ "\n"

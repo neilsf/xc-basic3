@@ -1,9 +1,8 @@
 module compiler.petscii;
 
 import std.string, std.conv, std.array, std.algorithm.searching, std.regex;
-import std.regex;
 
-private char[] petscii = [
+private ubyte[] petscii = [
     0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x14,0x20,0x0d,0x11,0x93,0x0a,0x0e,0x0f,
     0x10,0x0b,0x12,0x13,0x08,0x15,0x16,0x17,0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
     0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
@@ -22,144 +21,90 @@ private char[] petscii = [
     0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff
 ];
 
-private string[string] escapeSequences;
+private ubyte[string] escapeSequences;
 
 static this()
 {
     escapeSequences = [
-    "CLR":        "\x93",
-    "CLEAR":      "\x93",
-    "HOME":       "\x13",
-    "INSERT":     "\x94",
-    "INS":        "\x94",
-    "DELETE":     "\x14",
-    "DEL":        "\x14",
-    "CR":         "\x0d",
-    "RETURN":     "\x0d",
-    "REV_ON":     "\x12",
-    "REVERSE ON": "\x12",
-    "REV_OFF":    "\x92",
-    "REVERSE OFF":"\x92",
-    "CRSR_UP":    "\x91",
-    "UP":         "\x91",
-    "CRSR_DOWN":  "\x11",
-    "DOWN":       "\x11",
-    "CRSR_LEFT":  "\x9d",
-    "LEFT":       "\x9d",
-    "CRSR_RIGHT": "\x1d",
-    "RIGHT":      "\x1d",
-    "SPACE":      "\x20",
-    "WHITE":      "\x05",
-    "RED":        "\x1c",
-    "GREEN":      "\x1e",
-    "BLUE":       "\x1f",
-    "ORANGE":     "\x81",
-    "BLACK":      "\x90",
-    "BROWN":      "\x95",
-    "LIGHT_RED":  "\x96",
-    "PINK":       "\x96",
-    "DARK_GRAY":  "\x97",
-    "DARK GRAY":  "\x97",
-    "MED_GRAY":   "\x98",
-    "GRAY":       "\x98",
-    "LIGHT_GREEN":"\x99",
-    "LIGHT GREEN":"\x99",
-    "LIGHT_BLUE": "\x9a",
-    "LIGHT BLUE": "\x9a",
-    "LIGHT_GRAY": "\x9b",
-    "LIGHT GRAY": "\x9b",
-    "PURPLE":     "\x9c",
-    "YELLOW":     "\x9e",
-    "CYAN":       "\x9f",
-    "LOWER_CASE": "\x0e",
-    "UPPER_CASE": "\x8e",
-    "F1":         "\x85",
-    "F2":         "\x86",
-    "F3":         "\x87",
-    "F4":         "\x88",
-    "F5":         "\x89",
-    "F6":         "\x8a",
-    "F7":         "\x8b",
-    "F8":         "\x8c",
-    "POUND":      "\x5c",
-    "ARROW UP":   "\x5e",
-    "ARROW_UP":   "\x5e",
-    "ARROW LEFT": "\x5f",
-    "ARROW_LEFT": "\x5f",
-    "PI":         "\xff"
+    "CLR":        0x93,
+    "CLEAR":      0x93,
+    "HOME":       0x13,
+    "INSERT":     0x94,
+    "INS":        0x94,
+    "DELETE":     0x14,
+    "DEL":        0x14,
+    "CR":         0x0d,
+    "RETURN":     0x0d,
+    "REV_ON":     0x12,
+    "REVERSE ON": 0x12,
+    "REV_OFF":    0x92,
+    "REVERSE OFF":0x92,
+    "CRSR_UP":    0x91,
+    "UP":         0x91,
+    "CRSR_DOWN":  0x11,
+    "DOWN":       0x11,
+    "CRSR_LEFT":  0x9d,
+    "LEFT":       0x9d,
+    "CRSR_RIGHT": 0x1d,
+    "RIGHT":      0x1d,
+    "SPACE":      0x20,
+    "WHITE":      0x05,
+    "RED":        0x1c,
+    "GREEN":      0x1e,
+    "BLUE":       0x1f,
+    "ORANGE":     0x81,
+    "BLACK":      0x90,
+    "BROWN":      0x95,
+    "LIGHT_RED":  0x96,
+    "PINK":       0x96,
+    "DARK_GRAY":  0x97,
+    "DARK GRAY":  0x97,
+    "MED_GRAY":   0x98,
+    "GRAY":       0x98,
+    "LIGHT_GREEN":0x99,
+    "LIGHT GREEN":0x99,
+    "LIGHT_BLUE": 0x9a,
+    "LIGHT BLUE": 0x9a,
+    "LIGHT_GRAY": 0x9b,
+    "LIGHT GRAY": 0x9b,
+    "PURPLE":     0x9c,
+    "YELLOW":     0x9e,
+    "CYAN":       0x9f,
+    "LOWER_CASE": 0x0e,
+    "UPPER_CASE": 0x8e,
+    "F1":         0x85,
+    "F2":         0x86,
+    "F3":         0x87,
+    "F4":         0x88,
+    "F5":         0x89,
+    "F6":         0x8a,
+    "F7":         0x8b,
+    "F8":         0x8c,
+    "POUND":      0x5c,
+    "ARROW UP":   0x5e,
+    "ARROW_UP":   0x5e,
+    "ARROW LEFT": 0x5f,
+    "ARROW_LEFT": 0x5f,
+    "PI":         0xff
     ];
 }
 
-public char asciiToPetscii(char asciiChar)
-{
-    return petscii[asciiChar];
-}
-
-private string asciiStringToPetsciiString(string asciiString)
-{
-    char[] petsciiString;
-    bool escaped = false;
-    for(int i = 0; i < asciiString.length; i++) {
-        char curChar = asciiString[i];
-        if(curChar == '{') {
-            escaped = true;
-            petsciiString ~= curChar;
-        }
-        else if(curChar == '}') {
-            escaped = false;
-            petsciiString ~= curChar;
-        }
-        else {
-            if(escaped) {
-                petsciiString ~= curChar;
-            } else {
-                petsciiString ~= asciiToPetscii(curChar);
-            }
-        }
-    }
-    return to!string(petsciiString);
-}
-
-private string replacerFn(Captures!(string) m)
-{
-    ubyte chr;
-    string seq = m[0][1..$-1];
-    if(isNumeric(seq)) {
-        try {
-            chr = to!ubyte(seq); 
-            return [chr];
-        } catch(Exception e) {
-            return m.hit;
-        }
-    }
-    else {
-        string ret = escapeSequences.get(toUpper(seq), "");
-        return ret == "" ? m.hit : ret;
-    }
-}
-
-private string replaceEscapes(string input)
-{    
-    return replaceAll!(replacerFn)(input, regex(`\x7b([a-zA-Z0-9_]+)\x7d`));
-}
-
 /** Translates ASCII string to PETSCII HEX expression */
-string asciiToPetsciiHex(string asciiString, bool newline = true)
+string asciiToPetsciiHex(string asciiString, out ulong length, bool newline = true)
 {
-    string asciiRepl = convertToPetscii(asciiString);
-    immutable ulong length = asciiRepl.length + (newline ? 1 : 0);
+    ubyte[] petsciiBytes = asciiToPetsciiBytes(asciiString);
+    length = petsciiBytes.length + (newline ? 1 : 0);
     string hex = "HEX " ~ rightJustify(to!string(length, 16), 2, '0') ~ " ";
 
     int counter = 0;
-    for(ubyte i = 0; i < asciiRepl.length; i++) {
-        hex ~= rightJustify(to!string(to!int(asciiRepl[i]), 16), 2, '0') ~ " ";
+    for(ubyte i = 0; i < petsciiBytes.length; i++) {
+        hex ~= rightJustify(to!string(to!int(petsciiBytes[i]), 16), 2, '0') ~ " ";
         counter++;
-        if(counter == 16 && (i + 1 < asciiRepl.length)) {
+        if(counter == 16 && (i + 1 < petsciiBytes.length)) {
             hex ~= "\n\tHEX ";
             counter = 0;
         }
     }
-
     if(newline) {
         hex ~= "0D ";
     }
@@ -167,6 +112,33 @@ string asciiToPetsciiHex(string asciiString, bool newline = true)
     return hex;
 }
 
-string convertToPetscii(string asciiString) {
-    return replaceEscapes(asciiStringToPetsciiString(asciiString));
+private ubyte[] asciiToPetsciiBytes(string asciiString) {
+    ubyte[] pet;
+    bool escaped = false;
+    string accu;
+    for(int i = 0; i < asciiString.length; i++) {
+        char curChar = asciiString[i];
+        if(!escaped && curChar == '{') {
+            escaped = true;
+            accu = "";
+        }
+        else if(escaped && curChar == '}') {
+            escaped = false;
+            if(isNumeric(accu)) {
+                pet ~= to!ubyte(accu);
+            } else {
+                ubyte replaced = escapeSequences.get(toUpper(accu), 0);
+                if(replaced > 0) {
+                    pet ~= replaced;
+                }
+            }
+        }
+        else if(!escaped) {
+            pet ~= petscii[curChar];
+        }
+        else {
+            accu ~= curChar; 
+        }
+    }
+    return pet;
 }

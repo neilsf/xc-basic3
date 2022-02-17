@@ -28,7 +28,8 @@ class StringLiteral
         //    data = asc(this.str);
         }
         else {
-            data = asciiToPetsciiHex(this.str, newline);
+            ulong len;
+            data = asciiToPetsciiHex(this.str, len, newline);
         }
         compiler.getImCode().appendSegment(
             IntermediateCode.DATA_SEGMENT,

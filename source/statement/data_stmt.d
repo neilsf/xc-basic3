@@ -50,12 +50,6 @@ class Data_stmt : Statement
                 if(datum.name != "XCBASIC.String") {
                     compiler.displayError("Type mismatch: expected string, got number");
                 }
-                // TODO
-                // * Truncate
-                // * Warn if truncated
-                // * Write here, not at the end
-                //int strLen;
-                //listItems ~= asciiToPetsciiHex(join(datum.matches[1..$-1]), true, strLen);
                 compiler.getImCode().appendSegment(
                     inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
                     "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated) ~ "\n"

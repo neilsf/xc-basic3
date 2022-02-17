@@ -89,7 +89,7 @@ class Variable
     /** How many bytes in memory a single array member reserves */
     public int getSingleLength()
     {
-        return this.strLen > 0 ? this.strLen : this.type.length;
+        return this.strLen > 0 ? this.strLen + 1 : this.type.length;
     }
 
     /** How many bytes in memory this variable reserves */

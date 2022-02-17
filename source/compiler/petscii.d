@@ -1,6 +1,6 @@
 module compiler.petscii;
 
-import std.string, std.conv, std.array, std.algorithm.searching, std.regex;
+import std.string, std.conv, std.array, std.algorithm.searching, std.algorithm.comparison;
 
 private ubyte[] petscii = [
     0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x14,0x20,0x0d,0x11,0x93,0x0a,0x0e,0x0f,
@@ -90,25 +90,38 @@ static this()
 }
 
 /** Translates ASCII string to PETSCII HEX expression */
-string asciiToPetsciiHex(string asciiString, out ulong length, bool newline = true)
+string asciiToPetsciiHex(string asciiString, ulong forcedLength, out bool truncated)
 {
     ubyte[] petsciiBytes = asciiToPetsciiBytes(asciiString);
-    length = petsciiBytes.length + (newline ? 1 : 0);
+    ulong finalLength;
+    
+    if(forcedLength > 0) {
+        if(petsciiBytes.length > forcedLength) {
+            finalLength = forcedLength;
+            truncated = true;
+        } else {
+            finalLength = forcedLength;
+            truncated = false;
+        }
+    } else {
+        finalLength = petsciiBytes.length;
+        truncated = false;
+    }
+    
+    ulong length = forcedLength > 0 ? min(petsciiBytes.length, forcedLength) : petsciiBytes.length;
     string hex = "HEX " ~ rightJustify(to!string(length, 16), 2, '0') ~ " ";
 
     int counter = 0;
-    for(ubyte i = 0; i < petsciiBytes.length; i++) {
-        hex ~= rightJustify(to!string(to!int(petsciiBytes[i]), 16), 2, '0') ~ " ";
+    ubyte value;
+    for(ubyte i = 0; i < finalLength; i++) {
+        value = (i < petsciiBytes.length ? petsciiBytes[i] : 0);
+        hex ~= rightJustify(to!string(value, 16), 2, '0') ~ " ";
         counter++;
-        if(counter == 16 && (i + 1 < petsciiBytes.length)) {
+        if(counter == 16 && (i + 1 < finalLength)) {
             hex ~= "\n\tHEX ";
             counter = 0;
         }
     }
-    if(newline) {
-        hex ~= "0D ";
-    }
-    
     return hex;
 }
 

@@ -116,8 +116,8 @@ STDLIB_TAB SUBROUTINE
 	bcs .1
 	cpy #3
 	bne .2
-	iny
-	inx
+	printnl
+	rts
 .2	lda.wy .tabs
 	tay
 	clc

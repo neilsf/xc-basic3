@@ -79,6 +79,11 @@ STR_LEFT SUBROUTINE
 	lda #>STRING_WORKAREA
  	sta RC + 1
  	ldy R0
+ 	bne .loop
+ 	; zero length
+ 	tya
+ 	sta (RC),y
+ 	beq .wquit
 .loop
 	lda (RA),y
 	sta (RC),y
@@ -87,7 +92,8 @@ STR_LEFT SUBROUTINE
  	lda R0
  	sta (RC),y
 	; write new pointer
- 	dec SP
+.wquit
+	dec SP
 .end
 	rts
 	ENDIF

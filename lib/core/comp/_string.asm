@@ -46,7 +46,7 @@ I_STRCMP SUBROUTINE
 	lda (R0),y
     cmp (R2),y
     beq .equ
-    rts
+    bne .exit
 .equ:    
     tay
     beq .exit
@@ -57,5 +57,15 @@ I_STRCMP SUBROUTINE
 	dey
 	bne .loop
 .exit:
+	php
+	; remove strings from stack
+	ldy #0
+	lda SP
+	clc
+	adc #2
+	adc (R2),y
+	adc (R0),y
+	sta SP 
+	plp
 	rts
 	ENDIF

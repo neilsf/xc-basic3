@@ -9,7 +9,7 @@ import language.grammar;
 
 import compiler.labelcollection, compiler.intermediatecode, compiler.sourcefile,
        compiler.variable, compiler.type, language.statement, compiler.routine,
-       compiler.codeblock;
+       compiler.codeblock, compiler.helper;
 
 /** Verbosity level: errors only */
 public enum VERBOSITY_ERROR   = 0;
@@ -293,7 +293,7 @@ final class Compiler
                     case "XCBASIC.Fun_stmt":
                         if(toLower(stmt.matches.join())[0..7] != "declare" ) {
                             this.inProcedure = true;
-                            string pName = stmt.children[0].matches[0] ~ "_";
+                            string pName = fixSymbol(stmt.children[0].matches[0]) ~ "_";
                             string[] argTypes;
                             if(stmt.children.length > 1) {
                                 if(stmt.children[1].name == "XCBASIC.VarList") {

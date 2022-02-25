@@ -302,6 +302,8 @@
     ENDM
     
     MAC pdecimalvar_pdecimal_adddecimal ; @push
+    sei
+    sed
     lda {1}
     clc
     adc #{2}
@@ -318,6 +320,8 @@
     tay
     txa
     ENDIF
+    cld
+    cli
     ENDM
     
     MAC pintvar_pint_addint_plintvar
@@ -387,7 +391,11 @@
     ENDM
     
     MAC pdecimalvar_pdecimalvar_adddecimal ; @push
+    sei
+    sed
     pintvar_pintvar_addint {1}, {2}
+    cld
+    cli
     ENDM
     
     MAC pintvar_pintvar_addint_plintvar
@@ -549,6 +557,8 @@
     ENDM
     
     MAC pdecimalvar_pdecimal_subdecimal_pldecimalvar
+    sei
+    sed
     lda {1}
     sec
     sbc #{2}
@@ -556,6 +566,8 @@
     lda {1} + 1
     sbc #{3}
     sta {4} + 1
+    cld
+    cli
     ENDM
     
     MAC pintvar_pintvar_subint ; @push

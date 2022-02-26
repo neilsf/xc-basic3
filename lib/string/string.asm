@@ -191,25 +191,34 @@ STRMOV SUBROUTINE
 	; Dest ptr to string in R0
 	; Max length in A
 STRREMOV SUBROUTINE
+	pha
 	ldx SP
 	inx
+	stx R2
+	lda STRING_WORKAREA,x
+	clc
+	adc R2
+	sta SP
+	pla
 	cmp STRING_WORKAREA,x ; length of string on stack
 	bcc .skip
 	lda STRING_WORKAREA,x
 .skip
+	; Modify string length
+	ldy #0
+	sta (R0),y
 	tay
 	; X = X + A
 	stx R2
 	clc
 	adc R2
 	tax
-	stx SP ; Move pointer to end of string
 .loop
 	lda STRING_WORKAREA,x
 	sta (R0),y
 	dex
 	dey
-	bpl .loop
+	bne .loop
 .end
 	rts
 	ENDIF

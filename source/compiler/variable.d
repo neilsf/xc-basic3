@@ -736,7 +736,7 @@ class VariableAccess : AccessorInterface
             asmCode ~= ", " ~ to!string(this.getType().length);
         }
         else if(direction == "pl" && this.getType().name == Type.STRING) {
-            asmCode ~= ", " ~ to!string(this.variable.getSingleLength());
+            asmCode ~= ", " ~ to!string(this.variable.getSingleLength() - 1);
         }
 
         return asmCode ~ "\n";   

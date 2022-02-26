@@ -250,7 +250,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line")(p);
         }
         else
         {
@@ -258,7 +258,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line"), "Line")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line"), "Line")(p);
                 memo[tuple(`Line`, p.end)] = result;
                 return result;
             }
@@ -269,12 +269,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line"), "Line")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.wrapAround!(Spacing, Line_id, Spacing), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Statements, Spacing)), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, WS, Spacing))), pegged.peg.discard!(pegged.peg.option!(pegged.peg.wrapAround!(Spacing, Comment, Spacing)))), "XCBASIC.Line"), "Line")(TParseTree("", false,[], s));
         }
     }
     static string Line(GetName g)

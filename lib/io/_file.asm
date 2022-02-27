@@ -209,6 +209,13 @@ I_STRREAD SUBROUTINE
 	stx R0 ; Quote off
 .loop
 	kerncall KERNAL_CHRIN
+	pha
+	kerncall KERNAL_READST
+	beq .ok
+	pla
+	jmp .over
+.ok
+	pla
 	; Is it <EOL> ?
 	cmp #$0d
 	beq .over

@@ -224,6 +224,15 @@ class RoutineCollection
     {
         this.routines ~= routine;
     }
+
+    public void postCheck()
+    {
+        foreach (Routine key; routines) {
+            if(!key.isInline && !key.isDefined) {
+                compiler.displayError(key.keyword ~ " " ~ key.getNameWithArgTypes() ~ " declared but never defined");
+            }
+        }
+    }
 }
 
 /** Parses and compiles a routine call in AST */

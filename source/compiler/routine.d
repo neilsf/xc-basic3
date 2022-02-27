@@ -2,7 +2,8 @@ module compiler.routine;
 
 import pegged.grammar;
 
-import std.conv, std.algorithm.searching, std.algorithm.iteration, std.array, std.uni;
+import std.conv, std.algorithm.searching, std.algorithm.iteration,
+       std.algorithm.mutation, std.array, std.uni;
 import compiler.compiler, compiler.variable, compiler.type, compiler.helper;
 import language.expression, language.accessor;
 
@@ -504,6 +505,15 @@ class MethodCall : RoutineCall
         candidates = compiler.getRoutines().getVariants(methodFullName);
     }
 
+    private string calculateThisAddress()
+    {
+        ParseTree varNode = node;
+        varNode.children = varNode.children[0 .. $ - 2];
+        VariableAccess access = new VariableAccess(varNode, compiler);
+        return access.getPushAddressCode()
+               ~ "    plwordvar TH\n";
+    }
+
     private string getDotNotation()
     {
         string[] parts;
@@ -533,7 +543,7 @@ class MethodCall : RoutineCall
         string th = thisOffset > 0 ? "(" ~ thisVar.getAsmLabel() ~ " + " ~ to!string(thisOffset) ~ ")" : thisVar.getAsmLabel();
         return 
             (compiler.inTypeDef ? "    pthis\n" : "") ~
-            "    setthis " ~ th ~ "\n";
+            calculateThisAddress();
     }
 
     private string getOffsetThis()

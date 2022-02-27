@@ -418,6 +418,13 @@ final class Compiler
     {
         this.inlineAssembly = false;
     }
+
+    /** Check if everything went right */
+    public void doPostChecks()
+    {
+        // 1. Check for routines not implemented
+        routines.postCheck();
+    }
 }
 
 /** Find a node in parent */

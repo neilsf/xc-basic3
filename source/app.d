@@ -100,6 +100,7 @@ void main(string[] args)
     chdir(dirName(fileName));
     source = SourceFile.get(baseName(fileName));
     compiler.compileSourceFile(source);
+    compiler.doPostChecks();
     chdir(currentDir);
         
      // Write intermediate code to temp file

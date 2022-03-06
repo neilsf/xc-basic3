@@ -1,6 +1,6 @@
 module compiler.codeblock;
 
-import std.algorithm.mutation, std.algorithm.searching;
+import std.algorithm.mutation, std.algorithm.searching, std.range;
 
 /** Represents a nestable code block */
 class CodeBlock
@@ -89,7 +89,7 @@ struct Stack
     /** Returns the closest element that meets type criterion or null if none found */
     CodeBlock closest(int[] types)
     {
-        foreach (CodeBlock key; reverse(elements.dup)) {
+        foreach (CodeBlock key; retro(elements)) {
             if(any!(type => type == key.getType())(types)) {
                 return key;
             }

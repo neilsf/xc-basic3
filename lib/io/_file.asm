@@ -1,13 +1,23 @@
 	; Calls SETNAM with string on stack
+	; {1} = 0 name is empty
+	; {1} = 1 name is not empty
 	MAC setnam
+	IF {1} == 1
 	ldx SP
 	inx
 	lda STRING_WORKAREA,x
 	inx
 	ldy #>STRING_WORKAREA
+	ELSE
+	lda #$00 ; no filename
+    tax
+    tay
+	ENDIF
 	kerncall KERNAL_SETNAM
+	IF {1} == 1
 	import I_STRSCRATCH
 	jsr STRSCRATCH
+	ENDIF
 	ENDM
 	
 	MAC setlfs

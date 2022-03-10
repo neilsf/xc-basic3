@@ -29,7 +29,10 @@ class Open_stmt : Statement
             // SETNAM
             e[3].eval();
             appendCode(e[3].toString());
-            appendCode("    setnam\n");
+            appendCode("    setnam 1\n");
+        }
+        else {
+            appendCode("    setnam 0\n");
         }
         // logical filenumber
         e[0].eval();

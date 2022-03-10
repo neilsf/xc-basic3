@@ -33,7 +33,7 @@ class Load_stmt : Statement
         }
         // Filename
         appendCode(e[0].toString());
-        appendCode("    setnam\n");
+        appendCode("    setnam 1\n");
         // Device no
         appendCode("    pbyte 1\n");
         appendCode(e[1].toString()); // device no

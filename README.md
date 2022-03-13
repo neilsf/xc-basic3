@@ -1,48 +1,36 @@
 # XC=BASIC 3
 
-A BASIC cross compiler for MOS 6502-based machines
+XC=BASIC is a cross compiled, modern BASIC programming language for MOS 65xx based targets. The supported targets are:
 
-**This software is in pre-release (currently beta) state and may contain bugs.**
+* Commodore-64
+* Commodore VIC-20
+* Commodore-16
+* Commodore Plus/4
 
-## Please help testing
+XC=BASIC compiles BASIC source code to fast machine code. Although not 100% compatible, its syntax was designed to be similar to that of QuickBASIC and CBM BASIC.
 
-We need to fix as many bugs as possible to be able to have an official release. You can contribute with testing. To do so, please follow these steps:
+## Documentation
 
-1. Read the docs at [xc-basic.net](https://xc-basic.net/doku.php?id=v3:start). Note that it is also under construction!
-2. Download and install [DASM](https://dasm-assembler.github.io/) if you haven't yet done so. Make sure it is in your PATH.
-3. Download this repo. You will find pre-compiled executables in the bin/ directory.
-4. Write an example program of your interest. Try to keep it small in the beginning.
-5. Compile it:
-
-       xcbasic3 example.bas example.prg
-
-or, for VIC-20:
-
-       xcbasic3 example.bas example.prg --target=vic20
-
-6. If you get a compilation error and you think it's a bug, please report it on GitHub. Please include the full BASIC listing in your report.
-7. If the program crashes, try compiling without optimizing. In many cases it solves the problem and it means that the bug is in the optimizer.
-
-       xcbasic3 example.bas example.prg --optimize=false
+You can find the documentation (including installation instructions) at [xc-basic.net](https://xc-basic.net/doku.php?id=v3:start).
 
 ## Compiling from source
 
-If a pre-compiled binary doesn't exist for your operating system, you can try compiling from sources.
+You can find pre-compiled binaries for Windows (x86_64), Linux (x86_64, ARM) and macOS (x86_64) in the `bin/` dir. If you run a different operating system, you have to compile the program from source.
 
-Install the DMD compiler and the DUB package manager:
+XC=BASIC was written in the [D programming language](https://dlang.org/). To compile it, you need
 
-       sudo snap install --classic dmd
-       sudo snap install --classic dub
-       
-(If you're on Windows, follow [these](https://dlang.org/dmd-windows.html) and [these](https://dub.pm/) instructions.)
+* a [D compiler](https://dlang.org/download.html) (DMD is recommended)
+* the [DUB](https://dub.pm/) package manager
 
-Clone this repo:
+If you install DUB using a package manager, it will most likely install DMD as a dependency. When you have both installed, just `cd` to the XC=BASIC directory and issue the command:
 
-       git clone https://github.com/neilsf/xc-basic3.git
-       cd xc-basic3
-       git submodule init
-       git submodule update
-    
-Compile:
+    dub build
 
-       dub build
+Then move the generated executable to any subfolder in the `bin/` dir, for example:
+
+    mkdir bin/myOS
+    mv xcbasic3 bin/myOS/
+
+(This last step is important because XC=BASIC can only find the library files if they're located in `../../lib` relative to the executable.)
+
+That's it, you can now run XC=BASIC.

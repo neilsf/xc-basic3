@@ -13,6 +13,9 @@ COLOR_RAM EQU $D800
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
+; Various C264 registers
+TED_CRSR_LO		 EQU $FF0D
+TED_CRSR_HI		 EQU $FF0C
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -294,7 +297,11 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	tax
 	lda R0 + 1
 	sec
+	IF TARGET & c264 
 	sbc KERNAL_SCREEN_ADDR
+	ELSE
+	sbc #$0C  ; high byte is always 0C on plus4
+	ENDIF
 	clc
 	adc #>COLOR_RAM
 	sta R0 + 1
@@ -370,10 +377,10 @@ CALC_SCRROWPTR SUBROUTINE
 	sta R0 + 1
 	rts
 	ENDIF
-	
+		
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
-	; Set VIC-II on C64
+	; This command has only effect on the C64
 	IF TARGET == c64
 	IF !FPULL
 	pla
@@ -400,10 +407,6 @@ CALC_SCRROWPTR SUBROUTINE
 	sta VICII_MEMCONTROL
 	import I_RESET_SCRVECTORS
 	jsr RESET_SCRVECTORS
-	ENDIF
-	; Set TED on C264
-	IF TARGET & c264
-	
 	ENDIF
 	ENDM
 	

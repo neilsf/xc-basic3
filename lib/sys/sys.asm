@@ -1,8 +1,23 @@
 	; XC=BASIC system functions
+	IF TARGET == c64 || TARGET & vic20
 SAREG EQU $030C
 SXREG EQU $030D 
 SYREG EQU $030E 
 SPREG EQU $030F
+	ENDIF
+	IF TARGET & c264
+SAREG EQU $07F2
+SXREG EQU $07F3
+SYREG EQU $07F4
+SPREG EQU $07F5
+	ENDIF
+	
+	IF TARGET == c64 || TARGET & vic20
+JIFFY EQU $A0
+	ENDIF
+	IF TARGET & c264
+JIFFY EQU $A3
+	ENDIF
 
 	; Initial code that runs when the program is started
 	MAC xbegin
@@ -39,16 +54,16 @@ SPREG EQU $030F
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
 	sei
-	lda $a2
+	lda JIFFY + 2
 	IF !FPUSH
 	pha
-	lda $a1
+	lda JIFFY + 1
 	pha
-	lda $a0
+	lda JIFFY
 	pha
 	ELSE
-	ldy $a1
-	ldx $a0
+	ldy JIFFY + 1
+	ldx JIFFY
 	ENDIF
 	cli
 	ENDM

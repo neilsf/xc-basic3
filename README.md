@@ -11,16 +11,18 @@ XC=BASIC compiles BASIC source code to fast machine code. Although not 100% comp
 
 ## Documentation
 
-You can find all installation and usage instructions, as well as the language documentation at [xc-basic.net](https://xc-basic.net/doku.php?id=v3:start).
+You can find the documentation (including installation instructions) at [xc-basic.net](https://xc-basic.net/doku.php?id=v3:start).
 
 ## Compiling from source
 
+You can find pre-compiled binaries for Windows (x86_64), Linux (x86_64, ARM) and macOS (x86_64) in the `bin/` dir. If you run a different operating system, you have to compile the program from source.
+
 XC=BASIC was written in the [D programming language](https://dlang.org/). To compile it, you need
 
-* a D compiler (DMD is recommended)
+* a [D compiler](https://dlang.org/download.html) (DMD is recommended)
 * the [DUB](https://dub.pm/) package manager
 
-If you install DUB using a package manager, it will most likely install DMD as a dependency as well. When you have both installed, just `cd` to the XC=BASIC directory and issue the command:
+If you install DUB using a package manager, it will most likely install DMD as a dependency. When you have both installed, just `cd` to the XC=BASIC directory and issue the command:
 
     dub build
 

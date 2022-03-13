@@ -31,4 +31,6 @@ Then move the generated executable to any subfolder in the `bin/` dir, for examp
     mkdir bin/myOS
     mv xcbasic3 bin/myOS/
 
+(This last step is important because XC=BASIC can only find the library files if they're located in `../../lib` relative to the executable.)
+
 That's it, you can now run XC=BASIC.

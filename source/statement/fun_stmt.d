@@ -29,6 +29,7 @@ class Fun_stmt : Statement
     private bool isInline = false;
     private Routine routine;
     private ArgumentStub[] argStubs;
+    private ushort strLen;
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
@@ -116,7 +117,9 @@ class Fun_stmt : Statement
         if(this.type.name != Type.VOID && !this.isInline) {
             Variable v = Variable.create(this.name, this.type, compiler, true);
             v.isFnRetVal = true;
-            import std.stdio;
+            if(this.type.name == Type.STRING) {
+                v.strLen = this.strLen;
+            }
             compiler.getVars().add(v, false);
             this.routine.returnValue = v;
         }
@@ -197,7 +200,7 @@ class Fun_stmt : Statement
                         if(len < 1 || len > stringMaxLength) {
                             compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
                         }
-                        this.type.length = to!ubyte(len);
+                        this.strLen = to!ubyte(len);
                     }
                 }
             }

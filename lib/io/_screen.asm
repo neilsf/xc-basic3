@@ -298,9 +298,9 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lda R0 + 1
 	sec
 	IF TARGET & c264 
-	sbc KERNAL_SCREEN_ADDR
-	ELSE
 	sbc #$0C  ; high byte is always 0C on plus4
+	ELSE
+	sbc KERNAL_SCREEN_ADDR
 	ENDIF
 	clc
 	adc #>COLOR_RAM

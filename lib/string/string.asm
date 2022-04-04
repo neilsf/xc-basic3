@@ -208,6 +208,7 @@ STRREMOV SUBROUTINE
 	ldy #0
 	sta (R0),y
 	tay
+	beq .end
 	; X = X + A
 	stx R2
 	clc

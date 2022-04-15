@@ -18,7 +18,7 @@ import compiler.compiler, compiler.library, compiler.sourcefile;
 import globals, optimizer;
 
 // Program version
-const string APP_VERSION = "v3.0.4";
+const string APP_VERSION = "v3.0.5";
 
 /** Possible target options */
 const string[] targetOpts = [
@@ -254,7 +254,7 @@ Options:
 
    -m
   --max-address=    Change the default top address. The default value is the top of the
-                    function stack minus 64 bytes. See https://xc-basic.net/doku.php?id=v3.0.4:memory_model
+                    function stack minus 64 bytes. See https://xc-basic.net/doku.php?id=v3:memory_model
                     If the program and its data overgrow the top address, compilation will fail.
                     Please provide a decimal number.
 

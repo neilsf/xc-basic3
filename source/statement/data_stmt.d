@@ -45,6 +45,7 @@ class Data_stmt : Statement
         const ParseTree dataListNode = node.children[0].children[1];
         string[] listItems;
         bool truncated;
+        ulong finalLength;
         foreach (datum; dataListNode.children) {
             if(type.name == Type.STRING) {
                 if(datum.name != "XCBASIC.String") {
@@ -52,7 +53,7 @@ class Data_stmt : Statement
                 }
                 compiler.getImCode().appendSegment(
                     inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
-                    "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated) ~ "\n"
+                    "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated, finalLength) ~ "\n"
                 );
                 if(truncated) {
                     compiler.displayWarning("String truncated to " ~ to!string(strLen) ~ " characters");

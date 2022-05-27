@@ -1,5 +1,7 @@
 module compiler.compiler;
 
+import app;
+
 import std.stdio, std.array, std.algorithm, std.file, std.conv, std.ascii;
 import std.typecons, std.string;
 import core.stdc.stdlib;
@@ -50,7 +52,7 @@ final class Compiler
     /** A short id to the source file being compiled */
     public string currentFileId = "";
 
-    /** Whether statements other than REM or PRAGMA were already encountered */
+    /** Whether statements other than REM or OPTION were already encountered */
     private bool statementsBegan = false;
     
     /** True if the current line should be copied varbatim to the intermediate code */
@@ -94,6 +96,9 @@ final class Compiler
 
     /** Accumulate labels in this array */
     private string[] currentLabels;
+
+    /** Whether the compiler is currently compiling user code, i.e not standard header files */
+    public bool compilingUserCode = false;
 
     /** Class constructor */
     this()
@@ -254,8 +259,12 @@ final class Compiler
                             }
                             stmt.process();
                         }
+                        
+                        if(compilingUserCode && !canFind(["XCBASIC.Rem_stmt", "XCBASIC.Option_stmt"], child.children[0].name)) {
+                            statementsBegan = true;
+                        }
                     }
-
+                   
                 }
                 break;
             
@@ -397,6 +406,12 @@ final class Compiler
     public ParseTree getCurrentNode()
     {
         return this.currentNode;
+    }
+
+    /** Getter method to provide read access to compiler.statementsBegan */
+    public bool getStatementsBegan()
+    {
+        return this.statementsBegan;
     }
 
     /** Returns the joint labels and empties current labels */

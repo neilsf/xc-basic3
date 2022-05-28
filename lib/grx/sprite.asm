@@ -17,6 +17,8 @@ bittab_t  HEX 01 02 04 08 10 20 40 80
 bittab_f  HEX FE FD FB F7 EF DF BF 7F
 spritehit DC.B 0
 sprbghit  DC.B 0
+; Sprite collision refresh flag: 0 = Must reread collision 
+sprcollr  DC.B 0
 	
     ; After this macro call
     ; X Reg holds the sprite number (0 to 7)
@@ -197,18 +199,24 @@ sprbghit  DC.B 0
 	
 	MAC sprite_clear_hit
 	lda #0
-	sta spritehit
-	sta sprbghit
+	sta sprcollr
 	ENDM
 	
 	; DECLARE FUNCTION SPRITEHIT AS BYTE (sprno AS BYTE) SHARED STATIC INLINE
-	MAC F_spritehit_byte_byte ; @pull @push
+	MAC F_spritehit_byte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
 	tax
+	lda sprcollr
+	bne .readcached
+	lda SPRSPRC
+	sta spritehit
+	lda #1
+	sta sprcollr
+.readcached
 	lda spritehit
-	and bittab
+	and bittab_t,x
 	beq .q
 	lda #$FF
 .q
@@ -218,13 +226,20 @@ sprbghit  DC.B 0
 	ENDM
 	
 	; DECLARE FUNCTION SPRITEHITBG AS BYTE (sprno AS BYTE) SHARED STATIC INLINE
-	MAC F_spritehitbg_byte_byte ; @pull @push
+	MAC F_spritehitbg_byte ; @pull @push
 	IF !FPULL
 	pla
 	ENDIF
 	tax
+	lda sprcollr
+	bne .readcached
+	lda SPRBGC
+	sta sprbghit
+	lda #1
+	sta sprcollr
+.readcached
 	lda sprbghit
-	and bittab
+	and bittab_t,x
 	beq .q
 	lda #$FF
 .q

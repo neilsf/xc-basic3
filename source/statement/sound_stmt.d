@@ -1,0 +1,123 @@
+module statement.sound_stmt;
+
+import std.string, std.conv;
+
+import pegged.grammar;
+
+import compiler.compiler, compiler.type, compiler.number;
+import language.statement, language.expression;
+
+class Voice_stmt : Statement
+{
+    /** Class constructor */
+    this(ParseTree node, Compiler compiler)
+	{
+		super(node, compiler);
+	}
+
+    void process()
+    {
+        ParseTree stmtNode = node.children[0];
+        ParseTree valueNode = stmtNode.children[0];
+        Number n = new Number(valueNode, this.compiler);
+        if(n.type.name != Type.UINT8 || n.intVal > 4) {
+            compiler.displayError("Invalid voice number: " ~ valueNode.matches.join());
+        }
+        ParseTree[] voiceSubCmdNodes = stmtNode.children[1..$];
+        foreach(ref subCmd; voiceSubCmdNodes) {
+            ParseTree node = subCmd.children[0];
+            immutable string voiceNo = to!string(n.intVal);
+            final switch(node.name) {
+                case "XCBASIC.VoiceSubCmdOnOff":
+                    appendCode("    voice_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
+                    break;
+
+                case "XCBASIC.VoiceSubCmdFilterOnOff":
+                    appendCode("    voice_filter_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
+                    break;
+
+                case "XCBASIC.VoiceSubCmdADSR":
+                    if(node.children[0].children.length != 2) {
+                        compiler.displayError("VOICE ADSR expects exactly 4 parameters, got " ~ to!string(node.children[0].children.length));
+                    }
+                    Expression val;
+                    for(int i = 0; i < 4; i++) {
+                        val = new Expression(node.children[0].children[i], compiler);
+                        val.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                        val.eval();
+                        appendCode(val.toString());
+                    }
+                    appendCode("    voice_adsr " ~ voiceNo ~ "\n");
+                    break;
+
+                case "XCBASIC.VoiceSubCmdTone":
+                    Expression tone = new Expression(node.children[0], compiler);
+                    tone.setExpectedType(compiler.getTypes().get(Type.UINT16));
+                    tone.eval();
+                    appendCode(tone.toString());
+                    appendCode("    voice_tone " ~ voiceNo ~ "\n");
+                    break;
+
+                case "XCBASIC.VoiceSubCmdPulse":
+                    Expression pulse = new Expression(node.children[0], compiler);
+                    pulse.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    pulse.eval();
+                    appendCode(pulse.toString());
+                    appendCode("    voice_pulse " ~ voiceNo ~ "\n");
+                    break;
+
+                case "XCBASIC.VoiceSubCmdWave":
+                    immutable string wave = stripLeft(toUpper(node.matches[$-4..$].join));
+                    appendCode("    voice_wave " ~ voiceNo ~ "," ~ wave ~ "\n");
+                    break;
+            }
+         }
+    }
+}
+
+class Filter_stmt : Statement
+{
+    /** Class constructor */
+    this(ParseTree node, Compiler compiler)
+	{
+		super(node, compiler);
+	}
+
+    void process()
+    {
+        
+    }
+}
+
+class Volume_stmt : Statement
+{
+    /** Class constructor */
+    this(ParseTree node, Compiler compiler)
+	{
+		super(node, compiler);
+	}
+
+    void process()
+    {
+        ParseTree stmtNode = node.children[0];
+        ParseTree valueNode = stmtNode.children[0];
+        Expression e = new Expression(valueNode, this.compiler);
+        e.setExpectedType(this.compiler.getTypes.get(Type.UINT8));
+        e.eval();
+        this.appendCode(e.toString() ~ "    volume\n");
+    }
+}
+
+class Sound_clear_stmt : Statement
+{
+    /** Class constructor */
+    this(ParseTree node, Compiler compiler)
+	{
+		super(node, compiler);
+	}
+
+    void process()
+    {
+        this.appendCode("    sound_clear\n");
+    }
+}

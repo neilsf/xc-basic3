@@ -20,7 +20,7 @@ Statement stmtFactory(ParseTree node, Compiler compiler) {
                                 "Input_stmt", "Locate_stmt", "Load_stmt", "Save_stmt", "Memset_stmt",
                                 "Memcpy_stmt", "Memshift_stmt", "Origin_stmt", "End_stmt", "Poke_stmt", "Sys_stmt",
                                 "Write_stmt", "Read_stmt", "Charat_stmt", "Screen_stmt", "Textat_stmt",
-                                "Wait_stmt"]) {
+                                "Wait_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt"]) {
             mixin("case \"XCBASIC." ~ key ~"\": return new " ~ key ~ "(node, compiler);");
         }    
         default:

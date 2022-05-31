@@ -58,7 +58,7 @@
 	ENDM
 	
 	; Divide top 2 words on stack
-	MAC divword ; @pull @push
+	MAC divword ; @push
 	plwordvar R0
 	plwordvar R2
 	lda R0
@@ -75,7 +75,7 @@
 	ENDM
 	
 	; Modulo of top 2 words on stack
-	MAC modword ; @pull @push
+	MAC modword ; @push
 	plwordvar R0
 	plwordvar R2
 	lda R0

@@ -31,18 +31,23 @@ FILTLOW	  EQU %00010000
 FILTBAND  EQU %00100000
 FILTHIGH  EQU %01000000
 
+VOICE1WF   DC.B 0
+VOICE2WF   DC.B 0
+VOICE3WF   DC.B 0
+FILTRRSHAD DC.B 0
+FMVOLSHAD  DC.B 0
+
 	MAC voice_on
-.REG EQU V{1}FREQ	
-	lda .REG	
-	ora #1	
-	sta .REG	
+	lda VOICE{1}WF	
+	ora #1
+	sta VOICE{1}WF
+	sta V{1}CTRL	
 	ENDM
 	
 	MAC voice_off
-.REG EQU V{1}FREQ	
-	lda .REG	
-	and #%11111110	
-	sta .REG	
+	lda VOICE{1}WF		
+	and #%11111110		
+	sta V{1}CTRL	
 	ENDM
 	
 	MAC voice_tone ; @pull
@@ -58,11 +63,11 @@ FILTHIGH  EQU %01000000
 	; e.g voice_wave 1,SAW
 	; e.g voice_wave 2,PULSE
 	MAC voice_wave
-.REG EQU V{1}CTRL	
-.VAL EQU WAVE{2}
-	lda .REG
-	ora .VAL
-	sta .REG
+	lda VOICE{1}WF
+	and %00001111
+    ora #WAVE{2}
+	sta VOICE{1}WF
+	sta V{1}CTRL
 	ENDM
 	
 	MAC voice_pulse ; @pull
@@ -101,20 +106,22 @@ FILTHIGH  EQU %01000000
 	
 	MAC voice_filter_on
 	lda #[1 << [{1} - 1]]
-	ora FILTRR
+	ora FILTRRSHAD
+	sta FILTRRSHAD
 	sta FILTRR
 	ENDM
 	
 	MAC voice_filter_off
 	lda #[[1 << [{1} - 1]] ^ $FF]
-	and FILTRR
+	and FILTRRSHAD
+	sta FILTRRSHAD
 	sta FILTRR
 	ENDM
 	
 	MAC filter
-	lda FILTRR
-	and #%10001111 
-	ora #FILT{1}
+	lda FILTRRSHAD
+	ora {1}
+	sta FILTRRSHAD
 	sta FILTRR
 	ENDM
 	
@@ -136,9 +143,10 @@ FILTHIGH  EQU %01000000
 	asl
 	asl
 	sta R0
-	lda FILTRR
+	lda FILTRRSHAD
 	and #%11110000
 	ora R0
+	sta FILTRRSHAD
 	sta FILTRR
 	ENDM
 	
@@ -147,18 +155,24 @@ FILTHIGH  EQU %01000000
 	pla ; R
 	ENDIF
 	sta R0
-	lda FMVOL
+	lda FMVOLSHAD
 	and #%11110000
 	ora R0
+	sta FMVOLSHAD
 	sta FMVOL
 	ENDM
 	
 	MAC sound_clear
-	ldx #$18
 	lda #0
+	ldx #$18
 .loop
 	sta V1FREQ,x
 	dex
 	bpl .loop
+	sta VOICE1WF
+	sta VOICE2WF
+	sta VOICE3WF
+	sta FILTRRSHAD
+	sta FILTRRSHAD
 	ENDM
 	

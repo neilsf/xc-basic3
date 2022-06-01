@@ -32,3 +32,5 @@
 	INCLUDE "sys/sys.asm"
 	; Optimizer
 	INCLUDE "opt/opt.asm"
+	; Sound
+	INCLUDE "sfx/sfx.asm"

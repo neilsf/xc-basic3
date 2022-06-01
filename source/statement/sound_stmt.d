@@ -37,7 +37,7 @@ class Voice_stmt : Statement
                     break;
 
                 case "XCBASIC.VoiceSubCmdADSR":
-                    if(node.children[0].children.length != 2) {
+                    if(node.children[0].children.length != 4) {
                         compiler.displayError("VOICE ADSR expects exactly 4 parameters, got " ~ to!string(node.children[0].children.length));
                     }
                     Expression val;
@@ -67,7 +67,7 @@ class Voice_stmt : Statement
                     break;
 
                 case "XCBASIC.VoiceSubCmdWave":
-                    immutable string wave = stripLeft(toUpper(node.matches[$-4..$].join));
+                    immutable string wave = toUpper(node.matches[1]);
                     appendCode("    voice_wave " ~ voiceNo ~ "," ~ wave ~ "\n");
                     break;
             }

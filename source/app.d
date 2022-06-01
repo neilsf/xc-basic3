@@ -43,6 +43,8 @@ private string symbolfile="";
 private string listfile="";
 private int verbosity = VERBOSITY_INFO;
 
+private GetoptResult helpInformation;
+
 /**
  * Application entry point
  */
@@ -51,7 +53,6 @@ void main(string[] args)
     checkLibrary();
     
     // Read and validate command line options
-    GetoptResult helpInformation;
     try {
         helpInformation = getopt(args,
             "target|t", &target,
@@ -77,6 +78,7 @@ void main(string[] args)
     }
 
 	validateOptions(args);
+    setStartAddress();
     
     const string fileName = args[1];
     string outName;
@@ -96,6 +98,7 @@ void main(string[] args)
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
     // Compile the program
+    compiler.compilingUserCode = true;
     immutable string currentDir = getcwd();
     chdir(dirName(fileName));
     source = SourceFile.get(baseName(fileName));
@@ -193,7 +196,18 @@ private void validateOptions(string[] args)
         exit(1);
     }
 
-    if(basicLoader){
+    if(topAddress < -1 || topAddress > 0xffff) {
+        stderr.writeln("Invalid max address: " ~ to!string(topAddress));
+        exit(1);
+    }
+}
+
+/**
+ * Set implicit start address based on other options
+ */
+public void setStartAddress()
+{
+    if(basicLoader) {
         switch(target) {
             case "vic20_3k":
                 startAddress = 0x0401;
@@ -219,16 +233,10 @@ private void validateOptions(string[] args)
         startAddress = 0x1000;
     }
 
-    if(startAddress < 0 || startAddress > 0xffff) {
+     if(startAddress < 0 || startAddress > 0xffff) {
         stderr.writeln("Invalid start address: " ~ to!string(startAddress));
         exit(1);
     }
-
-    if(topAddress < -1 || topAddress > 0xffff) {
-        stderr.writeln("Invalid max address: " ~ to!string(topAddress));
-        exit(1);
-    }
-
 }
 
 /**
@@ -250,7 +258,8 @@ Options:
   --basic-loader=   Include a BASIC loader. Turned on by default (true).
 
    -o
-  --start-address=  Change the default start address. Please provide a decimal number.
+  --start-address=  Change the default start address. Please provide a decimal number. Has no effect if
+                    --basic-loader=true.
 
    -m
   --max-address=    Change the default top address. The default value is the top of the

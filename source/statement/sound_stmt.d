@@ -29,11 +29,8 @@ class Voice_stmt : Statement
             immutable string voiceNo = to!string(n.intVal);
             final switch(node.name) {
                 case "XCBASIC.VoiceSubCmdOnOff":
-                    appendCode("    voice_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
-                    break;
-
                 case "XCBASIC.VoiceSubCmdFilterOnOff":
-                    appendCode("    voice_filter_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
+                    appendCode("    voice_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
                     break;
 
                 case "XCBASIC.VoiceSubCmdADSR":
@@ -60,7 +57,7 @@ class Voice_stmt : Statement
 
                 case "XCBASIC.VoiceSubCmdPulse":
                     Expression pulse = new Expression(node.children[0], compiler);
-                    pulse.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    pulse.setExpectedType(compiler.getTypes().get(Type.UINT16));
                     pulse.eval();
                     appendCode(pulse.toString());
                     appendCode("    voice_pulse " ~ voiceNo ~ "\n");
@@ -85,7 +82,37 @@ class Filter_stmt : Statement
 
     void process()
     {
-        
+        ParseTree stmtNode = node.children[0];
+        ParseTree[] voiceSubCmdNodes = stmtNode.children[0..$];
+        foreach(ref subCmd; voiceSubCmdNodes) {
+            ParseTree node = subCmd.children[0];
+            string[] filters;
+            final switch(node.name) {
+                case "XCBASIC.FilterSubCmdCutoff":
+                    Expression cutoff = new Expression(node.children[0], compiler);
+                    cutoff.setExpectedType(compiler.getTypes().get(Type.UINT16));
+                    cutoff.eval();
+                    appendCode(cutoff.toString());
+                    appendCode("    filter_cutoff\n");
+                    break;
+                case "XCBASIC.FilterSubCmdResonance":
+                    Expression resonance = new Expression(node.children[0], compiler);
+                    resonance.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    resonance.eval();
+                    appendCode(resonance.toString());
+                    appendCode("    filter_resonance\n");
+                    break;
+                case "XCBASIC.FilterSubCmdPass":
+                    uint value = 0;
+                    import std.stdio;
+                    immutable string pass = toUpper(node.matches[0]);
+                    filters ~= "FILT" ~ pass;
+                    break;
+            }
+            if(filters.length > 0) {
+                appendCode("    filter " ~ filters.join(" | ") ~ "\n");
+            }
+        }
     }
 }
 

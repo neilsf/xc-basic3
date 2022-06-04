@@ -54,10 +54,13 @@ FMVOLSHAD  DC.B 0
 .REG EQU V{1}FREQ
 	IF !FPULL
 	pla
-	ENDIF	
 	sta .REG + 1	
 	pla	
 	sta .REG	
+	ELSE	
+	sta .REG	
+	sty .REG + 1
+	ENDIF	
 	ENDM
 	
 	; e.g voice_wave 1,SAW
@@ -74,10 +77,13 @@ FMVOLSHAD  DC.B 0
 .REG EQU V{1}PULS
 	IF !FPULL
 	pla
-	ENDIF	
 	sta .REG + 1	
 	pla	
 	sta .REG	
+	ELSE	
+	sta .REG	
+	sty .REG + 1
+	ENDIF	
 	ENDM
 	
 	; Push order: A D S R
@@ -104,14 +110,14 @@ FMVOLSHAD  DC.B 0
 	sta V{1}SR
 	ENDM
 	
-	MAC voice_filter_on
+	MAC voice_filteron
 	lda #[1 << [{1} - 1]]
 	ora FILTRRSHAD
 	sta FILTRRSHAD
 	sta FILTRR
 	ENDM
 	
-	MAC voice_filter_off
+	MAC voice_filteroff
 	lda #[[1 << [{1} - 1]] ^ $FF]
 	and FILTRRSHAD
 	sta FILTRRSHAD
@@ -119,19 +125,31 @@ FMVOLSHAD  DC.B 0
 	ENDM
 	
 	MAC filter
-	lda FILTRRSHAD
-	ora {1}
-	sta FILTRRSHAD
-	sta FILTRR
+	lda FMVOLSHAD
+	and #%00001111
+	ora #[{1}]
+	sta FMVOLSHAD
+	sta FMVOL
 	ENDM
 	
 	MAC filter_cutoff ; @pull
 	IF !FPULL
 	pla
+	sta R1	
+	pla	
+	sta R0
+	ELSE	
+	sta R0
+	sty R1
 	ENDIF
-	sta FILTCUT + 1
-	pla
+	and #%00000111
 	sta FILTCUT
+	REPEAT 5
+	ASL R0
+	ROL R1
+	REPEND
+	lda R1
+	sta FILTCUT + 1
 	ENDM
 	
 	MAC filter_resonance ; @pull
@@ -144,7 +162,7 @@ FMVOLSHAD  DC.B 0
 	asl
 	sta R0
 	lda FILTRRSHAD
-	and #%11110000
+	and #%00001111
 	ora R0
 	sta FILTRRSHAD
 	sta FILTRR
@@ -173,6 +191,6 @@ FMVOLSHAD  DC.B 0
 	sta VOICE2WF
 	sta VOICE3WF
 	sta FILTRRSHAD
-	sta FILTRRSHAD
+	sta FMVOLSHAD
 	ENDM
 	

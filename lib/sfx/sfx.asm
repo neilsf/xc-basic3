@@ -4,4 +4,8 @@
 	INCLUDE "sfx/_sid.asm"
 	ENDIF
 	
+	IF TARGET & vic20
+	INCLUDE "sfx/_vic.asm"
+	ENDIF
+	
 	

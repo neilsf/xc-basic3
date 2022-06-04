@@ -8,4 +8,8 @@
 	INCLUDE "sfx/_vic.asm"
 	ENDIF
 	
+	IF TARGET & c264
+	INCLUDE "sfx/_ted.asm"
+	ENDIF
+	
 	

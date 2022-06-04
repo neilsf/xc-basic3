@@ -20,7 +20,8 @@ MASTVOL EQU $900E
 	
 	MAC voice_tone ; @pull
 	IF !FPULL
-	pla
+	pla ; discard HB
+	pla ; keep LB
 	ENDIF
 	and #%01111111
 	sta R0
@@ -55,10 +56,6 @@ MASTVOL EQU $900E
 	; Unsupported on VIC-20
 	
 	MAC voice_wave ; @pull
-	IF !FPULL
-	pla
-	pla
-	ENDIF
 	ENDM
 	
 	MAC voice_pulse ; @pull

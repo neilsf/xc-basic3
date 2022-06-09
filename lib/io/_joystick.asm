@@ -68,6 +68,8 @@ OUTPUTB EQU $9120
 	IF !FPUSH
 	pha
 	ENDIF
+	ldx #$ff
+	stx VIA2DDR
 	ENDM
 	ENDIF
 	

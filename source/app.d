@@ -27,7 +27,8 @@ const string[] targetOpts = [
     "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
     "cplus4",   // Commodore Plus/4
-    "c16",      // Commodore-16
+    "c16",      // Commodore-16,
+    "c128",     // Commodore-128
 ];
 
 // Command line options
@@ -215,6 +216,10 @@ public void setStartAddress()
             
             case "c64":
                 startAddress = 0x0801;
+                break;
+
+            case "c128":
+                startAddress = 0x1c01;
                 break;
 
             case "vic20":

@@ -1,5 +1,6 @@
 ; High byte of pointer to screen memory for screen input/output
 KERNAL_SCREEN_ADDR EQU $0288
+C128_VM1 EQU $0A2C
 ; Color RAM
 	IF TARGET == vic20_8k
 COLOR_RAM EQU $9400
@@ -371,8 +372,17 @@ CALC_SCRROWPTR SUBROUTINE
 	ENDIF
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
-	ELSE
+	ENDIF
+	IF TARGET == c64
 	adc KERNAL_SCREEN_ADDR
+	ENDIF
+	IF TARGET = c128
+	sta R0 + 1
+	lda C128_VM1
+	and #%11110000
+	lsr
+	lsr
+	adc R0 + 1
 	ENDIF
 	sta R0 + 1
 	rts

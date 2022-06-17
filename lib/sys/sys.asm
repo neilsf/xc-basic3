@@ -12,6 +12,10 @@ SYREG EQU $07F4
 SPREG EQU $07F5
 	ENDIF
 	
+	IF TARGET == c128
+MMU EQU $FF00	
+	ENDIF
+	
 	IF TARGET == c64 || TARGET & vic20
 JIFFY EQU $A0
 	ENDIF
@@ -29,6 +33,11 @@ JIFFY EQU $A3
 	and #%11111110
 	sta $01
 	ENDIF
+	IF TARGET == c128
+	; Set up MMU
+	lda #%001110
+	sta MMU
+	ENDIF
 	ENDM
 	
 	; Final code that runs when the program is terminated
@@ -39,15 +48,23 @@ JIFFY EQU $A3
 	ora #%00000001         
 	sta $01
 	ENDIF
-	; Do BASIC cold start
+	IF TARGET == c128
+	; Reset MMU
+	lda #%0
+	sta MMU
+	ENDIF
+	; Do BASIC start
 	IF TARGET & vic20
 	jmp ($C002)
 	ENDIF
-	IF TARGET == cplus4 || TARGET == c16
+	IF TARGET & c264
 	jmp $8003
 	ENDIF
 	IF TARGET == c64
 	jmp ($A002)
+	ENDIF
+	IF TARGET == c128
+	jmp ($0A00)
 	ENDIF
 	ENDM
 	

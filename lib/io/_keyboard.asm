@@ -26,7 +26,11 @@ IO_INPUT SUBROUTINE
 	; turn on cursor
 	IF TARGET == c64 || (TARGET & vic20)
 	lda #0
-	sta $cc
+	sta $CC
+	ENDIF
+	IF TARGET == c128
+	lda #0
+	sta $A27
 	ENDIF
 	IF TARGET & c264
 	IMPORT I_C264_ENABLE_CRSR
@@ -91,10 +95,14 @@ IO_INPUT SUBROUTINE
 	ldy $d3 ; y pos of cursor
 	lda $ce ; character under cursor
 	and #%01111111
-	sta ($d1),y
-	lda #$ff
-	sta $cc
+	sta ($D1),y
+	lda #$FF
+	sta $CC
 	cli
+	ENDIF
+	IF TARGET == c128
+	lda #$FF
+	sta $0A27
 	ENDIF
 	IF TARGET & c264
 	IMPORT I_C264_DISABLE_CRSR

@@ -29,10 +29,16 @@ JIFFY EQU $A3
 	and #%11111110
 	sta $01
 	ENDIF
+	IF USEIRQ == 1
+	jsr IRQSETUP
+	ENDIF
 	ENDM
 	
 	; Final code that runs when the program is terminated
 	MAC xend
+	IF USEIRQ == 1
+	jsr IRQRESET
+	ENDIF
 	IF TARGET == c64
 	; Bank in BASIC ROM
 	lda $01
@@ -53,7 +59,9 @@ JIFFY EQU $A3
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	sei
+	IF !USEIRQ
+    sei
+    ENDIF
 	lda JIFFY + 2
 	IF !FPUSH
 	pha
@@ -65,7 +73,9 @@ JIFFY EQU $A3
 	ldy JIFFY + 1
 	ldx JIFFY
 	ENDIF
-	cli
+	IF !USEIRQ
+    cli
+    ENDIF
 	ENDM
 	
 	; SYS Command

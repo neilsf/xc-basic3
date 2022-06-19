@@ -67,6 +67,7 @@ c264     EQU %0000000001000000
 cplus4   EQU %0000000001000001
 c16      EQU %0000000001000010
 TARGET   EQU ` ~ target ~ `
+USEIRQ   EQU ` ~ (useIrqs ? "1" : "0") ~ `
     SEG "UPSTART"
     ORG $` ~ to!string(startAddress, 16) ~ "\n";
         if(basicLoader) {

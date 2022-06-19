@@ -87,14 +87,18 @@ IO_INPUT SUBROUTINE
 	sty STRING_BUFFER1
 	; turn off cursor
 	IF TARGET == c64 || (TARGET & vic20)
-	sei
+	IF !USEIRQ
+    sei
+    ENDIF
 	ldy $d3 ; y pos of cursor
 	lda $ce ; character under cursor
 	and #%01111111
 	sta ($d1),y
 	lda #$ff
 	sta $cc
-	cli
+	IF !USEIRQ
+    cli
+    ENDIF
 	ENDIF
 	IF TARGET & c264
 	IMPORT I_C264_DISABLE_CRSR

@@ -62,10 +62,10 @@ STR_LEFT SUBROUTINE
 	inx
 	cmp STRING_WORKAREA,x
 	bcs .end ; length >= str length, leave string as it is
-	; Pointer to left part in RA
- 	stx RA
+	; Pointer to left part in R2
+ 	stx R2
 	ldy #>STRING_WORKAREA
- 	sty RA + 1
+ 	sty R2 + 1
 	; Y = X + len - A + 1
 	sta R0
 	txa
@@ -73,24 +73,24 @@ STR_LEFT SUBROUTINE
 	adc STRING_WORKAREA,x
 	sec
 	sbc R0
- 	; Pointer to destination in RC
- 	sta RC
+ 	; Pointer to destination in R4
+ 	sta R4
  	sta SP
 	lda #>STRING_WORKAREA
- 	sta RC + 1
+ 	sta R4 + 1
  	ldy R0
  	bne .loop
  	; zero length
  	tya
- 	sta (RC),y
+ 	sta (R4),y
  	beq .wquit
 .loop
-	lda (RA),y
-	sta (RC),y
+	lda (R2),y
+	sta (R4),y
 	dey
  	bne .loop
  	lda R0
- 	sta (RC),y
+ 	sta (R4),y
 	; write new pointer
 .wquit
 	dec SP

@@ -36,4 +36,5 @@
 	INCLUDE "grx/sprite.asm"
 	; Optimizer
 	INCLUDE "opt/opt.asm"
-	
+	; Graphics
+	INCLUDE "grx/grx.asm"

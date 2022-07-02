@@ -1,10 +1,18 @@
 	IF TARGET == c64
 HSCR EQU $D016	
 VSCR EQU $D011	
+RAST EQU $D012
+RAST8 EQU $D011
 	ENDIF
 	IF TARGET & c264
 HSCR EQU $FF07	
 VSCR EQU $FF06	
+RAST EQU $FF0B
+RAST8 EQU $FF0A
+	ENDIF
+	IF TARGET & vic20
+RAST EQU $9004
+RAST8 EQU $9003
 	ENDIF
 	
 VMODE_TEXT EQU 1	
@@ -115,3 +123,30 @@ VMODE_MULTI EQU 1
 	ENDM
 	
 	ENDIF
+	
+	MAC F_scan
+	IF TARGET & vic20
+	  clc
+	  lda RAST8
+	  asl
+	  lda RAST
+	  asl
+	  pha
+	  lda #0
+	  rol
+	  pha
+	ELSE
+	  lda RAST
+	  pha
+	  lda RAST8
+	  IF TARGET == c64
+	  asl
+	  lda #0
+	  rol
+	  ENDIF
+	  IF TARGET & c264
+	  and #%00000001
+	  ENDIF
+	  pha
+	ENDIF
+	ENDM

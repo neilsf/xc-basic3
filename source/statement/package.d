@@ -11,4 +11,4 @@ public import   statement.dim_stmt, statement.let_stmt, statement.fun_stmt, stat
                 statement.memmove_stmt, statement.origin_stmt, statement.end_stmt, statement.poke_stmt,
                 statement.sys_stmt, statement.write_stmt, statement.read_stmt, statement.charat_stmt,
                 statement.screen_stmt, statement.textat_stmt, statement.wait_stmt, statement.option_stmt,
-                statement.sprite_stmt, statement.border_bg_stmt, statement.scroll_stmt;
+                statement.sprite_stmt, statement.border_bg_stmt, statement.scroll_stmt, statement.select_stmt;

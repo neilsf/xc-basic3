@@ -1,5 +1,12 @@
 ; High byte of pointer to screen memory for screen input/output
 KERNAL_SCREEN_ADDR EQU $0288
+	IF TARGET == c64
+SRVEC EQU $D9
+	ENDIF
+	IF TARGET == c128
+SRVEC EQU $E0
+	ENDIF
+	
 C128_VM1 EQU $0A2C
 ; Color RAM
 	IF TARGET == vic20_8k
@@ -396,8 +403,8 @@ CALC_SCRROWPTR SUBROUTINE
 		
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
-	; This command has only effect on the C64
-	IF TARGET == c64
+	; This command has only effect on the C64/C128
+	IF TARGET == c64 || TARGET == c128
 	IF !FPULL
 	pla
 	ENDIF
@@ -434,7 +441,7 @@ RESET_SCRVECTORS SUBROUTINE
 	lda #0
 	tax
 .loop
-	sty $D9,x
+	sty SRVEC,x
 	clc
 	adc #$28
 	bcc .skip
@@ -444,7 +451,7 @@ RESET_SCRVECTORS SUBROUTINE
 	cpx #$1a
 	bne .loop
 	lda #$ff
-	sta $D9,x
+	sta SRVEC,x
 	jmp $E566
 	ENDIF
 	
@@ -454,7 +461,7 @@ RESET_SCRVECTORS SUBROUTINE
 	pla
 	ENDIF
 	
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128
 	sta VICII_BORDER
 	ENDIF
 	
@@ -485,7 +492,7 @@ RESET_SCRVECTORS SUBROUTINE
 	pla
 	ENDIF
 	
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128
 	sta VICII_BACKGROUND
 	ENDIF
 	

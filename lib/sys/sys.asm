@@ -16,7 +16,7 @@ SPREG EQU $07F5
 MMU EQU $FF00	
 	ENDIF
 	
-	IF TARGET == c64 || TARGET & vic20
+	IF TARGET == c64 || TARGET & vic20 || TARGET == c128
 JIFFY EQU $A0
 	ENDIF
 	IF TARGET & c264
@@ -39,6 +39,9 @@ JIFFY EQU $A3
 	; Set up MMU
 	lda #%001110
 	sta MMU
+	; Disable irq based screen editor
+	lda #$ff
+	sta $D8
 	ENDIF
 	ENDM
 	

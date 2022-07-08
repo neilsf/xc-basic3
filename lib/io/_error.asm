@@ -59,17 +59,7 @@ RUNTIME_ERROR SUBROUTINE
 	import I_STDLIB_PRINTSTR
 	jsr STDLIB_PRINTSTR
 	printbyte ; pulls error code off of stack
-	IF TARGET == c64
-	; Bank in BASIC ROM
-	lda $01
-	ora #%00000001         
-	sta $01
-	ENDIF
-	IF TARGET & vic20
-	jmp ($C002)
-	ELSE
-	jmp ($A002) ; Do BASIC cold start
-	ENDIF
+	xend
 .custom
 	jmp (ERR_VECTOR)
 

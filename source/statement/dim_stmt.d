@@ -94,13 +94,13 @@ class Dim_stmt : Statement
                 Variable var = compiler.getVars().findVisible(lbl);
                 if(var !is null) {
                     if(!var.isConst) {
-                        compiler.displayError("Address must a constant");
+                        compiler.displayError("Address must be a constant");
                     }
                     // a constant
                     if(!var.type.isIntegral() || var.constVal < 0 || var.constVal > 0xFFFF) {
                         compiler.displayError("Address must be an integer in range 0-65535");
                     }
-                    addrLabel = var.getAsmLabel();
+                    addr = to!ushort(var.constVal);
                 }
                 else  {
                     compiler.displayError("Unknown constant \"" ~ lbl ~ "\"");

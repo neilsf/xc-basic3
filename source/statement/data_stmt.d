@@ -4,7 +4,7 @@ import std.array, std.conv;
 
 import pegged.grammar;
 
-import language.statement, compiler.petscii,
+import language.statement, compiler.petscii, compiler.variable,
         compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode;
 
 import globals;
@@ -46,6 +46,8 @@ class Data_stmt : Statement
         string[] listItems;
         bool truncated;
         ulong finalLength;
+        float floatVal;
+        int intVal;
         foreach (datum; dataListNode.children) {
             if(type.name == Type.STRING) {
                 if(datum.name != "XCBASIC.String") {
@@ -63,19 +65,37 @@ class Data_stmt : Statement
                 if(datum.name == "XCBASIC.String") {
                     compiler.displayError("Type mismatch: expected number, got string");
                 }
-                Number num = new Number(datum, compiler, type.name == Type.FLOAT);
+                if(datum.name == "XCBASIC.Number") {
+                    Number num = new Number(datum, compiler, type.name == Type.FLOAT);
+                    floatVal = num.floatVal;
+                    intVal = num.intVal;
+                } else {
+                    // A constant
+                    Variable var = compiler.getVars().findVisible(datum.matches.join);
+                    if(var !is null) {
+                        if(!var.isConst) {
+                            compiler.displayError("DATA must be constant");
+                        }
+                        // a constant
+                        floatVal = var.constVal;
+                        intVal = to!int(var.constVal);
+                    }
+                    else {
+                        compiler.displayError("Unknown constant \"" ~ datum.matches.join ~ "\"");
+                    }
+                }
                 try {
                     switch(type.name) {
                         case Type.FLOAT:
-                            listItems ~= Number.floatToHex(num.floatVal, "$");
+                            listItems ~= Number.floatToHex(floatVal, "$");
                         break;
 
                         case Type.DEC:
-                            listItems ~= Number.getDecimalAsHex(num.intVal, "$");
+                            listItems ~= Number.getDecimalAsHex(intVal, "$");
                         break;
 
                         default:
-                            listItems ~= Number.integralToHex(num.intVal, type, true, "$");
+                            listItems ~= Number.integralToHex(intVal, type, true, "$");
                         break;
                     }
                 }

@@ -376,7 +376,26 @@ class VariableReader
                         if(child.children.length < 2) {
                             compiler.displayError("String length is required");
                         }
-                        immutable int len = to!int(join(child.children[1].matches)[1..$]);
+                        int len;
+                        const ParseTree typeLen = child.children[1].children[0];
+                        const string lenStr = typeLen.matches.join;
+                        if(typeLen.name == "XCBASIC.Number") {
+                            Number num = new Number(typeLen, compiler);
+                            len = num.intVal;
+                        } else {
+                            Variable var = compiler.getVars().findVisible(lenStr);
+                            if(var !is null) {
+                                if(!var.isConst) {
+                                    compiler.displayError("String length must be constant");
+                                }
+                                // a constant
+                                len = to!int(var.constVal);
+                            }
+                            else {
+                                compiler.displayError("Unknown constant \"" ~ lenStr ~ "\"");
+                            }
+                        }
+                        
                         if(len < 1 || len > stringMaxLength) {
                             compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
                         }

@@ -16,6 +16,11 @@ IO_KEYW		EQU $FD30
 IO_KEYR		EQU $FF08 	
 	ENDIF
 	
+	IF TARGET & pet
+IO_KEYW		EQU $E810 
+IO_KEYR		EQU $E812
+	ENDIF
+	
     ; GET
 	MAC get ; @push
 	kerncall KERNAL_GETIN

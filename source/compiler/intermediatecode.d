@@ -55,17 +55,28 @@ class IntermediateCode
     private string getStartUp()
     {
         // Target machine bits meaning
-        // Bits 15-4: base machine
-        // Bits 3-0: machine config 
+        // Bits 15-8: base machine
+        // Bits 7-0: machine config 
         string startUpCode =
 `    PROCESSOR 6502
-c64      EQU %0000000000010000
-vic20    EQU %0000000000100000
-vic20_3k EQU %0000000000100001
-vic20_8k EQU %0000000000100010
-c264     EQU %0000000001000000
-cplus4   EQU %0000000001000001
-c16      EQU %0000000001000010
+c64      EQU %0000000100000000
+vic20    EQU %0000001000000000
+vic20_3k EQU %0000001000000001
+vic20_8k EQU %0000001000000010
+c264     EQU %0000010000000000
+cplus4   EQU %0000010000000001
+c16      EQU %0000010000000010
+
+pet      EQU %0001000000000000
+pet2001  EQU %0001000000000101
+pet3     EQU %0001000000001000
+pet3008  EQU %0001000000001001
+pet3016  EQU %0001000000001010
+pet3032  EQU %0001000000001100
+pet4     EQU %0001000001000000
+pet4016  EQU %0001000001000010
+pet4032  EQU %0001000001000100
+pet8000  EQU %0001000010000100
 TARGET   EQU ` ~ target ~ `
     SEG "UPSTART"
     ORG $` ~ to!string(startAddress, 16) ~ "\n";

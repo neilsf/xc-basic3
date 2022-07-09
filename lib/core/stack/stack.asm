@@ -14,6 +14,18 @@ STACKFRAME_TOP EQU $3F00
 	IF TARGET == cplus4
 STACKFRAME_TOP EQU $7F00	
 	ENDIF
+	; PETS
+	IF TARGET & pet
+	  IF TARGET & 1 ; PET 8k RAM
+STACKFRAME_TOP EQU $1F00
+	  ENDIF
+	  IF TARGET & 2  ; PET 16k RAM
+STACKFRAME_TOP EQU $3F00
+	  ENDIF
+	  IF TARGET & 4  ; PET 32k RAM
+STACKFRAME_TOP EQU $7F00
+	  ENDIF
+	ENDIF
 	
 	; (private)
 	; Calculate variable address from address + index

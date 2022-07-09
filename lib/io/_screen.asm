@@ -298,7 +298,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lda #$60
 	import I_STRREMOV_SC
 	jsr STRREMOV_SC
-	IF {1} == 1 ; Color was provided
+	IF {1} == 1 && (TARGET & pet == 0); Color was provided
 	pla
 	tax
 	lda R0 + 1
@@ -354,7 +354,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #0
 		adc R0 + 1
-	; 40-column screen
+	; 40 or 80-column screen
 	ELSE
 	  	REPEAT 3
 		asl
@@ -374,9 +374,18 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
+		IF TARGET == pet8000 ; 80-column PET
+		sta R0 + 1
+		asl R0
+		rol R0 + 1
+		lda R0 + 1
+		ENDIF
+	ENDIF
+	IF TARGET & pet
+	adc #$80 ; high byte is always 08 on a PET
 	ENDIF
 	IF TARGET & c264 
-	adc #$0c ; high byte is always 0C on plus4
+	adc #$0c ; high byte is always 0C on Plus/4 or C16
 	ELSE
 	adc KERNAL_SCREEN_ADDR
 	ENDIF

@@ -28,6 +28,9 @@ class On_stmt : Statement
         const string m1 = node.children[0].matches[1];
         switch(toLower(m1)) {
             case "error":
+                if(args[0].name == "XCBASIC.Expression") {
+                    compiler.displayError("Expected GOTO or GOSUB, got expression");
+                }
                 branchType = toLower(join(args[0].matches));
                 // It must be a GOTO
                 if(branchType != "goto") {
@@ -49,9 +52,19 @@ class On_stmt : Statement
                 }
                 break;
 
-            case "timer":
             case "sprite":
             case "background":
+            case "timer":
+            case "raster":
+                if(args[0].name == "XCBASIC.Expression") {
+                    if(toLower(m1) == "sprite" || toLower(m1) == "background") {
+                        compiler.displayError("Expected GOTO or GOSUB, got expression");
+                    }
+                } else {
+                    if(toLower(m1) == "timer" || toLower(m1) == "raster") {
+                        compiler.displayError("Expected expression");
+                    }
+                }
                 useIrqs = true;
                 branchType = toLower(join(args[0].matches));
                 // It must be a GOSUB
@@ -95,32 +108,5 @@ class On_stmt : Statement
                 appendCode("_ON_END" ~ ctr ~ "\n");
                 break;
         } 
-    }
-}
-
-/** Compiles an ON RASTER n GOSUB statement */
-class On_raster_stmt : Statement
-{
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
-
-    /** Compiles the statement */
-    void process()
-    {
-        useIrqs = true;
-        ParseTree[] args = this.node.children[0].children;
-        ParseTree e1 = args[0];
-        Expression rc = new Expression(e1, compiler);
-        rc.setExpectedType(compiler.getTypes().get(Type.UINT16));
-        rc.eval();
-        appendCode(rc.toString());
-        const string lbl = join(args[1].matches);
-        if(!compiler.getLabels().exists(lbl)) {
-            compiler.displayError("Label " ~ lbl ~ " does not exist");
-        }
-        appendCode("    onirqgosub IRQ_RASTER, " ~ compiler.getLabels().toAsmLabel(lbl) ~ "\n");
     }
 }

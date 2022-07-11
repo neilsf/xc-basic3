@@ -4,7 +4,11 @@ VICII_SCREENCTR EQU $D011
 VICII_RASTER    EQU $D012
 VICII_IRQSTATUS EQU $D019
 VICII_IRQCTR    EQU $D01A
+CIA1_TBLO       EQU $DC06
+CIA1_TBHI       EQU $DC07
 CIA1_IRQCTR     EQU $DC0D
+CIA1_CRA        EQU $DC0E
+CIA1_CRB        EQU $DC0F
 	; Flags
 	; bit 0 - raster interrupts enabled
 	; bit 1 - sprite-bg interrupts enabled
@@ -27,8 +31,17 @@ IRQ_SYSTEM EQU 16
 	IF {1} < IRQ_TIMER
 	sta VICII_IRQCTR
 	ELSE
-	lda #$81
-	sta CIA1_IRQCTR
+      IF {1} == IRQ_TIMER
+	  lda #%10000010
+      sta CIA1_IRQCTR 
+      lda #1
+      sta CIA1_CRB
+      ELSE
+      lda #%10000001
+      sta CIA1_IRQCTR
+      lda #1
+      sta CIA1_CRA
+      ENDIF
 	ENDIF
 	; ack pending interrupts
 	lda CIA1_IRQCTR
@@ -47,7 +60,11 @@ IRQ_SYSTEM EQU 16
 	ELSE
 	and %00011000
 	bne .q
-	lda #$7F
+      IF {1} == IRQ_TIMER
+	  lda #%00000010
+      ELSE
+      lda #%00000001
+      ENDIF
 	sta CIA1_IRQCTR
 	ENDIF
 .q	
@@ -78,7 +95,13 @@ IRQ_SYSTEM EQU 16
 	pla
 	sta VICII_RASTER
 	ENDIF
-	ENDM
+	IF {1} == IRQ_TIMER
+    pla
+    sta CIA1_TBHI
+    pla 
+    sta CIA1_TBLO
+	ENDIF
+    ENDM
 
 IRQSETUP SUBROUTINE
 	sei
@@ -142,20 +165,21 @@ IRQ_SPRITE_V
 	sta VICII_IRQSTATUS
 	jmp $EA81
 .3	
-	; it is a timer interrupt	
-	lda #IRQ_TIMER
-	bit IRQFLAGS
+	; is it a timer interrupt
+    lda CIA1_IRQCTR
+    and #%00000010
 	beq .4
 	phsr
 IRQ_TIMER_V	
 	jsr $FFFF ; To be modified by application
 	plsr
+    jmp $EA81
 .4
+    ; it is a system interrupt
 	lda #IRQ_SYSTEM
 	bit IRQFLAGS
 	beq .q
 	jmp $EA31
 .q	
 	jmp $EA7E
-	
 	ENDIF

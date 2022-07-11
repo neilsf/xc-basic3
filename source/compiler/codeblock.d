@@ -9,7 +9,8 @@ class CodeBlock
     static const int TYPE_FOR = 1;
     static const int TYPE_FUNCTION = 2;
     static const int TYPE_IF = 3;
-    
+    static const int TYPE_SELECT = 4;
+
     protected static int idCounter;
     protected int id;
     protected int type;
@@ -43,6 +44,7 @@ class CodeBlock
             case TYPE_FOR: return "FOR";
             case TYPE_FUNCTION: return "FUNCTION";
             case TYPE_IF: return "IF";
+            case TYPE_SELECT: return "SELECT";
             default: return "";
         }
     }

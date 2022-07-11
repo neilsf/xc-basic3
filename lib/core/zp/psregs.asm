@@ -27,6 +27,8 @@ RE	EQU $11
 RF	EQU $12
 ; Pointer to "this"
 TH  EQU $13
+; Current sprite number
+SN  EQU $14
 
 	; Push pseudo-registers onto stack
 	MAC phsr
@@ -49,3 +51,4 @@ TH  EQU $13
 	cpx #[SP + 1]
 	bne .l
 	ENDM
+

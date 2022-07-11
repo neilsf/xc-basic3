@@ -30,7 +30,16 @@
 	INCLUDE "mem/mem.asm"
 	; System library
 	INCLUDE "sys/sys.asm"
+<<<<<<< HEAD
 	; Interrupts
 	INCLUDE "irq/irq.asm"
+=======
+	; Interrputs
+	INCLUDE "sys/interrupts.asm"
+	; Sprites
+	INCLUDE "grx/sprite.asm"
+>>>>>>> release/v3.1
 	; Optimizer
 	INCLUDE "opt/opt.asm"
+	; Graphics
+	INCLUDE "grx/grx.asm"

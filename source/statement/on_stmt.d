@@ -56,26 +56,31 @@ class On_stmt : Statement
             case "background":
             case "timer":
             case "raster":
-                if(args[0].name == "XCBASIC.Expression") {
-                    if(toLower(m1) == "sprite" || toLower(m1) == "background") {
+                int nodeIndex = 0;
+                if(toLower(m1) == "sprite" || toLower(m1) == "background") {
+                    if(args[nodeIndex].name == "XCBASIC.Expression") {
                         compiler.displayError("Expected GOTO or GOSUB, got expression");
                     }
                 } else {
-                    if(toLower(m1) == "timer" || toLower(m1) == "raster") {
+                    if(args[nodeIndex].name != "XCBASIC.Expression") {
                         compiler.displayError("Expected expression");
                     }
+                    Expression e = new Expression(args[nodeIndex++], compiler);
+                    e.setExpectedType(compiler.getTypes().get(Type.UINT16));
+                    e.eval();
+                    appendCode(e.toString());
                 }
                 useIrqs = true;
-                branchType = toLower(join(args[0].matches));
+                branchType = toLower(join(args[nodeIndex++].matches));
                 // It must be a GOSUB
                 if(branchType != "gosub") {
                     compiler.displayError("ON " ~ toUpper(m1) ~ " must be followed by GOSUB");
                 }
                 // Only one label allowed
-                if(args.length > 2) {
+                if(args.length > nodeIndex + 1) {
                     compiler.displayError("ON " ~ toUpper(m1) ~ " GOSUB must be followed by only one label");
                 }
-                const string lbl = join(args[1].matches);
+                const string lbl = join(args[nodeIndex].matches);
                 if(!compiler.getLabels().exists(lbl)) {
                     compiler.displayError("Label " ~ lbl ~ " does not exist");
                 }

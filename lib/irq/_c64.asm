@@ -113,7 +113,11 @@ IRQSETUP SUBROUTINE
 	rts
 	
 IRQRESET SUBROUTINE
-	sei
+	irqdisable IRQ_TIMER
+    irqdisable IRQ_RASTER
+    irqdisable IRQ_SPRITE
+    irqdisable IRQ_BACKGROUND
+    sei
 	lda #<$EA31
 	sta IRQVECTOR
 	lda #>$EA31

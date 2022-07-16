@@ -28,8 +28,6 @@ JIFFY EQU $A3
 	lda $01
 	and #%11111110
 	sta $01
-	import I_IRQSERVICE
-	enable_xcb_irq_service
 	ENDIF
 	IF USEIRQ == 1
 	jsr IRQSETUP

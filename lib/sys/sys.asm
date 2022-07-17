@@ -36,9 +36,6 @@ JIFFY EQU $8D
 	and #%11111110
 	sta $01
 	ENDIF
-	IF USEIRQ == 1
-	jsr IRQSETUP
-	ENDIF
 	IF TARGET == c128
 	; Set up MMU
 	lda #%001110
@@ -46,6 +43,9 @@ JIFFY EQU $8D
 	; Disable irq based screen editor
 	lda #$ff
 	sta $D8
+	ENDIF
+    IF USEIRQ == 1
+	jsr IRQSETUP
 	ENDIF
 	ENDM
 	
@@ -64,6 +64,9 @@ JIFFY EQU $8D
 	; Reset MMU
 	lda #%0
 	sta MMU
+    ; Enable irq based screen editor
+	lda #$00
+	sta $D8
 	ENDIF
 	; Do BASIC start
 	IF TARGET & vic20

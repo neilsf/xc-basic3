@@ -1,6 +1,6 @@
 	PROCESSOR 6502
 	
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128
 	INCLUDE "sfx/_sid.asm"
 	ENDIF
 	

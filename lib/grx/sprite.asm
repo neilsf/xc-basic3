@@ -147,8 +147,8 @@ sprcollr  DC.B 0
 	MAC sprite_shape
 	lda #$F8
 	sta R0
-	lda KERNAL_SCREEN_ADDR
-	clc
+    lda KERNAL_SCREEN_ADDR
+    clc
 	adc #3
 	sta R0 + 1
 	pla

@@ -13,3 +13,7 @@
 	IF TARGET & pet
     INCLUDE "irq/_pet.asm"
 	ENDIF
+    
+	IF TARGET == c128
+	INCLUDE "irq/_c128.asm"
+	ENDIF

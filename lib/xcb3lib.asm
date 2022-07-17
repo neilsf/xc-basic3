@@ -37,7 +37,7 @@
 	; Sound
 	INCLUDE "sfx/sfx.asm"
     ; Sprites
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128
 	  INCLUDE "grx/sprite.asm"
     ENDIF
     ; Optimizer

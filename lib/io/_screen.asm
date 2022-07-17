@@ -1,9 +1,10 @@
 ; High byte of pointer to screen memory for screen input/output
+    IF TARGET == c64
 KERNAL_SCREEN_ADDR EQU $0288
-	IF TARGET == c64
 SRVEC EQU $D9
 	ENDIF
 	IF TARGET == c128
+KERNAL_SCREEN_ADDR EQU $0A3B
 SRVEC EQU $E0
 	ENDIF
 	

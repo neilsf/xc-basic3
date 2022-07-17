@@ -28,6 +28,13 @@ const string[] targetOpts = [
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
     "cplus4",   // Commodore Plus/4
     "c16",      // Commodore-16
+    "pet2001",  // Commodore PET2001
+    "pet3008",  // Commodore PET3000 series (8k RAM)
+    "pet3016",  // Commodore PET3000 series (16k RAM)
+    "pet3032",  // Commodore PET3000 series (32k RAM)
+    "pet4016",  // Commodore PET4000 series (16k RAM)
+    "pet4032",  // Commodore PET4000 series (32k RAM)
+    "pet8032"   // Commodore PET8000 series
 ];
 
 // Command line options
@@ -221,6 +228,16 @@ public void setStartAddress()
             case "cplus4":
             case "c16":
                 startAddress = 0x1001;
+                break;
+
+            case "pet2001":
+            case "pet3008":
+            case "pet3016":
+            case "pet3032":
+            case "pet4016":
+            case "pet4032":
+            case "pet8032":
+                startAddress = 0x0401;
                 break;
 
             case "vic20_8k":

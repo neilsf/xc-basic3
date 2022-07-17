@@ -7,7 +7,7 @@ HSCR EQU $FF07
 VSCR EQU $FF06	
 	ENDIF
 	
-	IF TARGET & vic20
+	IF TARGET & vic20 || TARGET & pet
 	
 	MAC hscroll
 	ENDM

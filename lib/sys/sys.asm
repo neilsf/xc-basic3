@@ -18,6 +18,9 @@ JIFFY EQU $A0
 	IF TARGET & c264
 JIFFY EQU $A3
 	ENDIF
+	IF TARGET >= pet
+JIFFY EQU $8D
+	ENDIF
 
 	; Initial code that runs when the program is started
 	MAC xbegin
@@ -54,6 +57,12 @@ JIFFY EQU $A3
 	ENDIF
 	IF TARGET == c64
 	jmp ($A002)
+	ENDIF
+	IF TARGET & pet && TARGET < pet4
+	jmp $C389
+	ENDIF
+	IF TARGET & pet && TARGET >= pet4
+	jmp $B3FF
 	ENDIF
 	ENDM
 	

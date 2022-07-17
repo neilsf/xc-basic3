@@ -52,7 +52,7 @@ class Routine
          bool isStatic = false, bool isMethod = false, bool isPrivate = false, bool isInline = false)
     {
         this.name = toLower(name);
-        this.isShared = isShared;
+        this.isShared = isMethod || isShared;
         this.fileId = fileId;
         this.isStatic = isStatic;
         this.compiler = compiler;

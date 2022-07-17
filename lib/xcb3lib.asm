@@ -38,3 +38,5 @@
 	INCLUDE "opt/opt.asm"
 	; Graphics
 	INCLUDE "grx/grx.asm"
+	; Sound
+	INCLUDE "sfx/sfx.asm"

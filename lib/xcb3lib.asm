@@ -30,11 +30,15 @@
 	INCLUDE "mem/mem.asm"
 	; System library
 	INCLUDE "sys/sys.asm"
-	; Interrputs
-	INCLUDE "sys/interrupts.asm"
-	; Sprites
-	INCLUDE "grx/sprite.asm"
-	; Optimizer
-	INCLUDE "opt/opt.asm"
-	; Graphics
+	; Interrupts
+	INCLUDE "irq/irq.asm"
+    ; Graphics
 	INCLUDE "grx/grx.asm"
+	; Sound
+	INCLUDE "sfx/sfx.asm"
+    ; Sprites
+	IF TARGET == c64
+	  INCLUDE "grx/sprite.asm"
+    ENDIF
+    ; Optimizer
+	INCLUDE "opt/opt.asm"

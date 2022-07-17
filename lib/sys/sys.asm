@@ -22,6 +22,9 @@ JIFFY EQU $A0
 	IF TARGET & c264
 JIFFY EQU $A3
 	ENDIF
+	IF TARGET >= pet
+JIFFY EQU $8D
+	ENDIF
 
 	; Initial code that runs when the program is started
 	MAC xbegin
@@ -32,8 +35,9 @@ JIFFY EQU $A3
 	lda $01
 	and #%11111110
 	sta $01
-	import I_IRQSERVICE
-	enable_xcb_irq_service
+	ENDIF
+	IF USEIRQ == 1
+	jsr IRQSETUP
 	ENDIF
 	IF TARGET == c128
 	; Set up MMU
@@ -47,6 +51,9 @@ JIFFY EQU $A3
 	
 	; Final code that runs when the program is terminated
 	MAC xend
+	IF USEIRQ == 1
+	jsr IRQRESET
+	ENDIF
 	IF TARGET == c64
 	; Bank in BASIC ROM
 	lda $01
@@ -70,12 +77,20 @@ JIFFY EQU $A3
 	ENDIF
 	IF TARGET == c128
 	jmp ($0A00)
+    ENDIF
+	IF TARGET & pet && TARGET < pet4
+	jmp $C389
+	ENDIF
+	IF TARGET & pet && TARGET >= pet4
+	jmp $B3FF
 	ENDIF
 	ENDM
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	sei
+	IF !USEIRQ
+    sei
+    ENDIF
 	lda JIFFY + 2
 	IF !FPUSH
 	pha
@@ -87,7 +102,9 @@ JIFFY EQU $A3
 	ldy JIFFY + 1
 	ldx JIFFY
 	ENDIF
-	cli
+	IF !USEIRQ
+    cli
+    ENDIF
 	ENDM
 	
 	; SYS Command

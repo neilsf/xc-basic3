@@ -1,4 +1,26 @@
+	
+	IF TARGET == c64
+IO_KEYW		EQU $DC00 
+IO_KEYR		EQU $DC01
+IO_DDRA		EQU $DC02
+IO_DDRB		EQU $DC03
+	ENDIF 
 
+	IF TARGET & vic20
+IO_KEYW		EQU $9120 
+IO_KEYR		EQU $9121 
+	ENDIF
+	
+	IF TARGET & c264
+IO_KEYW		EQU $FD30 
+IO_KEYR		EQU $FF08 	
+	ENDIF
+	
+	IF TARGET & pet
+IO_KEYW		EQU $E810 
+IO_KEYR		EQU $E812
+	ENDIF
+	
     ; GET
 	MAC get ; @push
 	kerncall KERNAL_GETIN
@@ -32,3 +54,38 @@ IO_INPUT SUBROUTINE
 	sty STRING_BUFFER1
 	rts
 	ENDIF
+	
+	; DECLARE FUNCTION KEY AS BYTE (scancode AS WORD) SHARED STATIC INLINE
+	; HB: Keyboard write mask
+	; LB: Keyboard read mask
+	MAC F_key_word ; @push @pull
+	IF TARGET == c64
+	ldx #%11111111 
+ 	stx IO_DDRA             
+	ldx #%00000000
+	stx IO_DDRB      
+	ENDIF
+	  If !FPULL
+	  pla
+	  sta IO_KEYW
+		IF TARGET & c264
+		sta IO_KEYR
+	    ENDIF
+	  ELSE
+		sty IO_KEYW
+		IF TARGET & c264
+		sta IO_KEYR
+	    ENDIF
+	  ENDIF
+	ENDIF
+	If !FPULL
+	pla
+	ENDIF
+	and IO_KEYR
+	bne .f
+	ptrue
+	bne .q
+.f
+	pfalse
+.q
+	ENDM

@@ -105,10 +105,12 @@ class Data_stmt : Statement
                 
             }
         }
-        compiler.getImCode().appendSegment(
-            inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
-            "    DC.B " ~ listItems.join(",") ~ "\n"
-        );
+        if(listItems.length > 0) {
+            compiler.getImCode().appendSegment(
+                inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
+                "    DC.B " ~ listItems.join(",") ~ "\n"
+            );
+        }
     }
 
     // Immediately preceding labels should go to DATA segment

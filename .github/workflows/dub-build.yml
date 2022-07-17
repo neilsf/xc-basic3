@@ -2,7 +2,7 @@ name: Build project
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, release/v3.1 ]
 
 jobs:
     build:

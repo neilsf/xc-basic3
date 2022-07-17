@@ -374,7 +374,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8000 ; 80-column PET
+		IF TARGET == pet8032 ; 80-column PET
 		sta R0 + 1
 		asl R0
 		rol R0 + 1

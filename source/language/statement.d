@@ -22,7 +22,9 @@ Statement stmtFactory(ParseTree node, Compiler compiler) {
                                 "Write_stmt", "Read_stmt", "Charat_stmt", "Screen_stmt", "Textat_stmt",
                                 "Wait_stmt", "Option_stmt", "Irq_stmt",
                                 "Sprite_stmt", "Sprite_multicolor_stmt", "Sprite_clearhit_stmt",
-                                "Border_stmt", "Background_stmt", "Scroll_stmt", "Select_stmt", "Case_stmt", "Endselect_stmt"]) {
+                                "Border_stmt", "Background_stmt", "Scroll_stmt", "Select_stmt", "Case_stmt", "Endselect_stmt",
+                                "VMode_stmt"]) {
+
             mixin("case \"XCBASIC." ~ key ~"\": return new " ~ key ~ "(node, compiler);");
         }    
         default:

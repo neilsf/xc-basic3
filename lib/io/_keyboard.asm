@@ -1,5 +1,5 @@
 	
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET = c128
 IO_KEYW		EQU $DC00 
 IO_KEYR		EQU $DC01
 IO_DDRA		EQU $DC02
@@ -59,7 +59,7 @@ IO_INPUT SUBROUTINE
 	; HB: Keyboard write mask
 	; LB: Keyboard read mask
 	MAC F_key_word ; @push @pull
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET = c128
 	ldx #%11111111 
  	stx IO_DDRA             
 	ldx #%00000000

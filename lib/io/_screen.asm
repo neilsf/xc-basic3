@@ -1,10 +1,12 @@
 ; High byte of pointer to screen memory for screen input/output
     IF TARGET == c64
 KERNAL_SCREEN_ADDR EQU $0288
+KERNAL_HOME EQU $E566
 SRVEC EQU $D9
 	ENDIF
 	IF TARGET == c128
 KERNAL_SCREEN_ADDR EQU $0A3B
+KERNAL_HOME EQU $C150
 SRVEC EQU $E0
 	ENDIF
 	
@@ -396,16 +398,8 @@ CALC_SCRROWPTR SUBROUTINE
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
 	ENDIF
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128
 	adc KERNAL_SCREEN_ADDR
-	ENDIF
-	IF TARGET = c128
-	sta R0 + 1
-	lda C128_VM1
-	and #%11110000
-	lsr
-	lsr
-	adc R0 + 1
 	ENDIF
 	sta R0 + 1
 	rts
@@ -413,11 +407,11 @@ CALC_SCRROWPTR SUBROUTINE
 		
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
-	; This command has only effect on the C64/C128
-	IF TARGET == c64 || TARGET == c128
 	IF !FPULL
 	pla
 	ENDIF
+    ; This command has only effect on the C64/C128
+    IF TARGET == c64 || TARGET == c128
 	asl
 	asl
 	sta KERNAL_SCREEN_ADDR
@@ -438,9 +432,14 @@ CALC_SCRROWPTR SUBROUTINE
 	and #%00001111
 	ora R0
 	sta VICII_MEMCONTROL
+    IF TARGET == c64
 	import I_RESET_SCRVECTORS
 	jsr RESET_SCRVECTORS
-	ENDIF
+	ELSE
+    jsr $CA24
+    jsr KERNAL_HOME
+    ENDIF
+    ENDIF
 	ENDM
 	
 	IFCONST I_RESET_SCRVECTORS_IMPORTED
@@ -462,7 +461,7 @@ RESET_SCRVECTORS SUBROUTINE
 	bne .loop
 	lda #$ff
 	sta SRVEC,x
-	jmp $E566
+	jmp KERNAL_HOME
 	ENDIF
 	
 	MAC border ; @fpull	
@@ -498,35 +497,35 @@ RESET_SCRVECTORS SUBROUTINE
 	
 	MAC background ; @fpull	
 	
-	IF !FPULL
-	pla
-	ENDIF
-	
-	IF TARGET == c64 || TARGET == c128
-	sta VICII_BACKGROUND
-	ENDIF
-	
-	IF TARGET & vic20
-	asl
-	asl
-	asl
-	asl
-	sta R0
-	lda VICI_BORDER_BG
-	and #%00001111
-	ora R0
-	sta VICI_BORDER_BG
-	ENDIF
-	
-	IF TARGET & c264 
-	sta R0
-	pla
-	asl
-	asl
-	asl
-	asl
-	ora R0
-	sta TED_BACKGROUND
-	ENDIF
+    IF !FPULL
+    pla
+    ENDIF
+    
+    IF TARGET == c64 || TARGET == c128
+    sta VICII_BACKGROUND
+    ENDIF
+    
+    IF TARGET & vic20
+    asl
+    asl
+    asl
+    asl
+    sta R0
+    lda VICI_BORDER_BG
+    and #%00001111
+    ora R0
+    sta VICI_BORDER_BG
+    ENDIF
+    
+    IF TARGET & c264 
+    sta R0
+    pla
+    asl
+    asl
+    asl
+    asl
+    ora R0
+    sta TED_BACKGROUND
+    ENDIF
 	
 	ENDM

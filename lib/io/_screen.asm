@@ -1,26 +1,30 @@
-; High byte of pointer to screen memory for screen input/output
     IF TARGET == c64
-KERNAL_SCREEN_ADDR EQU $0288
-KERNAL_HOME EQU $E566
-SRVEC EQU $D9
+KERNAL_SCREEN_ADDR  EQU $0288
+KERNAL_HOME         EQU $E566
+SRVEC               EQU $D9
+COLOR_RAM           EQU $D800
 	ENDIF
+    
 	IF TARGET == c128
-KERNAL_SCREEN_ADDR EQU $0A3B
-KERNAL_HOME EQU $C150
-SRVEC EQU $E0
+KERNAL_SCREEN_ADDR  EQU $0A3B
+KERNAL_HOME         EQU $C150
+SRVEC               EQU $E0
+COLOR_RAM           EQU $D800
+C128_VM1            EQU $0A2C
+    ENDIF
+    
+	IF TARGET & c264
+COLOR_RAM           EQU $0800    
 	ENDIF
 	
-C128_VM1 EQU $0A2C
-; Color RAM
-	IF TARGET == vic20_8k
-COLOR_RAM EQU $9400
-	ELSE
-		IF TARGET & vic20
+    IF TARGET & vic20
+KERNAL_SCREEN_ADDR  EQU $0288
 COLOR_RAM EQU $9600
-		ELSE	
-COLOR_RAM EQU $D800
-		ENDIF
+      IF TARGET == vic20_8k
+COLOR_RAM EQU $9400
+      ENDIF
 	ENDIF
+
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
@@ -278,16 +282,22 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	pla
 	sta (R0),y
 	IF {1} == 1 ; Color was provided
-	pla
-	tax
-	lda R0 + 1
-	sec
-	sbc KERNAL_SCREEN_ADDR
-	clc
-	adc #>COLOR_RAM
-	sta R0 + 1
-	txa
-	sta (R0),y
+	  pla
+      IF (TARGET & pet) == 0
+	    tax
+	    lda R0 + 1
+	    sec
+	    IF TARGET & c264
+        sbc #$0C
+	    ELSE
+        sbc KERNAL_SCREEN_ADDR
+        ENDIF
+	    clc
+	    adc #>COLOR_RAM
+	    sta R0 + 1
+	    txa
+	    sta (R0),y
+      ENDIF
 	ENDIF
 	ENDM
 	
@@ -309,27 +319,29 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lda #$60
 	import I_STRREMOV_SC
 	jsr STRREMOV_SC
-	IF {1} == 1 && (TARGET & pet == 0); Color was provided
-	pla
-	tax
-	lda R0 + 1
-	sec
-	IF TARGET & c264 
-	sbc #$0C  ; high byte is always 0C on plus4
-	ELSE
-	sbc KERNAL_SCREEN_ADDR
-	ENDIF
-	clc
-	adc #>COLOR_RAM
-	sta R0 + 1
-	lda R3
-	tay
-	dey
-	txa
+	IF {1} == 1; Color was provided
+      pla
+      IF (TARGET & pet) == 0
+        tax
+        lda R0 + 1
+        sec
+        IF TARGET & c264 
+        sbc #$0C  ; high byte is always 0C on plus4
+        ELSE
+        sbc KERNAL_SCREEN_ADDR
+        ENDIF
+        clc
+        adc #>COLOR_RAM
+        sta R0 + 1
+        lda R3
+        tay
+        dey
+        txa
 .loop
-	sta (R0),y
-	dey
-	bpl .loop
+        sta (R0),y
+        dey
+        bpl .loop
+      ENDIF
 	ENDIF
 	ENDM
 	
@@ -339,7 +351,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IFCONST I_CALC_SCRROWPTR_IMPORTED
 CALC_SCRROWPTR SUBROUTINE
 	; 22-column screen
-	IF TARGET == vic20
+	IF TARGET & vic20
 		REPEAT 2
 		asl
 		REPEND
@@ -398,7 +410,7 @@ CALC_SCRROWPTR SUBROUTINE
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
 	ENDIF
-	IF TARGET == c64 || TARGET == c128
+	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
 	ENDIF
 	sta R0 + 1

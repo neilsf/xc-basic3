@@ -13,7 +13,8 @@ SPREG EQU $07F5
 	ENDIF
 	
 	IF TARGET == c128
-MMU EQU $FF00	
+MMU EQU $FF00
+INIT_STATUS EQU $0A04
 	ENDIF
 	
 	IF TARGET == c64 || TARGET & vic20 || TARGET == c128
@@ -43,6 +44,10 @@ JIFFY EQU $8D
 	; Disable irq based screen editor
 	lda #$ff
 	sta $D8
+    ; Disable BASIC IRQ
+    lda INIT_STATUS
+    and #%11111110
+    sta INIT_STATUS
 	ENDIF
     IF USEIRQ == 1
 	jsr IRQSETUP
@@ -67,6 +72,10 @@ JIFFY EQU $8D
     ; Enable irq based screen editor
 	lda #$00
 	sta $D8
+     ; Enable BASIC IRQ
+    lda INIT_STATUS
+    ora #1
+    sta INIT_STATUS
 	ENDIF
 	; Do BASIC start
 	IF TARGET & vic20

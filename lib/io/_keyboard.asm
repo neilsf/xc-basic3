@@ -51,6 +51,7 @@ IO_INPUT SUBROUTINE
     iny
 	cmp #$0d
 	bne .loop
+    dey ; remove <CR> from end of input
 	sty STRING_BUFFER1
 	rts
 	ENDIF

@@ -34,10 +34,40 @@ class VMode_stmt : Statement
                 case "XCBASIC.VModeSubCmdRsel":
                 case "XCBASIC.VModeSubCmdCsel":
                     Expression e =  new Expression(node.children[0], compiler);
+                    if(!e.isConstant()) {
+                        compiler.displayError("Please provide a constant for " ~ toUpper(node.matches[0]));
+                    }
                     e.setExpectedType(compiler.getTypes().get(Type.UINT8));
                     e.eval();
-                    appendCode(e.toString());
-                    appendCode("    " ~ toLower(node.matches[0]) ~ "\n");
+                    const int val = cast(int)e.getConstVal();
+                    int selVal;
+                    string mac;
+                    final switch (toLower(node.matches[0])) {
+                        case "cols":
+                            mac = "CSEL";
+                            if(val == 38) {
+                                selVal = 0;
+                            } else if(val == 40) {
+                                selVal = 1;
+                            } else {
+                                selVal = -1;
+                            }
+                            break;
+                        case "rows":
+                            mac = "RSEL";
+                            if(val == 24) {
+                                selVal = 0;
+                            } else if(val == 25) {
+                                selVal = 1;
+                            } else {
+                                selVal = -1;
+                            }
+                            break;
+                    }
+                    if(selVal == -1) {
+                        compiler.displayError("Wrong value for " ~ toUpper(node.matches[0]));
+                    }
+                    appendCode("    " ~ mac ~ " " ~ to!string(selVal) ~ "\n");
                 break;
             }
         }

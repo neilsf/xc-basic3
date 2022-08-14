@@ -23,9 +23,15 @@ VMODE_MULTI EQU 1
 	
 	IF TARGET & vic20 || TARGET & pet
 	
-	MAC hscroll
+	MAC hscroll ; @pull
+    IF !FPULL
+	pla
+	ENDIF
 	ENDM
-	MAC vscroll
+	MAC vscroll ; @pull
+	IF !FPULL
+	pla
+	ENDIF
 	ENDM
 	MAC vmode
 	ENDM
@@ -35,7 +41,8 @@ VMODE_MULTI EQU 1
 	ENDM
 	MAC csel
 	ENDM
-	ELSE
+	
+    ELSE
 	
 	MAC hscroll ; @pull
 	IF !FPULL
@@ -91,35 +98,23 @@ VMODE_MULTI EQU 1
 	ENDM
 	
 	MAC rsel
-	IF !FPULL
-	pla
+    lda VSCR
+	IF {1} == 1
+    ora #%00001000
+	ELSE
+    and #%11110111
 	ENDIF
-	and #%00000001
-	asl
-	asl
-	asl
-	asl
-	sta R0
-	lda VSCR
-	and #%11110111
-	ora R0
-	sta VSCR
+    sta VSCR
 	ENDM
 	
 	MAC csel
-	IF !FPULL
-	pla
-	ENDIF
-	and #%00000001
-	asl
-	asl
-	asl
-	asl
-	sta R0
 	lda HSCR
-	and #%11110111
-	ora R0
-	sta HSCR
+	IF {1} == 1
+    ora #%00001000
+	ELSE
+    and #%11110111
+	ENDIF
+    sta HSCR
 	ENDM
 	
 	ENDIF
@@ -139,7 +134,7 @@ VMODE_MULTI EQU 1
 	  lda RAST
 	  pha
 	  lda RAST8
-	  IF TARGET == c64
+	  IF (TARGET == c64) || (TARGET == c128) 
 	  asl
 	  lda #0
 	  rol

@@ -101,6 +101,7 @@ struct GenericXCBASIC(TParseTree)
         rules["Case_is_stmt"] = toDelegate(&Case_is_stmt);
         rules["Case_range_stmt"] = toDelegate(&Case_range_stmt);
         rules["Case_set_stmt"] = toDelegate(&Case_set_stmt);
+        rules["Case_else_stmt"] = toDelegate(&Case_else_stmt);
         rules["Endselect_stmt"] = toDelegate(&Endselect_stmt);
         rules["Irq_stmt"] = toDelegate(&Irq_stmt);
         rules["Sprite_stmt"] = toDelegate(&Sprite_stmt);
@@ -2730,7 +2731,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt")(p);
         }
         else
         {
@@ -2738,7 +2739,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt"), "Case_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt"), "Case_stmt")(p);
                 memo[tuple(`Case_stmt`, p.end)] = result;
                 return result;
             }
@@ -2749,12 +2750,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt"), "Case_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.wrapAround!(Spacing, Case_else_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_is_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_range_stmt, Spacing), pegged.peg.wrapAround!(Spacing, Case_set_stmt, Spacing)), "XCBASIC.Case_stmt"), "Case_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Case_stmt(GetName g)
@@ -2868,6 +2869,42 @@ struct GenericXCBASIC(TParseTree)
     static string Case_set_stmt(GetName g)
     {
         return "XCBASIC.Case_set_stmt";
+    }
+
+    static TParseTree Case_else_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("case else"), Spacing), "XCBASIC.Case_else_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_else_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("case else"), Spacing), "XCBASIC.Case_else_stmt"), "Case_else_stmt")(p);
+                memo[tuple(`Case_else_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_else_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("case else"), Spacing), "XCBASIC.Case_else_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("case else"), Spacing), "XCBASIC.Case_else_stmt"), "Case_else_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_else_stmt(GetName g)
+    {
+        return "XCBASIC.Case_else_stmt";
     }
 
     static TParseTree Endselect_stmt(TParseTree p)

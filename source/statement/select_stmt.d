@@ -124,7 +124,7 @@ class Case_stmt : Statement
                     compiler.displayError("Only numeric types can be tested for a range");
                 }
                 caseId = incCounter();
-                 if (caseId != 1) {
+                if (caseId != 1) {
                     appendCode("    jmp end_select_" ~ blockId ~ "\n");
                 }
                 appendCode("case_" ~ blockId ~ "_" ~ to!string(caseId) ~ ":\n");
@@ -167,6 +167,14 @@ class Case_stmt : Statement
                 appendCode(e.toString());
                 appendCode("    cmp" ~ var.type.name ~ opName ~ "\n");
                 appendCode("    case " ~ stmtBlockId ~ ", " ~ "case_" ~ blockId ~ "_" ~ to!string(caseId + 1) ~ "\n");
+            break;
+
+            case "XCBASIC.Case_else_stmt":
+                caseId = incCounter();
+                if (caseId != 1) {
+                    appendCode("    jmp end_select_" ~ blockId ~ "\n");
+                }
+                appendCode("case_" ~ blockId ~ "_" ~ to!string(caseId) ~ ":\n");
             break;
         }
         

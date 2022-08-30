@@ -10,9 +10,9 @@ class IntermediateCode
     /** Code segments */
     enum PROGRAM_SEGMENT = 0;
     enum ROUTINE_SEGMENT = 1;
-    enum VAR_SEGMENT     = 2;
+    enum LIBRARY_SEGMENT = 2;
     enum DATA_SEGMENT    = 3;
-    enum LIBRARY_SEGMENT = 4;
+    enum VAR_SEGMENT     = 4;
     
     /** Code segments as strings */
     private string[int] segments;

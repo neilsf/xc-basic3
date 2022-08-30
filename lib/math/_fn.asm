@@ -368,8 +368,8 @@ B EQU FAC
 	pfac
 	ENDM
 	
-	; DECLARE FUNCTION INT AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
-	MAC F_int_float ; @pull @push
+	; DECLARE FUNCTION FLOOR AS FLOAT (num AS FLOAT) SHARED STATIC INLINE
+	MAC F_floor_float ; @pull @push
 	plfloattofac
 	import I_FPLIB
 	jsr INT

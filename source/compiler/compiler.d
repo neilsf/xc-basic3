@@ -439,6 +439,16 @@ final class Compiler
     {
         // 1. Check for routines not implemented
         routines.postCheck();
+        dumpLabels();
+    }
+    
+    /** Dump any labels accumulated */
+    public void dumpLabels()
+    {
+        const string labels = getAndClearCurrentLabels();
+        if(labels != "\n") {
+            getImCode().appendProgramSegment(labels);    
+        }
     }
 }
 

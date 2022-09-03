@@ -40,16 +40,16 @@ interface StatementInterface
 
 abstract class Statement : StatementInterface
 {
-	protected ParseTree node;
-	protected Compiler compiler;
+    protected ParseTree node;
+    protected Compiler compiler;
 
     /** Class constructor */
-	this(ParseTree node, Compiler compiler)
-	{
-		this.node = node;
-		this.compiler = compiler;
-        this.dumpLabels();
-	}
+    this(ParseTree node, Compiler compiler)
+    {
+	this.node = node;
+	this.compiler = compiler;
+	this.dumpLabels();
+    }
 
     protected void appendCode(string code)
     {
@@ -60,9 +60,6 @@ abstract class Statement : StatementInterface
     // but this can be overridden if necessary
     protected void dumpLabels()
     {
-        const string labels = compiler.getAndClearCurrentLabels();
-        if(labels != "\n") {
-            this.compiler.getImCode().appendProgramSegment(labels);    
-        }
+        this.compiler.dumpLabels();
     }
 }

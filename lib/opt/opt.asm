@@ -553,7 +553,7 @@
     ENDM
     
     MAC pwordvar_pword_subword_plwordvar
-    pintvar_pint_subint_plintvar
+    pintvar_pint_subint_plintvar {1}, {2}, {3}
     ENDM
     
     MAC pdecimalvar_pdecimal_subdecimal_pldecimalvar
@@ -590,13 +590,13 @@
     ENDM
     
     MAC pwordvar_pwordvar_subword ; @push
-    pintvar_pintvar_subint
+    pintvar_pintvar_subint {1}, {2}
     ENDM
     
     MAC pdecimalvar_pdecimalvar_subdecimal ; @push
     sei
     sed
-    pintvar_pintvar_subint
+    pintvar_pintvar_subint {1}, {2}
     cld
     cli
     ENDM
@@ -612,13 +612,13 @@
     ENDM
     
     MAC pwordvar_pwordvar_subword_plwordvar
-    pintvar_pintvar_subint_plintvar
+    pintvar_pintvar_subint_plintvar {1}, {2}, {3}
     ENDM
     
     MAC pdecimalvar_pdecimalvar_subdecimal_pldecimalvar
     sei
     sed
-    pintvar_pintvar_subint_plintvar
+    pintvar_pintvar_subint_plintvar {1}, {2}, {3}
     cld
     cli
     ENDM

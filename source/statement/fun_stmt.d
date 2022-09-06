@@ -106,7 +106,10 @@ class Fun_stmt : Statement
         // Add arguments
         if(!this.isInline) {
             foreach (ArgumentStub stub; argStubs) {
-                Variable argument = Variable.create(stub.name, stub.type, compiler);
+                Variable argument = Variable.create(
+                    stub.name, stub.type, compiler, this.isStatic,
+                    [1, 1, 1], 0, stub.strLen
+                );
                 argument.isDynamic = !this.isStatic;
                 argument.strLen = stub.strLen;
                 this.routine.addArgument(argument);

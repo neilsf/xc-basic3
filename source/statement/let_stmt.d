@@ -37,14 +37,16 @@ class Let_stmt : Statement
                 compiler.displayError("Only variables of primitive types can be implicitly defined. Use DIM to define \"" 
                     ~ join(varNode.matches) ~ "\"");
             }
-            Variable var = Variable.create(join(varNode.matches), exp.getType(), compiler);
             ulong strLen = 0;
             if(exp.getType().name == Type.STRING) {
                 exp.eval();
                 evaluated = true;
                 strLen = exp.getConstantStringLength();
-                var.strLen = to!ushort(strLen);
             }
+            Variable var = Variable.create(
+                join(varNode.matches), exp.getType(), compiler,
+                false, [1, 1, 1], 0, to!ushort(strLen)
+            );
             compiler.getVars().add(var, false);
             access.setVariable(var);
             compiler.displayNotice("Variable \"" ~ var.name ~ "\" implicitly defined as " ~ var.type.name

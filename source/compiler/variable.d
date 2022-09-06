@@ -105,16 +105,27 @@ class Variable
     }
 
     /** Creates a variable by name and type */
-    public static Variable create(string name, Type type, Compiler compiler, bool forceStatic = false)
-    {
+    public static Variable create(
+        string name,
+        Type type,
+        Compiler compiler,
+        bool forceStatic = false,
+        ushort[3] dimensions = [1, 1, 1],
+        ubyte dimCount = 0,
+        ushort strLen = 0
+    ) {
         Variable var = new Variable();
         var.name = toLower(name);
         var.type = type;
+        var.dimensions = dimensions;
+        var.dimCount = dimCount;
+        var.strLen = strLen;
         var.fileId = compiler.currentFileId;
         if(compiler.inProcedure) {
             var.visibility = compiler.VIS_LOCAL;
             var.procName = compiler.currentProcName;
             if(!forceStatic && !compiler.currentProc.getIsStatic()) {
+                // TODO: This shouldn't be here, refactor
                 var.isDynamic = true;
                 compiler.currentProc.addDynamicVariable(var);
             }
@@ -403,10 +414,10 @@ class VariableReader
             }
         }
     
-        Variable v = Variable.create(name, type, compiler, forceStatic);
-        v.dimensions = dimensions;
-        v.dimCount = dimCount;
-        v.strLen = strLen;
+        Variable v = Variable.create(
+            name, type, compiler, forceStatic,
+            dimensions, dimCount, strLen
+        );
         return v;
     }
 }

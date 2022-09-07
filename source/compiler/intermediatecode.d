@@ -79,6 +79,7 @@ pet4032  EQU %0001000000100100
 pet8032  EQU %0001000001000100
 TARGET   EQU ` ~ target ~ `
 USEIRQ   EQU ` ~ (useIrqs ? "1" : "0") ~ `
+FASTIRQ  EQU ` ~ (fastIrqs ? "1" : "0") ~ `
     SEG "UPSTART"
     ORG $` ~ to!string(startAddress, 16) ~ "\n";
         if(basicLoader) {

@@ -32,6 +32,7 @@ SN  EQU $14
 
 	; Push pseudo-registers onto stack
 	MAC phsr
+	IF !FASTIRQ
 	ldx #SP
 .l
 	lda $00,x
@@ -39,10 +40,12 @@ SN  EQU $14
 	dex
 	cpx #[R0 - 1]
 	bne .l
+	ENDIF
 	ENDM
 	
 	; Pull pseudo-registers off of stack
 	MAC plsr
+	IF !FASTIRQ
 	ldx #R0
 .l
 	pla
@@ -50,5 +53,6 @@ SN  EQU $14
 	inx
 	cpx #[SP + 1]
 	bne .l
+	ENDIF
 	ENDM
 

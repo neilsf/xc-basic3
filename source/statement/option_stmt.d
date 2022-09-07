@@ -50,6 +50,9 @@ class Option_stmt: Statement
             case "INLINEDATA":
                 inlineData = true;
                 break;
+            case "FASTINTERRUPT":
+                fastIrqs = true;
+                break;
             default:
                 compiler.displayError("Unrecognized option: " ~ optionName);
                 break;

@@ -14,3 +14,5 @@ const int stringMaxLength = 96;
 bool inlineData = false;
 /** Whether the program uses custom irq routines */
 bool useIrqs = false;
+/** Fast IRQ option bypasses saving virtual registers before entering the ISR */
+bool fastIrqs = false;

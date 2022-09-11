@@ -87,6 +87,7 @@ void main(string[] args)
 
 	validateOptions(args);
     setStartAddress();
+    setEndAddress();
     
     const string fileName = args[1];
     string outName;
@@ -262,6 +263,56 @@ public void setStartAddress()
 }
 
 /**
+ * Set implicit end address based on target setting
+ */
+private void setEndAddress()
+{
+    if(topAddress == -1) {
+         switch(target) {
+            case "vic20_3k":
+            case "vic20":
+                topAddress = 0x1e00;
+                break;
+            
+            case "c64":
+                topAddress = 0xd000;
+                break;
+
+            case "c128":
+                topAddress = 0xc000;
+                break;
+
+            case "cplus4":
+            case "pet3032":
+            case "pet4032":
+            case "pet8032":
+                topAddress = 0x8000;
+                break;
+
+            case "pet2001":
+            case "pet3008":
+                topAddress = 0x2000;
+                break;
+
+            case "vic20_8k":
+            case "c16":
+            case "pet3016":
+            case "pet4016":
+                topAddress = 0x4000;
+                break;
+                
+            default:
+                topAddress = 0x10000;
+        }
+    }
+    
+    if(topAddress < 0 || topAddress > 0xffff) {
+        stderr.writeln("Invalid max address: " ~ to!string(topAddress));
+        exit(1);
+    }
+}
+
+/**
  * Display help message and exit
  */
 private void displayHelp(int exitCode, string errorMsg = "")
@@ -284,9 +335,8 @@ Options:
                     --basic-loader=true.
 
    -m
-  --max-address=    Change the default top address. The default value is the top of the
-                    function stack minus 64 bytes. See https://xc-basic.net/doku.php?id=v3:memory_model
-                    If the program and its data overgrow the top address, compilation will fail.
+  --max-address=    Change the default top address.
+                    If the program and its data overgrow the top address, a warning will be emitted.
                     Please provide a decimal number.
 
    -k
@@ -377,5 +427,10 @@ private void displayInformation(string tmpSymbolfile)
     stdout.writeln(separator);
     if(hasVars) {
         stdout.writeln("(*) Uninitialized segment.");
+    }
+    if(symbols["vars_end"] >= topAddress) {
+        stdout.writeln(
+            "WARNING: The program has been successfully compiled, but it can't fit between $" 
+            ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
     }
 }

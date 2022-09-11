@@ -4205,7 +4205,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(p);
         }
         else
         {
@@ -4213,7 +4213,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(p);
                 memo[tuple(`ExprList`, p.end)] = result;
                 return result;
             }
@@ -4224,12 +4224,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(TParseTree("", false,[], s));
         }
     }
     static string ExprList(GetName g)
@@ -4241,7 +4241,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(p);
         }
         else
         {
@@ -4249,7 +4249,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(p);
                 memo[tuple(`AccessorList`, p.end)] = result;
                 return result;
             }
@@ -4260,12 +4260,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(TParseTree("", false,[], s));
         }
     }
     static string AccessorList(GetName g)

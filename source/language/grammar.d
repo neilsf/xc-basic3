@@ -3917,7 +3917,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(p);
         }
         else
         {
@@ -3925,7 +3925,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(p);
                 memo[tuple(`Charset_stmt`, p.end)] = result;
                 return result;
             }
@@ -3936,12 +3936,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("rom"), pegged.peg.caseInsensitiveLiteral!("ram")))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Charset_stmt(GetName g)

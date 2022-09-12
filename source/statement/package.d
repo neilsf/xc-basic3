@@ -12,4 +12,4 @@ public import   statement.dim_stmt, statement.let_stmt, statement.fun_stmt, stat
                 statement.sys_stmt, statement.write_stmt, statement.read_stmt, statement.charat_stmt,
                 statement.screen_stmt, statement.textat_stmt, statement.wait_stmt, statement.option_stmt,
                 statement.irq_stmt, statement.sprite_stmt, statement.border_bg_stmt, statement.scroll_stmt,
-                statement.select_stmt, statement.vmode_stmt, statement.sound_stmt;
+                statement.select_stmt, statement.vmode_stmt, statement.sound_stmt, statement.charset_stmt;

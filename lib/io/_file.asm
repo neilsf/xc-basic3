@@ -127,12 +127,13 @@ I_BINWRITE SUBROUTINE
 	ENDIF
 	
 	; READ# (numeric or udt)
-	; target address in {1}
-	; byte length in {2}
+	; target address pushed on stack
+	; byte length in {1}
 	MAC read
-	lda #<{1}
-	ldx #>{1}
-	ldy #{2}
+	pla 
+	tax
+	pla
+	ldy #{1}
 	import I_BINREAD
 	jsr I_BINREAD
 	ENDM

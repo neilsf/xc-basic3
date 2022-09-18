@@ -300,7 +300,7 @@ final class Compiler
                 switch(stmt.name) {
                     case "XCBASIC.Proc_stmt":
                     case "XCBASIC.Fun_stmt":
-                        if(stmt.matches.length >= 7 && toLower(stmt.matches.join())[0..7] != "declare" ) {
+                        if(toLower(stmt.matches.join())[0..3] != "dec" ) { // "declare"
                             this.inProcedure = true;
                             string pName = fixSymbol(stmt.children[0].matches[0]) ~ "_";
                             string[] argTypes;

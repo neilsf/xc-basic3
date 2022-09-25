@@ -297,6 +297,7 @@ class VariableReader
 {
     private Compiler compiler;
     private ParseTree node;
+    private bool fallbackType = false; 
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
@@ -304,6 +305,12 @@ class VariableReader
         this.node = node;
         this.compiler = compiler;
     }
+    
+    /** True in case no explicit nor inferred ttype was provided */
+    public bool isFallbackType()
+    {
+		return this.fallbackType;
+	}
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
     public Variable read(Type inferredType = null, bool forceStatic = false, bool stringLengthRequired = true)
@@ -381,7 +388,14 @@ class VariableReader
                         typeName = toLower(join(child.children[0].matches));
                     }
                     if(typeName == "") {
-                        typeName = inferredType is null ? Type.INT16 : inferredType.name;
+						if(inferredType !is null) {
+							type = inferredType;
+						}
+						else {
+							type = compiler.getTypes().get(Type.INT16);
+							this.fallbackType = true;
+						}
+						break;
                     }                    
                     else if(typeName == Type.STRING && stringLengthRequired) {
                         if(child.children.length < 2) {
@@ -430,6 +444,7 @@ class VariableReader
             }
             else {
                 type = compiler.getTypes().get(Type.INT16);
+                this.fallbackType = true;
             }
         }
     

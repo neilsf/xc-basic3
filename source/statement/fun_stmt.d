@@ -81,8 +81,8 @@ class Fun_stmt : Statement
         foreach (ref arg; varList) {
             VariableReader reader = new VariableReader(arg, compiler);
             Variable tmpVariable = reader.read(null, this.isStatic, !this.isInline);
-            if(tmpVariable.type.name == Type.VOID) {
-                compiler.displayError("Can't define param as VOID");
+            if(reader.isFallbackType()) {
+                compiler.displayError("Parameter without type: " ~ tmpVariable.name);
             }
             this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type, tmpVariable.strLen);
             this.routine.addArgType(tmpVariable.type);

@@ -28,6 +28,19 @@
 	ENDIF
 	ENDM
 	
+	; Jumps to block {1} if true
+	; Or to next case {2} otherwise
+	MAC case
+	IF !FPULL
+	pla
+	ENDIF
+	bne .true
+	jmp {2}
+.true	
+	jmp {1}
+	ENDIF
+	ENDM
+	
 	; Entry of FOR loop (integer counter)
 	; Usage: forint <block id>, <counter_var>, <limit>, <step_var>, <is_limit_const>
 	MAC forint

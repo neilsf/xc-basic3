@@ -156,9 +156,9 @@ class VariableCollection
     private Compiler compiler;
 
     /** Lower bound of free ZP area */
-    static const ubyte zpLow  = 0x16;
+    static const ubyte zpLow  = 0x3B;
     /** Upper bound of free ZP area */
-    static const ubyte zpHigh = 0x53;
+    static const ubyte zpHigh = 0x69;
     /** Points to the next free addr in ZP area */
     static ubyte zpPtr = zpLow;
 
@@ -297,6 +297,7 @@ class VariableReader
 {
     private Compiler compiler;
     private ParseTree node;
+    private bool fallbackType = false; 
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
@@ -304,6 +305,12 @@ class VariableReader
         this.node = node;
         this.compiler = compiler;
     }
+    
+    /** True in case no explicit nor inferred ttype was provided */
+    public bool isFallbackType()
+    {
+		return this.fallbackType;
+	}
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
     public Variable read(Type inferredType = null, bool forceStatic = false, bool stringLengthRequired = true)
@@ -381,13 +388,39 @@ class VariableReader
                         typeName = toLower(join(child.children[0].matches));
                     }
                     if(typeName == "") {
-                        typeName = inferredType is null ? Type.INT16 : inferredType.name;
+						if(inferredType !is null) {
+							type = inferredType;
+						}
+						else {
+							type = compiler.getTypes().get(Type.INT16);
+							this.fallbackType = true;
+						}
+						break;
                     }                    
                     else if(typeName == Type.STRING && stringLengthRequired) {
                         if(child.children.length < 2) {
                             compiler.displayError("String length is required");
                         }
-                        immutable int len = to!int(join(child.children[1].matches)[1..$]);
+                        int len;
+                        const ParseTree typeLen = child.children[1].children[0];
+                        const string lenStr = typeLen.matches.join;
+                        if(typeLen.name == "XCBASIC.Number") {
+                            Number num = new Number(typeLen, compiler);
+                            len = num.intVal;
+                        } else {
+                            Variable var = compiler.getVars().findVisible(lenStr);
+                            if(var !is null) {
+                                if(!var.isConst) {
+                                    compiler.displayError("String length must be constant");
+                                }
+                                // a constant
+                                len = to!int(var.constVal);
+                            }
+                            else {
+                                compiler.displayError("Unknown constant \"" ~ lenStr ~ "\"");
+                            }
+                        }
+                        
                         if(len < 1 || len > stringMaxLength) {
                             compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
                         }
@@ -411,6 +444,7 @@ class VariableReader
             }
             else {
                 type = compiler.getTypes().get(Type.INT16);
+                this.fallbackType = true;
             }
         }
     

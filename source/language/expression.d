@@ -2,7 +2,7 @@ module language.expression;
 
 import std.algorithm.mutation, std.conv, std.string;
 import pegged.grammar;
-import compiler.type, compiler.compiler;
+import compiler.type, compiler.compiler, compiler.petscii;
 import language.relation;
 
 /** Expression members (Expression, Relation, Simplexp, Term, Factor) must implement this */
@@ -49,7 +49,44 @@ abstract class AbstractExpression : ExpressionInterface
     
     abstract protected ExpressionInterface makeChild(ParseTree node);
 
-    /** Whether the expression holds a single constant */
+    private bool hasSingleChild(ParseTree node)
+    {
+        if(node.children.length == 0) {
+            return true;
+        } else if(node.children.length > 1) {
+            return false;
+        }
+        return this.hasSingleChild(node.children[0]);
+    }
+
+    private ParseTree getSingleLeafNode(ParseTree node)
+    {
+        if(node.children.length == 0) {
+            return node;
+        }
+        return this.getSingleLeafNode(node.children[0]);
+    }
+
+    /** Whether the expression holds a single constant string */
+    public bool isConstantString()
+    {
+        if(this.type.name != Type.STRING || !this.hasSingleChild(this.node)) {
+            return false;
+        }
+        ParseTree leafNode = this.getSingleLeafNode(this.node);
+        return leafNode.name == "XCBASIC.String";
+    }
+
+    public ulong getConstantStringLength()
+    {
+        ParseTree leaf = this.getSingleLeafNode(this.node);
+        immutable string str = join(leaf.matches[1..$-1]);
+        bool truncated; ulong finalLength;
+        asciiToPetsciiHex(str, 0UL, truncated, finalLength);
+        return finalLength;
+    }
+
+    /** Whether the expression holds a single numeric constant */
     public bool isConstant()
     {
         if(this.node.children.length > 1) {

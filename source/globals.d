@@ -12,3 +12,7 @@ int topAddress = -1;
 const int stringMaxLength = 96;
 /** Whether to compile DATA statements at the current origin */
 bool inlineData = false;
+/** Whether the program uses custom irq routines */
+bool useIrqs = false;
+/** Fast IRQ option bypasses saving virtual registers before entering the ISR */
+bool fastIrqs = false;

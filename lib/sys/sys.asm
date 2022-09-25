@@ -12,11 +12,19 @@ SYREG EQU $07F4
 SPREG EQU $07F5
 	ENDIF
 	
-	IF TARGET == c64 || TARGET & vic20
+	IF TARGET == c128
+MMU EQU $FF00
+INIT_STATUS EQU $0A04
+	ENDIF
+	
+	IF TARGET == c64 || TARGET & vic20 || TARGET == c128
 JIFFY EQU $A0
 	ENDIF
 	IF TARGET & c264
 JIFFY EQU $A3
+	ENDIF
+	IF TARGET >= pet
+JIFFY EQU $8D
 	ENDIF
 
 	; Initial code that runs when the program is started
@@ -29,31 +37,72 @@ JIFFY EQU $A3
 	and #%11111110
 	sta $01
 	ENDIF
+	IF TARGET == c128
+	; Set up MMU
+	lda #%001110
+	sta MMU
+	; Disable irq based screen editor
+	lda #$ff
+	sta $D8
+    ; Disable BASIC IRQ
+    lda INIT_STATUS
+    and #%11111110
+    sta INIT_STATUS
+	ENDIF
+    IF USEIRQ == 1
+	jsr IRQSETUP
+	ENDIF
 	ENDM
 	
 	; Final code that runs when the program is terminated
 	MAC xend
+	IF USEIRQ == 1
+	jsr IRQRESET
+	ENDIF
 	IF TARGET == c64
 	; Bank in BASIC ROM
 	lda $01
 	ora #%00000001         
 	sta $01
 	ENDIF
-	; Do BASIC cold start
+	IF TARGET == c128
+	; Reset MMU
+	lda #%0
+	sta MMU
+    ; Enable irq based screen editor
+	lda #$00
+	sta $D8
+     ; Enable BASIC IRQ
+    lda INIT_STATUS
+    ora #1
+    sta INIT_STATUS
+	ENDIF
+	; Do BASIC start
 	IF TARGET & vic20
 	jmp ($C002)
 	ENDIF
-	IF TARGET == cplus4 || TARGET == c16
+	IF TARGET & c264
 	jmp $8003
 	ENDIF
 	IF TARGET == c64
 	jmp ($A002)
 	ENDIF
+	IF TARGET == c128
+	jmp ($0A00)
+    ENDIF
+	IF TARGET & pet && TARGET < pet4
+	jmp $C389
+	ENDIF
+	IF TARGET & pet && TARGET >= pet4
+	jmp $B3FF
+	ENDIF
 	ENDM
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	sei
+	IF !USEIRQ
+    sei
+    ENDIF
 	lda JIFFY + 2
 	IF !FPUSH
 	pha
@@ -65,7 +114,9 @@ JIFFY EQU $A3
 	ldy JIFFY + 1
 	ldx JIFFY
 	ENDIF
-	cli
+	IF !USEIRQ
+    cli
+    ENDIF
 	ENDM
 	
 	; SYS Command

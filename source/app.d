@@ -18,7 +18,7 @@ import compiler.compiler, compiler.library, compiler.sourcefile;
 import globals, optimizer;
 
 // Program version
-const string APP_VERSION = "v3.0.9";
+const string APP_VERSION = "v3.1.0";
 
 /** Possible target options */
 const string[] targetOpts = [
@@ -27,7 +27,15 @@ const string[] targetOpts = [
     "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
     "cplus4",   // Commodore Plus/4
-    "c16",      // Commodore-16
+    "c16",      // Commodore-16,
+    "c128",     // Commodore-128
+    "pet2001",  // Commodore PET2001
+    "pet3008",  // Commodore PET3000 series (8k RAM)
+    "pet3016",  // Commodore PET3000 series (16k RAM)
+    "pet3032",  // Commodore PET3000 series (32k RAM)
+    "pet4016",  // Commodore PET4000 series (16k RAM)
+    "pet4032",  // Commodore PET4000 series (32k RAM)
+    "pet8032"   // Commodore PET8000 series
 ];
 
 // Command line options
@@ -43,6 +51,8 @@ private string symbolfile="";
 private string listfile="";
 private int verbosity = VERBOSITY_INFO;
 
+private GetoptResult helpInformation;
+
 /**
  * Application entry point
  */
@@ -51,7 +61,6 @@ void main(string[] args)
     checkLibrary();
     
     // Read and validate command line options
-    GetoptResult helpInformation;
     try {
         helpInformation = getopt(args,
             "target|t", &target,
@@ -77,6 +86,8 @@ void main(string[] args)
     }
 
 	validateOptions(args);
+    setStartAddress();
+    setEndAddress();
     
     const string fileName = args[1];
     string outName;
@@ -96,6 +107,7 @@ void main(string[] args)
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
     // Compile the program
+    compiler.compilingUserCode = true;
     immutable string currentDir = getcwd();
     chdir(dirName(fileName));
     source = SourceFile.get(baseName(fileName));
@@ -193,7 +205,18 @@ private void validateOptions(string[] args)
         exit(1);
     }
 
-    if(basicLoader){
+    if(topAddress < -1 || topAddress > 0xffff) {
+        stderr.writeln("Invalid max address: " ~ to!string(topAddress));
+        exit(1);
+    }
+}
+
+/**
+ * Set implicit start address based on other options
+ */
+public void setStartAddress()
+{
+    if(basicLoader) {
         switch(target) {
             case "vic20_3k":
                 startAddress = 0x0401;
@@ -203,10 +226,24 @@ private void validateOptions(string[] args)
                 startAddress = 0x0801;
                 break;
 
+            case "c128":
+                startAddress = 0x1c01;
+                break;
+
             case "vic20":
             case "cplus4":
             case "c16":
                 startAddress = 0x1001;
+                break;
+
+            case "pet2001":
+            case "pet3008":
+            case "pet3016":
+            case "pet3032":
+            case "pet4016":
+            case "pet4032":
+            case "pet8032":
+                startAddress = 0x0401;
                 break;
 
             case "vic20_8k":
@@ -219,16 +256,60 @@ private void validateOptions(string[] args)
         startAddress = 0x1000;
     }
 
-    if(startAddress < 0 || startAddress > 0xffff) {
+     if(startAddress < 0 || startAddress > 0xffff) {
         stderr.writeln("Invalid start address: " ~ to!string(startAddress));
         exit(1);
     }
+}
 
-    if(topAddress < -1 || topAddress > 0xffff) {
+/**
+ * Set implicit end address based on target setting
+ */
+private void setEndAddress()
+{
+    if(topAddress == -1) {
+         switch(target) {
+            case "vic20_3k":
+            case "vic20":
+                topAddress = 0x1e00;
+                break;
+            
+            case "c64":
+                topAddress = 0xd000;
+                break;
+
+            case "c128":
+                topAddress = 0xc000;
+                break;
+
+            case "cplus4":
+            case "pet3032":
+            case "pet4032":
+            case "pet8032":
+                topAddress = 0x8000;
+                break;
+
+            case "pet2001":
+            case "pet3008":
+                topAddress = 0x2000;
+                break;
+
+            case "vic20_8k":
+            case "c16":
+            case "pet3016":
+            case "pet4016":
+                topAddress = 0x4000;
+                break;
+                
+            default:
+                topAddress = 0x10000;
+        }
+    }
+    
+    if(topAddress < 0 || topAddress > 0xffff) {
         stderr.writeln("Invalid max address: " ~ to!string(topAddress));
         exit(1);
     }
-
 }
 
 /**
@@ -250,12 +331,12 @@ Options:
   --basic-loader=   Include a BASIC loader. Turned on by default (true).
 
    -o
-  --start-address=  Change the default start address. Please provide a decimal number.
+  --start-address=  Change the default start address. Please provide a decimal number. Has no effect if
+                    --basic-loader=true.
 
    -m
-  --max-address=    Change the default top address. The default value is the top of the
-                    function stack minus 64 bytes. See https://xc-basic.net/doku.php?id=v3:memory_model
-                    If the program and its data overgrow the top address, compilation will fail.
+  --max-address=    Change the default top address.
+                    If the program and its data overgrow the top address, a warning will be emitted.
                     Please provide a decimal number.
 
    -k
@@ -346,5 +427,10 @@ private void displayInformation(string tmpSymbolfile)
     stdout.writeln(separator);
     if(hasVars) {
         stdout.writeln("(*) Uninitialized segment.");
+    }
+    if(symbols["vars_end"] >= topAddress) {
+        stdout.writeln(
+            "WARNING: The program has been successfully compiled, but it can't fit between $" 
+            ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
     }
 }

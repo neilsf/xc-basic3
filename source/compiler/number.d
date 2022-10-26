@@ -183,7 +183,7 @@ class Number
                     assert(0, "Not an integral type");    
             }
             if(!valid) {
-                throw new Exception("Number is not a valid " ~ type.name);
+                throw new Exception("Number is out of " ~ toUpper(type.name) ~ " range");
             }
         }
         string[] bytes;

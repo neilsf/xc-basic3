@@ -90,10 +90,9 @@ static this()
 }
 
 /** Translates ASCII string to PETSCII HEX expression */
-string asciiToPetsciiHex(string asciiString, ulong forcedLength, out bool truncated)
+string asciiToPetsciiHex(string asciiString, ulong forcedLength, out bool truncated, out ulong finalLength)
 {
     ubyte[] petsciiBytes = asciiToPetsciiBytes(asciiString);
-    ulong finalLength;
     
     if(forcedLength > 0) {
         if(petsciiBytes.length > forcedLength) {

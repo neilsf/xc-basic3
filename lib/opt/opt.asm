@@ -205,7 +205,9 @@
     ENDM
     
     MAC pdecimal_pdecimalvar_adddecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda #{1}
     clc
@@ -224,7 +226,9 @@
     txa
     ENDIF
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pint_pintvar_addint_plintvar
@@ -257,7 +261,9 @@
     ENDM
     
     MAC pdecimal_pdecimalvar_adddecimal_pldecimalvar
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda #{1}
     clc
@@ -267,7 +273,9 @@
     adc {3} + 1
     sta {4} + 1
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pint_addint ; @push
@@ -302,7 +310,9 @@
     ENDM
     
     MAC pdecimalvar_pdecimal_adddecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda {1}
     clc
@@ -321,7 +331,9 @@
     txa
     ENDIF
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pint_addint_plintvar
@@ -354,7 +366,9 @@
     ENDM
     
     MAC pdecimalvar_pdecimal_addecimal_pldecimalvar
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda {1}
     clc
@@ -364,7 +378,9 @@
     adc #{3}
     sta {4} + 1
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pintvar_addint ; @push
@@ -391,11 +407,15 @@
     ENDM
     
     MAC pdecimalvar_pdecimalvar_adddecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     pintvar_pintvar_addint {1}, {2}
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pintvar_addint_plintvar
@@ -413,11 +433,15 @@
     ENDM
     
     MAC pdecimalvar_pdecimalvar_adddecimal_pldecimalvar; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     pintvar_pintvar_addint {1}, {2}, {3}
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     ; Quick subtraction
@@ -446,7 +470,9 @@
     ENDM
     
     MAC pdecimal_pdecimalvar_subdecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda #{1}
     sec
@@ -465,7 +491,9 @@
     txa
     ENDIF
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pint_pintvar_subint_plintvar
@@ -483,7 +511,9 @@
     ENDM
     
     MAC pdecimal_pdecimalvar_subdecimal_pldecimalvar
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda #{1}
     sec
@@ -493,7 +523,9 @@
     sbc {3} + 1
     sta {4} + 1
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pint_subint ; @push
@@ -520,7 +552,9 @@
     ENDM
     
     MAC pdecimalvar_pdecimal_subdecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda {1}
     sec
@@ -539,7 +573,9 @@
     txa
     ENDIF
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pint_subint_plintvar
@@ -553,11 +589,13 @@
     ENDM
     
     MAC pwordvar_pword_subword_plwordvar
-    pintvar_pint_subint_plintvar
+    pintvar_pint_subint_plintvar {1}, {2}, {3}
     ENDM
     
     MAC pdecimalvar_pdecimal_subdecimal_pldecimalvar
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
     lda {1}
     sec
@@ -567,7 +605,9 @@
     sbc #{3}
     sta {4} + 1
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pintvar_subint ; @push
@@ -590,15 +630,19 @@
     ENDM
     
     MAC pwordvar_pwordvar_subword ; @push
-    pintvar_pintvar_subint
+    pintvar_pintvar_subint {1}, {2}
     ENDM
     
     MAC pdecimalvar_pdecimalvar_subdecimal ; @push
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
-    pintvar_pintvar_subint
+    pintvar_pintvar_subint {1}, {2}
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     MAC pintvar_pintvar_subint_plintvar
@@ -612,15 +656,19 @@
     ENDM
     
     MAC pwordvar_pwordvar_subword_plwordvar
-    pintvar_pintvar_subint_plintvar
+    pintvar_pintvar_subint_plintvar {1}, {2}, {3}
     ENDM
     
     MAC pdecimalvar_pdecimalvar_subdecimal_pldecimalvar
-    sei
+    IF !USEIRQ
+	sei
+	ENDIF
     sed
-    pintvar_pintvar_subint_plintvar
+    pintvar_pintvar_subint_plintvar {1}, {2}, {3}
     cld
+    IF !USEIRQ
     cli
+    ENDIF
     ENDM
     
     ; Array access

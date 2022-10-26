@@ -15,3 +15,6 @@ xc-basic3-test-*
 /util
 /tests
 .vscode
+/build.sh
+/deploy.sh
+/xc-basic3.geany

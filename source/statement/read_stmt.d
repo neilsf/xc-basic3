@@ -31,7 +31,8 @@ class Read_stmt : Statement
         for (int i = 0; i < count; i++) {
             try {
                 v = new VariableAccess(accessorList[i], compiler);
-                appendCode("    read " ~ to!string(v.getVariable.getAsmLabel()) ~ ", " ~ to!string(v.getVariable().type.length) ~ "\n");
+                appendCode(v.getPushAddressCode());
+                appendCode("    read " ~ to!string(v.getVariable().type.length) ~ "\n");
             }
             catch (Exception e) {
                 compiler.displayError(e.msg);

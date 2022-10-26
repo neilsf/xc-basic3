@@ -1,21 +1,42 @@
-; High byte of pointer to screen memory for screen input/output
-KERNAL_SCREEN_ADDR EQU $0288
-; Color RAM
-	IF TARGET == vic20_8k
-COLOR_RAM EQU $9400
-	ELSE
-		IF TARGET & vic20
-COLOR_RAM EQU $9600
-		ELSE	
-COLOR_RAM EQU $D800
-		ENDIF
+    IF TARGET == c64
+KERNAL_SCREEN_ADDR  EQU $0288
+KERNAL_HOME         EQU $E566
+SRVEC               EQU $D9
+COLOR_RAM           EQU $D800
 	ENDIF
+    
+	IF TARGET == c128
+KERNAL_SCREEN_ADDR  EQU $0A3B
+KERNAL_HOME         EQU $C150
+SRVEC               EQU $E0
+COLOR_RAM           EQU $D800
+C128_VM1            EQU $0A2C
+    ENDIF
+    
+	IF TARGET & c264
+COLOR_RAM           EQU $0800    
+	ENDIF
+	
+    IF TARGET & vic20
+KERNAL_SCREEN_ADDR  EQU $0288
+COLOR_RAM EQU $9600
+      IF TARGET == vic20_8k
+COLOR_RAM EQU $9400
+      ENDIF
+	ENDIF
+
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
+VICII_BORDER	 EQU $D020
+VICII_BACKGROUND EQU $D021
 ; Various C264 registers
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
+TED_BORDER	 	 EQU $FF19
+TED_BACKGROUND   EQU $FF15
+; Various VIC-20 registers
+VICI_BORDER_BG	 EQU $900F
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -261,16 +282,22 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	pla
 	sta (R0),y
 	IF {1} == 1 ; Color was provided
-	pla
-	tax
-	lda R0 + 1
-	sec
-	sbc KERNAL_SCREEN_ADDR
-	clc
-	adc #>COLOR_RAM
-	sta R0 + 1
-	txa
-	sta (R0),y
+	  pla
+      IF (TARGET & pet) == 0
+	    tax
+	    lda R0 + 1
+	    sec
+	    IF TARGET & c264
+        sbc #$0C
+	    ELSE
+        sbc KERNAL_SCREEN_ADDR
+        ENDIF
+	    clc
+	    adc #>COLOR_RAM
+	    sta R0 + 1
+	    txa
+	    sta (R0),y
+      ENDIF
 	ENDIF
 	ENDM
 	
@@ -292,27 +319,29 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	lda #$60
 	import I_STRREMOV_SC
 	jsr STRREMOV_SC
-	IF {1} == 1 ; Color was provided
-	pla
-	tax
-	lda R0 + 1
-	sec
-	IF TARGET & c264 
-	sbc #$0C  ; high byte is always 0C on plus4
-	ELSE
-	sbc KERNAL_SCREEN_ADDR
-	ENDIF
-	clc
-	adc #>COLOR_RAM
-	sta R0 + 1
-	lda R3
-	tay
-	dey
-	txa
+	IF {1} == 1; Color was provided
+      pla
+      IF (TARGET & pet) == 0
+        tax
+        lda R0 + 1
+        sec
+        IF TARGET & c264 
+        sbc #$0C  ; high byte is always 0C on plus4
+        ELSE
+        sbc KERNAL_SCREEN_ADDR
+        ENDIF
+        clc
+        adc #>COLOR_RAM
+        sta R0 + 1
+        lda R3
+        tay
+        dey
+        txa
 .loop
-	sta (R0),y
-	dey
-	bpl .loop
+        sta (R0),y
+        dey
+        bpl .loop
+      ENDIF
 	ENDIF
 	ENDM
 	
@@ -322,7 +351,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IFCONST I_CALC_SCRROWPTR_IMPORTED
 CALC_SCRROWPTR SUBROUTINE
 	; 22-column screen
-	IF TARGET == vic20
+	IF TARGET & vic20
 		REPEAT 2
 		asl
 		REPEND
@@ -348,7 +377,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #0
 		adc R0 + 1
-	; 40-column screen
+	; 40 or 80-column screen
 	ELSE
 	  	REPEAT 3
 		asl
@@ -368,10 +397,20 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
+		IF TARGET == pet8032 ; 80-column PET
+		sta R0 + 1
+		asl R0
+		rol R0 + 1
+		lda R0 + 1
+		ENDIF
+	ENDIF
+	IF TARGET & pet
+	adc #$80 ; high byte is always 08 on a PET
 	ENDIF
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
-	ELSE
+	ENDIF
+	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
 	ENDIF
 	sta R0 + 1
@@ -380,11 +419,11 @@ CALC_SCRROWPTR SUBROUTINE
 		
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
-	; This command has only effect on the C64
-	IF TARGET == c64
 	IF !FPULL
 	pla
 	ENDIF
+    ; This command has only effect on the C64/C128
+    IF TARGET == c64 || TARGET == c128
 	asl
 	asl
 	sta KERNAL_SCREEN_ADDR
@@ -405,9 +444,14 @@ CALC_SCRROWPTR SUBROUTINE
 	and #%00001111
 	ora R0
 	sta VICII_MEMCONTROL
+    IF TARGET == c64
 	import I_RESET_SCRVECTORS
 	jsr RESET_SCRVECTORS
-	ENDIF
+	ELSE
+    jsr $CA24
+    jsr KERNAL_HOME
+    ENDIF
+    ENDIF
 	ENDM
 	
 	IFCONST I_RESET_SCRVECTORS_IMPORTED
@@ -418,7 +462,7 @@ RESET_SCRVECTORS SUBROUTINE
 	lda #0
 	tax
 .loop
-	sty $D9,x
+	sty SRVEC,x
 	clc
 	adc #$28
 	bcc .skip
@@ -428,6 +472,72 @@ RESET_SCRVECTORS SUBROUTINE
 	cpx #$1a
 	bne .loop
 	lda #$ff
-	sta $D9,x
-	jmp $E566
+	sta SRVEC,x
+	jmp KERNAL_HOME
 	ENDIF
+	
+	MAC border ; @fpull	
+	
+	IF !FPULL
+	pla
+	ENDIF
+	
+	IF TARGET == c64 || TARGET == c128
+	sta VICII_BORDER
+	ENDIF
+	
+	IF TARGET & vic20
+	sta R0
+	lda VICI_BORDER_BG
+	and #%11111000
+	ora R0
+	sta VICI_BORDER_BG
+	ENDIF
+	
+	IF TARGET & c264 
+	sta R0
+	pla
+	asl
+	asl
+	asl
+	asl
+	ora R0
+	sta TED_BORDER
+	ENDIF
+	
+	ENDM
+	
+	MAC background ; @fpull	
+	
+    IF !FPULL
+    pla
+    ENDIF
+    
+    IF TARGET == c64 || TARGET == c128
+    sta VICII_BACKGROUND
+    ENDIF
+    
+    IF TARGET & vic20
+    asl
+    asl
+    asl
+    asl
+    sta R0
+    lda VICI_BORDER_BG
+    and #%00001111
+    ora R0
+    sta VICI_BORDER_BG
+    ENDIF
+    
+    IF TARGET & c264 
+    sta R0
+    pla
+    asl
+    asl
+    asl
+    asl
+    ora R0
+    sta TED_BACKGROUND
+    ENDIF
+	
+	ENDM

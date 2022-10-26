@@ -20,11 +20,14 @@ Statement stmtFactory(ParseTree node, Compiler compiler) {
                                 "Input_stmt", "Locate_stmt", "Load_stmt", "Save_stmt", "Memset_stmt",
                                 "Memcpy_stmt", "Memshift_stmt", "Origin_stmt", "End_stmt", "Poke_stmt", "Sys_stmt",
                                 "Write_stmt", "Read_stmt", "Charat_stmt", "Screen_stmt", "Textat_stmt",
-                                "Wait_stmt"]) {
+                                "Wait_stmt", "Option_stmt", "Irq_stmt",
+                                "Sprite_stmt", "Sprite_multicolor_stmt", "Sprite_clearhit_stmt",
+                                "Border_stmt", "Background_stmt", "Scroll_stmt", "Select_stmt", "Case_stmt", "Endselect_stmt",
+                                "VMode_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Charset_stmt"]) {
             mixin("case \"XCBASIC." ~ key ~"\": return new " ~ key ~ "(node, compiler);");
         }    
         default:
-            compiler.displayError("Unknown statement: " ~ stmtClass);
+            compiler.displayError("Not implemented: " ~ stmtClass);
             assert(0);
     }
 }
@@ -37,16 +40,16 @@ interface StatementInterface
 
 abstract class Statement : StatementInterface
 {
-	protected ParseTree node;
-	protected Compiler compiler;
+    protected ParseTree node;
+    protected Compiler compiler;
 
     /** Class constructor */
-	this(ParseTree node, Compiler compiler)
-	{
-		this.node = node;
-		this.compiler = compiler;
-        this.dumpLabels();
-	}
+    this(ParseTree node, Compiler compiler)
+    {
+	this.node = node;
+	this.compiler = compiler;
+	this.dumpLabels();
+    }
 
     protected void appendCode(string code)
     {
@@ -57,9 +60,6 @@ abstract class Statement : StatementInterface
     // but this can be overridden if necessary
     protected void dumpLabels()
     {
-        const string labels = compiler.getAndClearCurrentLabels();
-        if(labels != "\n") {
-            this.compiler.getImCode().appendProgramSegment(labels);    
-        }
+        this.compiler.dumpLabels();
     }
 }

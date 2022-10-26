@@ -9,6 +9,9 @@ class StringLiteral
     /** An id to refer to the last element */
     public static ushort id = 0;
 
+    /** The length of the string after possible truncation */
+    public ulong finalLength;
+
     private Compiler compiler;
     private string str;
 
@@ -24,7 +27,7 @@ class StringLiteral
     void register()
     {
         bool truncated;
-        immutable data = asciiToPetsciiHex(this.str, 0UL, truncated);
+        immutable data = asciiToPetsciiHex(this.str, 0UL, truncated, this.finalLength);
         compiler.getImCode().appendSegment(
             IntermediateCode.DATA_SEGMENT,
             "_S" ~ to!string(id) ~ " " ~ data ~ "\n"

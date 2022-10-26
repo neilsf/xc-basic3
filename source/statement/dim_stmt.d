@@ -44,6 +44,20 @@ class Dim_stmt : Statement
         }
     }
 
+    private void parseVarDef(ParseTree node)
+    {
+        foreach (child; node.children) {
+            switch (child.name) {
+                case "XCBASIC.Var":
+                    parseVar(child);
+                    break;
+                default:
+                    parseAddress(child);
+                    break;
+            }
+        }
+    }
+
     private void parseVar(ParseTree node)
     {
         VariableReader reader = new VariableReader(node, compiler);
@@ -80,13 +94,13 @@ class Dim_stmt : Statement
                 Variable var = compiler.getVars().findVisible(lbl);
                 if(var !is null) {
                     if(!var.isConst) {
-                        compiler.displayError("Address must a constant");
+                        compiler.displayError("Address must be a constant");
                     }
                     // a constant
                     if(!var.type.isIntegral() || var.constVal < 0 || var.constVal > 0xFFFF) {
                         compiler.displayError("Address must be an integer in range 0-65535");
                     }
-                    addrLabel = var.getAsmLabel();
+                    addr = to!ushort(var.constVal);
                 }
                 else  {
                     compiler.displayError("Unknown constant \"" ~ lbl ~ "\"");
@@ -104,46 +118,37 @@ class Dim_stmt : Statement
             || (compiler.inProcedure && compiler.currentProc.getIsStatic())
             || !compiler.inProcedure
         );
+        // Attribs first
         for (int i = 0; i < statement.children.length; i++) {
             ParseTree node = statement.children[i];
-            switch(node.name) {
-                // Attributes
-                case "XCBASIC.Varattrib":
-                    parseAttrib(node);
-                    break;
-                // Name, dimensions, type
-                case "XCBASIC.Var":
-                    parseVar(node);
-                    break;
-
-                // Address
-                case "XCBASIC.Number":
-                case "XCBASIC.Label_ref":
-                    parseAddress(node);
-                    break;
-
-                default:
-                    assert(0);
+            if(node.name == "XCBASIC.Varattrib") {
+                parseAttrib(node);
             }
         }
+        // Variables second
+        for (int i = 0; i < statement.children.length; i++) {
+            ParseTree node = statement.children[i];
+            if(node.name == "XCBASIC.Vardef") {
+                parseVarDef(node);
+                if(addr > 0) {
+                    variable.isExplicitAddr = true;
+                    variable.address = addr;
+                }
+                else if(addrLabel != "") {
+                    variable.isExplicitAddr = true;
+                    variable.addressLabel = addrLabel;
+                }
 
-        if(addr > 0) {
-            variable.isExplicitAddr = true;
-            variable.address = addr;
-        }
-        else if(addrLabel != "") {
-            variable.isExplicitAddr = true;
-            variable.addressLabel = addrLabel;
-        }
+                if(compiler.inProcedure) {
+                    variable.visibility = Compiler.VIS_LOCAL;
+                }
+                else if(isCommon) {
+                    variable.visibility = Compiler.VIS_COMMON;
+                }
 
-        if(compiler.inProcedure) {
-            variable.visibility = Compiler.VIS_LOCAL;
+                variable.isDynamic = !this.isStatic;
+                compiler.getVars().add(variable, isFast);
+            }
         }
-        else if(isCommon) {
-            variable.visibility = Compiler.VIS_COMMON;
-        }
-
-        variable.isDynamic = !this.isStatic;
-        compiler.getVars().add(variable, isFast);
     }
 }

@@ -1,6 +1,6 @@
 module statement.data_stmt;
 
-import std.array, std.conv;
+import std.array, std.conv, std.range;
 
 import pegged.grammar;
 
@@ -85,10 +85,12 @@ class Data_stmt : Statement
             }
         }
         if(listItems.length > 0) {
-            compiler.getImCode().appendSegment(
-                inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
-                "    DC.B " ~ listItems.join(",") ~ "\n"
-            );
+            foreach(chunk; chunks(listItems, 8)) {
+                 compiler.getImCode().appendSegment(
+                    inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
+                    "    DC.B " ~ chunk.join(",") ~ "\n"
+                );
+            }
         }
     }
 

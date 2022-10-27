@@ -98,7 +98,7 @@ FMVOLSHAD  DC.B 0
 	asl	
 	asl	
 	ora	R0
-	sta V{1}AD
+	sta V{1}SR
 	pla ; D
 	sta R0
 	pla ; A
@@ -107,7 +107,7 @@ FMVOLSHAD  DC.B 0
 	asl	
 	asl	
 	ora	R0
-	sta V{1}SR
+	sta V{1}AD
 	ENDM
 	
 	MAC voice_filteron

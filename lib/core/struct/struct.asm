@@ -30,7 +30,7 @@
 	
 	; Jumps to block {1} if true
 	; Or to next case {2} otherwise
-	MAC case
+	MAC case ;@pull
 	IF !FPULL
 	pla
 	ENDIF

@@ -82,7 +82,7 @@ class Variable
     /** Label used to identify variable in the assembly listing */
 	public string getAsmLabel()
 	{
-        string prefix = this.isPrivate ? "X_" : "V_";
+        string prefix = (this.isPrivate && this.visibility > Compiler.VIS_LOCAL) ? "X_" : "V_";
         return prefix ~ this.getLabel();
 	}
 

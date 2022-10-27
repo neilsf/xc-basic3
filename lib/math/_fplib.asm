@@ -1467,7 +1467,9 @@ CON_BILLION:
 ; RETURN WITH (Y,A) POINTING AT STRING
 ; ----------------------------------------------------------------------------
 FOUT:
-        ldy     #$01
+		ldy		#$00
+		sty 	SHIFTSIGNEXT
+        iny
 
 ; ----------------------------------------------------------------------------
 ; "STR$" FUNCTION ENTERS HERE, WITH (Y)=0

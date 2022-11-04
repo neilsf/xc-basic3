@@ -32,26 +32,33 @@ JIFFY EQU $8D
 	spreset
 	framereset
 	IF TARGET == c64
-	; Bank out BASIC ROM
-	lda $01
-	and #%11111110
-	sta $01
+		; Bank out BASIC ROM
+		lda $01
+		and #%11111110
+		sta $01
 	ENDIF
 	IF TARGET == c128
-	; Set up MMU
-	lda #%001110
-	sta MMU
-	; Disable irq based screen editor
-	lda #$ff
-	sta $D8
-    ; Disable BASIC IRQ
-    lda INIT_STATUS
-    and #%11111110
-    sta INIT_STATUS
+		; Set up MMU
+		lda #%001110
+		sta MMU
+		; Disable irq based screen editor
+		lda #$ff
+		sta $D8
+		; Disable BASIC IRQ
+		lda INIT_STATUS
+		and #%11111110
+		sta INIT_STATUS
 	ENDIF
     IF USEIRQ == 1
-	jsr IRQSETUP
+		jsr IRQSETUP
 	ENDIF
+	; Init FP workspace
+	ldx #[TEMP3 - CHARAC + 1]
+	lda #0
+.1
+	sta CHARAC,x
+	dex
+	bne .1
 	ENDM
 	
 	; Final code that runs when the program is terminated

@@ -275,29 +275,46 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
-	import I_CALC_SCRROWPTR
-	jsr CALC_SCRROWPTR
-	pla
-	tay
-	pla
-	sta (R0),y
-	IF {1} == 1 ; Color was provided
+	; Commander X16
+	IF TARGET == x16
+	  tay
 	  pla
-      IF (TARGET & pet) == 0
-	    tax
-	    lda R0 + 1
-	    sec
-	    IF TARGET & c264
-        sbc #$0C
-	    ELSE
-        sbc KERNAL_SCREEN_ADDR
-        ENDIF
-	    clc
-	    adc #>COLOR_RAM
-	    sta R0 + 1
-	    txa
-	    sta (R0),y
-      ENDIF
+	  tax
+	  clc
+	  import I_VERA_SETADDR
+	  jsr VERA_SETADDR
+	  pla
+	  sta VERA_DATA0
+	  IF {1} == 1 ; Color was provided
+	  pla
+	  sta VERA_DATA0
+	  ENDIF
+	; Commodore 64, VIC-20 and all other
+	ELSE  
+	  import I_CALC_SCRROWPTR
+	  jsr CALC_SCRROWPTR
+	  pla
+	  tay
+	  pla
+	  sta (R0),y
+	  IF {1} == 1 ; Color was provided
+		pla
+		IF (TARGET & pet) == 0
+		  tax
+		  lda R0 + 1
+		  sec
+		  IF TARGET & c264
+			sbc #$0C
+		  ELSE
+			sbc KERNAL_SCREEN_ADDR
+		  ENDIF
+		  clc
+		  adc #>COLOR_RAM
+		  sta R0 + 1
+		  txa
+		  sta (R0),y
+		ENDIF
+	  ENDIF
 	ENDIF
 	ENDM
 	
@@ -307,6 +324,37 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
+	; Commander X16
+	IF TARGET == x16
+	  tay
+	  pla
+	  tax
+	  clc
+	  import I_VERA_SETADDR
+	  import I_VERA_MOV_STRING  
+	  jsr VERA_SETADDR
+	  ; override increment value to 2
+	  lda #%00100001
+	  sta VERA_ADDR + 2
+	  jsr VERA_MOV_STRING
+	  IF {1} == 1; Color was provided
+	  pla
+	  ; Decrement VERA addr by 1 ...
+	  ldy #%00011001
+	  sty VERA_ADDR + 2
+	  ldy VERA_DATA0
+	  ; .. Then by 2 at each subsequent write
+	  ldy #%00101001
+	  sty VERA_ADDR + 2
+	  ldx R0
+.loop
+	  beq .q
+	  sta VERA_DATA0
+	  dex
+	  jmp .loop
+.q
+	  ENDIF
+	ELSE
 	import I_CALC_SCRROWPTR
 	jsr CALC_SCRROWPTR
 	pla
@@ -342,6 +390,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         dey
         bpl .loop
       ENDIF
+	ENDIF
 	ENDIF
 	ENDM
 	
@@ -416,13 +465,16 @@ CALC_SCRROWPTR SUBROUTINE
 	sta R0 + 1
 	rts
 	ENDIF
-		
+			
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
 	IF !FPULL
 	pla
 	ENDIF
-    ; This command has only effect on the C64/C128
+    IF TARGET == x16
+    clc
+    jsr KERNAL_SCREENMODE
+    ENDIF
     IF TARGET == c64 || TARGET == c128
 	asl
 	asl

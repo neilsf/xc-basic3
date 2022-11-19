@@ -253,6 +253,19 @@ STRREMOV_SC SUBROUTINE
 	rts
 	ENDIF
 	
+	IFCONST I_VERA_STRREMOV_SC_IMPORTED
+	; For the VERA chip.
+	; VERA address already set
+	; Color in A
+	; Max length in A
+	; Same as above but converts PETSCII to screencode
+	; and does not copy length indicator
+	; Leaves string length in R3
+VERA_STRREMOV_SC SUBROUTINE
+	
+	rts
+	ENDIF
+	
 	IFCONST I_PET2SC_IMPORTED
 	; PETSCII to screencode conversion
 	; By Mace

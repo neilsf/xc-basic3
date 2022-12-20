@@ -81,6 +81,8 @@ x16      EQU %0010000000000000
 TARGET   EQU ` ~ target ~ `
 USEIRQ   EQU ` ~ (useIrqs ? "1" : "0") ~ `
 FASTIRQ  EQU ` ~ (fastIrqs ? "1" : "0") ~ `
+USESPR   EQU ` ~ (useSprites ? "1" : "0") ~ `
+USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
     SEG "UPSTART"
     ORG $` ~ to!string(startAddress, 16) ~ "\n";
         if(basicLoader) {

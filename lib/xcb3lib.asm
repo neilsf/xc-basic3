@@ -35,9 +35,11 @@
     ; Graphics
 	INCLUDE "grx/grx.asm"
 	; Sound
-	INCLUDE "sfx/sfx.asm"
+	IF USESFX
+	  INCLUDE "sfx/sfx.asm"
+	ENDIF
     ; Sprites
-	IF TARGET == c64 || TARGET == c128
+	IF USESPR
 	  INCLUDE "grx/sprite.asm"
     ENDIF
     ; Optimizer

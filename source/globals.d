@@ -16,3 +16,7 @@ bool inlineData = false;
 bool useIrqs = false;
 /** Fast IRQ option bypasses saving virtual registers before entering the ISR */
 bool fastIrqs = false;
+/** Whether the program uses sprite routines */
+bool useSprites = false;
+/** Whether the program uses sound routines */
+bool useSound = false;

@@ -7,13 +7,20 @@ import pegged.grammar;
 import compiler.compiler, compiler.type;
 import language.statement, language.expression;
 
-class Sprite_stmt : Statement
+import globals;
+
+template Sprite_stmtCtor()
 {
-    /** Class constructor */
     this(ParseTree node, Compiler compiler)
 	{
 		super(node, compiler);
+        useSprites = true;
 	}
+}
+
+class Sprite_stmt : Statement
+{
+    mixin Sprite_stmtCtor;
 
     void process()
     {
@@ -104,11 +111,7 @@ class Sprite_stmt : Statement
 
 class Sprite_multicolor_stmt : Statement
 {
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    mixin Sprite_stmtCtor;
 
     void process()
     {
@@ -132,11 +135,7 @@ class Sprite_multicolor_stmt : Statement
 
 class Sprite_clearhit_stmt : Statement
 {
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    mixin Sprite_stmtCtor;
 
     void process()
     {

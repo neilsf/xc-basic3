@@ -28,15 +28,11 @@ COLOR_RAM EQU $9400
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
-VICII_BORDER	 EQU $D020
-VICII_BACKGROUND EQU $D021
+
 ; Various C264 registers
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
-TED_BORDER	 	 EQU $FF19
-TED_BACKGROUND   EQU $FF15
-; Various VIC-20 registers
-VICI_BORDER_BG	 EQU $900F
+
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -527,69 +523,3 @@ RESET_SCRVECTORS SUBROUTINE
 	sta SRVEC,x
 	jmp KERNAL_HOME
 	ENDIF
-	
-	MAC border ; @fpull	
-	
-	IF !FPULL
-	pla
-	ENDIF
-	
-	IF TARGET == c64 || TARGET == c128
-	sta VICII_BORDER
-	ENDIF
-	
-	IF TARGET & vic20
-	sta R0
-	lda VICI_BORDER_BG
-	and #%11111000
-	ora R0
-	sta VICI_BORDER_BG
-	ENDIF
-	
-	IF TARGET & c264 
-	sta R0
-	pla
-	asl
-	asl
-	asl
-	asl
-	ora R0
-	sta TED_BORDER
-	ENDIF
-	
-	ENDM
-	
-	MAC background ; @fpull	
-	
-    IF !FPULL
-    pla
-    ENDIF
-    
-    IF TARGET == c64 || TARGET == c128
-    sta VICII_BACKGROUND
-    ENDIF
-    
-    IF TARGET & vic20
-    asl
-    asl
-    asl
-    asl
-    sta R0
-    lda VICI_BORDER_BG
-    and #%00001111
-    ora R0
-    sta VICI_BORDER_BG
-    ENDIF
-    
-    IF TARGET & c264 
-    sta R0
-    pla
-    asl
-    asl
-    asl
-    asl
-    ora R0
-    sta TED_BACKGROUND
-    ENDIF
-	
-	ENDM

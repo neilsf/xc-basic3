@@ -20,7 +20,14 @@ VMODE_BITMAP EQU 2
 VMODE_EXT EQU 3	
 VMODE_HIRES EQU 0
 VMODE_MULTI EQU 1
-	
+
+VICII_BORDER	 EQU $D020
+VICII_BACKGROUND EQU $D021
+TED_BORDER	 	 EQU $FF19
+TED_BACKGROUND   EQU $FF15
+VICI_BORDER_BG	 EQU $900F
+VERA_BORDER		 EQU $9F2C
+
 	MAC hscroll ; @pull
 	IF !FPULL
 	pla
@@ -195,4 +202,78 @@ VMODE_MULTI EQU 1
 	  ENDIF
 	  pha
 	ENDIF
+	ENDM
+
+	MAC border ; @fpull	
+	
+	IF !FPULL
+	pla
+	ENDIF
+	
+	IF TARGET == c64 || TARGET == c128
+	sta VICII_BORDER
+	ENDIF
+	
+	IF TARGET & vic20
+	sta R0
+	lda VICI_BORDER_BG
+	and #%11111000
+	ora R0
+	sta VICI_BORDER_BG
+	ENDIF
+	
+	IF TARGET & c264 
+	sta R0
+	pla
+	asl
+	asl
+	asl
+	asl
+	ora R0
+	sta TED_BORDER
+	ENDIF
+
+	IF TARGET == x16
+	sta VERA_BORDER
+	ENDIF
+	
+	ENDM
+	
+	MAC background ; @fpull	
+	
+    IF !FPULL
+    pla
+    ENDIF
+    
+    IF TARGET == c64 || TARGET == c128
+    sta VICII_BACKGROUND
+    ENDIF
+    
+    IF TARGET & vic20
+    asl
+    asl
+    asl
+    asl
+    sta R0
+    lda VICI_BORDER_BG
+    and #%00001111
+    ora R0
+    sta VICI_BORDER_BG
+    ENDIF
+    
+    IF TARGET & c264 
+    sta R0
+    pla
+    asl
+    asl
+    asl
+    asl
+    ora R0
+    sta TED_BACKGROUND
+    ENDIF
+
+	IF TARGET == x16 
+    ;
+    ENDIF
+	
 	ENDM

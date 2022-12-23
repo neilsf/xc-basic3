@@ -1,2 +1,0 @@
-	PROCESSOR 6502
-	

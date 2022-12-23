@@ -37,11 +37,17 @@ VOICE3WF   DC.B 0
 FILTRRSHAD DC.B 0
 FMVOLSHAD  DC.B 0
 
+	MAC loadvoice
+	ENDM
+
+	MAC savevoice
+	ENDM
+
 	MAC voice_on
-	lda VOICE{1}WF	
+	lda VOICE{1}WF
 	ora #1
 	sta VOICE{1}WF
-	sta V{1}CTRL	
+	sta V{1}CTRL
 	ENDM
 	
 	MAC voice_off
@@ -67,7 +73,7 @@ FMVOLSHAD  DC.B 0
 	; e.g voice_wave 2,PULSE
 	MAC voice_wave
 	lda VOICE{1}WF
-	and %00001111
+	and #%00001111
     ora #WAVE{2}
 	sta VOICE{1}WF
 	sta V{1}CTRL
@@ -194,3 +200,16 @@ FMVOLSHAD  DC.B 0
 	sta FMVOLSHAD
 	ENDM
 	
+	; Unsupported on the C64/128
+
+	MAC voice_right
+	ENDM
+
+	MAC voice_left
+	ENDM
+
+	MAC voice_volume ; @pull
+	IF !FPULL
+        pla
+    ENDIF
+	ENDM

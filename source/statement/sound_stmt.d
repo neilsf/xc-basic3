@@ -22,18 +22,41 @@ class Voice_stmt : Statement
 {
     mixin Sound_stmtCtor;
 
+    private void evalExpression(Expression e)
+    {
+        e.eval();
+        appendCode(e.toString());
+    }
+
     void process()
     {
         ParseTree stmtNode = node.children[0];
         ParseTree valueNode = stmtNode.children[0];
-        Number n = new Number(valueNode, this.compiler);
-        if(n.type.name != Type.UINT8 || n.intVal > 4) {
-            compiler.displayError("Invalid voice number: " ~ valueNode.matches.join());
+        Expression e = new Expression(valueNode, this.compiler);
+        e.setExpectedType(compiler.getTypes().get(Type.UINT8));
+        bool voiceNoIsConstant = false;
+        uint cVoiceNo = 0;
+        const ubyte voiceBase = target == "x16" ? 0 : 1;
+        if (e.isConstant()) {
+            voiceNoIsConstant = true;
+            cVoiceNo = to!uint(e.getConstVal());
+            if (cVoiceNo < voiceBase) {
+                compiler.displayError("Voice number must be greater than 0");
+            }
+            if (target == "x16") {
+                evalExpression(e);
+            }
+        } else {
+            if (target != "x16") {
+                compiler.displayError("Voice number must be constant");
+            }
+            evalExpression(e);
         }
+        immutable string voiceNo = to!string(cVoiceNo);
+        appendCode("    loadvoice\n");
         ParseTree[] voiceSubCmdNodes = stmtNode.children[1..$];
         foreach(ref subCmd; voiceSubCmdNodes) {
             ParseTree node = subCmd.children[0];
-            immutable string voiceNo = to!string(n.intVal);
             final switch(node.name) {
                 case "XCBASIC.VoiceSubCmdOnOff":
                 case "XCBASIC.VoiceSubCmdFilterOnOff":
@@ -59,15 +82,27 @@ class Voice_stmt : Statement
                     tone.setExpectedType(compiler.getTypes().get(Type.UINT16));
                     tone.eval();
                     appendCode(tone.toString());
+                    if (!voiceNoIsConstant) {
+                        evalExpression(e);
+                    }
                     appendCode("    voice_tone " ~ voiceNo ~ "\n");
                     break;
 
                 case "XCBASIC.VoiceSubCmdPulse":
                     Expression pulse = new Expression(node.children[0], compiler);
-                    pulse.setExpectedType(compiler.getTypes().get(Type.UINT16));
+                    immutable string expT = target == "x16" ? Type.UINT8 : Type.UINT16;
+                    pulse.setExpectedType(compiler.getTypes().get(expT));
                     pulse.eval();
                     appendCode(pulse.toString());
                     appendCode("    voice_pulse " ~ voiceNo ~ "\n");
+                    break;
+
+                case "XCBASIC.VoiceSubCmdVolume":
+                    Expression vol = new Expression(node.children[0], compiler);
+                    vol.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    vol.eval();
+                    appendCode(vol.toString());
+                    appendCode("    voice_volume " ~ voiceNo ~ "\n");
                     break;
 
                 case "XCBASIC.VoiceSubCmdWave":
@@ -75,7 +110,8 @@ class Voice_stmt : Statement
                     appendCode("    voice_wave " ~ voiceNo ~ "," ~ wave ~ "\n");
                     break;
             }
-         }
+        }
+        appendCode("    savevoice\n");
     }
 }
 

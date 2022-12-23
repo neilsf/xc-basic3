@@ -124,6 +124,7 @@ struct GenericXCBASIC(TParseTree)
         rules["VoiceSubCmdTone"] = toDelegate(&VoiceSubCmdTone);
         rules["VoiceSubCmdWave"] = toDelegate(&VoiceSubCmdWave);
         rules["VoiceSubCmdPulse"] = toDelegate(&VoiceSubCmdPulse);
+        rules["VoiceSubCmdVolume"] = toDelegate(&VoiceSubCmdVolume);
         rules["VoiceSubCmdFilterOnOff"] = toDelegate(&VoiceSubCmdFilterOnOff);
         rules["Filter_stmt"] = toDelegate(&Filter_stmt);
         rules["FilterSubCmd"] = toDelegate(&FilterSubCmd);
@@ -3449,7 +3450,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
         }
         else
         {
@@ -3457,7 +3458,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
                 memo[tuple(`Voice_stmt`, p.end)] = result;
                 return result;
             }
@@ -3468,12 +3469,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Voice_stmt(GetName g)
@@ -3485,7 +3486,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdVolume), "XCBASIC.VoiceSubCmd")(p);
         }
         else
         {
@@ -3493,7 +3494,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdVolume), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
                 memo[tuple(`VoiceSubCmd`, p.end)] = result;
                 return result;
             }
@@ -3504,12 +3505,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdVolume), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdVolume), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string VoiceSubCmd(GetName g)
@@ -3521,7 +3522,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("left"), pegged.peg.caseInsensitiveLiteral!("right")), "XCBASIC.VoiceSubCmdOnOff")(p);
         }
         else
         {
@@ -3529,7 +3530,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("left"), pegged.peg.caseInsensitiveLiteral!("right")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(p);
                 memo[tuple(`VoiceSubCmdOnOff`, p.end)] = result;
                 return result;
             }
@@ -3540,12 +3541,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("left"), pegged.peg.caseInsensitiveLiteral!("right")), "XCBASIC.VoiceSubCmdOnOff")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("left"), pegged.peg.caseInsensitiveLiteral!("right")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(TParseTree("", false,[], s));
         }
     }
     static string VoiceSubCmdOnOff(GetName g)
@@ -3695,6 +3696,42 @@ struct GenericXCBASIC(TParseTree)
     static string VoiceSubCmdPulse(GetName g)
     {
         return "XCBASIC.VoiceSubCmdPulse";
+    }
+
+    static TParseTree VoiceSubCmdVolume(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdVolume")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdVolume`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdVolume"), "VoiceSubCmdVolume")(p);
+                memo[tuple(`VoiceSubCmdVolume`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdVolume(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdVolume")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdVolume"), "VoiceSubCmdVolume")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdVolume(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdVolume";
     }
 
     static TParseTree VoiceSubCmdFilterOnOff(TParseTree p)

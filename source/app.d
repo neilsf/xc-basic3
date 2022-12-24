@@ -48,8 +48,8 @@ version(Windows) {
 else {
 	private string dasm = "dasm";
 }
-private string symbolfile="";
-private string listfile="";
+private string symbolfile = "";
+private string listfile = "";
 private int verbosity = VERBOSITY_INFO;
 
 private GetoptResult helpInformation;
@@ -107,6 +107,12 @@ void main(string[] args)
     const string stdHeadersName = getLibraryDir() ~ "/headers.bas";
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
+    // Compile any machine specific headers
+    const string targetHeadersName = getLibraryDir() ~ "/headers_" ~ getTargetFamily(target) ~ ".bas";
+    if (exists(targetHeadersName)) {
+        source = SourceFile.get(targetHeadersName);
+        compiler.compileSourceFile(source);
+    }
     // Compile the program
     compiler.compilingUserCode = true;
     immutable string currentDir = getcwd();
@@ -438,5 +444,21 @@ private void displayInformation(string tmpSymbolfile)
         stdout.writeln(
             "WARNING: The program has been successfully compiled, but it can't fit between $" 
             ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
+    }
+}
+
+/**
+ * Returns the family of computers the target belongs to
+ */
+private string getTargetFamily(string target)
+{
+    if (target[0..3] == "pet") {
+        return "pet";
+    } else if (target[0..3] == "vic") {
+        return "vic20";
+    } else if (target == "c16" || target == "cplus4") {
+        return "c264";
+    } else {
+        return target;
     }
 }

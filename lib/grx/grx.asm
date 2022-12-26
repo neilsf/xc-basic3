@@ -118,37 +118,65 @@ VERA_BORDER		 EQU $9F2C
     sta HSCR
 	ENDIF
 	ENDM
-    
+
+CHARSETSEL SET 0    
+
 	MAC charsetram
-    IF TARGET & c264
-    lda $FF12
-    and #%11111011
-    sta $FF12
-    ENDIF
-    IF TARGET & vic20
-    lda $9005
-    ora #%00001000
-    sta $9005
-    ENDIF
-	ENDM
-    
-	MAC charsetrom
-    IF TARGET & c264
+	IF TARGET & c264
 	lda $FF12
-    ora #%00000100
-    sta $FF12
-    ENDIF
+	and #%11111011
+	sta $FF12
+	ENDIF
 	IF TARGET & vic20
-    lda $9005
-    and #%11110111
-    sta $9005
-    ENDIF
+	lda $9005
+	ora #%00001000
+	sta $9005
+	ENDIF
+	IF TARGET == x16
+CHARSETSEL SET 1
+	ENDIF
+	ENDM
+	
+	MAC charsetrom
+	IF TARGET & c264
+	lda $FF12
+	ora #%00000100
+	sta $FF12
+	ENDIF
+	IF TARGET & vic20
+	lda $9005
+	and #%11110111
+	sta $9005
+	ENDIF
+	IF TARGET == x16
+CHARSETSEL SET 0
+	ENDIF
 	ENDM
     
 	MAC charset ; @pull
-    IF !FPULL
-    pla
+	IF TARGET == x16
+	  IF CHARSETSEL == 0
+	    IF !FPULL
+		  pla ; drop HB
+		  pla ; keep LB
+	    ENDIF	
+		and #%00000011
+		jsr X16_screen_set_charset
+	  ELSE
+		IF !FPULL
+		  HEX 7A; ply
+		  HEX FA; plx
+		ELSE
+		  tax
+	    ENDIF
+		lda #0
+		jsr X16_screen_set_charset
+	  ENDIF
+	ELSE
+	IF !FPULL
+      pla
     ENDIF
+	ENDIF
     IF (TARGET == c64) || (TARGET == c128)
     asl
     and #%00001110

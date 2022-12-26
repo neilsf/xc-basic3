@@ -20,7 +20,7 @@ class Charset_stmt : Statement
 
     /** Compile */
     void process()
-    { import std.stdio; writeln(target);
+    {
 		string romOrRam = "";
 		if (canFind(["rom", "ram"], toLower(node.matches[1]))) {
 			romOrRam = toLower(node.matches[1]);

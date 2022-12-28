@@ -109,8 +109,11 @@ struct GenericXCBASIC(TParseTree)
         rules["SprSubCmdColor"] = toDelegate(&SprSubCmdColor);
         rules["SprSubCmdHiresMulti"] = toDelegate(&SprSubCmdHiresMulti);
         rules["SprSubCmdOnUnderBg"] = toDelegate(&SprSubCmdOnUnderBg);
+        rules["SprSubCmdZDepth"] = toDelegate(&SprSubCmdZDepth);
         rules["SprSubCmdShape"] = toDelegate(&SprSubCmdShape);
         rules["SprSubCmdXYSize"] = toDelegate(&SprSubCmdXYSize);
+        rules["SprSubCmdZYFlip"] = toDelegate(&SprSubCmdZYFlip);
+        rules["Sprite_clear_stmt"] = toDelegate(&Sprite_clear_stmt);
         rules["Sprite_clearhit_stmt"] = toDelegate(&Sprite_clearhit_stmt);
         rules["Sprite_multicolor_stmt"] = toDelegate(&Sprite_multicolor_stmt);
         rules["Border_stmt"] = toDelegate(&Border_stmt);
@@ -2946,7 +2949,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize, SprSubCmdZDepth, SprSubCmdZYFlip), "XCBASIC.SprSubCmd")(p);
         }
         else
         {
@@ -2954,7 +2957,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize, SprSubCmdZDepth, SprSubCmdZYFlip), "XCBASIC.SprSubCmd"), "SprSubCmd")(p);
                 memo[tuple(`SprSubCmd`, p.end)] = result;
                 return result;
             }
@@ -2965,12 +2968,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize, SprSubCmdZDepth, SprSubCmdZYFlip), "XCBASIC.SprSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize, SprSubCmdZDepth, SprSubCmdZYFlip), "XCBASIC.SprSubCmd"), "SprSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string SprSubCmd(GetName g)
@@ -3090,7 +3093,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi"), pegged.peg.caseInsensitiveLiteral!("lowcol"), pegged.peg.caseInsensitiveLiteral!("hicol")), "XCBASIC.SprSubCmdHiresMulti")(p);
         }
         else
         {
@@ -3098,7 +3101,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi"), pegged.peg.caseInsensitiveLiteral!("lowcol"), pegged.peg.caseInsensitiveLiteral!("hicol")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(p);
                 memo[tuple(`SprSubCmdHiresMulti`, p.end)] = result;
                 return result;
             }
@@ -3109,12 +3112,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi"), pegged.peg.caseInsensitiveLiteral!("lowcol"), pegged.peg.caseInsensitiveLiteral!("hicol")), "XCBASIC.SprSubCmdHiresMulti")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi"), pegged.peg.caseInsensitiveLiteral!("lowcol"), pegged.peg.caseInsensitiveLiteral!("hicol")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(TParseTree("", false,[], s));
         }
     }
     static string SprSubCmdHiresMulti(GetName g)
@@ -3156,6 +3159,42 @@ struct GenericXCBASIC(TParseTree)
     static string SprSubCmdOnUnderBg(GetName g)
     {
         return "XCBASIC.SprSubCmdOnUnderBg";
+    }
+
+    static TParseTree SprSubCmdZDepth(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("zdepth"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.SprSubCmdZDepth")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdZDepth`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("zdepth"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.SprSubCmdZDepth"), "SprSubCmdZDepth")(p);
+                memo[tuple(`SprSubCmdZDepth`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdZDepth(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("zdepth"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.SprSubCmdZDepth")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.wrapAround!(Spacing, pegged.peg.caseInsensitiveLiteral!("zdepth"), Spacing), pegged.peg.discard!(pegged.peg.wrapAround!(Spacing, WS, Spacing)), pegged.peg.wrapAround!(Spacing, Expression, Spacing)), "XCBASIC.SprSubCmdZDepth"), "SprSubCmdZDepth")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdZDepth(GetName g)
+    {
+        return "XCBASIC.SprSubCmdZDepth";
     }
 
     static TParseTree SprSubCmdShape(TParseTree p)
@@ -3228,6 +3267,78 @@ struct GenericXCBASIC(TParseTree)
     static string SprSubCmdXYSize(GetName g)
     {
         return "XCBASIC.SprSubCmdXYSize";
+    }
+
+    static TParseTree SprSubCmdZYFlip(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("xyflip"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdZYFlip")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdZYFlip`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("xyflip"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdZYFlip"), "SprSubCmdZYFlip")(p);
+                memo[tuple(`SprSubCmdZYFlip`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdZYFlip(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("xyflip"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdZYFlip")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("xyflip"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdZYFlip"), "SprSubCmdZYFlip")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdZYFlip(GetName g)
+    {
+        return "XCBASIC.SprSubCmdZYFlip";
+    }
+
+    static TParseTree Sprite_clear_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sprite_clear_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sprite_clear_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sprite_clear_stmt"), "Sprite_clear_stmt")(p);
+                memo[tuple(`Sprite_clear_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sprite_clear_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sprite_clear_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sprite_clear_stmt"), "Sprite_clear_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sprite_clear_stmt(GetName g)
+    {
+        return "XCBASIC.Sprite_clear_stmt";
     }
 
     static TParseTree Sprite_clearhit_stmt(TParseTree p)
@@ -3990,7 +4101,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Scroll_stmt")(p);
         }
         else
         {
@@ -3998,7 +4109,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(p);
                 memo[tuple(`Scroll_stmt`, p.end)] = result;
                 return result;
             }
@@ -4009,12 +4120,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Scroll_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Scroll_stmt(GetName g)

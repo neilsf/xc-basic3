@@ -6,6 +6,8 @@ XC=BASIC is a cross compiled, modern BASIC programming language for MOS 65xx bas
 * Commodore VIC-20
 * Commodore-16
 * Commodore Plus/4
+* Commodore PET series
+* Commodore-128
 
 XC=BASIC compiles BASIC source code to fast machine code. Although not 100% compatible, its syntax was designed to be similar to that of QuickBASIC and CBM BASIC.
 

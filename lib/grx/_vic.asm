@@ -116,7 +116,7 @@ sprcollr  DC.B 0
 	ELSE
 	ldx #[{1} << 1]
 	ENDIF
-	pla ; Y pos
+	pla
 	sta SPRPOS + 1,x
 	pla ; X pos hi
 	tay

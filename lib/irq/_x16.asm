@@ -19,10 +19,11 @@ IRQFLAGS HEX 01
     ; Store timeout value here
 IRQ_TIMER_LATCH HEX 00 00
 
-IRQ_SYSTEM EQU 1
+IRQ_VBLANK EQU 1
 IRQ_RASTER EQU 2
 IRQ_SPRITE EQU 4
 IRQ_TIMER EQU 8
+IRQ_SYSTEM EQU 16
 
     MAC irqenable
 	sei
@@ -50,7 +51,7 @@ IRQ_TIMER EQU 8
 	lda #[{1} ^ $FF]
 	and IRQFLAGS
 	sta IRQFLAGS
-	IF {1} < IRQ_TIMER
+	IF {1} < IRQ_TIMER && {1} > IRQ_VBLANK
 	    sta VERA_IRQCTR
 	ELSE
         lda #%00100000
@@ -93,7 +94,7 @@ IRQ_TIMER EQU 8
 IRQSETUP SUBROUTINE
 	sei
     lda IRQVECTOR
-    sta irq_default_handler
+    sta irq_default_handlerinterrupts
 	lda #<XCBIRQ
 	sta IRQVECTOR
     lda IRQVECTOR + 1
@@ -127,9 +128,8 @@ XCBIRQ	SUBROUTINE
 IRQ_RASTER_V
 	jsr $FFFF ; To be modified by application
 	plsr
-	lda VERA_IRQSTATUS ; ACK
-	ora #%00000001
-	sta VERA_IRQSTATUS
+	lda #IRQ_RASTER
+	sta VERA_IRQSTATUS ; ACK
 	jmp .rti
 .1
 	; is it a sprite collision?
@@ -141,8 +141,7 @@ IRQ_RASTER_V
 IRQ_SPRITE_V
 	jsr $FFFF ; To be modified by application
 	plsr
-	lda VERA_IRQSTATUS ; ACK
-	ora #%00000100
+	lda #IRQ_SPRITE ; ACK
 	sta VERA_IRQSTATUS
 	jmp .rti
 .3	
@@ -161,9 +160,22 @@ IRQ_TIMER_V
     sta VIA_TIMERBHI
     jmp .rti
 .4
-    ; it is a system interrupt - is it enabled?
-	lda #IRQ_SYSTEM
-	bit IRQFLAGS
+    ; is it a  vblank / system interrupt?
+	lda #IRQ_VBLANK
+	bit VERA_IRQSTATUS
+	beq .rti
+	lda IRQFLAGS
+	and #IRQ_VBLANK
+	beq .sys
+	phsr
+IRQ_VBLANK_V	
+	jsr $FFFF ; To be modified by application
+	plsr
+	lda #IRQ_VBLANK ; ACK
+	sta VERA_IRQSTATUS
+.sys
+	lda IRQFLAGS
+	and #IRQ_SYSTEM
 	beq .rti
 	jmp (irq_default_handler)
 .rti

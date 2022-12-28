@@ -63,16 +63,11 @@ CURR_SPR  EQU R8
     sta SPR_PROP1
     ENDM
 
-    MAC sprite_at ; @pull
-    IF !FPULL
-      pla
-      sta SPR_YH
-      pla
-      sta SPR_YL
-    ELSE
-      sta SPR_YL
-      sty SPR_YH
-    ENDIF
+    MAC sprite_at
+    pla
+    sta SPR_YH
+    pla
+    sta SPR_YL
     pla
     sta SPR_XH
     pla

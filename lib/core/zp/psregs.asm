@@ -4,11 +4,11 @@
 ;
 ; ZP locations reserved
 ; ------------------------------------------
-IF TARGET == x16
-  R0 EQU $22
-ELSE
-  R0 EQU $02
-ENDIF
+	IF TARGET == x16
+R0 EQU $22
+	ELSE
+R0 EQU $02
+	ENDIF
 
 ; Arithmetic registers
 R1	EQU R0 + 1

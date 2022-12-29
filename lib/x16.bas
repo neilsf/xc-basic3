@@ -5,6 +5,38 @@ CONST VERA_ADDRH = $9F22
 CONST VERA_DATA0 = $9F23
 CONST VERA_CTRL  = $9F25
 
+SUB VPOKE (addr AS LONG, value AS BYTE) SHARED STATIC
+  ASM
+    lda #0
+    sta {VERA_CTRL}
+    lda {addr} + 2
+    and #%00000001
+    sta {VERA_ADDRH}
+    lda {addr} + 1
+    sta {VERA_ADDRM}
+    lda {addr}
+    sta {VERA_ADDRL}
+    lda {value}
+    sta {VERA_DATA0}
+  END ASM
+END SUB
+
+FUNCTION VPEEK AS BYTE (addr AS LONG) SHARED STATIC
+  ASM
+    lda #0
+    sta {VERA_CTRL}
+    lda {addr} + 2
+    and #%00000001
+    sta {VERA_ADDRH}
+    lda {addr} + 1
+    sta {VERA_ADDRM}
+    lda {addr}
+    sta {VERA_ADDRL}
+    lda {VERA_DATA0}
+    sta {VPEEK}
+  END ASM
+END FUNCTION
+
 SUB MEMCPYMV (srcAddr AS WORD, targetAddr AS LONG, cntBytes AS WORD) SHARED STATIC
   ASM
     sei

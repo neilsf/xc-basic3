@@ -138,6 +138,7 @@ struct GenericXCBASIC(TParseTree)
         rules["Scroll_stmt"] = toDelegate(&Scroll_stmt);
         rules["VMode_stmt"] = toDelegate(&VMode_stmt);
         rules["VModeSubCmd"] = toDelegate(&VModeSubCmd);
+        rules["VModeSubCmdExpression"] = toDelegate(&VModeSubCmdExpression);
         rules["VModeSubCmdTextBitmap"] = toDelegate(&VModeSubCmdTextBitmap);
         rules["VModeSubCmdColor"] = toDelegate(&VModeSubCmdColor);
         rules["VModeSubCmdRsel"] = toDelegate(&VModeSubCmdRsel);
@@ -4173,7 +4174,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel, VModeSubCmdExpression), "XCBASIC.VModeSubCmd")(p);
         }
         else
         {
@@ -4181,7 +4182,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel, VModeSubCmdExpression), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(p);
                 memo[tuple(`VModeSubCmd`, p.end)] = result;
                 return result;
             }
@@ -4192,17 +4193,53 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel, VModeSubCmdExpression), "XCBASIC.VModeSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel, VModeSubCmdExpression), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string VModeSubCmd(GetName g)
     {
         return "XCBASIC.VModeSubCmd";
+    }
+
+    static TParseTree VModeSubCmdExpression(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(Expression, "XCBASIC.VModeSubCmdExpression")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmdExpression`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(Expression, "XCBASIC.VModeSubCmdExpression"), "VModeSubCmdExpression")(p);
+                memo[tuple(`VModeSubCmdExpression`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmdExpression(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(Expression, "XCBASIC.VModeSubCmdExpression")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(Expression, "XCBASIC.VModeSubCmdExpression"), "VModeSubCmdExpression")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmdExpression(GetName g)
+    {
+        return "XCBASIC.VModeSubCmdExpression";
     }
 
     static TParseTree VModeSubCmdTextBitmap(TParseTree p)

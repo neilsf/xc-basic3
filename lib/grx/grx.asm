@@ -151,6 +151,15 @@ VERA_L1_VSCROLL_H EQU $9F3A
 	ENDIF
 	ENDM
 
+	; Sets screen mode for X16
+	MAC vmode_x16 ; @pull
+	IF !FPULL
+	pla
+	ENDIF
+	clc
+	jsr $FF5F ; screen_mode
+	ENDM
+
 CHARSETSEL SET 0    
 
 	MAC charsetram

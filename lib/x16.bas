@@ -1,9 +1,9 @@
 ' VERA Registers
-SHARED CONST VERA_ADDRL = $9F20
-SHARED CONST VERA_ADDRM = $9F21
-SHARED CONST VERA_ADDRH = $9F22
-SHARED CONST VERA_DATA0 = $9F23
-SHARED CONST VERA_CTRL  = $9F25
+CONST VERA_ADDRL = $9F20
+CONST VERA_ADDRM = $9F21
+CONST VERA_ADDRH = $9F22
+CONST VERA_DATA0 = $9F23
+CONST VERA_CTRL  = $9F25
 
 SUB MEMCPYMV (srcAddr AS WORD, targetAddr AS LONG, cntBytes AS WORD) SHARED STATIC
   ASM
@@ -158,9 +158,9 @@ FUNCTION MOUSEX AS WORD () SHARED STATIC
   CALL MOUSE_GET()
   ASM
     lda R0
-    sta {X16_MOUSEX}
+    sta {MOUSEX}
     lda R0 + 1
-    sta {X16_MOUSEX} + 1
+    sta {MOUSEX} + 1
   END ASM
 END FUNCTION
   
@@ -168,15 +168,90 @@ FUNCTION MOUSEY AS WORD () SHARED STATIC
   CALL MOUSE_GET()
   ASM
     lda R0 + 2
-    sta {X16_MOUSEY}
+    sta {MOUSEY}
     lda R0 + 3
-    sta {X16_MOUSEY} + 1
+    sta {MOUSEY} + 1
   END ASM
 END FUNCTION
 
 FUNCTION MOUSEBTN AS BYTE () SHARED STATIC
   CALL MOUSE_GET()
   ASM
-    sta {X16_MOUSEBTN}
+    sta {MOUSEBTN}
+  END ASM
+END FUNCTION
+
+SUB SETCLOCK (year AS BYTE, month AS BYTE, day AS BYTE, hour AS BYTE, min AS BYTE, sec AS BYTE) SHARED STATIC
+  ASM
+    lda {year}
+    sta $02   ; r0L
+    lda {month}
+    sta $03   ; r0H
+    lda {day}
+    sta $04   ; r1L
+    lda {hour}
+    sta $05   ; r1H
+    lda {min}
+    sta $06   ; r2L
+    lda {sec}
+    sta $07   ; r2H
+    jsr $FF4D ; clock_set_date_time
+  END ASM
+END SUB
+
+FUNCTION CLOCK_YEAR AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $02   ; r0L
+    sta {CLOCK_YEAR}
+  END ASM
+END FUNCTION
+
+FUNCTION CLOCK_MONTH AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $03   ; r0H
+    sta {CLOCK_MONTH}
+  END ASM
+END FUNCTION
+
+FUNCTION CLOCK_DAY AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $04   ; r1L
+    sta {CLOCK_DAY}
+  END ASM
+END FUNCTION
+
+FUNCTION CLOCK_HOUR AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $05   ; r1H
+    sta {CLOCK_HOUR}
+  END ASM
+END FUNCTION
+
+FUNCTION CLOCK_MIN AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $06   ; r2L
+    sta {CLOCK_MIN}
+  END ASM
+END FUNCTION
+
+FUNCTION CLOCK_SEC AS BYTE () SHARED STATIC
+  ASM
+    jsr $FF50 ; clock_get_date_time
+    lda $07   ; r2H
+    sta {CLOCK_SEC}
+  END ASM
+END FUNCTION
+
+FUNCTION ENTROPY AS LONG () SHARED STATIC
+  ASM
+    jsr $FECF ; entropy_get
+    sta {ENTROPY}
+    stx {ENTROPY} + 1
+    sty {ENTROPY} + 2
   END ASM
 END FUNCTION

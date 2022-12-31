@@ -2,7 +2,7 @@ name: Build project
 
 on:
   push:
-    branches: [ main, feature/x16-support ]
+    branches: [ main, release/v3.1.x16-beta ]
 
 jobs:
     build:

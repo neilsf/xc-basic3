@@ -200,7 +200,7 @@
 	lda {3} + 1
 	sbc {2} + 1
 	ENDIF
-	bpl .enter					; Enter the code block
+	bcs .enter					; Enter the code block
 	jmp _ENDFOR_{1}				; Exit loop
 .enter
 	ENDM

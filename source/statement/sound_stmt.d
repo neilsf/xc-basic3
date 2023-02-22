@@ -7,13 +7,20 @@ import pegged.grammar;
 import compiler.compiler, compiler.type, compiler.number;
 import language.statement, language.expression;
 
-class Voice_stmt : Statement
+import globals;
+
+template Sound_stmtCtor()
 {
-    /** Class constructor */
     this(ParseTree node, Compiler compiler)
 	{
 		super(node, compiler);
+        useSound = true;
 	}
+}
+
+class Voice_stmt : Statement
+{
+    mixin Sound_stmtCtor;
 
     void process()
     {
@@ -74,11 +81,7 @@ class Voice_stmt : Statement
 
 class Filter_stmt : Statement
 {
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    mixin Sound_stmtCtor;
 
     void process()
     {
@@ -118,11 +121,7 @@ class Filter_stmt : Statement
 
 class Volume_stmt : Statement
 {
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    mixin Sound_stmtCtor;
 
     void process()
     {
@@ -137,11 +136,7 @@ class Volume_stmt : Statement
 
 class Sound_clear_stmt : Statement
 {
-    /** Class constructor */
-    this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    mixin Sound_stmtCtor;
 
     void process()
     {

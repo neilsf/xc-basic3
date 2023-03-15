@@ -15,4 +15,32 @@
 	IF !FPUSH
 	pha
 	ENDIF
-	ENDM 
+	ENDM
+
+	MAC F_deek_word ; @push @pull
+	IF !FPULL
+	pla
+	sta R1
+	pla
+	sta R0
+	ELSE
+	sta R0
+	sty R1
+	ENDIF
+	IF !FPUSH
+	ldy #$00
+	lda (R0),y
+	pha
+	iny
+	lda (R0),y
+	pha
+	ELSE
+	ldy #$00
+	lda (R0),y
+	tax
+	iny
+	lda (R0),y
+	tay
+	txa
+	ENDIF
+	ENDM

@@ -195,3 +195,34 @@ MEMSHIFT SUBROUTINE
 	ENDIF
 	sta {1}
 	ENDM
+
+	MAC doke ; @pull
+	IF !FPULL
+	pla
+	sta R1
+	pla
+	sta R0
+	ELSE
+	sta R0
+	sty R1
+	ENDIF
+	ldy #$01
+	pla
+	sta (R0),y
+	dey
+	pla
+	sta (R0),y
+	ENDM
+	
+	; usage: doke {const address}
+	MAC doke_constaddr ; @pull
+	IF !FPULL
+	pla
+	sta {1} + 1
+	pla
+	sta {1}
+	ELSE
+	sta {1}
+	sty {1} + 1
+	ENDIF
+	ENDM

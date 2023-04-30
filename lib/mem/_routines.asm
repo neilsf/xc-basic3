@@ -187,7 +187,7 @@ MEMSHIFT SUBROUTINE
 	pla
 .l  sta $ffff
 	ENDM
-	
+    
 	; usage: poke {const address}
 	MAC poke_constaddr ; @pull
 	IF !FPULL
@@ -195,6 +195,94 @@ MEMSHIFT SUBROUTINE
 	ENDIF
 	sta {1}
 	ENDM
+    
+	; POKE (long address) - 45XX CPU only
+	MAC pokel ; @pull
+    IF !FPULL
+	pla
+	sta R6
+	pla
+	sta R5
+	pla
+	sta R4
+	ELSE
+	sta R4
+	sty R5
+	stx R6
+	ENDIF
+    lda #0
+    sta R7
+    ldz_imm #0
+    pla
+    sta_indz R4
+    ENDM
+	
+	; POKE (const long address) - 45XX CPU only
+	MAC pokel_constaddr ; @pull
+    ldx #<{1}
+	stx R4
+	ldx #>{1}
+	stx R5
+	ldx #[{1} >> 16]
+    stx R6
+	ldx #0
+    stx R7
+    ldz_imm #0
+    IF !FPULL
+    pla
+    ENDIF
+    sta_indz R4
+    ENDM
+    
+    ; DOKE (long address) - 45XX CPU only
+	MAC dokel ; @pull
+    IF !FPULL
+	pla
+	sta R6
+	pla
+	sta R5
+	pla
+	sta R4
+	ELSE
+	sta R4
+	sty R5
+	stx R6
+	ENDIF
+    lda #0
+    sta R7
+    ldz_imm #1
+    pla
+    sta_indz R4
+    dez
+    pla
+    sta_indz R4
+	ENDM
+    
+	; DOKE (const long address) - 45XX CPU only
+	MAC dokel_constaddr ; @pull
+    ldx #<{1}
+	stx R4
+	ldx #>{1}
+	stx R5
+	ldx #[{1} >> 16]
+    stx R6
+	ldx #0
+    stx R7
+    IF !FPULL
+      ldz_imm #1
+      pla
+      sta_indz R4
+      dez
+      pla
+      sta_indz R4
+    ELSE
+      ldz_imm #0
+      sta_indz R4
+      tya
+      inz
+      sta_indz R4
+    ENDIF
+    ENDM
 
 	MAC doke ; @pull
 	IF !FPULL

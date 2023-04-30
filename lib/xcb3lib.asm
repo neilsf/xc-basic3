@@ -8,6 +8,10 @@
 {1},"_IMPORTED" SET 1
 	ENDM
 	
+    IF TARGET == mega65
+    INCLUDE "cpu/4510.asm"
+    ENDIF
+	
 	; Pseudo-registers on zeropage
 	INCLUDE "core/zp/psregs.asm"
 	; Basic stack operations

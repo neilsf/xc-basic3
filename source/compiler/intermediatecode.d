@@ -77,23 +77,38 @@ pet4     EQU %0001000000100000
 pet4016  EQU %0001000000100010
 pet4032  EQU %0001000000100100
 pet8032  EQU %0001000001000100
+mega65   EQU %0100000000000000
 TARGET   EQU ` ~ target ~ `
 USEIRQ   EQU ` ~ (useIrqs ? "1" : "0") ~ `
 FASTIRQ  EQU ` ~ (fastIrqs ? "1" : "0") ~ `
 USESPR   EQU ` ~ (useSprites ? "1" : "0") ~ `
 USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
     SEG "UPSTART"
-    ORG $` ~ to!string(startAddress, 16) ~ "\n";
-        if(basicLoader) {
-            startUpCode ~= 
-`    DC.W next_line, 2021
+    ORG $` ~ to!string(startAddress, 16) ~ "\n" ~ getBasicStub();
+        return startUpCode;
+    }
+
+    private string getBasicStub()
+    {
+        if (basicLoader) {
+            if (target == "mega65") {
+                return `
+    DC.W next_line, 2021
+    DC.B $fe,$02,$20,$30,$3a
     DC.B $9e, [prg_start]d, 0
 next_line:
     DC.W 0
-
 `;
+            } else {
+                return `
+    DC.W next_line, 2021
+    DC.B $9e, [prg_start]d, 0
+next_line:
+    DC.W 0
+`;   
+            }
         }
-        return startUpCode;
+        return "";
     }
 
     private string getIncludes()

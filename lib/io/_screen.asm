@@ -283,7 +283,26 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	sta (R0),y
 	IF {1} == 1 ; Color was provided
 	  pla
-      IF (TARGET & pet) == 0
+      IF TARGET == mega65
+        tax
+        ; Store color ram base addr ($0001F800) + relative from screen
+        lda R0
+        sta R4
+        lda R0 + 1
+        clc
+        adc #$F0
+        sta R4 + 1
+        lda #$01
+        sta R4 + 2
+        lda #0
+        sta R4 + 3
+        tya
+        DC.B $4B          ; taz
+        txa
+        nop
+        DC.B $92, R4      ; sta [R4],z
+      ENDIF
+      IF TARGET != mega65 && ((TARGET & pet) == 0)
 	    tax
 	    lda R0 + 1
 	    sec
@@ -321,7 +340,28 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	jsr STRREMOV_SC
 	IF {1} == 1; Color was provided
       pla
-      IF (TARGET & pet) == 0
+      IF TARGET == mega65
+        tax
+        ; Store color ram base addr ($0001F800) + relative from screen
+        lda R0
+        sta R4
+        lda R0 + 1
+        clc
+        adc #$F0
+        sta R4 + 1
+        lda #$01
+        sta R4 + 2
+        lda #0
+        sta R4 + 3
+        txa
+        DC.B $AB, R3, $00 ; ldz R3
+.loop2:
+        nop
+        DC.B $92, R4      ; sta [R4],z
+        DC.B $3B          ; dez
+        bpl .loop2
+      ENDIF
+      IF TARGET != mega65 && ((TARGET & pet) == 0)
         tax
         lda R0 + 1
         sec
@@ -343,6 +383,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         bpl .loop
       ENDIF
 	ENDIF
+.q
 	ENDM
 	
 	; Calculates a pointer to screen row
@@ -397,7 +438,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8032 ; 80-column PET
+		IF TARGET == pet8032 || TARGET = mega65 ; 80-column machines
 		sta R0 + 1
 		asl R0
 		rol R0 + 1
@@ -409,6 +450,9 @@ CALC_SCRROWPTR SUBROUTINE
 	ENDIF
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
+	ENDIF
+    IF TARGET == mega65 
+	adc #$08 ; high byte is always 0C on plus4
 	ENDIF
 	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
@@ -504,6 +548,20 @@ RESET_SCRVECTORS SUBROUTINE
 	ora R0
 	sta TED_BORDER
 	ENDIF
+    
+	IF TARGET == mega65
+    ldx #$20
+    stx R0
+    ldx #$30
+    stx R0 + 1
+    ldx #$FD
+    stx R0 + 2
+    ldx #$0F
+    stx R0 + 3
+    DC.B $A3, $00     ; ldz #0
+    nop
+    DC.B $92, R0      ; sta [R4],z
+	ENDIF
 	
 	ENDM
 	
@@ -539,5 +597,19 @@ RESET_SCRVECTORS SUBROUTINE
     ora R0
     sta TED_BACKGROUND
     ENDIF
+    
+    IF TARGET == mega65
+    ldx #$20
+    stx R0
+    ldx #$30
+    stx R0 + 1
+    ldx #$FD
+    stx R0 + 2
+    ldx #$0F
+    stx R0 + 3
+    DC.B $A3, $01     ; ldz #1
+    nop
+    DC.B $92, R0      ; sta [R4],z
+	ENDIF
 	
 	ENDM

@@ -356,9 +356,8 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         txa
         DC.B $AB, R3, $00 ; ldz R3
 .loop2:
-        nop
-        DC.B $92, R4      ; sta [R4],z
-        DC.B $3B          ; dez
+        sta_indz R4  ; sta [R4],z
+        dez          ; dez
         bpl .loop2
       ENDIF
       IF TARGET != mega65 && ((TARGET & pet) == 0)
@@ -452,7 +451,7 @@ CALC_SCRROWPTR SUBROUTINE
 	adc #$0c ; high byte is always 0C on plus4
 	ENDIF
     IF TARGET == mega65 
-	adc #$08 ; high byte is always 0C on plus4
+	adc #$08 ; // TODO implement relocatable screen
 	ENDIF
 	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
@@ -550,17 +549,7 @@ RESET_SCRVECTORS SUBROUTINE
 	ENDIF
     
 	IF TARGET == mega65
-    ldx #$20
-    stx R0
-    ldx #$30
-    stx R0 + 1
-    ldx #$FD
-    stx R0 + 2
-    ldx #$0F
-    stx R0 + 3
-    DC.B $A3, $00     ; ldz #0
-    nop
-    DC.B $92, R0      ; sta [R4],z
+    sta_far $0FFD3020
 	ENDIF
 	
 	ENDM
@@ -599,17 +588,7 @@ RESET_SCRVECTORS SUBROUTINE
     ENDIF
     
     IF TARGET == mega65
-    ldx #$20
-    stx R0
-    ldx #$30
-    stx R0 + 1
-    ldx #$FD
-    stx R0 + 2
-    ldx #$0F
-    stx R0 + 3
-    DC.B $A3, $01     ; ldz #1
-    nop
-    DC.B $92, R0      ; sta [R4],z
+    sta_far $0FFD3021
 	ENDIF
 	
 	ENDM

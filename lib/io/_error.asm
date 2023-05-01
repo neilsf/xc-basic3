@@ -14,8 +14,6 @@ ERR_OVERFLOW			EQU $0f
 ERR_DIVZERO				EQU $14
 ERR_ILLEGAL_DIRECT		EQU $15
 
-SCINIT		 EQU $ff81	
-
 	MAC seterrhandler
 	lda #<{1}
 	sta ERR_VECTOR
@@ -52,7 +50,6 @@ RUNTIME_ERROR SUBROUTINE
 	bne .custom
 	; No custom error handler, do default
 	pha
-	;jsr SCINIT
 	printnl
 	lda #<.err
 	ldy #>.err

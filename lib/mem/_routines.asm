@@ -31,22 +31,59 @@ MEMSET	SUBROUTINE
 	ENDIF
 
 	MAC memset ; @pull
-	IF !FPULL
-	pla
-	sta R1
-	pla
-	sta R0
-	ELSE
-	sta R0
-	sty R1
-	ENDIF
-	pla
-	sta R3
-	pla
-	sta R2
-	pla
-	import I_MEMSET
-	jsr MEMSET
+      ;
+	  ; MEGA65 Target, use DMA
+	  ;
+      IF TARGET == mega65
+        IF !FPULL
+	      pla
+	      sta .dst + 2
+          pla
+	      sta .dst + 1
+	      pla
+	      sta .dst
+	    ELSE
+	      sta .dst
+	      sty .dst + 1
+          stx .dst + 2
+	    ENDIF
+        pla
+        sta .count + 1
+        pla
+        sta .count
+        pla
+        sta .value
+        sta $D707
+        DC.B $00   ; end of job options
+        DC.B $03   ; fill
+.count  DC.W 2000  ; count
+.value  DC.W $0000 ; value
+        DC.B $00   ; src bank
+.dst    DC.W $0800 ; dst
+        DC.B $00   ; dst bank
+        DC.B $00   ; cmd hi
+        DC.W $0000 ; modulo / ignored
+      ;
+      ; Classic Commmodore target, use routine
+      ;
+      ELSE
+	    IF !FPULL
+	      pla
+	      sta R1
+	      pla
+	      sta R0
+	    ELSE
+	      sta R0
+	      sty R1
+	    ENDIF
+	    pla
+	    sta R3
+	    pla
+	    sta R2
+	    pla
+	    import I_MEMSET
+	    jsr MEMSET
+      ENDIF
 	ENDM
 			
 	; Copies memory area downwards

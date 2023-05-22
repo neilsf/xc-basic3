@@ -31,59 +31,22 @@ MEMSET	SUBROUTINE
 	ENDIF
 
 	MAC memset ; @pull
-      ;
-	  ; MEGA65 Target, use DMA
-	  ;
-      IF TARGET == mega65
-        IF !FPULL
-	      pla
-	      sta .dst + 2
-          pla
-	      sta .dst + 1
-	      pla
-	      sta .dst
-	    ELSE
-	      sta .dst
-	      sty .dst + 1
-          stx .dst + 2
-	    ENDIF
-        pla
-        sta .count + 1
-        pla
-        sta .count
-        pla
-        sta .value
-        sta $D707
-        DC.B $00   ; end of job options
-        DC.B $03   ; fill
-.count  DC.W 2000  ; count
-.value  DC.W $0000 ; value
-        DC.B $00   ; src bank
-.dst    DC.W $0800 ; dst
-        DC.B $00   ; dst bank
-        DC.B $00   ; cmd hi
-        DC.W $0000 ; modulo / ignored
-      ;
-      ; Classic Commmodore target, use routine
-      ;
-      ELSE
-	    IF !FPULL
-	      pla
-	      sta R1
-	      pla
-	      sta R0
-	    ELSE
-	      sta R0
-	      sty R1
-	    ENDIF
-	    pla
-	    sta R3
-	    pla
-	    sta R2
-	    pla
-	    import I_MEMSET
-	    jsr MEMSET
-      ENDIF
+	IF !FPULL
+	pla
+	sta R1
+	pla
+	sta R0
+	ELSE
+	sta R0
+	sty R1
+	ENDIF
+	pla
+	sta R3
+	pla
+	sta R2
+	pla
+	import I_MEMSET
+	jsr MEMSET
 	ENDM
 			
 	; Copies memory area downwards
@@ -224,7 +187,7 @@ MEMSHIFT SUBROUTINE
 	pla
 .l  sta $ffff
 	ENDM
-    
+	
 	; usage: poke {const address}
 	MAC poke_constaddr ; @pull
 	IF !FPULL
@@ -232,94 +195,6 @@ MEMSHIFT SUBROUTINE
 	ENDIF
 	sta {1}
 	ENDM
-    
-	; POKE (long address) - 45XX CPU only
-	MAC pokel ; @pull
-    IF !FPULL
-	pla
-	sta R6
-	pla
-	sta R5
-	pla
-	sta R4
-	ELSE
-	sta R4
-	sty R5
-	stx R6
-	ENDIF
-    lda #0
-    sta R7
-    ldz_imm #0
-    pla
-    sta_indz R4
-    ENDM
-	
-	; POKE (const long address) - 45XX CPU only
-	MAC pokel_constaddr ; @pull
-    ldx #<{1}
-	stx R4
-	ldx #>{1}
-	stx R5
-	ldx #[{1} >> 16]
-    stx R6
-	ldx #0
-    stx R7
-    ldz_imm #0
-    IF !FPULL
-    pla
-    ENDIF
-    sta_indz R4
-    ENDM
-    
-    ; DOKE (long address) - 45XX CPU only
-	MAC dokel ; @pull
-    IF !FPULL
-	pla
-	sta R6
-	pla
-	sta R5
-	pla
-	sta R4
-	ELSE
-	sta R4
-	sty R5
-	stx R6
-	ENDIF
-    lda #0
-    sta R7
-    ldz_imm #1
-    pla
-    sta_indz R4
-    dez
-    pla
-    sta_indz R4
-	ENDM
-    
-	; DOKE (const long address) - 45XX CPU only
-	MAC dokel_constaddr ; @pull
-    ldx #<{1}
-	stx R4
-	ldx #>{1}
-	stx R5
-	ldx #[{1} >> 16]
-    stx R6
-	ldx #0
-    stx R7
-    IF !FPULL
-      ldz_imm #1
-      pla
-      sta_indz R4
-      dez
-      pla
-      sta_indz R4
-    ELSE
-      ldz_imm #0
-      sta_indz R4
-      tya
-      inz
-      sta_indz R4
-    ENDIF
-    ENDM
 
 	MAC doke ; @pull
 	IF !FPULL

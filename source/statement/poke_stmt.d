@@ -20,12 +20,19 @@ class Poke_stmt : Statement
 
     void process()
     {
-        const string opCode = toLower(this.node.children[0].matches[0]) ~ (target == "mega65" ? "l" : "");
+        string opCode = toLower(this.node.children[0].matches[0]);
         const bool isDoke = (opCode[0] == 'd');
-        Type addrType = compiler.getTypes().get(target == "mega65" ? Type.INT24 : Type.UINT16);
+        Type addrType;
         ParseTree addrNode = this.node.children[0].children[0];
         ParseTree valueNode = this.node.children[0].children[1];
         Expression e1 = new Expression(addrNode, compiler);
+        if (target == "mega65" && e1.getType().name == Type.INT24) {
+            // Address is a LONG
+            addrType = compiler.getTypes().get(Type.INT24);
+            opCode ~= "l";
+        } else {
+            addrType = compiler.getTypes().get(Type.UINT16);
+        }
         e1.setExpectedType(addrType);
         e1.eval();
         Expression e2 = new Expression(valueNode, compiler);

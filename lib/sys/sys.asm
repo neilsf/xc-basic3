@@ -37,6 +37,15 @@ JIFFY EQU $8D
 		and #%11111110
 		sta $01
 	ENDIF
+    IF TARGET == mega65
+        lda $01    
+        pha
+        lda #$35
+        sta $01
+        ;Set BP to $BD00
+        ;lda #$BD
+        ;tab
+    ENDIF
 	IF TARGET == c128
 		; Set up MMU
 		lda #%001110
@@ -67,11 +76,18 @@ JIFFY EQU $8D
 	jsr IRQRESET
 	ENDIF
 	IF TARGET == c64
-	; Bank in BASIC ROM
-	lda $01
-	ora #%00000001         
-	sta $01
+        ; Bank in BASIC ROM
+        lda $01
+        ora #%00000001         
+        sta $01
 	ENDIF
+    IF TARGET == mega65
+        pla
+        sta $01
+        ; Set BP to $0000
+        ;lda #$00
+        ;tab
+    ENDIF
 	IF TARGET == c128
 	; Reset MMU
 	lda #%0

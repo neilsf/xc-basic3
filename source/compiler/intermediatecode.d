@@ -93,7 +93,7 @@ USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
         if (basicLoader) {
                 return `
     DC.W next_line, 2021
-` ~ target == "mega65" ? "DC.B $fe,$02,$30,$3a" : "" ~ `    
+` ~ ( target == "mega65" ? "    DC.B $fe,$02,$30,$3a" : "") ~ `    
     DC.B $9e, [prg_start]d, 0
 next_line:
     DC.W 0

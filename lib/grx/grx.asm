@@ -1,4 +1,4 @@
-	IF TARGET == c64 || TARGET == c128
+	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
 HSCR EQU $D016	
 VSCR EQU $D011	
 RAST EQU $D012
@@ -14,6 +14,9 @@ RAST8 EQU $FF0A
 RAST EQU $9004
 RAST8 EQU $9003
 	ENDIF
+    IF TARGET == mega65
+VIC4_CHARPTR EQU $0FFD3068
+    ENDIF
 	
 VMODE_TEXT EQU 1	
 VMODE_BITMAP EQU 2	
@@ -25,14 +28,14 @@ VMODE_MULTI EQU 1
 	IF !FPULL
 	pla
 	ENDIF
-	IF TARGET & vic20 || TARGET & pet
+    IF TARGET & vic20 || TARGET & pet
 	ELSE
-	and #%00000111
-	sta R0
-	lda HSCR
-	and #%11111000
-	ora R0
-	sta HSCR
+    and #%00000111
+    sta R0  
+    lda HSCR
+    and #%11111000
+    ora R0
+    sta HSCR
 	ENDIF
 	ENDM
 	
@@ -167,6 +170,35 @@ VMODE_MULTI EQU 1
     and #%11111000
     ora R0
     sta $9005
+    ENDIF
+    IF TARGET == mega65
+      ldx #<VIC4_CHARPTR
+      stx R0
+      ldx #>VIC4_CHARPTR
+      stx R0 + 1
+      ldx #<[VIC4_CHARPTR >> 16]
+      stx R0 + 2
+      ldx #>[VIC4_CHARPTR >> 16]
+      stx R0 + 3
+      IF !FPULL
+        ldz_imm #2
+        sta_indz R0
+        pla
+        dez
+        sta_indz R0
+        pla
+        dez
+        sta_indz R0
+      ELSE
+        ldz_imm #0
+        sta_indz R0
+        tya
+        inz
+        sta_indz R0
+        txa
+        inz
+        sta_indz R0
+      ENDIF
     ENDIF
 	ENDM
 

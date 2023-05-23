@@ -30,13 +30,13 @@ VMODE_MULTI EQU 1
 	ENDIF
     IF TARGET & vic20 || TARGET & pet
 	ELSE
-    and #%00000111
-    sta R0  
-    lda HSCR
-    and #%11111000
-    ora R0
-    sta HSCR
-	ENDIF
+      and #%00000111
+      sta R0  
+      lda HSCR
+      and #%11111000
+      ora R0
+      sta HSCR
+    ENDIF
 	ENDM
 	
 	MAC vscroll ; @pull
@@ -45,12 +45,12 @@ VMODE_MULTI EQU 1
 	ENDIF
 	IF TARGET & vic20 || TARGET & pet
 	ELSE
-	and #%00000111
-	sta R0
-	lda VSCR
-	and #%11111000
-	ora R0
-	sta VSCR
+	  and #%00000111
+	  sta R0
+	  lda VSCR
+	  and #%01111000
+	  ora R0
+	  sta VSCR
 	ENDIF
 	ENDM
 	

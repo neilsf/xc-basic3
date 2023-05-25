@@ -62,7 +62,7 @@ VMODE_MULTI EQU 1
 	ELSE
 	lda VSCR
 	IF {1} == 1
-	and #%11011111
+	and #%01011111
 	ENDIF
 	IF {1} == 2
 	ora #%00100000
@@ -217,7 +217,7 @@ VMODE_MULTI EQU 1
 	  lda RAST
 	  pha
 	  lda RAST8
-	  IF (TARGET == c64) || (TARGET == c128) 
+	  IF (TARGET == c64) || (TARGET == c128) || (TARGET == mega65)
 	  asl
 	  lda #0
 	  rol

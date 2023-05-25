@@ -82,7 +82,7 @@ class Sprite_stmt : Statement
 
                 case "XCBASIC.SprSubCmdShape":
                     Expression shape = new Expression(node.children[0], compiler);
-                    shape.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    shape.setExpectedType(compiler.getTypes().get(target == "mega65" ? Type.UINT16 : Type.UINT8));
                     shape.eval();
                     appendCode(shape.toString());
                     appendCode("    sprite_shape " ~ sprNoStr ~ "\n");

@@ -199,14 +199,14 @@ FMVOLSHAD4  DC.B 0
 	ENDM
 	
 	MAC voice_filteron
-	lda #[1 << [{1} - 1]]
+	lda #[1 << [{2} - 1]]
 	ora FILTRRSHAD{1}
 	sta FILTRRSHAD{1}
 	sta FILTRR{1}
 	ENDM
 	
 	MAC voice_filteroff
-	lda #[[1 << [{1} - 1]] ^ $FF]
+	lda #[[1 << [{2} - 1]] ^ $FF]
 	and FILTRRSHAD{1}
 	sta FILTRRSHAD{1}
 	sta FILTRR{1}
@@ -215,7 +215,7 @@ FMVOLSHAD4  DC.B 0
 	MAC filter
 	lda FMVOLSHAD{1}
 	and #%00001111
-	ora #[{1}]
+	ora #[{2}]
 	sta FMVOLSHAD{1}
 	sta FMVOL{1}
 	ENDM

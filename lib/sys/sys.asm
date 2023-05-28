@@ -38,13 +38,6 @@ JIFFY EQU $8D
 		sta $01
 	ENDIF
     IF TARGET == mega65
-        lda $01    
-        pha
-        lda #$35
-        sta $01
-        ; Set BP to $BD00
-        lda #$BD
-        tab
         IF USESPR
           jsr sprinit_m65
         ENDIF
@@ -84,13 +77,6 @@ JIFFY EQU $8D
         ora #%00000001         
         sta $01
 	ENDIF
-    IF TARGET == mega65
-        ; Set BP to $0000
-        lda #$00
-        tab
-        pla
-        sta $01
-    ENDIF
 	IF TARGET == c128
 	; Reset MMU
 	lda #%0

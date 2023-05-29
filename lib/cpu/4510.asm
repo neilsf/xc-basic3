@@ -4,6 +4,14 @@
     DC.B $FB
     ENDM
     
+    MAC plx
+    DC.B $FA
+    ENDM
+    
+    MAC ply
+    DC.B $7A
+    ENDM
+    
     MAC inz
     DC.B $1B
     ENDM

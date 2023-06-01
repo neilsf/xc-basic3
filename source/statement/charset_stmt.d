@@ -7,6 +7,8 @@ import pegged.grammar;
 
 import std.algorithm.searching, std.uni;
 
+import globals;
+
 /** Parses and compiles a CHARAT statement */
 class Charset_stmt : Statement
 {
@@ -19,13 +21,15 @@ class Charset_stmt : Statement
     /** Compile */
     void process()
     {
-	if(canFind(["rom", "ram"], toLower(node.matches[1]))) {
-	    appendCode("    charset" ~ toLower(node.matches[1]) ~ "\n");
-	}
-	Expression e = new Expression(node.children[0].children[0], compiler);
-	e.setExpectedType(compiler.getTypes().get(Type.UINT8));
-	e.eval();
-	appendCode(e.toString());
-	appendCode("    charset\n");
+		string romOrRam = "";
+		if (canFind(["rom", "ram"], toLower(node.matches[1]))) {
+			romOrRam = toLower(node.matches[1]);
+			appendCode("    charset" ~ romOrRam ~ "\n");
+		}
+		Expression e = new Expression(node.children[0].children[0], compiler);
+		e.setExpectedType(compiler.getTypes().get((target == "x16") ? Type.UINT16 : Type.UINT8));
+		e.eval();
+		appendCode(e.toString());
+		appendCode("    charset\n");
     }
 }

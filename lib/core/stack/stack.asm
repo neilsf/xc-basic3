@@ -29,6 +29,9 @@ STACKFRAME_TOP EQU $3F00
 STACKFRAME_TOP EQU $7F00
 	  ENDIF
 	ENDIF
+	IF TARGET == x16
+STACKFRAME_TOP EQU $0700	
+	ENDIF
 	
 	; (private)
 	; Calculate variable address from address + index

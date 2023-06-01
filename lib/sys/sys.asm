@@ -1,5 +1,5 @@
 	; XC=BASIC system functions
-	IF TARGET == c64 || TARGET & vic20
+	IF TARGET == c64 || TARGET & vic20 || TARGET == x16
 SAREG EQU $030C
 SXREG EQU $030D 
 SYREG EQU $030E 
@@ -31,12 +31,14 @@ JIFFY EQU $8D
 	MAC xbegin
 	spreset
 	framereset
+	
 	IF TARGET == c64
 		; Bank out BASIC ROM
 		lda $01
 		and #%11111110
 		sta $01
 	ENDIF
+	
 	IF TARGET == c128
 		; Set up MMU
 		lda #%001110
@@ -49,9 +51,18 @@ JIFFY EQU $8D
 		and #%11111110
 		sta INIT_STATUS
 	ENDIF
+  
+	IF TARGET == x16
+	; Bank KERNAL in
+	lda #$00
+	sta $01
+	ENDIF
+	
+
     IF USEIRQ == 1
 		jsr IRQSETUP
 	ENDIF
+	
 	; Init FP workspace
 	ldx #[TEMP3 - CHARAC + 1]
 	lda #0
@@ -59,12 +70,18 @@ JIFFY EQU $8D
 	sta CHARAC,x
 	dex
 	bne .1
+
 	ENDM
 	
 	; Final code that runs when the program is terminated
 	MAC xend
 	IF USEIRQ == 1
 	jsr IRQRESET
+	ENDIF
+	IF TARGET == x16
+	; Bank BASIC in
+	lda #$04
+	sta $01
 	ENDIF
 	IF TARGET == c64
 	; Bank in BASIC ROM
@@ -102,6 +119,10 @@ JIFFY EQU $8D
 	ENDIF
 	IF TARGET & pet && TARGET >= pet4
 	jmp $B3FF
+	ENDIF
+	IF TARGET == x16
+	clc ; Warm start
+	jmp $FF47
 	ENDIF
 	ENDM
 	

@@ -2,10 +2,15 @@ STRING_WORKAREA EQU STACKFRAME_TOP
 	
 	IF TARGET & pet
 STRING_BUFFER1  EQU $033A
-STRING_BUFFER2  EQU $039B	
+STRING_BUFFER2  EQU $039A	
 	ELSE
+	  IF TARGET == x16
+STRING_BUFFER1  EQU $0400
+STRING_BUFFER2  EQU $0460
+	  ELSE
 STRING_BUFFER1  EQU $033C
-STRING_BUFFER2  EQU $039D
+STRING_BUFFER2  EQU $039C
+	  ENDIF
 	ENDIF
 
 	INCLUDE "string/_fn.asm"
@@ -250,6 +255,19 @@ STRREMOV_SC SUBROUTINE
 	dey
 	bpl .loop
 .end
+	rts
+	ENDIF
+	
+	IFCONST I_VERA_STRREMOV_SC_IMPORTED
+	; For the VERA chip.
+	; VERA address already set
+	; Color in A
+	; Max length in A
+	; Same as above but converts PETSCII to screencode
+	; and does not copy length indicator
+	; Leaves string length in R3
+VERA_STRREMOV_SC SUBROUTINE
+	
 	rts
 	ENDIF
 	

@@ -18,7 +18,7 @@ import compiler.compiler, compiler.library, compiler.sourcefile;
 import globals, optimizer;
 
 // Program version
-const string APP_VERSION = "v3.1.3";
+const string APP_VERSION = "v3.2.0";
 
 /** Possible target options */
 const string[] targetOpts = [
@@ -35,7 +35,8 @@ const string[] targetOpts = [
     "pet3032",  // Commodore PET3000 series (32k RAM)
     "pet4016",  // Commodore PET4000 series (16k RAM)
     "pet4032",  // Commodore PET4000 series (32k RAM)
-    "pet8032"   // Commodore PET8000 series
+    "pet8032",   // Commodore PET8000 series
+    "x16",      // Commander X16
 ];
 
 // Command line options
@@ -47,8 +48,8 @@ version(Windows) {
 else {
 	private string dasm = "dasm";
 }
-private string symbolfile="";
-private string listfile="";
+private string symbolfile = "";
+private string listfile = "";
 private int verbosity = VERBOSITY_INFO;
 
 private GetoptResult helpInformation;
@@ -106,6 +107,12 @@ void main(string[] args)
     const string stdHeadersName = getLibraryDir() ~ "/headers.bas";
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
+    // Compile any machine specific headers
+    const string targetHeadersName = getLibraryDir() ~ "/headers_" ~ getTargetFamily(target) ~ ".bas";
+    if (exists(targetHeadersName)) {
+        source = SourceFile.get(targetHeadersName);
+        compiler.compileSourceFile(source);
+    }
     // Compile the program
     compiler.compilingUserCode = true;
     immutable string currentDir = getcwd();
@@ -223,6 +230,7 @@ public void setStartAddress()
                 break;
             
             case "c64":
+            case "x16":
                 startAddress = 0x0801;
                 break;
 
@@ -299,6 +307,10 @@ private void setEndAddress()
             case "pet3016":
             case "pet4016":
                 topAddress = 0x4000;
+                break;
+
+            case "x16":
+                topAddress = 0x9EFF;
                 break;
                 
             default:
@@ -432,5 +444,21 @@ private void displayInformation(string tmpSymbolfile)
         stdout.writeln(
             "WARNING: The program has been successfully compiled, but it can't fit between $" 
             ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
+    }
+}
+
+/**
+ * Returns the family of computers the target belongs to
+ */
+private string getTargetFamily(string target)
+{
+    if (target[0..3] == "pet") {
+        return "pet";
+    } else if (target[0..3] == "vic") {
+        return "vic20";
+    } else if (target == "c16" || target == "cplus4") {
+        return "c264";
+    } else {
+        return target;
     }
 }

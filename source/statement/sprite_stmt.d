@@ -35,8 +35,14 @@ class Sprite_stmt : Statement
         if(sprNo.isConstant) {
             sprNoInt = to!ubyte(sprNo.getConstVal());
             sprNoStr = to!string(sprNoInt);
-            if(sprNoInt < 0 || sprNoInt > 7) {
-                compiler.displayError("Sprite number must be a number between 0 and 7");
+            const ubyte maxSprites = target == "x16" ? 127 : 7;
+            if(sprNoInt < 0 || sprNoInt > maxSprites) {
+                compiler.displayError("Sprite number must be a number between 0 and " ~ to!string(maxSprites));
+            }
+            if (target == "x16") {
+                sprNo.eval();
+                appendCode(sprNo.toString());
+                appendCode("    sprite\n");
             }
         } else {
             appendCode(sprNo.toString());
@@ -57,7 +63,8 @@ class Sprite_stmt : Statement
                     Expression x = new Expression(node.children[0].children[0], compiler);
                     Expression y = new Expression(node.children[0].children[1], compiler);
                     x.setExpectedType(compiler.getTypes().get(Type.UINT16));
-                    y.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    const string expType = (target == "x16") ? Type.UINT16 : Type.UINT8;
+                    y.setExpectedType(compiler.getTypes().get(expType));
                     x.eval(); y.eval();
                     appendCode(x.toString() ~ y.toString());
                     appendCode("    sprite_at " ~ sprNoStr ~ "\n");
@@ -71,8 +78,17 @@ class Sprite_stmt : Statement
                     appendCode("    sprite_color " ~ sprNoStr ~ "\n");
                     break;
 
+                case "XCBASIC.SprSubCmdZDepth":
+                    Expression zd = new Expression(node.children[0], compiler);
+                    zd.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    zd.eval();
+                    appendCode(zd.toString());
+                    appendCode("    sprite_zdepth " ~ sprNoStr ~ "\n");
+                    break;
+
                 case "XCBASIC.SprSubCmdHiresMulti":
-                    appendCode("    sprite_" ~ toLower(node.matches.join()) ~ " " ~ sprNoStr ~ "\n"); 
+                    string prop = toLower(node.matches.join());
+                    appendCode("    sprite_" ~ prop  ~ " " ~ sprNoStr ~ "\n"); 
                     break;
 
                 case "XCBASIC.SprSubCmdOnUnderBg":
@@ -82,7 +98,8 @@ class Sprite_stmt : Statement
 
                 case "XCBASIC.SprSubCmdShape":
                     Expression shape = new Expression(node.children[0], compiler);
-                    shape.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    const string expType = (target == "x16") ? Type.UINT16: Type.UINT8;
+                    shape.setExpectedType(compiler.getTypes().get(expType));
                     shape.eval();
                     appendCode(shape.toString());
                     appendCode("    sprite_shape " ~ sprNoStr ~ "\n");
@@ -101,11 +118,25 @@ class Sprite_stmt : Statement
                     appendCode("    sprite_xysize " ~ sprNoStr ~ "\n");
                     break;
 
+                case "XCBASIC.SprSubCmdXYFlip":
+                    if(node.children[0].children.length != 2) {
+                        compiler.displayError("SPRITE XYFLIP expects exactly 2 parameters, got " ~ to!string(node.children[0].children.length));
+                    }
+                    Expression x = new Expression(node.children[0].children[0], compiler);
+                    Expression y = new Expression(node.children[0].children[1], compiler);
+                    x.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    y.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    x.eval(); y.eval();
+                    appendCode(x.toString() ~ y.toString());
+                    appendCode("    sprite_xyflip " ~ sprNoStr ~ "\n");
+                    break;
+
                 default:
                     compiler.displayError("Unknown statement: " ~ node.name);
                     break;
             }
         }
+        appendCode("    savesprite\n");
     }
 }
 
@@ -140,5 +171,15 @@ class Sprite_clearhit_stmt : Statement
     void process()
     {
         this.appendCode("    sprite_clear_hit\n");
+    }
+}
+
+class Sprite_clear_stmt : Statement
+{
+    mixin Sprite_stmtCtor;
+
+    void process()
+    {
+        this.appendCode("    sprite_clear\n");
     }
 }

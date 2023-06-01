@@ -20,7 +20,11 @@ MAX_EXPON	 EQU 10
 APPLE_BAD_BYTE EQU 0
 		
 		SEG.U ZP
-		ORG $15
+                IF TARGET == x16
+		ORG $A9
+                ELSE
+                ORG SN + 1
+                ENDIF
 CHARAC:
 		DS.B 1
 INDEX:

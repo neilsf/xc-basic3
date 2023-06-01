@@ -21,6 +21,14 @@ class VMode_stmt : Statement
         foreach(ref subCmd; stmtNode.children) {
             ParseTree node = subCmd.children[0];
             final switch(node.name) {
+                case "XCBASIC.VModeSubCmdExpression":
+                    Expression e = new Expression(node.children[0], compiler);
+                    e.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    e.eval();
+                    appendCode(e.toString());
+                    appendCode("    vmode_x16\n");
+                break;
+
                 case "XCBASIC.VModeSubCmdTextBitmap":
                     const string mode = toUpper(node.matches.join());
                     appendCode("    vmode VMODE_" ~ mode ~ "\n");

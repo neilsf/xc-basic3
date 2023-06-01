@@ -28,15 +28,11 @@ COLOR_RAM EQU $9400
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
-VICII_BORDER	 EQU $D020
-VICII_BACKGROUND EQU $D021
+
 ; Various C264 registers
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
-TED_BORDER	 	 EQU $FF19
-TED_BACKGROUND   EQU $FF15
-; Various VIC-20 registers
-VICI_BORDER_BG	 EQU $900F
+
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -275,29 +271,46 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
-	import I_CALC_SCRROWPTR
-	jsr CALC_SCRROWPTR
-	pla
-	tay
-	pla
-	sta (R0),y
-	IF {1} == 1 ; Color was provided
+	; Commander X16
+	IF TARGET == x16
+	  tay
 	  pla
-      IF (TARGET & pet) == 0
-	    tax
-	    lda R0 + 1
-	    sec
-	    IF TARGET & c264
-        sbc #$0C
-	    ELSE
-        sbc KERNAL_SCREEN_ADDR
-        ENDIF
-	    clc
-	    adc #>COLOR_RAM
-	    sta R0 + 1
-	    txa
-	    sta (R0),y
-      ENDIF
+	  tax
+	  clc
+	  import I_VERA_SETADDR
+	  jsr VERA_SETADDR
+	  pla
+	  sta VERA_DATA0
+	  IF {1} == 1 ; Color was provided
+	  pla
+	  sta VERA_DATA0
+	  ENDIF
+	; Commodore 64, VIC-20 and all other
+	ELSE  
+	  import I_CALC_SCRROWPTR
+	  jsr CALC_SCRROWPTR
+	  pla
+	  tay
+	  pla
+	  sta (R0),y
+	  IF {1} == 1 ; Color was provided
+		pla
+		IF (TARGET & pet) == 0
+		  tax
+		  lda R0 + 1
+		  sec
+		  IF TARGET & c264
+			sbc #$0C
+		  ELSE
+			sbc KERNAL_SCREEN_ADDR
+		  ENDIF
+		  clc
+		  adc #>COLOR_RAM
+		  sta R0 + 1
+		  txa
+		  sta (R0),y
+		ENDIF
+	  ENDIF
 	ENDIF
 	ENDM
 	
@@ -307,6 +320,37 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
+	; Commander X16
+	IF TARGET == x16
+	  tay
+	  pla
+	  tax
+	  clc
+	  import I_VERA_SETADDR
+	  import I_VERA_MOV_STRING  
+	  jsr VERA_SETADDR
+	  ; override increment value to 2
+	  lda #%00100001
+	  sta VERA_ADDR + 2
+	  jsr VERA_MOV_STRING
+	  IF {1} == 1; Color was provided
+	  pla
+	  ; Decrement VERA addr by 1 ...
+	  ldy #%00011001
+	  sty VERA_ADDR + 2
+	  ldy VERA_DATA0
+	  ; .. Then by 2 at each subsequent write
+	  ldy #%00101001
+	  sty VERA_ADDR + 2
+	  ldx R0
+.loop
+	  beq .q
+	  sta VERA_DATA0
+	  dex
+	  jmp .loop
+.q
+	  ENDIF
+	ELSE
 	import I_CALC_SCRROWPTR
 	jsr CALC_SCRROWPTR
 	pla
@@ -342,6 +386,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         dey
         bpl .loop
       ENDIF
+	ENDIF
 	ENDIF
 	ENDM
 	
@@ -416,13 +461,16 @@ CALC_SCRROWPTR SUBROUTINE
 	sta R0 + 1
 	rts
 	ENDIF
-		
+			
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
 	IF !FPULL
 	pla
 	ENDIF
-    ; This command has only effect on the C64/C128
+    IF TARGET == x16
+    clc
+    jsr KERNAL_SCREENMODE
+    ENDIF
     IF TARGET == c64 || TARGET == c128
 	asl
 	asl
@@ -475,69 +523,3 @@ RESET_SCRVECTORS SUBROUTINE
 	sta SRVEC,x
 	jmp KERNAL_HOME
 	ENDIF
-	
-	MAC border ; @fpull	
-	
-	IF !FPULL
-	pla
-	ENDIF
-	
-	IF TARGET == c64 || TARGET == c128
-	sta VICII_BORDER
-	ENDIF
-	
-	IF TARGET & vic20
-	sta R0
-	lda VICI_BORDER_BG
-	and #%11111000
-	ora R0
-	sta VICI_BORDER_BG
-	ENDIF
-	
-	IF TARGET & c264 
-	sta R0
-	pla
-	asl
-	asl
-	asl
-	asl
-	ora R0
-	sta TED_BORDER
-	ENDIF
-	
-	ENDM
-	
-	MAC background ; @fpull	
-	
-    IF !FPULL
-    pla
-    ENDIF
-    
-    IF TARGET == c64 || TARGET == c128
-    sta VICII_BACKGROUND
-    ENDIF
-    
-    IF TARGET & vic20
-    asl
-    asl
-    asl
-    asl
-    sta R0
-    lda VICI_BORDER_BG
-    and #%00001111
-    ora R0
-    sta VICI_BORDER_BG
-    ENDIF
-    
-    IF TARGET & c264 
-    sta R0
-    pla
-    asl
-    asl
-    asl
-    asl
-    ora R0
-    sta TED_BACKGROUND
-    ENDIF
-	
-	ENDM

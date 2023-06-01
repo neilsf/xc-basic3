@@ -17,3 +17,7 @@
 	IF TARGET == c128
 	INCLUDE "irq/_c128.asm"
 	ENDIF
+
+	IF TARGET == x16
+	INCLUDE "irq/_x16.asm"
+	ENDIF

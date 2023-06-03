@@ -1694,10 +1694,16 @@ L3D77:
 FOUT4:
         sta     stack,y
 L3D8F:
-        ;lda     #$00
-        ;sta     stack,y
-        sty		stack
+        lda     stack + 1
+        cmp     #$2D
+        beq     L3D94 
+        dey
+        sty		stack + 1
+        lda     #<[stack + 1]
+        ldy     #>[stack + 1]
+        rts
 L3D94:
+        sty		stack
         lda     #<stack
         ldy     #>stack
         rts

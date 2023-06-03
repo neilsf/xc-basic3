@@ -59,8 +59,17 @@ class Voice_stmt : Statement
             ParseTree node = subCmd.children[0];
             final switch(node.name) {
                 case "XCBASIC.VoiceSubCmdOnOff":
-                case "XCBASIC.VoiceSubCmdFilterOnOff":
                     appendCode("    voice_" ~ toLower(node.matches.join()) ~ " " ~ voiceNo ~ "\n"); 
+                    break;
+
+                case "XCBASIC.VoiceSubCmdFilterOnOff":
+                    uint realVoiceNo = cVoiceNo % 3;
+                    if (realVoiceNo == 0) {
+                        realVoiceNo = 3;   
+                    }
+		            uint sidNo = (cVoiceNo - 1) / 3 + 1;
+                    appendCode("    voice_" ~ toLower(node.matches.join())
+                        ~ " " ~ to!string(sidNo) ~ ", " ~ to!string(realVoiceNo) ~ "\n"); 
                     break;
 
                 case "XCBASIC.VoiceSubCmdADSR":
@@ -122,7 +131,19 @@ class Filter_stmt : Statement
     void process()
     {
         ParseTree stmtNode = node.children[0];
-        ParseTree[] voiceSubCmdNodes = stmtNode.children[0..$];
+        ulong ix = 0;
+        int sidNo = 1;
+        string sidNoStr;
+        if (stmtNode.children[ix].name == "XCBASIC.Number") {
+            const Number num = new Number(stmtNode.children[ix], compiler);
+            sidNo = num.intVal;
+            if (num.intVal < 1 || num.intVal > 4) {
+                compiler.displayError("SID number must be between 1 and 4");
+            }
+            ix++;
+        }
+        sidNoStr = to!string(sidNo);
+        ParseTree[] voiceSubCmdNodes = stmtNode.children[ix..$];
         foreach(ref subCmd; voiceSubCmdNodes) {
             ParseTree node = subCmd.children[0];
             string[] filters;
@@ -132,14 +153,14 @@ class Filter_stmt : Statement
                     cutoff.setExpectedType(compiler.getTypes().get(Type.UINT16));
                     cutoff.eval();
                     appendCode(cutoff.toString());
-                    appendCode("    filter_cutoff\n");
+                    appendCode("    filter_cutoff " ~ sidNoStr ~ "\n");
                     break;
                 case "XCBASIC.FilterSubCmdResonance":
                     Expression resonance = new Expression(node.children[0], compiler);
                     resonance.setExpectedType(compiler.getTypes().get(Type.UINT8));
                     resonance.eval();
                     appendCode(resonance.toString());
-                    appendCode("    filter_resonance\n");
+                    appendCode("    filter_resonance " ~ sidNoStr ~ "\n");
                     break;
                 case "XCBASIC.FilterSubCmdPass":
                     uint value = 0;
@@ -149,7 +170,7 @@ class Filter_stmt : Statement
                     break;
             }
             if(filters.length > 0) {
-                appendCode("    filter " ~ filters.join(" | ") ~ "\n");
+                appendCode("    filter " ~ sidNoStr ~ ", " ~ filters.join(" | ") ~ "\n");
             }
         }
     }
@@ -162,11 +183,26 @@ class Volume_stmt : Statement
     void process()
     {
         ParseTree stmtNode = node.children[0];
-        ParseTree valueNode = stmtNode.children[0];
-        Expression e = new Expression(valueNode, this.compiler);
+        ParseTree valueNodes = stmtNode.children[0];
+        Expression sidNoExp, e;
+        ubyte sidNo;
+        if (valueNodes.children.length > 1) {
+            sidNoExp = new Expression(valueNodes.children[0], this.compiler);
+            if (!sidNoExp.isConstant()) {
+                compiler.displayError("SID number must be constant");
+            }
+            sidNo = to!ubyte(sidNoExp.getConstVal());
+            if (sidNo < 1 || sidNo > 4) {
+                compiler.displayError("SID number must be between 1 and 4");
+            }
+            e = new Expression(valueNodes.children[1], this.compiler);
+        } else {
+            e = new Expression(valueNodes.children[0], this.compiler);
+            sidNo = 1;
+        }
         e.setExpectedType(this.compiler.getTypes.get(Type.UINT8));
         e.eval();
-        this.appendCode(e.toString() ~ "    volume\n");
+        this.appendCode(e.toString() ~ "    volume " ~ to!string(sidNo) ~ "\n");
     }
 }
 

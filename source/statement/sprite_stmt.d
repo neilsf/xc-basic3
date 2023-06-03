@@ -98,7 +98,8 @@ class Sprite_stmt : Statement
 
                 case "XCBASIC.SprSubCmdShape":
                     Expression shape = new Expression(node.children[0], compiler);
-                    const string expType = (target == "x16") ? Type.UINT16: Type.UINT8;
+                    const string expType = (target == "x16" || target == "mega65")
+                        ? Type.UINT16: Type.UINT8;
                     shape.setExpectedType(compiler.getTypes().get(expType));
                     shape.eval();
                     appendCode(shape.toString());

@@ -1,5 +1,6 @@
 	PROCESSOR 6502
 	
+; VIC-II registers
 SPRPOS    EQU $D000
 SPRPOSX9  EQU $D010
 SPRENABLE EQU $D015
@@ -13,12 +14,34 @@ SPRMCLR1  EQU $D025
 SPRMCLR2  EQU $D026
 SPRCOLOR  EQU $D027
 
+; VIC-IV registers
+SPRPTRADRLSB EQU $D06C
+SPRPTRADRMSB EQU $D06D
+SPRPTRM65    EQU $D06E
+
 bittab_t  HEX 01 02 04 08 10 20 40 80
 bittab_f  HEX FE FD FB F7 EF DF BF 7F
 spritehit DC.B 0
 sprbghit  DC.B 0
 ; Sprite collision refresh flag: 0 = Must reread collision 
 sprcollr  DC.B 0
+
+; Initialization routine required on MEGA65
+    IF TARGET == mega65    
+SPRBANK EQU 0
+SPRPTRS EQU $0FD0
+
+sprinit_m65 SUBROUTINE
+    lda #<SPRPTRS
+    sta SPRPTRADRLSB
+    lda #>SPRPTRS
+    sta SPRPTRADRMSB
+    lda #SPRBANK
+    ora #%10000000
+    sta SPRPTRM65
+    lda #0
+    rts
+    ENDIF
 	
     ; After this macro call
     ; X Reg holds the sprite number (0 to 7)
@@ -153,19 +176,35 @@ sprcollr  DC.B 0
 	ENDM
 	
 	MAC sprite_shape
-	lda #$F8
-	sta R0
-    lda KERNAL_SCREEN_ADDR
-    clc
-	adc #3
-	sta R0 + 1
-	pla
-	IF	{1} == 255
-	ldy SN
-	ELSE
-	ldy #{1}
-	ENDIF
-	sta (R0),y
+      IF TARGET == mega65
+        IF	{1} == 255
+	      lda SN
+	    ELSE
+	      lda #{1}
+	    ENDIF
+        asl
+        tax
+        inx
+        pla
+        sta SPRPTRS,x
+        pla
+        dex
+        sta SPRPTRS,x
+	  ELSE
+        lda #$F8
+        sta R0
+        lda KERNAL_SCREEN_ADDR
+        clc
+        adc #3
+        sta R0 + 1
+        pla
+        IF	{1} == 255
+        ldy SN
+        ELSE
+        ldy #{1}
+        ENDIF
+        sta (R0),y
+	  ENDIF
 	ENDM
 	
 	MAC sprite_xysize

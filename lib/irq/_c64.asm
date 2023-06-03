@@ -16,6 +16,8 @@ CIA1_CRB        EQU $DC0F
 	; bit 3 - custom timer interrupts enabled
 	; bit 4 - system interrupts enabled
 IRQFLAGS HEX 10
+    ; The system IRQ vector is backed up here
+DEFAULT_IRQVEC DS.B 2
 
 IRQ_RASTER EQU 1
 IRQ_BACKGROUND EQU 2
@@ -23,20 +25,33 @@ IRQ_SPRITE EQU 4
 IRQ_TIMER EQU 8
 IRQ_SYSTEM EQU 16
 
+	IF TARGET == mega65
+irqexit
+    pla
+    tab
+    plz
+    ply
+    plx
+    pla
+    rti    
+    ELSE
+irqexit EQU $EA81
+    ENDIF
+
 	MAC irqenable
 	sei
 	lda #{1}
 	ora IRQFLAGS
 	sta IRQFLAGS
-	IF {1} < IRQ_TIMER
+	IF {1} < IRQ_TIMER ; VIC-II Interrupts
 	sta VICII_IRQCTR
 	ELSE
-      IF {1} == IRQ_TIMER
+      IF {1} == IRQ_TIMER ; Timer Interrupt
 	  lda #%10000010
       sta CIA1_IRQCTR 
       lda #1
       sta CIA1_CRB
-      ELSE
+      ELSE ; System Interrupt              
       lda #%10000001
       sta CIA1_IRQCTR
       lda #1
@@ -104,7 +119,11 @@ IRQ_SYSTEM EQU 16
     ENDM
 
 IRQSETUP SUBROUTINE
-	sei
+	lda IRQVECTOR
+    sta DEFAULT_IRQVEC
+    lda IRQVECTOR + 1
+    sta DEFAULT_IRQVEC + 1
+    sei
 	lda #<XCBIRQ
 	sta IRQVECTOR
 	lda #>XCBIRQ
@@ -118,9 +137,9 @@ IRQRESET SUBROUTINE
     irqdisable IRQ_SPRITE
     irqdisable IRQ_BACKGROUND
     sei
-	lda #<$EA31
+	lda DEFAULT_IRQVEC
 	sta IRQVECTOR
-	lda #>$EA31
+	lda DEFAULT_IRQVEC + 1
 	sta IRQVECTOR + 1
 	cli
 	rts
@@ -139,7 +158,7 @@ IRQ_RASTER_V
 	lda VICII_IRQSTATUS ; ACK
 	ora #%00000001
 	sta VICII_IRQSTATUS
-	jmp $EA81
+	jmp irqexit
 .1
 	; is it a sprite-background collision?
 	lda #IRQ_BACKGROUND
@@ -153,7 +172,7 @@ IRQ_BACKGROUND_V
 	lda VICII_IRQSTATUS ; ACK
 	ora #%00000010
 	sta VICII_IRQSTATUS
-	jmp $EA81
+	jmp irqexit
 .2
 	; is it a sprite-sprite collision?
 	lda #IRQ_SPRITE
@@ -167,7 +186,7 @@ IRQ_SPRITE_V
 	lda VICII_IRQSTATUS ; ACK
 	ora #%00000100
 	sta VICII_IRQSTATUS
-	jmp $EA81
+	jmp irqexit
 .3	
 	; is it a timer interrupt
     lda CIA1_IRQCTR
@@ -177,13 +196,13 @@ IRQ_SPRITE_V
 IRQ_TIMER_V	
 	jsr $FFFF ; To be modified by application
 	plsr
-    jmp $EA81
+    jmp irqexit
 .4
     ; it is a system interrupt
 	lda #IRQ_SYSTEM
 	bit IRQFLAGS
 	beq .q
-	jmp $EA31
-.q	
-	jmp $EA7E
+	jmp (DEFAULT_IRQVEC)
+.q
+	jmp $EA7E ; TODO: MEGA65 - ack and quit
 	ENDIF

@@ -26,7 +26,7 @@
 	ENDM
 	ENDIF
 
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
 	MAC F_joy_byte ; @pull @push
 JOYPORT2 EQU $DC00
 JOYPORT1 EQU $DC01

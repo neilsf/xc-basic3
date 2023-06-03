@@ -1,4 +1,4 @@
-    IF TARGET == c64
+atus    IF TARGET == c64
 KERNAL_SCREEN_ADDR  EQU $0288
 KERNAL_HOME         EQU $E566
 SRVEC               EQU $D9
@@ -282,10 +282,10 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	  pla
 	  sta VERA_DATA0
 	  IF {1} == 1 ; Color was provided
-	  pla
-	  sta VERA_DATA0
+	    pla
+	    sta VERA_DATA0
 	  ENDIF
-	; Commodore 64, VIC-20 and all other
+	; All other targets
 	ELSE  
 	  import I_CALC_SCRROWPTR
 	  jsr CALC_SCRROWPTR
@@ -295,7 +295,8 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	  sta (R0),y
 	  IF {1} == 1 ; Color was provided
 		pla
-		IF (TARGET & pet) == 0
+        ; Not MEGA65 and not PET
+		IF TARGET != mega65 && ((TARGET & pet) == 0)
 		  tax
 		  lda R0 + 1
 		  sec
@@ -309,8 +310,27 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 		  sta R0 + 1
 		  txa
 		  sta (R0),y
-		ENDIF
-	  ENDIF
+	    ENDIF
+        ; MEGA65
+	    IF TARGET == mega65
+          tax
+          ; Store color ram base addr ($0001F800) + relative from screen
+          lda R0
+          sta R4
+          lda R0 + 1
+          clc
+          adc #$F0
+          sta R4 + 1
+          lda #$01
+          sta R4 + 2
+          lda #0
+          sta R4 + 3
+          tya
+          taz
+          txa
+          sta_indz R4
+        ENDIF
+      ENDIF
 	ENDIF
 	ENDM
 	
@@ -334,22 +354,23 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	  sta VERA_ADDR + 2
 	  jsr VERA_MOV_STRING
 	  IF {1} == 1; Color was provided
-	  pla
-	  ; Decrement VERA addr by 1 ...
-	  ldy #%00011001
-	  sty VERA_ADDR + 2
-	  ldy VERA_DATA0
-	  ; .. Then by 2 at each subsequent write
-	  ldy #%00101001
-	  sty VERA_ADDR + 2
-	  ldx R0
+	    pla
+	    ; Decrement VERA addr by 1 ...
+	    ldy #%00011001
+	    sty VERA_ADDR + 2
+	    ldy VERA_DATA0
+	    ; .. Then by 2 at each subsequent write
+	    ldy #%00101001
+	    sty VERA_ADDR + 2
+	    ldx R0
 .loop
-	  beq .q
-	  sta VERA_DATA0
-	  dex
-	  jmp .loop
+	    beq .q
+	    sta VERA_DATA0
+	    dex
+	    jmp .loop
 .q
 	  ENDIF
+    ; All other targets
 	ELSE
 	import I_CALC_SCRROWPTR
 	jsr CALC_SCRROWPTR
@@ -365,7 +386,27 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	jsr STRREMOV_SC
 	IF {1} == 1; Color was provided
       pla
-      IF (TARGET & pet) == 0
+      IF TARGET == mega65
+        tax
+        ; Store color ram base addr ($0001F800) + relative from screen
+        lda R0
+        sta R4
+        lda R0 + 1
+        clc
+        adc #$F0
+        sta R4 + 1
+        lda #$01
+        sta R4 + 2
+        lda #0
+        sta R4 + 3
+        txa
+        DC.B $AB, R3, $00 ; ldz R3
+.loop2:
+        sta_indz R4  ; sta [R4],z
+        dez          ; dez
+        bpl .loop2
+      ENDIF
+      IF TARGET != mega65 && ((TARGET & pet) == 0)
         tax
         lda R0 + 1
         sec
@@ -387,7 +428,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         bpl .loop
       ENDIF
 	ENDIF
-	ENDIF
+    ENDIF
 	ENDM
 	
 	; Calculates a pointer to screen row
@@ -442,7 +483,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8032 ; 80-column PET
+		IF TARGET == pet8032 || TARGET = mega65 || TARGET == x16; 80-column machines
 		sta R0 + 1
 		asl R0
 		rol R0 + 1
@@ -454,6 +495,9 @@ CALC_SCRROWPTR SUBROUTINE
 	ENDIF
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
+	ENDIF
+    IF TARGET == mega65 
+	adc #$08 ; // TODO implement relocatable screen
 	ENDIF
 	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
@@ -523,3 +567,85 @@ RESET_SCRVECTORS SUBROUTINE
 	sta SRVEC,x
 	jmp KERNAL_HOME
 	ENDIF
+	
+	MAC border ; @fpull	
+	
+	IF !FPULL
+	pla
+	ENDIF
+	
+	IF TARGET == c64 || TARGET == c128
+	sta VICII_BORDER
+	ENDIF
+	
+	IF TARGET & vic20
+	sta R0
+	lda VICI_BORDER_BG
+	and #%11111000
+	ora R0
+	sta VICI_BORDER_BG
+	ENDIF
+	
+	IF TARGET & c264 
+	sta R0
+	pla
+	asl
+	asl
+	asl
+	asl
+	ora R0
+	sta TED_BORDER
+	ENDIF
+    
+	IF TARGET == mega65
+    sta_far $0FFD3020
+	ENDIF
+    
+	IF TARGET == x16
+	sta VERA_BORDER
+	ENDIF
+	
+	ENDM
+	
+	MAC background ; @fpull	
+	
+    IF !FPULL
+    pla
+    ENDIF
+    
+    IF TARGET == c64 || TARGET == c128
+    sta VICII_BACKGROUND
+    ENDIF
+    
+    IF TARGET & vic20
+    asl
+    asl
+    asl
+    asl
+    sta R0
+    lda VICI_BORDER_BG
+    and #%00001111
+    ora R0
+    sta VICI_BORDER_BG
+    ENDIF
+    
+    IF TARGET & c264 
+    sta R0
+    pla
+    asl
+    asl
+    asl
+    asl
+    ora R0
+    sta TED_BACKGROUND
+    ENDIF
+    
+    IF TARGET == mega65
+    sta_far $0FFD3021
+	ENDIF
+    
+	IF TARGET == x16 
+    ;
+    ENDIF
+	
+	ENDM

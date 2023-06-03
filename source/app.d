@@ -35,8 +35,9 @@ const string[] targetOpts = [
     "pet3032",  // Commodore PET3000 series (32k RAM)
     "pet4016",  // Commodore PET4000 series (16k RAM)
     "pet4032",  // Commodore PET4000 series (32k RAM)
-    "pet8032",   // Commodore PET8000 series
+    "pet8032",  // Commodore PET8000 series
     "x16",      // Commander X16
+    "mega65"    // MEGA65
 ];
 
 // Command line options
@@ -254,6 +255,10 @@ public void setStartAddress()
                 startAddress = 0x0401;
                 break;
 
+            case "mega65":
+                startAddress = 0x2001;
+                break;
+
             case "vic20_8k":
             default:
                 startAddress = 0x1201;
@@ -287,6 +292,7 @@ private void setEndAddress()
                 break;
 
             case "c128":
+            case "mega65":
                 topAddress = 0xc000;
                 break;
 

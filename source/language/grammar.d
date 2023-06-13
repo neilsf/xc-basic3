@@ -2945,7 +2945,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(p);
         }
         else
         {
@@ -2953,7 +2953,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(p);
                 memo[tuple(`SprSubCmd`, p.end)] = result;
                 return result;
             }
@@ -2964,12 +2964,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdOnUnderBg, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string SprSubCmd(GetName g)

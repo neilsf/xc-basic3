@@ -23,7 +23,8 @@ class Print_stmt : Statement
     {
         int ix = 0;
         bool hasHash = false;
-        if(this.node.children[0].children[ix].name == "XCBASIC.Expression") {
+        ParseTree stmt = this.node.children[0];
+        if(stmt.children[0].name == "XCBASIC.Expression") {
             ParseTree fileNoNode = this.node.children[0].children[ix];
             Expression fileNoExp = new Expression(fileNoNode, compiler);
             fileNoExp.setExpectedType(compiler.getTypes().get(Type.UINT8));
@@ -35,7 +36,7 @@ class Print_stmt : Statement
             ix++;
         }
         bool nlSuppAtEnd = false;
-        ParseTree list = this.node.children[0].children[ix];
+        ParseTree list = stmt.children[ix];
         for(ix = 0; ix < list.children.length; ix++) {
             ParseTree child = list.children[ix];
             final switch(child.name) {

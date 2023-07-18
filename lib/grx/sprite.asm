@@ -21,7 +21,7 @@ sprbghit  DC.B 0
 sprcollr  DC.B 0
 	
     ; After this macro call
-    ; X Reg holds the sprite number (0 to 7)
+    ; pseudo-register SN holds the sprite number (0 to 7)
     ; for all subcommands
     MAC sprite ; @pull
     IF	!FPULL

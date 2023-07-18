@@ -2,7 +2,7 @@ name: Build project
 
 on:
   push:
-    branches: [ main, release/v3.1 ]
+    branches: [ main, feature/x16-support, feature/mega65-support ]
 
 jobs:
     build:
@@ -21,7 +21,7 @@ jobs:
                   compiler: ${{ matrix.dc }}
 
             - name: Build
-              run: dub build --force -v
+              run: dub build --force -v --build=release
 
             - name: Create bin dir
               run: mkdir -p bin/${{runner.os}}

@@ -150,8 +150,8 @@ class Next_stmt : Statement
         if(node.children[0].children.length > 0) {
             ParseTree varNode = node.children[0].children[0];
             try {
-                VariableAccess access = new VariableAccess(varNode, compiler);
-                 if(access.getVariable() != counterVar) {
+                Variable v = compiler.getVars().findVisible(varNode.matches.join());
+                 if(v != counterVar) {
                     compiler.displayError("Variable used in NEXT statement must match variable used in FOR statement");
                 }
             }

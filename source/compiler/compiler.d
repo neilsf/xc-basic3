@@ -143,7 +143,7 @@ final class Compiler
     {
         size_t charPos = this.currentNode.begin;
         SourceFile file = SourceFile.findInContainer(this.currentFileName);
-        immutable ulong lineNo = count(file.getSourceCode()[0..charPos], newline) + 1;
+        immutable ulong lineNo = count(file.getSourceCode()[0..charPos], '\n') + 1;
         stderr.writeln(this.currentFileName ~ ":" ~ to!string(lineNo) ~ ".0: " ~ msgType ~ ": " ~ msg
         );
         if(!isRecoverable) {

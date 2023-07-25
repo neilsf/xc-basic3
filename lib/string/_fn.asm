@@ -191,11 +191,12 @@ STR_MID SUBROUTINE
 	inx
 	lda STRING_WORKAREA,x
 	pha ; first char
+.q
+    iny
 	tya
 	clc
 	adc SP
 	sta SP
-.q
 	ENDM
 	
 	; DECLARE FUNCTION LCASE$ AS STRING (instr$ AS STRING) SHARED STATIC INLINE
@@ -274,6 +275,8 @@ STR_UCASE SUBROUTINE
 	import I_FPLIB
 	import I_FIN
 	jsr FIN
+    import I_STRSCRATCH
+    jsr STRSCRATCH
 	pfac
 	ENDM
 	

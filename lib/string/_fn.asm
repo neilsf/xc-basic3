@@ -275,6 +275,8 @@ STR_UCASE SUBROUTINE
 	import I_FPLIB
 	import I_FIN
 	jsr FIN
+    import I_STRSCRATCH
+    jsr STRSCRATCH
 	pfac
 	ENDM
 	

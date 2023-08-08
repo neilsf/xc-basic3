@@ -2,5812 +2,5883 @@ module language.grammar;
 
 import pegged.grammar;
 
-static assert(false, `Pegged (failure)
- +-Pegged.Grammar (failure)
-    +-Pegged.GrammarName [9, 30]["XCBASIC"]
-    |  +-Pegged.Identifier [9, 16]["XCBASIC"]
-    +-Pegged.Definition [30, 81]["Program", "<-", "Line", "endOfLine", "+", "Line", "*", "EOI"]
-    |  +-Pegged.LhsName [30, 38]["Program"]
-    |  |  +-Pegged.Identifier [30, 37]["Program"]
-    |  +-Pegged.Arrow [38, 41]["<-"]
-    |  |  +-Pegged.LEFTARROW [38, 41]["<-"]
-    |  +-Pegged.Expression [41, 81]["Line", "endOfLine", "+", "Line", "*", "EOI"]
-    |     +-Pegged.LongestExpression [41, 81]["Line", "endOfLine", "+", "Line", "*", "EOI"]
-    |        +-Pegged.Sequence [41, 81]["Line", "endOfLine", "+", "Line", "*", "EOI"]
-    |           +-Pegged.Prefix [41, 46]["Line"]
-    |           |  +-Pegged.Suffix [41, 46]["Line"]
-    |           |     +-Pegged.Primary [41, 46]["Line"]
-    |           |        +-Pegged.RhsName [41, 46]["Line"]
-    |           |           +-Pegged.Identifier [41, 45]["Line"]
-    |           +-Pegged.Prefix [46, 65]["endOfLine", "+", "Line", "*"]
-    |           |  +-Pegged.Suffix [46, 65]["endOfLine", "+", "Line", "*"]
-    |           |     +-Pegged.Primary [46, 63]["endOfLine", "+", "Line"]
-    |           |     |  +-Pegged.Expression [47, 62]["endOfLine", "+", "Line"]
-    |           |     |     +-Pegged.LongestExpression [47, 62]["endOfLine", "+", "Line"]
-    |           |     |        +-Pegged.Sequence [47, 62]["endOfLine", "+", "Line"]
-    |           |     |           +-Pegged.Prefix [47, 58]["endOfLine", "+"]
-    |           |     |           |  +-Pegged.Suffix [47, 58]["endOfLine", "+"]
-    |           |     |           |     +-Pegged.Primary [47, 56]["endOfLine"]
-    |           |     |           |     |  +-Pegged.RhsName [47, 56]["endOfLine"]
-    |           |     |           |     |     +-Pegged.Identifier [47, 56]["endOfLine"]
-    |           |     |           |     +-Pegged.ONEORMORE [56, 58]["+"]
-    |           |     |           +-Pegged.Prefix [58, 62]["Line"]
-    |           |     |              +-Pegged.Suffix [58, 62]["Line"]
-    |           |     |                 +-Pegged.Primary [58, 62]["Line"]
-    |           |     |                    +-Pegged.RhsName [58, 62]["Line"]
-    |           |     |                       +-Pegged.Identifier [58, 62]["Line"]
-    |           |     +-Pegged.ZEROORMORE [63, 65]["*"]
-    |           +-Pegged.Prefix [65, 81]["EOI"]
-    |              +-Pegged.Suffix [65, 81]["EOI"]
-    |                 +-Pegged.Primary [65, 81]["EOI"]
-    |                    +-Pegged.RhsName [65, 81]["EOI"]
-    |                       +-Pegged.Identifier [65, 68]["EOI"]
-    +-Pegged.Definition [81, 149]["Line", "<-", ":", "WS", "?", "Line_id", ":", "WS", "?", "Statements", "?", ":", "WS", "?"]
-    |  +-Pegged.LhsName [81, 86]["Line"]
-    |  |  +-Pegged.Identifier [81, 85]["Line"]
-    |  +-Pegged.Arrow [86, 89]["<-"]
-    |  |  +-Pegged.LEFTARROW [86, 89]["<-"]
-    |  +-Pegged.Expression [89, 149][":", "WS", "?", "Line_id", ":", "WS", "?", "Statements", "?", ":", "WS", "?"]
-    |     +-Pegged.LongestExpression [89, 149][":", "WS", "?", "Line_id", ":", "WS", "?", "Statements", "?", ":", "WS", "?"]
-    |        +-Pegged.Sequence [89, 149][":", "WS", "?", "Line_id", ":", "WS", "?", "Statements", "?", ":", "WS", "?"]
-    |           +-Pegged.Prefix [89, 94][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [89, 90][":"]
-    |           |  +-Pegged.Suffix [90, 94]["WS", "?"]
-    |           |     +-Pegged.Primary [90, 92]["WS"]
-    |           |     |  +-Pegged.RhsName [90, 92]["WS"]
-    |           |     |     +-Pegged.Identifier [90, 92]["WS"]
-    |           |     +-Pegged.OPTION [92, 94]["?"]
-    |           +-Pegged.Prefix [94, 102]["Line_id"]
-    |           |  +-Pegged.Suffix [94, 102]["Line_id"]
-    |           |     +-Pegged.Primary [94, 102]["Line_id"]
-    |           |        +-Pegged.RhsName [94, 102]["Line_id"]
-    |           |           +-Pegged.Identifier [94, 101]["Line_id"]
-    |           +-Pegged.Prefix [102, 107][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [102, 103][":"]
-    |           |  +-Pegged.Suffix [103, 107]["WS", "?"]
-    |           |     +-Pegged.Primary [103, 105]["WS"]
-    |           |     |  +-Pegged.RhsName [103, 105]["WS"]
-    |           |     |     +-Pegged.Identifier [103, 105]["WS"]
-    |           |     +-Pegged.OPTION [105, 107]["?"]
-    |           +-Pegged.Prefix [107, 119]["Statements", "?"]
-    |           |  +-Pegged.Suffix [107, 119]["Statements", "?"]
-    |           |     +-Pegged.Primary [107, 117]["Statements"]
-    |           |     |  +-Pegged.RhsName [107, 117]["Statements"]
-    |           |     |     +-Pegged.Identifier [107, 117]["Statements"]
-    |           |     +-Pegged.OPTION [117, 119]["?"]
-    |           +-Pegged.Prefix [119, 149][":", "WS", "?"]
-    |              +-Pegged.DISCARD [119, 120][":"]
-    |              +-Pegged.Suffix [120, 149]["WS", "?"]
-    |                 +-Pegged.Primary [120, 122]["WS"]
-    |                 |  +-Pegged.RhsName [120, 122]["WS"]
-    |                 |     +-Pegged.Identifier [120, 122]["WS"]
-    |                 +-Pegged.OPTION [122, 149]["?"]
-    +-Pegged.Definition [149, 213]["Statements", "<-", "Statement", ":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |  +-Pegged.LhsName [149, 160]["Statements"]
-    |  |  +-Pegged.Identifier [149, 159]["Statements"]
-    |  +-Pegged.Arrow [160, 163]["<-"]
-    |  |  +-Pegged.LEFTARROW [160, 163]["<-"]
-    |  +-Pegged.Expression [163, 213]["Statement", ":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |     +-Pegged.LongestExpression [163, 213]["Statement", ":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |        +-Pegged.Sequence [163, 213]["Statement", ":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |           +-Pegged.Prefix [163, 173]["Statement"]
-    |           |  +-Pegged.Suffix [163, 173]["Statement"]
-    |           |     +-Pegged.Primary [163, 173]["Statement"]
-    |           |        +-Pegged.RhsName [163, 173]["Statement"]
-    |           |           +-Pegged.Identifier [163, 172]["Statement"]
-    |           +-Pegged.Prefix [173, 213][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |              +-Pegged.Suffix [173, 213][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement", "*"]
-    |                 +-Pegged.Primary [173, 198][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement"]
-    |                 |  +-Pegged.Expression [174, 197][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement"]
-    |                 |     +-Pegged.LongestExpression [174, 197][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement"]
-    |                 |        +-Pegged.Sequence [174, 197][":", "WS", "?", "\"", ":", "\"", ":", "WS", "?", "Statement"]
-    |                 |           +-Pegged.Prefix [174, 179][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [174, 175][":"]
-    |                 |           |  +-Pegged.Suffix [175, 179]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [175, 177]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [175, 177]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [175, 177]["WS"]
-    |                 |           |     +-Pegged.OPTION [177, 179]["?"]
-    |                 |           +-Pegged.Prefix [179, 183]["\"", ":", "\""]
-    |                 |           |  +-Pegged.Suffix [179, 183]["\"", ":", "\""]
-    |                 |           |     +-Pegged.Primary [179, 183]["\"", ":", "\""]
-    |                 |           |        +-Pegged.Literal [179, 183]["\"", ":", "\""]
-    |                 |           +-Pegged.Prefix [183, 188][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [183, 184][":"]
-    |                 |           |  +-Pegged.Suffix [184, 188]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [184, 186]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [184, 186]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [184, 186]["WS"]
-    |                 |           |     +-Pegged.OPTION [186, 188]["?"]
-    |                 |           +-Pegged.Prefix [188, 197]["Statement"]
-    |                 |              +-Pegged.Suffix [188, 197]["Statement"]
-    |                 |                 +-Pegged.Primary [188, 197]["Statement"]
-    |                 |                    +-Pegged.RhsName [188, 197]["Statement"]
-    |                 |                       +-Pegged.Identifier [188, 197]["Statement"]
-    |                 +-Pegged.ZEROORMORE [198, 213]["*"]
-    +-Pegged.Definition [213, 1486]["Statement", "<-", "Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |  +-Pegged.LhsName [213, 223]["Statement"]
-    |  |  +-Pegged.Identifier [213, 222]["Statement"]
-    |  +-Pegged.Arrow [223, 226]["<-"]
-    |  |  +-Pegged.LEFTARROW [223, 226]["<-"]
-    |  +-Pegged.Expression [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |     +-Pegged.LongestExpression [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |        +-Pegged.Sequence [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |           +-Pegged.Prefix [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |              +-Pegged.Suffix [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |                 +-Pegged.Primary [226, 1486]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |                    +-Pegged.Expression [227, 1472]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |                       +-Pegged.LongestExpression [227, 1472]["Const_stmt", "Let_stmt", "Print_stmt", "If_stmt", "Goto_stmt", "Input_stmt", "Gosub_stmt", "Call_stmt", "Rem_stmt", "Poke_stmt", "For_stmt", "Next_stmt", "Dim_stmt", "Charat_stmt", "Data_stmt", "Textat_stmt", "Incbin_stmt", "Include_stmt", "Load_stmt", "Save_stmt", "Randomize_stmt", "Origin_stmt", "Swap_stmt", "Locate_stmt", "On_stmt", "Error_stmt", "Wait_stmt", "Memset_stmt", "Memcpy_stmt", "Memshift_stmt", "Open_stmt", "Close_stmt", "Get_stmt", "If_sa_stmt", "Else_stmt", "Endif_stmt", "Fun_stmt", "Endfun_stmt", "Return_fn_stmt", "Return_stmt", "Exitfun_stmt", "Do_stmt", "Loop_stmt", "Asm_stmt", "Endasm_stmt", "Write_stmt", "Read_stmt", "Cont_stmt", "Exit_do_stmt", "Exit_for_stmt", "Type_stmt", "Endtype_stmt", "Endselect_stmt", "End_stmt", "Screen_stmt", "Option_stmt", "Sprite_clearhit_stmt", "Sprite_multicolor_stmt", "Sprite_stmt", "Sound_clear_stmt", "Volume_stmt", "Voice_stmt", "Filter_stmt", "Irq_stmt", "Border_stmt", "Background_stmt", "Sys_stmt", "Charset_stmt", "Scroll_stmt", "VMode_stmt", "Field_def", "Select_stmt", "Case_stmt"]
-    |                          +-Pegged.Sequence [227, 238]["Const_stmt"]
-    |                          |  +-Pegged.Prefix [227, 238]["Const_stmt"]
-    |                          |     +-Pegged.Suffix [227, 238]["Const_stmt"]
-    |                          |        +-Pegged.Primary [227, 238]["Const_stmt"]
-    |                          |           +-Pegged.RhsName [227, 238]["Const_stmt"]
-    |                          |              +-Pegged.Identifier [227, 237]["Const_stmt"]
-    |                          +-Pegged.Sequence [240, 249]["Let_stmt"]
-    |                          |  +-Pegged.Prefix [240, 249]["Let_stmt"]
-    |                          |     +-Pegged.Suffix [240, 249]["Let_stmt"]
-    |                          |        +-Pegged.Primary [240, 249]["Let_stmt"]
-    |                          |           +-Pegged.RhsName [240, 249]["Let_stmt"]
-    |                          |              +-Pegged.Identifier [240, 248]["Let_stmt"]
-    |                          +-Pegged.Sequence [251, 262]["Print_stmt"]
-    |                          |  +-Pegged.Prefix [251, 262]["Print_stmt"]
-    |                          |     +-Pegged.Suffix [251, 262]["Print_stmt"]
-    |                          |        +-Pegged.Primary [251, 262]["Print_stmt"]
-    |                          |           +-Pegged.RhsName [251, 262]["Print_stmt"]
-    |                          |              +-Pegged.Identifier [251, 261]["Print_stmt"]
-    |                          +-Pegged.Sequence [264, 272]["If_stmt"]
-    |                          |  +-Pegged.Prefix [264, 272]["If_stmt"]
-    |                          |     +-Pegged.Suffix [264, 272]["If_stmt"]
-    |                          |        +-Pegged.Primary [264, 272]["If_stmt"]
-    |                          |           +-Pegged.RhsName [264, 272]["If_stmt"]
-    |                          |              +-Pegged.Identifier [264, 271]["If_stmt"]
-    |                          +-Pegged.Sequence [274, 284]["Goto_stmt"]
-    |                          |  +-Pegged.Prefix [274, 284]["Goto_stmt"]
-    |                          |     +-Pegged.Suffix [274, 284]["Goto_stmt"]
-    |                          |        +-Pegged.Primary [274, 284]["Goto_stmt"]
-    |                          |           +-Pegged.RhsName [274, 284]["Goto_stmt"]
-    |                          |              +-Pegged.Identifier [274, 283]["Goto_stmt"]
-    |                          +-Pegged.Sequence [286, 297]["Input_stmt"]
-    |                          |  +-Pegged.Prefix [286, 297]["Input_stmt"]
-    |                          |     +-Pegged.Suffix [286, 297]["Input_stmt"]
-    |                          |        +-Pegged.Primary [286, 297]["Input_stmt"]
-    |                          |           +-Pegged.RhsName [286, 297]["Input_stmt"]
-    |                          |              +-Pegged.Identifier [286, 296]["Input_stmt"]
-    |                          +-Pegged.Sequence [299, 310]["Gosub_stmt"]
-    |                          |  +-Pegged.Prefix [299, 310]["Gosub_stmt"]
-    |                          |     +-Pegged.Suffix [299, 310]["Gosub_stmt"]
-    |                          |        +-Pegged.Primary [299, 310]["Gosub_stmt"]
-    |                          |           +-Pegged.RhsName [299, 310]["Gosub_stmt"]
-    |                          |              +-Pegged.Identifier [299, 309]["Gosub_stmt"]
-    |                          +-Pegged.Sequence [312, 322]["Call_stmt"]
-    |                          |  +-Pegged.Prefix [312, 322]["Call_stmt"]
-    |                          |     +-Pegged.Suffix [312, 322]["Call_stmt"]
-    |                          |        +-Pegged.Primary [312, 322]["Call_stmt"]
-    |                          |           +-Pegged.RhsName [312, 322]["Call_stmt"]
-    |                          |              +-Pegged.Identifier [312, 321]["Call_stmt"]
-    |                          +-Pegged.Sequence [348, 357]["Rem_stmt"]
-    |                          |  +-Pegged.Prefix [348, 357]["Rem_stmt"]
-    |                          |     +-Pegged.Suffix [348, 357]["Rem_stmt"]
-    |                          |        +-Pegged.Primary [348, 357]["Rem_stmt"]
-    |                          |           +-Pegged.RhsName [348, 357]["Rem_stmt"]
-    |                          |              +-Pegged.Identifier [348, 356]["Rem_stmt"]
-    |                          +-Pegged.Sequence [359, 369]["Poke_stmt"]
-    |                          |  +-Pegged.Prefix [359, 369]["Poke_stmt"]
-    |                          |     +-Pegged.Suffix [359, 369]["Poke_stmt"]
-    |                          |        +-Pegged.Primary [359, 369]["Poke_stmt"]
-    |                          |           +-Pegged.RhsName [359, 369]["Poke_stmt"]
-    |                          |              +-Pegged.Identifier [359, 368]["Poke_stmt"]
-    |                          +-Pegged.Sequence [371, 380]["For_stmt"]
-    |                          |  +-Pegged.Prefix [371, 380]["For_stmt"]
-    |                          |     +-Pegged.Suffix [371, 380]["For_stmt"]
-    |                          |        +-Pegged.Primary [371, 380]["For_stmt"]
-    |                          |           +-Pegged.RhsName [371, 380]["For_stmt"]
-    |                          |              +-Pegged.Identifier [371, 379]["For_stmt"]
-    |                          +-Pegged.Sequence [382, 392]["Next_stmt"]
-    |                          |  +-Pegged.Prefix [382, 392]["Next_stmt"]
-    |                          |     +-Pegged.Suffix [382, 392]["Next_stmt"]
-    |                          |        +-Pegged.Primary [382, 392]["Next_stmt"]
-    |                          |           +-Pegged.RhsName [382, 392]["Next_stmt"]
-    |                          |              +-Pegged.Identifier [382, 391]["Next_stmt"]
-    |                          +-Pegged.Sequence [394, 403]["Dim_stmt"]
-    |                          |  +-Pegged.Prefix [394, 403]["Dim_stmt"]
-    |                          |     +-Pegged.Suffix [394, 403]["Dim_stmt"]
-    |                          |        +-Pegged.Primary [394, 403]["Dim_stmt"]
-    |                          |           +-Pegged.RhsName [394, 403]["Dim_stmt"]
-    |                          |              +-Pegged.Identifier [394, 402]["Dim_stmt"]
-    |                          +-Pegged.Sequence [405, 417]["Charat_stmt"]
-    |                          |  +-Pegged.Prefix [405, 417]["Charat_stmt"]
-    |                          |     +-Pegged.Suffix [405, 417]["Charat_stmt"]
-    |                          |        +-Pegged.Primary [405, 417]["Charat_stmt"]
-    |                          |           +-Pegged.RhsName [405, 417]["Charat_stmt"]
-    |                          |              +-Pegged.Identifier [405, 416]["Charat_stmt"]
-    |                          +-Pegged.Sequence [419, 429]["Data_stmt"]
-    |                          |  +-Pegged.Prefix [419, 429]["Data_stmt"]
-    |                          |     +-Pegged.Suffix [419, 429]["Data_stmt"]
-    |                          |        +-Pegged.Primary [419, 429]["Data_stmt"]
-    |                          |           +-Pegged.RhsName [419, 429]["Data_stmt"]
-    |                          |              +-Pegged.Identifier [419, 428]["Data_stmt"]
-    |                          +-Pegged.Sequence [431, 443]["Textat_stmt"]
-    |                          |  +-Pegged.Prefix [431, 443]["Textat_stmt"]
-    |                          |     +-Pegged.Suffix [431, 443]["Textat_stmt"]
-    |                          |        +-Pegged.Primary [431, 443]["Textat_stmt"]
-    |                          |           +-Pegged.RhsName [431, 443]["Textat_stmt"]
-    |                          |              +-Pegged.Identifier [431, 442]["Textat_stmt"]
-    |                          +-Pegged.Sequence [445, 457]["Incbin_stmt"]
-    |                          |  +-Pegged.Prefix [445, 457]["Incbin_stmt"]
-    |                          |     +-Pegged.Suffix [445, 457]["Incbin_stmt"]
-    |                          |        +-Pegged.Primary [445, 457]["Incbin_stmt"]
-    |                          |           +-Pegged.RhsName [445, 457]["Incbin_stmt"]
-    |                          |              +-Pegged.Identifier [445, 456]["Incbin_stmt"]
-    |                          +-Pegged.Sequence [483, 496]["Include_stmt"]
-    |                          |  +-Pegged.Prefix [483, 496]["Include_stmt"]
-    |                          |     +-Pegged.Suffix [483, 496]["Include_stmt"]
-    |                          |        +-Pegged.Primary [483, 496]["Include_stmt"]
-    |                          |           +-Pegged.RhsName [483, 496]["Include_stmt"]
-    |                          |              +-Pegged.Identifier [483, 495]["Include_stmt"]
-    |                          +-Pegged.Sequence [498, 508]["Load_stmt"]
-    |                          |  +-Pegged.Prefix [498, 508]["Load_stmt"]
-    |                          |     +-Pegged.Suffix [498, 508]["Load_stmt"]
-    |                          |        +-Pegged.Primary [498, 508]["Load_stmt"]
-    |                          |           +-Pegged.RhsName [498, 508]["Load_stmt"]
-    |                          |              +-Pegged.Identifier [498, 507]["Load_stmt"]
-    |                          +-Pegged.Sequence [510, 520]["Save_stmt"]
-    |                          |  +-Pegged.Prefix [510, 520]["Save_stmt"]
-    |                          |     +-Pegged.Suffix [510, 520]["Save_stmt"]
-    |                          |        +-Pegged.Primary [510, 520]["Save_stmt"]
-    |                          |           +-Pegged.RhsName [510, 520]["Save_stmt"]
-    |                          |              +-Pegged.Identifier [510, 519]["Save_stmt"]
-    |                          +-Pegged.Sequence [522, 537]["Randomize_stmt"]
-    |                          |  +-Pegged.Prefix [522, 537]["Randomize_stmt"]
-    |                          |     +-Pegged.Suffix [522, 537]["Randomize_stmt"]
-    |                          |        +-Pegged.Primary [522, 537]["Randomize_stmt"]
-    |                          |           +-Pegged.RhsName [522, 537]["Randomize_stmt"]
-    |                          |              +-Pegged.Identifier [522, 536]["Randomize_stmt"]
-    |                          +-Pegged.Sequence [563, 575]["Origin_stmt"]
-    |                          |  +-Pegged.Prefix [563, 575]["Origin_stmt"]
-    |                          |     +-Pegged.Suffix [563, 575]["Origin_stmt"]
-    |                          |        +-Pegged.Primary [563, 575]["Origin_stmt"]
-    |                          |           +-Pegged.RhsName [563, 575]["Origin_stmt"]
-    |                          |              +-Pegged.Identifier [563, 574]["Origin_stmt"]
-    |                          +-Pegged.Sequence [577, 587]["Swap_stmt"]
-    |                          |  +-Pegged.Prefix [577, 587]["Swap_stmt"]
-    |                          |     +-Pegged.Suffix [577, 587]["Swap_stmt"]
-    |                          |        +-Pegged.Primary [577, 587]["Swap_stmt"]
-    |                          |           +-Pegged.RhsName [577, 587]["Swap_stmt"]
-    |                          |              +-Pegged.Identifier [577, 586]["Swap_stmt"]
-    |                          +-Pegged.Sequence [589, 601]["Locate_stmt"]
-    |                          |  +-Pegged.Prefix [589, 601]["Locate_stmt"]
-    |                          |     +-Pegged.Suffix [589, 601]["Locate_stmt"]
-    |                          |        +-Pegged.Primary [589, 601]["Locate_stmt"]
-    |                          |           +-Pegged.RhsName [589, 601]["Locate_stmt"]
-    |                          |              +-Pegged.Identifier [589, 600]["Locate_stmt"]
-    |                          +-Pegged.Sequence [603, 611]["On_stmt"]
-    |                          |  +-Pegged.Prefix [603, 611]["On_stmt"]
-    |                          |     +-Pegged.Suffix [603, 611]["On_stmt"]
-    |                          |        +-Pegged.Primary [603, 611]["On_stmt"]
-    |                          |           +-Pegged.RhsName [603, 611]["On_stmt"]
-    |                          |              +-Pegged.Identifier [603, 610]["On_stmt"]
-    |                          +-Pegged.Sequence [613, 624]["Error_stmt"]
-    |                          |  +-Pegged.Prefix [613, 624]["Error_stmt"]
-    |                          |     +-Pegged.Suffix [613, 624]["Error_stmt"]
-    |                          |        +-Pegged.Primary [613, 624]["Error_stmt"]
-    |                          |           +-Pegged.RhsName [613, 624]["Error_stmt"]
-    |                          |              +-Pegged.Identifier [613, 623]["Error_stmt"]
-    |                          +-Pegged.Sequence [626, 636]["Wait_stmt"]
-    |                          |  +-Pegged.Prefix [626, 636]["Wait_stmt"]
-    |                          |     +-Pegged.Suffix [626, 636]["Wait_stmt"]
-    |                          |        +-Pegged.Primary [626, 636]["Wait_stmt"]
-    |                          |           +-Pegged.RhsName [626, 636]["Wait_stmt"]
-    |                          |              +-Pegged.Identifier [626, 635]["Wait_stmt"]
-    |                          +-Pegged.Sequence [663, 675]["Memset_stmt"]
-    |                          |  +-Pegged.Prefix [663, 675]["Memset_stmt"]
-    |                          |     +-Pegged.Suffix [663, 675]["Memset_stmt"]
-    |                          |        +-Pegged.Primary [663, 675]["Memset_stmt"]
-    |                          |           +-Pegged.RhsName [663, 675]["Memset_stmt"]
-    |                          |              +-Pegged.Identifier [663, 674]["Memset_stmt"]
-    |                          +-Pegged.Sequence [677, 689]["Memcpy_stmt"]
-    |                          |  +-Pegged.Prefix [677, 689]["Memcpy_stmt"]
-    |                          |     +-Pegged.Suffix [677, 689]["Memcpy_stmt"]
-    |                          |        +-Pegged.Primary [677, 689]["Memcpy_stmt"]
-    |                          |           +-Pegged.RhsName [677, 689]["Memcpy_stmt"]
-    |                          |              +-Pegged.Identifier [677, 688]["Memcpy_stmt"]
-    |                          +-Pegged.Sequence [691, 705]["Memshift_stmt"]
-    |                          |  +-Pegged.Prefix [691, 705]["Memshift_stmt"]
-    |                          |     +-Pegged.Suffix [691, 705]["Memshift_stmt"]
-    |                          |        +-Pegged.Primary [691, 705]["Memshift_stmt"]
-    |                          |           +-Pegged.RhsName [691, 705]["Memshift_stmt"]
-    |                          |              +-Pegged.Identifier [691, 704]["Memshift_stmt"]
-    |                          +-Pegged.Sequence [707, 717]["Open_stmt"]
-    |                          |  +-Pegged.Prefix [707, 717]["Open_stmt"]
-    |                          |     +-Pegged.Suffix [707, 717]["Open_stmt"]
-    |                          |        +-Pegged.Primary [707, 717]["Open_stmt"]
-    |                          |           +-Pegged.RhsName [707, 717]["Open_stmt"]
-    |                          |              +-Pegged.Identifier [707, 716]["Open_stmt"]
-    |                          +-Pegged.Sequence [719, 730]["Close_stmt"]
-    |                          |  +-Pegged.Prefix [719, 730]["Close_stmt"]
-    |                          |     +-Pegged.Suffix [719, 730]["Close_stmt"]
-    |                          |        +-Pegged.Primary [719, 730]["Close_stmt"]
-    |                          |           +-Pegged.RhsName [719, 730]["Close_stmt"]
-    |                          |              +-Pegged.Identifier [719, 729]["Close_stmt"]
-    |                          +-Pegged.Sequence [732, 741]["Get_stmt"]
-    |                          |  +-Pegged.Prefix [732, 741]["Get_stmt"]
-    |                          |     +-Pegged.Suffix [732, 741]["Get_stmt"]
-    |                          |        +-Pegged.Primary [732, 741]["Get_stmt"]
-    |                          |           +-Pegged.RhsName [732, 741]["Get_stmt"]
-    |                          |              +-Pegged.Identifier [732, 740]["Get_stmt"]
-    |                          +-Pegged.Sequence [767, 778]["If_sa_stmt"]
-    |                          |  +-Pegged.Prefix [767, 778]["If_sa_stmt"]
-    |                          |     +-Pegged.Suffix [767, 778]["If_sa_stmt"]
-    |                          |        +-Pegged.Primary [767, 778]["If_sa_stmt"]
-    |                          |           +-Pegged.RhsName [767, 778]["If_sa_stmt"]
-    |                          |              +-Pegged.Identifier [767, 777]["If_sa_stmt"]
-    |                          +-Pegged.Sequence [780, 790]["Else_stmt"]
-    |                          |  +-Pegged.Prefix [780, 790]["Else_stmt"]
-    |                          |     +-Pegged.Suffix [780, 790]["Else_stmt"]
-    |                          |        +-Pegged.Primary [780, 790]["Else_stmt"]
-    |                          |           +-Pegged.RhsName [780, 790]["Else_stmt"]
-    |                          |              +-Pegged.Identifier [780, 789]["Else_stmt"]
-    |                          +-Pegged.Sequence [792, 803]["Endif_stmt"]
-    |                          |  +-Pegged.Prefix [792, 803]["Endif_stmt"]
-    |                          |     +-Pegged.Suffix [792, 803]["Endif_stmt"]
-    |                          |        +-Pegged.Primary [792, 803]["Endif_stmt"]
-    |                          |           +-Pegged.RhsName [792, 803]["Endif_stmt"]
-    |                          |              +-Pegged.Identifier [792, 802]["Endif_stmt"]
-    |                          +-Pegged.Sequence [805, 814]["Fun_stmt"]
-    |                          |  +-Pegged.Prefix [805, 814]["Fun_stmt"]
-    |                          |     +-Pegged.Suffix [805, 814]["Fun_stmt"]
-    |                          |        +-Pegged.Primary [805, 814]["Fun_stmt"]
-    |                          |           +-Pegged.RhsName [805, 814]["Fun_stmt"]
-    |                          |              +-Pegged.Identifier [805, 813]["Fun_stmt"]
-    |                          +-Pegged.Sequence [816, 828]["Endfun_stmt"]
-    |                          |  +-Pegged.Prefix [816, 828]["Endfun_stmt"]
-    |                          |     +-Pegged.Suffix [816, 828]["Endfun_stmt"]
-    |                          |        +-Pegged.Primary [816, 828]["Endfun_stmt"]
-    |                          |           +-Pegged.RhsName [816, 828]["Endfun_stmt"]
-    |                          |              +-Pegged.Identifier [816, 827]["Endfun_stmt"]
-    |                          +-Pegged.Sequence [830, 845]["Return_fn_stmt"]
-    |                          |  +-Pegged.Prefix [830, 845]["Return_fn_stmt"]
-    |                          |     +-Pegged.Suffix [830, 845]["Return_fn_stmt"]
-    |                          |        +-Pegged.Primary [830, 845]["Return_fn_stmt"]
-    |                          |           +-Pegged.RhsName [830, 845]["Return_fn_stmt"]
-    |                          |              +-Pegged.Identifier [830, 844]["Return_fn_stmt"]
-    |                          +-Pegged.Sequence [847, 859]["Return_stmt"]
-    |                          |  +-Pegged.Prefix [847, 859]["Return_stmt"]
-    |                          |     +-Pegged.Suffix [847, 859]["Return_stmt"]
-    |                          |        +-Pegged.Primary [847, 859]["Return_stmt"]
-    |                          |           +-Pegged.RhsName [847, 859]["Return_stmt"]
-    |                          |              +-Pegged.Identifier [847, 858]["Return_stmt"]
-    |                          +-Pegged.Sequence [861, 874]["Exitfun_stmt"]
-    |                          |  +-Pegged.Prefix [861, 874]["Exitfun_stmt"]
-    |                          |     +-Pegged.Suffix [861, 874]["Exitfun_stmt"]
-    |                          |        +-Pegged.Primary [861, 874]["Exitfun_stmt"]
-    |                          |           +-Pegged.RhsName [861, 874]["Exitfun_stmt"]
-    |                          |              +-Pegged.Identifier [861, 873]["Exitfun_stmt"]
-    |                          +-Pegged.Sequence [876, 884]["Do_stmt"]
-    |                          |  +-Pegged.Prefix [876, 884]["Do_stmt"]
-    |                          |     +-Pegged.Suffix [876, 884]["Do_stmt"]
-    |                          |        +-Pegged.Primary [876, 884]["Do_stmt"]
-    |                          |           +-Pegged.RhsName [876, 884]["Do_stmt"]
-    |                          |              +-Pegged.Identifier [876, 883]["Do_stmt"]
-    |                          +-Pegged.Sequence [886, 896]["Loop_stmt"]
-    |                          |  +-Pegged.Prefix [886, 896]["Loop_stmt"]
-    |                          |     +-Pegged.Suffix [886, 896]["Loop_stmt"]
-    |                          |        +-Pegged.Primary [886, 896]["Loop_stmt"]
-    |                          |           +-Pegged.RhsName [886, 896]["Loop_stmt"]
-    |                          |              +-Pegged.Identifier [886, 895]["Loop_stmt"]
-    |                          +-Pegged.Sequence [922, 931]["Asm_stmt"]
-    |                          |  +-Pegged.Prefix [922, 931]["Asm_stmt"]
-    |                          |     +-Pegged.Suffix [922, 931]["Asm_stmt"]
-    |                          |        +-Pegged.Primary [922, 931]["Asm_stmt"]
-    |                          |           +-Pegged.RhsName [922, 931]["Asm_stmt"]
-    |                          |              +-Pegged.Identifier [922, 930]["Asm_stmt"]
-    |                          +-Pegged.Sequence [933, 945]["Endasm_stmt"]
-    |                          |  +-Pegged.Prefix [933, 945]["Endasm_stmt"]
-    |                          |     +-Pegged.Suffix [933, 945]["Endasm_stmt"]
-    |                          |        +-Pegged.Primary [933, 945]["Endasm_stmt"]
-    |                          |           +-Pegged.RhsName [933, 945]["Endasm_stmt"]
-    |                          |              +-Pegged.Identifier [933, 944]["Endasm_stmt"]
-    |                          +-Pegged.Sequence [947, 958]["Write_stmt"]
-    |                          |  +-Pegged.Prefix [947, 958]["Write_stmt"]
-    |                          |     +-Pegged.Suffix [947, 958]["Write_stmt"]
-    |                          |        +-Pegged.Primary [947, 958]["Write_stmt"]
-    |                          |           +-Pegged.RhsName [947, 958]["Write_stmt"]
-    |                          |              +-Pegged.Identifier [947, 957]["Write_stmt"]
-    |                          +-Pegged.Sequence [960, 970]["Read_stmt"]
-    |                          |  +-Pegged.Prefix [960, 970]["Read_stmt"]
-    |                          |     +-Pegged.Suffix [960, 970]["Read_stmt"]
-    |                          |        +-Pegged.Primary [960, 970]["Read_stmt"]
-    |                          |           +-Pegged.RhsName [960, 970]["Read_stmt"]
-    |                          |              +-Pegged.Identifier [960, 969]["Read_stmt"]
-    |                          +-Pegged.Sequence [996, 1006]["Cont_stmt"]
-    |                          |  +-Pegged.Prefix [996, 1006]["Cont_stmt"]
-    |                          |     +-Pegged.Suffix [996, 1006]["Cont_stmt"]
-    |                          |        +-Pegged.Primary [996, 1006]["Cont_stmt"]
-    |                          |           +-Pegged.RhsName [996, 1006]["Cont_stmt"]
-    |                          |              +-Pegged.Identifier [996, 1005]["Cont_stmt"]
-    |                          +-Pegged.Sequence [1009, 1022]["Exit_do_stmt"]
-    |                          |  +-Pegged.Prefix [1009, 1022]["Exit_do_stmt"]
-    |                          |     +-Pegged.Suffix [1009, 1022]["Exit_do_stmt"]
-    |                          |        +-Pegged.Primary [1009, 1022]["Exit_do_stmt"]
-    |                          |           +-Pegged.RhsName [1009, 1022]["Exit_do_stmt"]
-    |                          |              +-Pegged.Identifier [1009, 1021]["Exit_do_stmt"]
-    |                          +-Pegged.Sequence [1024, 1038]["Exit_for_stmt"]
-    |                          |  +-Pegged.Prefix [1024, 1038]["Exit_for_stmt"]
-    |                          |     +-Pegged.Suffix [1024, 1038]["Exit_for_stmt"]
-    |                          |        +-Pegged.Primary [1024, 1038]["Exit_for_stmt"]
-    |                          |           +-Pegged.RhsName [1024, 1038]["Exit_for_stmt"]
-    |                          |              +-Pegged.Identifier [1024, 1037]["Exit_for_stmt"]
-    |                          +-Pegged.Sequence [1040, 1050]["Type_stmt"]
-    |                          |  +-Pegged.Prefix [1040, 1050]["Type_stmt"]
-    |                          |     +-Pegged.Suffix [1040, 1050]["Type_stmt"]
-    |                          |        +-Pegged.Primary [1040, 1050]["Type_stmt"]
-    |                          |           +-Pegged.RhsName [1040, 1050]["Type_stmt"]
-    |                          |              +-Pegged.Identifier [1040, 1049]["Type_stmt"]
-    |                          +-Pegged.Sequence [1052, 1065]["Endtype_stmt"]
-    |                          |  +-Pegged.Prefix [1052, 1065]["Endtype_stmt"]
-    |                          |     +-Pegged.Suffix [1052, 1065]["Endtype_stmt"]
-    |                          |        +-Pegged.Primary [1052, 1065]["Endtype_stmt"]
-    |                          |           +-Pegged.RhsName [1052, 1065]["Endtype_stmt"]
-    |                          |              +-Pegged.Identifier [1052, 1064]["Endtype_stmt"]
-    |                          +-Pegged.Sequence [1067, 1082]["Endselect_stmt"]
-    |                          |  +-Pegged.Prefix [1067, 1082]["Endselect_stmt"]
-    |                          |     +-Pegged.Suffix [1067, 1082]["Endselect_stmt"]
-    |                          |        +-Pegged.Primary [1067, 1082]["Endselect_stmt"]
-    |                          |           +-Pegged.RhsName [1067, 1082]["Endselect_stmt"]
-    |                          |              +-Pegged.Identifier [1067, 1081]["Endselect_stmt"]
-    |                          +-Pegged.Sequence [1084, 1093]["End_stmt"]
-    |                          |  +-Pegged.Prefix [1084, 1093]["End_stmt"]
-    |                          |     +-Pegged.Suffix [1084, 1093]["End_stmt"]
-    |                          |        +-Pegged.Primary [1084, 1093]["End_stmt"]
-    |                          |           +-Pegged.RhsName [1084, 1093]["End_stmt"]
-    |                          |              +-Pegged.Identifier [1084, 1092]["End_stmt"]
-    |                          +-Pegged.Sequence [1119, 1131]["Screen_stmt"]
-    |                          |  +-Pegged.Prefix [1119, 1131]["Screen_stmt"]
-    |                          |     +-Pegged.Suffix [1119, 1131]["Screen_stmt"]
-    |                          |        +-Pegged.Primary [1119, 1131]["Screen_stmt"]
-    |                          |           +-Pegged.RhsName [1119, 1131]["Screen_stmt"]
-    |                          |              +-Pegged.Identifier [1119, 1130]["Screen_stmt"]
-    |                          +-Pegged.Sequence [1133, 1145]["Option_stmt"]
-    |                          |  +-Pegged.Prefix [1133, 1145]["Option_stmt"]
-    |                          |     +-Pegged.Suffix [1133, 1145]["Option_stmt"]
-    |                          |        +-Pegged.Primary [1133, 1145]["Option_stmt"]
-    |                          |           +-Pegged.RhsName [1133, 1145]["Option_stmt"]
-    |                          |              +-Pegged.Identifier [1133, 1144]["Option_stmt"]
-    |                          +-Pegged.Sequence [1147, 1168]["Sprite_clearhit_stmt"]
-    |                          |  +-Pegged.Prefix [1147, 1168]["Sprite_clearhit_stmt"]
-    |                          |     +-Pegged.Suffix [1147, 1168]["Sprite_clearhit_stmt"]
-    |                          |        +-Pegged.Primary [1147, 1168]["Sprite_clearhit_stmt"]
-    |                          |           +-Pegged.RhsName [1147, 1168]["Sprite_clearhit_stmt"]
-    |                          |              +-Pegged.Identifier [1147, 1167]["Sprite_clearhit_stmt"]
-    |                          +-Pegged.Sequence [1170, 1193]["Sprite_multicolor_stmt"]
-    |                          |  +-Pegged.Prefix [1170, 1193]["Sprite_multicolor_stmt"]
-    |                          |     +-Pegged.Suffix [1170, 1193]["Sprite_multicolor_stmt"]
-    |                          |        +-Pegged.Primary [1170, 1193]["Sprite_multicolor_stmt"]
-    |                          |           +-Pegged.RhsName [1170, 1193]["Sprite_multicolor_stmt"]
-    |                          |              +-Pegged.Identifier [1170, 1192]["Sprite_multicolor_stmt"]
-    |                          +-Pegged.Sequence [1195, 1207]["Sprite_stmt"]
-    |                          |  +-Pegged.Prefix [1195, 1207]["Sprite_stmt"]
-    |                          |     +-Pegged.Suffix [1195, 1207]["Sprite_stmt"]
-    |                          |        +-Pegged.Primary [1195, 1207]["Sprite_stmt"]
-    |                          |           +-Pegged.RhsName [1195, 1207]["Sprite_stmt"]
-    |                          |              +-Pegged.Identifier [1195, 1206]["Sprite_stmt"]
-    |                          +-Pegged.Sequence [1233, 1250]["Sound_clear_stmt"]
-    |                          |  +-Pegged.Prefix [1233, 1250]["Sound_clear_stmt"]
-    |                          |     +-Pegged.Suffix [1233, 1250]["Sound_clear_stmt"]
-    |                          |        +-Pegged.Primary [1233, 1250]["Sound_clear_stmt"]
-    |                          |           +-Pegged.RhsName [1233, 1250]["Sound_clear_stmt"]
-    |                          |              +-Pegged.Identifier [1233, 1249]["Sound_clear_stmt"]
-    |                          +-Pegged.Sequence [1252, 1264]["Volume_stmt"]
-    |                          |  +-Pegged.Prefix [1252, 1264]["Volume_stmt"]
-    |                          |     +-Pegged.Suffix [1252, 1264]["Volume_stmt"]
-    |                          |        +-Pegged.Primary [1252, 1264]["Volume_stmt"]
-    |                          |           +-Pegged.RhsName [1252, 1264]["Volume_stmt"]
-    |                          |              +-Pegged.Identifier [1252, 1263]["Volume_stmt"]
-    |                          +-Pegged.Sequence [1266, 1277]["Voice_stmt"]
-    |                          |  +-Pegged.Prefix [1266, 1277]["Voice_stmt"]
-    |                          |     +-Pegged.Suffix [1266, 1277]["Voice_stmt"]
-    |                          |        +-Pegged.Primary [1266, 1277]["Voice_stmt"]
-    |                          |           +-Pegged.RhsName [1266, 1277]["Voice_stmt"]
-    |                          |              +-Pegged.Identifier [1266, 1276]["Voice_stmt"]
-    |                          +-Pegged.Sequence [1279, 1291]["Filter_stmt"]
-    |                          |  +-Pegged.Prefix [1279, 1291]["Filter_stmt"]
-    |                          |     +-Pegged.Suffix [1279, 1291]["Filter_stmt"]
-    |                          |        +-Pegged.Primary [1279, 1291]["Filter_stmt"]
-    |                          |           +-Pegged.RhsName [1279, 1291]["Filter_stmt"]
-    |                          |              +-Pegged.Identifier [1279, 1290]["Filter_stmt"]
-    |                          +-Pegged.Sequence [1293, 1302]["Irq_stmt"]
-    |                          |  +-Pegged.Prefix [1293, 1302]["Irq_stmt"]
-    |                          |     +-Pegged.Suffix [1293, 1302]["Irq_stmt"]
-    |                          |        +-Pegged.Primary [1293, 1302]["Irq_stmt"]
-    |                          |           +-Pegged.RhsName [1293, 1302]["Irq_stmt"]
-    |                          |              +-Pegged.Identifier [1293, 1301]["Irq_stmt"]
-    |                          +-Pegged.Sequence [1304, 1316]["Border_stmt"]
-    |                          |  +-Pegged.Prefix [1304, 1316]["Border_stmt"]
-    |                          |     +-Pegged.Suffix [1304, 1316]["Border_stmt"]
-    |                          |        +-Pegged.Primary [1304, 1316]["Border_stmt"]
-    |                          |           +-Pegged.RhsName [1304, 1316]["Border_stmt"]
-    |                          |              +-Pegged.Identifier [1304, 1315]["Border_stmt"]
-    |                          +-Pegged.Sequence [1318, 1334]["Background_stmt"]
-    |                          |  +-Pegged.Prefix [1318, 1334]["Background_stmt"]
-    |                          |     +-Pegged.Suffix [1318, 1334]["Background_stmt"]
-    |                          |        +-Pegged.Primary [1318, 1334]["Background_stmt"]
-    |                          |           +-Pegged.RhsName [1318, 1334]["Background_stmt"]
-    |                          |              +-Pegged.Identifier [1318, 1333]["Background_stmt"]
-    |                          +-Pegged.Sequence [1336, 1345]["Sys_stmt"]
-    |                          |  +-Pegged.Prefix [1336, 1345]["Sys_stmt"]
-    |                          |     +-Pegged.Suffix [1336, 1345]["Sys_stmt"]
-    |                          |        +-Pegged.Primary [1336, 1345]["Sys_stmt"]
-    |                          |           +-Pegged.RhsName [1336, 1345]["Sys_stmt"]
-    |                          |              +-Pegged.Identifier [1336, 1344]["Sys_stmt"]
-    |                          +-Pegged.Sequence [1371, 1384]["Charset_stmt"]
-    |                          |  +-Pegged.Prefix [1371, 1384]["Charset_stmt"]
-    |                          |     +-Pegged.Suffix [1371, 1384]["Charset_stmt"]
-    |                          |        +-Pegged.Primary [1371, 1384]["Charset_stmt"]
-    |                          |           +-Pegged.RhsName [1371, 1384]["Charset_stmt"]
-    |                          |              +-Pegged.Identifier [1371, 1383]["Charset_stmt"]
-    |                          +-Pegged.Sequence [1386, 1398]["Scroll_stmt"]
-    |                          |  +-Pegged.Prefix [1386, 1398]["Scroll_stmt"]
-    |                          |     +-Pegged.Suffix [1386, 1398]["Scroll_stmt"]
-    |                          |        +-Pegged.Primary [1386, 1398]["Scroll_stmt"]
-    |                          |           +-Pegged.RhsName [1386, 1398]["Scroll_stmt"]
-    |                          |              +-Pegged.Identifier [1386, 1397]["Scroll_stmt"]
-    |                          +-Pegged.Sequence [1400, 1411]["VMode_stmt"]
-    |                          |  +-Pegged.Prefix [1400, 1411]["VMode_stmt"]
-    |                          |     +-Pegged.Suffix [1400, 1411]["VMode_stmt"]
-    |                          |        +-Pegged.Primary [1400, 1411]["VMode_stmt"]
-    |                          |           +-Pegged.RhsName [1400, 1411]["VMode_stmt"]
-    |                          |              +-Pegged.Identifier [1400, 1410]["VMode_stmt"]
-    |                          +-Pegged.Sequence [1413, 1423]["Field_def"]
-    |                          |  +-Pegged.Prefix [1413, 1423]["Field_def"]
-    |                          |     +-Pegged.Suffix [1413, 1423]["Field_def"]
-    |                          |        +-Pegged.Primary [1413, 1423]["Field_def"]
-    |                          |           +-Pegged.RhsName [1413, 1423]["Field_def"]
-    |                          |              +-Pegged.Identifier [1413, 1422]["Field_def"]
-    |                          +-Pegged.Sequence [1449, 1461]["Select_stmt"]
-    |                          |  +-Pegged.Prefix [1449, 1461]["Select_stmt"]
-    |                          |     +-Pegged.Suffix [1449, 1461]["Select_stmt"]
-    |                          |        +-Pegged.Primary [1449, 1461]["Select_stmt"]
-    |                          |           +-Pegged.RhsName [1449, 1461]["Select_stmt"]
-    |                          |              +-Pegged.Identifier [1449, 1460]["Select_stmt"]
-    |                          +-Pegged.Sequence [1463, 1472]["Case_stmt"]
-    |                             +-Pegged.Prefix [1463, 1472]["Case_stmt"]
-    |                                +-Pegged.Suffix [1463, 1472]["Case_stmt"]
-    |                                   +-Pegged.Primary [1463, 1472]["Case_stmt"]
-    |                                      +-Pegged.RhsName [1463, 1472]["Case_stmt"]
-    |                                         +-Pegged.Identifier [1463, 1472]["Case_stmt"]
-    +-Pegged.Definition [1486, 1571]["Const_stmt", "<-", "\"", "shared", "\"", ":", "WS", "?", "\"", "const", "\"", ":", "WS", "?", "Var", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number"]
-    |  +-Pegged.LhsName [1486, 1497]["Const_stmt"]
-    |  |  +-Pegged.Identifier [1486, 1496]["Const_stmt"]
-    |  +-Pegged.Arrow [1497, 1503]["<-"]
-    |  |  +-Pegged.LEFTARROW [1497, 1503]["<-"]
-    |  +-Pegged.Expression [1503, 1571]["\"", "shared", "\"", ":", "WS", "?", "\"", "const", "\"", ":", "WS", "?", "Var", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number"]
-    |     +-Pegged.LongestExpression [1503, 1571]["\"", "shared", "\"", ":", "WS", "?", "\"", "const", "\"", ":", "WS", "?", "Var", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number"]
-    |        +-Pegged.Sequence [1503, 1571]["\"", "shared", "\"", ":", "WS", "?", "\"", "const", "\"", ":", "WS", "?", "Var", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number"]
-    |           +-Pegged.Prefix [1503, 1520]["\"", "shared", "\"", ":", "WS", "?"]
-    |           |  +-Pegged.Suffix [1503, 1520]["\"", "shared", "\"", ":", "WS", "?"]
-    |           |     +-Pegged.Primary [1503, 1518]["\"", "shared", "\"", ":", "WS"]
-    |           |     |  +-Pegged.Expression [1504, 1517]["\"", "shared", "\"", ":", "WS"]
-    |           |     |     +-Pegged.LongestExpression [1504, 1517]["\"", "shared", "\"", ":", "WS"]
-    |           |     |        +-Pegged.Sequence [1504, 1517]["\"", "shared", "\"", ":", "WS"]
-    |           |     |           +-Pegged.Prefix [1504, 1514]["\"", "shared", "\""]
-    |           |     |           |  +-Pegged.Suffix [1504, 1514]["\"", "shared", "\""]
-    |           |     |           |     +-Pegged.Primary [1504, 1514]["\"", "shared", "\""]
-    |           |     |           |        +-Pegged.CILiteral [1504, 1514]["\"", "shared", "\""]
-    |           |     |           +-Pegged.Prefix [1514, 1517][":", "WS"]
-    |           |     |              +-Pegged.DISCARD [1514, 1515][":"]
-    |           |     |              +-Pegged.Suffix [1515, 1517]["WS"]
-    |           |     |                 +-Pegged.Primary [1515, 1517]["WS"]
-    |           |     |                    +-Pegged.RhsName [1515, 1517]["WS"]
-    |           |     |                       +-Pegged.Identifier [1515, 1517]["WS"]
-    |           |     +-Pegged.OPTION [1518, 1520]["?"]
-    |           +-Pegged.Prefix [1520, 1529]["\"", "const", "\""]
-    |           |  +-Pegged.Suffix [1520, 1529]["\"", "const", "\""]
-    |           |     +-Pegged.Primary [1520, 1529]["\"", "const", "\""]
-    |           |        +-Pegged.CILiteral [1520, 1529]["\"", "const", "\""]
-    |           +-Pegged.Prefix [1529, 1534][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1529, 1530][":"]
-    |           |  +-Pegged.Suffix [1530, 1534]["WS", "?"]
-    |           |     +-Pegged.Primary [1530, 1532]["WS"]
-    |           |     |  +-Pegged.RhsName [1530, 1532]["WS"]
-    |           |     |     +-Pegged.Identifier [1530, 1532]["WS"]
-    |           |     +-Pegged.OPTION [1532, 1534]["?"]
-    |           +-Pegged.Prefix [1534, 1538]["Var"]
-    |           |  +-Pegged.Suffix [1534, 1538]["Var"]
-    |           |     +-Pegged.Primary [1534, 1538]["Var"]
-    |           |        +-Pegged.RhsName [1534, 1538]["Var"]
-    |           |           +-Pegged.Identifier [1534, 1537]["Var"]
-    |           +-Pegged.Prefix [1538, 1543][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1538, 1539][":"]
-    |           |  +-Pegged.Suffix [1539, 1543]["WS", "?"]
-    |           |     +-Pegged.Primary [1539, 1541]["WS"]
-    |           |     |  +-Pegged.RhsName [1539, 1541]["WS"]
-    |           |     |     +-Pegged.Identifier [1539, 1541]["WS"]
-    |           |     +-Pegged.OPTION [1541, 1543]["?"]
-    |           +-Pegged.Prefix [1543, 1547]["\"", "=", "\""]
-    |           |  +-Pegged.Suffix [1543, 1547]["\"", "=", "\""]
-    |           |     +-Pegged.Primary [1543, 1547]["\"", "=", "\""]
-    |           |        +-Pegged.Literal [1543, 1547]["\"", "=", "\""]
-    |           +-Pegged.Prefix [1547, 1552][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1547, 1548][":"]
-    |           |  +-Pegged.Suffix [1548, 1552]["WS", "?"]
-    |           |     +-Pegged.Primary [1548, 1550]["WS"]
-    |           |     |  +-Pegged.RhsName [1548, 1550]["WS"]
-    |           |     |     +-Pegged.Identifier [1548, 1550]["WS"]
-    |           |     +-Pegged.OPTION [1550, 1552]["?"]
-    |           +-Pegged.Prefix [1552, 1571]["Number"]
-    |              +-Pegged.Suffix [1552, 1571]["Number"]
-    |                 +-Pegged.Primary [1552, 1571]["Number"]
-    |                    +-Pegged.RhsName [1552, 1571]["Number"]
-    |                       +-Pegged.Identifier [1552, 1558]["Number"]
-    +-Pegged.Definition [1571, 1654]["Let_stmt", "<-", "\"", "let", "\"", "eps", ":", "WS", "?", "Accessor", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression"]
-    |  +-Pegged.LhsName [1571, 1580]["Let_stmt"]
-    |  |  +-Pegged.Identifier [1571, 1579]["Let_stmt"]
-    |  +-Pegged.Arrow [1580, 1588]["<-"]
-    |  |  +-Pegged.LEFTARROW [1580, 1588]["<-"]
-    |  +-Pegged.Expression [1588, 1654]["\"", "let", "\"", "eps", ":", "WS", "?", "Accessor", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression"]
-    |     +-Pegged.LongestExpression [1588, 1654]["\"", "let", "\"", "eps", ":", "WS", "?", "Accessor", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression"]
-    |        +-Pegged.Sequence [1588, 1654]["\"", "let", "\"", "eps", ":", "WS", "?", "Accessor", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression"]
-    |           +-Pegged.Prefix [1588, 1603]["\"", "let", "\"", "eps"]
-    |           |  +-Pegged.Suffix [1588, 1603]["\"", "let", "\"", "eps"]
-    |           |     +-Pegged.Primary [1588, 1603]["\"", "let", "\"", "eps"]
-    |           |        +-Pegged.Expression [1589, 1601]["\"", "let", "\"", "eps"]
-    |           |           +-Pegged.FirstExpression [1589, 1601]["\"", "let", "\"", "eps"]
-    |           |              +-Pegged.Sequence [1589, 1596]["\"", "let", "\""]
-    |           |              |  +-Pegged.Prefix [1589, 1596]["\"", "let", "\""]
-    |           |              |     +-Pegged.Suffix [1589, 1596]["\"", "let", "\""]
-    |           |              |        +-Pegged.Primary [1589, 1596]["\"", "let", "\""]
-    |           |              |           +-Pegged.CILiteral [1589, 1596]["\"", "let", "\""]
-    |           |              +-Pegged.Sequence [1598, 1601]["eps"]
-    |           |                 +-Pegged.Prefix [1598, 1601]["eps"]
-    |           |                    +-Pegged.Suffix [1598, 1601]["eps"]
-    |           |                       +-Pegged.Primary [1598, 1601]["eps"]
-    |           |                          +-Pegged.RhsName [1598, 1601]["eps"]
-    |           |                             +-Pegged.Identifier [1598, 1601]["eps"]
-    |           +-Pegged.Prefix [1603, 1608][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1603, 1604][":"]
-    |           |  +-Pegged.Suffix [1604, 1608]["WS", "?"]
-    |           |     +-Pegged.Primary [1604, 1606]["WS"]
-    |           |     |  +-Pegged.RhsName [1604, 1606]["WS"]
-    |           |     |     +-Pegged.Identifier [1604, 1606]["WS"]
-    |           |     +-Pegged.OPTION [1606, 1608]["?"]
-    |           +-Pegged.Prefix [1608, 1617]["Accessor"]
-    |           |  +-Pegged.Suffix [1608, 1617]["Accessor"]
-    |           |     +-Pegged.Primary [1608, 1617]["Accessor"]
-    |           |        +-Pegged.RhsName [1608, 1617]["Accessor"]
-    |           |           +-Pegged.Identifier [1608, 1616]["Accessor"]
-    |           +-Pegged.Prefix [1617, 1622][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1617, 1618][":"]
-    |           |  +-Pegged.Suffix [1618, 1622]["WS", "?"]
-    |           |     +-Pegged.Primary [1618, 1620]["WS"]
-    |           |     |  +-Pegged.RhsName [1618, 1620]["WS"]
-    |           |     |     +-Pegged.Identifier [1618, 1620]["WS"]
-    |           |     +-Pegged.OPTION [1620, 1622]["?"]
-    |           +-Pegged.Prefix [1622, 1626]["\"", "=", "\""]
-    |           |  +-Pegged.Suffix [1622, 1626]["\"", "=", "\""]
-    |           |     +-Pegged.Primary [1622, 1626]["\"", "=", "\""]
-    |           |        +-Pegged.Literal [1622, 1626]["\"", "=", "\""]
-    |           +-Pegged.Prefix [1626, 1631][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1626, 1627][":"]
-    |           |  +-Pegged.Suffix [1627, 1631]["WS", "?"]
-    |           |     +-Pegged.Primary [1627, 1629]["WS"]
-    |           |     |  +-Pegged.RhsName [1627, 1629]["WS"]
-    |           |     |     +-Pegged.Identifier [1627, 1629]["WS"]
-    |           |     +-Pegged.OPTION [1629, 1631]["?"]
-    |           +-Pegged.Prefix [1631, 1654]["Expression"]
-    |              +-Pegged.Suffix [1631, 1654]["Expression"]
-    |                 +-Pegged.Primary [1631, 1654]["Expression"]
-    |                    +-Pegged.RhsName [1631, 1654]["Expression"]
-    |                       +-Pegged.Identifier [1631, 1641]["Expression"]
-    +-Pegged.Definition [1654, 1758]["Print_stmt", "<-", "\"", "print", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?", "PrintableList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |  +-Pegged.LhsName [1654, 1665]["Print_stmt"]
-    |  |  +-Pegged.Identifier [1654, 1664]["Print_stmt"]
-    |  +-Pegged.Arrow [1665, 1671]["<-"]
-    |  |  +-Pegged.LEFTARROW [1665, 1671]["<-"]
-    |  +-Pegged.Expression [1671, 1758]["\"", "print", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?", "PrintableList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |     +-Pegged.LongestExpression [1671, 1758]["\"", "print", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?", "PrintableList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |        +-Pegged.Sequence [1671, 1758]["\"", "print", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?", "PrintableList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |           +-Pegged.Prefix [1671, 1680]["\"", "print", "\""]
-    |           |  +-Pegged.Suffix [1671, 1680]["\"", "print", "\""]
-    |           |     +-Pegged.Primary [1671, 1680]["\"", "print", "\""]
-    |           |        +-Pegged.CILiteral [1671, 1680]["\"", "print", "\""]
-    |           +-Pegged.Prefix [1680, 1685][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1680, 1681][":"]
-    |           |  +-Pegged.Suffix [1681, 1685]["WS", "?"]
-    |           |     +-Pegged.Primary [1681, 1683]["WS"]
-    |           |     |  +-Pegged.RhsName [1681, 1683]["WS"]
-    |           |     |     +-Pegged.Identifier [1681, 1683]["WS"]
-    |           |     +-Pegged.OPTION [1683, 1685]["?"]
-    |           +-Pegged.Prefix [1685, 1722]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?"]
-    |           |  +-Pegged.Suffix [1685, 1722]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "?"]
-    |           |     +-Pegged.Primary [1685, 1720]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?"]
-    |           |     |  +-Pegged.Expression [1686, 1719]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?"]
-    |           |     |     +-Pegged.LongestExpression [1686, 1719]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?"]
-    |           |     |        +-Pegged.Sequence [1686, 1719]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?"]
-    |           |     |           +-Pegged.Prefix [1686, 1690]["\"", "#", "\""]
-    |           |     |           |  +-Pegged.Suffix [1686, 1690]["\"", "#", "\""]
-    |           |     |           |     +-Pegged.Primary [1686, 1690]["\"", "#", "\""]
-    |           |     |           |        +-Pegged.Literal [1686, 1690]["\"", "#", "\""]
-    |           |     |           +-Pegged.Prefix [1690, 1695][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [1690, 1691][":"]
-    |           |     |           |  +-Pegged.Suffix [1691, 1695]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [1691, 1693]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [1691, 1693]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [1691, 1693]["WS"]
-    |           |     |           |     +-Pegged.OPTION [1693, 1695]["?"]
-    |           |     |           +-Pegged.Prefix [1695, 1706]["Expression"]
-    |           |     |           |  +-Pegged.Suffix [1695, 1706]["Expression"]
-    |           |     |           |     +-Pegged.Primary [1695, 1706]["Expression"]
-    |           |     |           |        +-Pegged.RhsName [1695, 1706]["Expression"]
-    |           |     |           |           +-Pegged.Identifier [1695, 1705]["Expression"]
-    |           |     |           +-Pegged.Prefix [1706, 1711][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [1706, 1707][":"]
-    |           |     |           |  +-Pegged.Suffix [1707, 1711]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [1707, 1709]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [1707, 1709]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [1707, 1709]["WS"]
-    |           |     |           |     +-Pegged.OPTION [1709, 1711]["?"]
-    |           |     |           +-Pegged.Prefix [1711, 1715]["\"", ",", "\""]
-    |           |     |           |  +-Pegged.Suffix [1711, 1715]["\"", ",", "\""]
-    |           |     |           |     +-Pegged.Primary [1711, 1715]["\"", ",", "\""]
-    |           |     |           |        +-Pegged.Literal [1711, 1715]["\"", ",", "\""]
-    |           |     |           +-Pegged.Prefix [1715, 1719][":", "WS", "?"]
-    |           |     |              +-Pegged.DISCARD [1715, 1716][":"]
-    |           |     |              +-Pegged.Suffix [1716, 1719]["WS", "?"]
-    |           |     |                 +-Pegged.Primary [1716, 1718]["WS"]
-    |           |     |                 |  +-Pegged.RhsName [1716, 1718]["WS"]
-    |           |     |                 |     +-Pegged.Identifier [1716, 1718]["WS"]
-    |           |     |                 +-Pegged.OPTION [1718, 1719]["?"]
-    |           |     +-Pegged.OPTION [1720, 1722]["?"]
-    |           +-Pegged.Prefix [1722, 1736]["PrintableList"]
-    |           |  +-Pegged.Suffix [1722, 1736]["PrintableList"]
-    |           |     +-Pegged.Primary [1722, 1736]["PrintableList"]
-    |           |        +-Pegged.RhsName [1722, 1736]["PrintableList"]
-    |           |           +-Pegged.Identifier [1722, 1735]["PrintableList"]
-    |           +-Pegged.Prefix [1736, 1741][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1736, 1737][":"]
-    |           |  +-Pegged.Suffix [1737, 1741]["WS", "?"]
-    |           |     +-Pegged.Primary [1737, 1739]["WS"]
-    |           |     |  +-Pegged.RhsName [1737, 1739]["WS"]
-    |           |     |     +-Pegged.Identifier [1737, 1739]["WS"]
-    |           |     +-Pegged.OPTION [1739, 1741]["?"]
-    |           +-Pegged.Prefix [1741, 1758]["\"", ";", "\"", "?"]
-    |              +-Pegged.Suffix [1741, 1758]["\"", ";", "\"", "?"]
-    |                 +-Pegged.Primary [1741, 1744]["\"", ";", "\""]
-    |                 |  +-Pegged.Literal [1741, 1744]["\"", ";", "\""]
-    |                 +-Pegged.OPTION [1744, 1758]["?"]
-    +-Pegged.Definition [1758, 1821]["Write_stmt", "<-", "\"", "write", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "ExprList"]
-    |  +-Pegged.LhsName [1758, 1774]["Write_stmt"]
-    |  |  +-Pegged.Identifier [1758, 1768]["Write_stmt"]
-    |  +-Pegged.Arrow [1774, 1777]["<-"]
-    |  |  +-Pegged.LEFTARROW [1774, 1777]["<-"]
-    |  +-Pegged.Expression [1777, 1821]["\"", "write", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "ExprList"]
-    |     +-Pegged.LongestExpression [1777, 1821]["\"", "write", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "ExprList"]
-    |        +-Pegged.Sequence [1777, 1821]["\"", "write", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "ExprList"]
-    |           +-Pegged.Prefix [1777, 1786]["\"", "write", "\""]
-    |           |  +-Pegged.Suffix [1777, 1786]["\"", "write", "\""]
-    |           |     +-Pegged.Primary [1777, 1786]["\"", "write", "\""]
-    |           |        +-Pegged.CILiteral [1777, 1786]["\"", "write", "\""]
-    |           +-Pegged.Prefix [1786, 1791][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1786, 1787][":"]
-    |           |  +-Pegged.Suffix [1787, 1791]["WS", "?"]
-    |           |     +-Pegged.Primary [1787, 1789]["WS"]
-    |           |     |  +-Pegged.RhsName [1787, 1789]["WS"]
-    |           |     |     +-Pegged.Identifier [1787, 1789]["WS"]
-    |           |     +-Pegged.OPTION [1789, 1791]["?"]
-    |           +-Pegged.Prefix [1791, 1795]["\"", "#", "\""]
-    |           |  +-Pegged.Suffix [1791, 1795]["\"", "#", "\""]
-    |           |     +-Pegged.Primary [1791, 1795]["\"", "#", "\""]
-    |           |        +-Pegged.Literal [1791, 1795]["\"", "#", "\""]
-    |           +-Pegged.Prefix [1795, 1800][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1795, 1796][":"]
-    |           |  +-Pegged.Suffix [1796, 1800]["WS", "?"]
-    |           |     +-Pegged.Primary [1796, 1798]["WS"]
-    |           |     |  +-Pegged.RhsName [1796, 1798]["WS"]
-    |           |     |     +-Pegged.Identifier [1796, 1798]["WS"]
-    |           |     +-Pegged.OPTION [1798, 1800]["?"]
-    |           +-Pegged.Prefix [1800, 1821]["ExprList"]
-    |              +-Pegged.Suffix [1800, 1821]["ExprList"]
-    |                 +-Pegged.Primary [1800, 1821]["ExprList"]
-    |                    +-Pegged.RhsName [1800, 1821]["ExprList"]
-    |                       +-Pegged.Identifier [1800, 1808]["ExprList"]
-    +-Pegged.Definition [1821, 1913]["Read_stmt", "<-", "\"", "read", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "AccessorList"]
-    |  +-Pegged.LhsName [1821, 1837]["Read_stmt"]
-    |  |  +-Pegged.Identifier [1821, 1830]["Read_stmt"]
-    |  +-Pegged.Arrow [1837, 1840]["<-"]
-    |  |  +-Pegged.LEFTARROW [1837, 1840]["<-"]
-    |  +-Pegged.Expression [1840, 1913]["\"", "read", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "AccessorList"]
-    |     +-Pegged.LongestExpression [1840, 1913]["\"", "read", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "AccessorList"]
-    |        +-Pegged.Sequence [1840, 1913]["\"", "read", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "AccessorList"]
-    |           +-Pegged.Prefix [1840, 1848]["\"", "read", "\""]
-    |           |  +-Pegged.Suffix [1840, 1848]["\"", "read", "\""]
-    |           |     +-Pegged.Primary [1840, 1848]["\"", "read", "\""]
-    |           |        +-Pegged.CILiteral [1840, 1848]["\"", "read", "\""]
-    |           +-Pegged.Prefix [1848, 1853][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1848, 1849][":"]
-    |           |  +-Pegged.Suffix [1849, 1853]["WS", "?"]
-    |           |     +-Pegged.Primary [1849, 1851]["WS"]
-    |           |     |  +-Pegged.RhsName [1849, 1851]["WS"]
-    |           |     |     +-Pegged.Identifier [1849, 1851]["WS"]
-    |           |     +-Pegged.OPTION [1851, 1853]["?"]
-    |           +-Pegged.Prefix [1853, 1857]["\"", "#", "\""]
-    |           |  +-Pegged.Suffix [1853, 1857]["\"", "#", "\""]
-    |           |     +-Pegged.Primary [1853, 1857]["\"", "#", "\""]
-    |           |        +-Pegged.Literal [1853, 1857]["\"", "#", "\""]
-    |           +-Pegged.Prefix [1857, 1862][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1857, 1858][":"]
-    |           |  +-Pegged.Suffix [1858, 1862]["WS", "?"]
-    |           |     +-Pegged.Primary [1858, 1860]["WS"]
-    |           |     |  +-Pegged.RhsName [1858, 1860]["WS"]
-    |           |     |     +-Pegged.Identifier [1858, 1860]["WS"]
-    |           |     +-Pegged.OPTION [1860, 1862]["?"]
-    |           +-Pegged.Prefix [1862, 1874]["Expression"]
-    |           |  +-Pegged.Suffix [1862, 1874]["Expression"]
-    |           |     +-Pegged.Primary [1862, 1874]["Expression"]
-    |           |        +-Pegged.RhsName [1862, 1874]["Expression"]
-    |           |           +-Pegged.Identifier [1862, 1872]["Expression"]
-    |           +-Pegged.Prefix [1874, 1879][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1874, 1875][":"]
-    |           |  +-Pegged.Suffix [1875, 1879]["WS", "?"]
-    |           |     +-Pegged.Primary [1875, 1877]["WS"]
-    |           |     |  +-Pegged.RhsName [1875, 1877]["WS"]
-    |           |     |     +-Pegged.Identifier [1875, 1877]["WS"]
-    |           |     +-Pegged.OPTION [1877, 1879]["?"]
-    |           +-Pegged.Prefix [1879, 1883]["\"", ",", "\""]
-    |           |  +-Pegged.Suffix [1879, 1883]["\"", ",", "\""]
-    |           |     +-Pegged.Primary [1879, 1883]["\"", ",", "\""]
-    |           |        +-Pegged.Literal [1879, 1883]["\"", ",", "\""]
-    |           +-Pegged.Prefix [1883, 1888][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [1883, 1884][":"]
-    |           |  +-Pegged.Suffix [1884, 1888]["WS", "?"]
-    |           |     +-Pegged.Primary [1884, 1886]["WS"]
-    |           |     |  +-Pegged.RhsName [1884, 1886]["WS"]
-    |           |     |     +-Pegged.Identifier [1884, 1886]["WS"]
-    |           |     +-Pegged.OPTION [1886, 1888]["?"]
-    |           +-Pegged.Prefix [1888, 1913]["AccessorList"]
-    |              +-Pegged.Suffix [1888, 1913]["AccessorList"]
-    |                 +-Pegged.Primary [1888, 1913]["AccessorList"]
-    |                    +-Pegged.RhsName [1888, 1913]["AccessorList"]
-    |                       +-Pegged.Identifier [1888, 1900]["AccessorList"]
-    +-Pegged.Definition [1913, 2021]["If_stmt", "<-", "\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\"", ":", "WS", "Statements", ":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |  +-Pegged.LhsName [1913, 1921]["If_stmt"]
-    |  |  +-Pegged.Identifier [1913, 1920]["If_stmt"]
-    |  +-Pegged.Arrow [1921, 1930]["<-"]
-    |  |  +-Pegged.LEFTARROW [1921, 1930]["<-"]
-    |  +-Pegged.Expression [1930, 2021]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\"", ":", "WS", "Statements", ":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |     +-Pegged.LongestExpression [1930, 2021]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\"", ":", "WS", "Statements", ":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |        +-Pegged.Sequence [1930, 2021]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\"", ":", "WS", "Statements", ":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |           +-Pegged.Prefix [1930, 1936]["\"", "if", "\""]
-    |           |  +-Pegged.Suffix [1930, 1936]["\"", "if", "\""]
-    |           |     +-Pegged.Primary [1930, 1936]["\"", "if", "\""]
-    |           |        +-Pegged.CILiteral [1930, 1936]["\"", "if", "\""]
-    |           +-Pegged.Prefix [1936, 1940][":", "WS"]
-    |           |  +-Pegged.DISCARD [1936, 1937][":"]
-    |           |  +-Pegged.Suffix [1937, 1940]["WS"]
-    |           |     +-Pegged.Primary [1937, 1940]["WS"]
-    |           |        +-Pegged.RhsName [1937, 1940]["WS"]
-    |           |           +-Pegged.Identifier [1937, 1939]["WS"]
-    |           +-Pegged.Prefix [1940, 1951]["Expression"]
-    |           |  +-Pegged.Suffix [1940, 1951]["Expression"]
-    |           |     +-Pegged.Primary [1940, 1951]["Expression"]
-    |           |        +-Pegged.RhsName [1940, 1951]["Expression"]
-    |           |           +-Pegged.Identifier [1940, 1950]["Expression"]
-    |           +-Pegged.Prefix [1951, 1955][":", "WS"]
-    |           |  +-Pegged.DISCARD [1951, 1952][":"]
-    |           |  +-Pegged.Suffix [1952, 1955]["WS"]
-    |           |     +-Pegged.Primary [1952, 1955]["WS"]
-    |           |        +-Pegged.RhsName [1952, 1955]["WS"]
-    |           |           +-Pegged.Identifier [1952, 1954]["WS"]
-    |           +-Pegged.Prefix [1955, 1963]["\"", "then", "\""]
-    |           |  +-Pegged.Suffix [1955, 1963]["\"", "then", "\""]
-    |           |     +-Pegged.Primary [1955, 1963]["\"", "then", "\""]
-    |           |        +-Pegged.CILiteral [1955, 1963]["\"", "then", "\""]
-    |           +-Pegged.Prefix [1963, 1967][":", "WS"]
-    |           |  +-Pegged.DISCARD [1963, 1964][":"]
-    |           |  +-Pegged.Suffix [1964, 1967]["WS"]
-    |           |     +-Pegged.Primary [1964, 1967]["WS"]
-    |           |        +-Pegged.RhsName [1964, 1967]["WS"]
-    |           |           +-Pegged.Identifier [1964, 1966]["WS"]
-    |           +-Pegged.Prefix [1967, 1978]["Statements"]
-    |           |  +-Pegged.Suffix [1967, 1978]["Statements"]
-    |           |     +-Pegged.Primary [1967, 1978]["Statements"]
-    |           |        +-Pegged.RhsName [1967, 1978]["Statements"]
-    |           |           +-Pegged.Identifier [1967, 1977]["Statements"]
-    |           +-Pegged.Prefix [1978, 2021][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |              +-Pegged.Suffix [1978, 2021][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements", "?"]
-    |                 +-Pegged.Primary [1978, 2007][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements"]
-    |                 |  +-Pegged.Expression [1979, 2006][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements"]
-    |                 |     +-Pegged.LongestExpression [1979, 2006][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements"]
-    |                 |        +-Pegged.Sequence [1979, 2006][":", "WS", "?", "\"", "else", "\"", ":", "WS", "Statements"]
-    |                 |           +-Pegged.Prefix [1979, 1984][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [1979, 1980][":"]
-    |                 |           |  +-Pegged.Suffix [1980, 1984]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [1980, 1982]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [1980, 1982]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [1980, 1982]["WS"]
-    |                 |           |     +-Pegged.OPTION [1982, 1984]["?"]
-    |                 |           +-Pegged.Prefix [1984, 1992]["\"", "else", "\""]
-    |                 |           |  +-Pegged.Suffix [1984, 1992]["\"", "else", "\""]
-    |                 |           |     +-Pegged.Primary [1984, 1992]["\"", "else", "\""]
-    |                 |           |        +-Pegged.CILiteral [1984, 1992]["\"", "else", "\""]
-    |                 |           +-Pegged.Prefix [1992, 1996][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [1992, 1993][":"]
-    |                 |           |  +-Pegged.Suffix [1993, 1996]["WS"]
-    |                 |           |     +-Pegged.Primary [1993, 1996]["WS"]
-    |                 |           |        +-Pegged.RhsName [1993, 1996]["WS"]
-    |                 |           |           +-Pegged.Identifier [1993, 1995]["WS"]
-    |                 |           +-Pegged.Prefix [1996, 2006]["Statements"]
-    |                 |              +-Pegged.Suffix [1996, 2006]["Statements"]
-    |                 |                 +-Pegged.Primary [1996, 2006]["Statements"]
-    |                 |                    +-Pegged.RhsName [1996, 2006]["Statements"]
-    |                 |                       +-Pegged.Identifier [1996, 2006]["Statements"]
-    |                 +-Pegged.OPTION [2007, 2021]["?"]
-    +-Pegged.Definition [2021, 2083]["If_sa_stmt", "<-", "\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\""]
-    |  +-Pegged.LhsName [2021, 2032]["If_sa_stmt"]
-    |  |  +-Pegged.Identifier [2021, 2031]["If_sa_stmt"]
-    |  +-Pegged.Arrow [2032, 2038]["<-"]
-    |  |  +-Pegged.LEFTARROW [2032, 2038]["<-"]
-    |  +-Pegged.Expression [2038, 2083]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\""]
-    |     +-Pegged.LongestExpression [2038, 2083]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\""]
-    |        +-Pegged.Sequence [2038, 2083]["\"", "if", "\"", ":", "WS", "Expression", ":", "WS", "\"", "then", "\""]
-    |           +-Pegged.Prefix [2038, 2044]["\"", "if", "\""]
-    |           |  +-Pegged.Suffix [2038, 2044]["\"", "if", "\""]
-    |           |     +-Pegged.Primary [2038, 2044]["\"", "if", "\""]
-    |           |        +-Pegged.CILiteral [2038, 2044]["\"", "if", "\""]
-    |           +-Pegged.Prefix [2044, 2048][":", "WS"]
-    |           |  +-Pegged.DISCARD [2044, 2045][":"]
-    |           |  +-Pegged.Suffix [2045, 2048]["WS"]
-    |           |     +-Pegged.Primary [2045, 2048]["WS"]
-    |           |        +-Pegged.RhsName [2045, 2048]["WS"]
-    |           |           +-Pegged.Identifier [2045, 2047]["WS"]
-    |           +-Pegged.Prefix [2048, 2059]["Expression"]
-    |           |  +-Pegged.Suffix [2048, 2059]["Expression"]
-    |           |     +-Pegged.Primary [2048, 2059]["Expression"]
-    |           |        +-Pegged.RhsName [2048, 2059]["Expression"]
-    |           |           +-Pegged.Identifier [2048, 2058]["Expression"]
-    |           +-Pegged.Prefix [2059, 2063][":", "WS"]
-    |           |  +-Pegged.DISCARD [2059, 2060][":"]
-    |           |  +-Pegged.Suffix [2060, 2063]["WS"]
-    |           |     +-Pegged.Primary [2060, 2063]["WS"]
-    |           |        +-Pegged.RhsName [2060, 2063]["WS"]
-    |           |           +-Pegged.Identifier [2060, 2062]["WS"]
-    |           +-Pegged.Prefix [2063, 2083]["\"", "then", "\""]
-    |              +-Pegged.Suffix [2063, 2083]["\"", "then", "\""]
-    |                 +-Pegged.Primary [2063, 2083]["\"", "then", "\""]
-    |                    +-Pegged.CILiteral [2063, 2083]["\"", "then", "\""]
-    +-Pegged.Definition [2083, 2120]["Else_stmt", "<-", "\"", "else", "\""]
-    |  +-Pegged.LhsName [2083, 2093]["Else_stmt"]
-    |  |  +-Pegged.Identifier [2083, 2092]["Else_stmt"]
-    |  +-Pegged.Arrow [2093, 2100]["<-"]
-    |  |  +-Pegged.LEFTARROW [2093, 2100]["<-"]
-    |  +-Pegged.Expression [2100, 2120]["\"", "else", "\""]
-    |     +-Pegged.LongestExpression [2100, 2120]["\"", "else", "\""]
-    |        +-Pegged.Sequence [2100, 2120]["\"", "else", "\""]
-    |           +-Pegged.Prefix [2100, 2120]["\"", "else", "\""]
-    |              +-Pegged.Suffix [2100, 2120]["\"", "else", "\""]
-    |                 +-Pegged.Primary [2100, 2120]["\"", "else", "\""]
-    |                    +-Pegged.CILiteral [2100, 2120]["\"", "else", "\""]
-    +-Pegged.Definition [2120, 2159]["Endif_stmt", "<-", "\"", "end if", "\""]
-    |  +-Pegged.LhsName [2120, 2131]["Endif_stmt"]
-    |  |  +-Pegged.Identifier [2120, 2130]["Endif_stmt"]
-    |  +-Pegged.Arrow [2131, 2137]["<-"]
-    |  |  +-Pegged.LEFTARROW [2131, 2137]["<-"]
-    |  +-Pegged.Expression [2137, 2159]["\"", "end if", "\""]
-    |     +-Pegged.LongestExpression [2137, 2159]["\"", "end if", "\""]
-    |        +-Pegged.Sequence [2137, 2159]["\"", "end if", "\""]
-    |           +-Pegged.Prefix [2137, 2159]["\"", "end if", "\""]
-    |              +-Pegged.Suffix [2137, 2159]["\"", "end if", "\""]
-    |                 +-Pegged.Primary [2137, 2159]["\"", "end if", "\""]
-    |                    +-Pegged.CILiteral [2137, 2159]["\"", "end if", "\""]
-    +-Pegged.Definition [2159, 2223]["Goto_stmt", "<-", "\"", "goto", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |  +-Pegged.LhsName [2159, 2169]["Goto_stmt"]
-    |  |  +-Pegged.Identifier [2159, 2168]["Goto_stmt"]
-    |  +-Pegged.Arrow [2169, 2176]["<-"]
-    |  |  +-Pegged.LEFTARROW [2169, 2176]["<-"]
-    |  +-Pegged.Expression [2176, 2223]["\"", "goto", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |     +-Pegged.LongestExpression [2176, 2223]["\"", "goto", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |        +-Pegged.Sequence [2176, 2223]["\"", "goto", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |           +-Pegged.Prefix [2176, 2184]["\"", "goto", "\""]
-    |           |  +-Pegged.Suffix [2176, 2184]["\"", "goto", "\""]
-    |           |     +-Pegged.Primary [2176, 2184]["\"", "goto", "\""]
-    |           |        +-Pegged.CILiteral [2176, 2184]["\"", "goto", "\""]
-    |           +-Pegged.Prefix [2184, 2188][":", "WS"]
-    |           |  +-Pegged.DISCARD [2184, 2185][":"]
-    |           |  +-Pegged.Suffix [2185, 2188]["WS"]
-    |           |     +-Pegged.Primary [2185, 2188]["WS"]
-    |           |        +-Pegged.RhsName [2185, 2188]["WS"]
-    |           |           +-Pegged.Identifier [2185, 2187]["WS"]
-    |           +-Pegged.Prefix [2188, 2223]["Label_ref", "Unsigned"]
-    |              +-Pegged.Suffix [2188, 2223]["Label_ref", "Unsigned"]
-    |                 +-Pegged.Primary [2188, 2223]["Label_ref", "Unsigned"]
-    |                    +-Pegged.Expression [2189, 2209]["Label_ref", "Unsigned"]
-    |                       +-Pegged.FirstExpression [2189, 2209]["Label_ref", "Unsigned"]
-    |                          +-Pegged.Sequence [2189, 2199]["Label_ref"]
-    |                          |  +-Pegged.Prefix [2189, 2199]["Label_ref"]
-    |                          |     +-Pegged.Suffix [2189, 2199]["Label_ref"]
-    |                          |        +-Pegged.Primary [2189, 2199]["Label_ref"]
-    |                          |           +-Pegged.RhsName [2189, 2199]["Label_ref"]
-    |                          |              +-Pegged.Identifier [2189, 2198]["Label_ref"]
-    |                          +-Pegged.Sequence [2201, 2209]["Unsigned"]
-    |                             +-Pegged.Prefix [2201, 2209]["Unsigned"]
-    |                                +-Pegged.Suffix [2201, 2209]["Unsigned"]
-    |                                   +-Pegged.Primary [2201, 2209]["Unsigned"]
-    |                                      +-Pegged.RhsName [2201, 2209]["Unsigned"]
-    |                                         +-Pegged.Identifier [2201, 2209]["Unsigned"]
-    +-Pegged.Definition [2223, 2276]["Error_stmt", "<-", "\"", "error", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [2223, 2234]["Error_stmt"]
-    |  |  +-Pegged.Identifier [2223, 2233]["Error_stmt"]
-    |  +-Pegged.Arrow [2234, 2240]["<-"]
-    |  |  +-Pegged.LEFTARROW [2234, 2240]["<-"]
-    |  +-Pegged.Expression [2240, 2276]["\"", "error", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [2240, 2276]["\"", "error", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [2240, 2276]["\"", "error", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [2240, 2249]["\"", "error", "\""]
-    |           |  +-Pegged.Suffix [2240, 2249]["\"", "error", "\""]
-    |           |     +-Pegged.Primary [2240, 2249]["\"", "error", "\""]
-    |           |        +-Pegged.CILiteral [2240, 2249]["\"", "error", "\""]
-    |           +-Pegged.Prefix [2249, 2253][":", "WS"]
-    |           |  +-Pegged.DISCARD [2249, 2250][":"]
-    |           |  +-Pegged.Suffix [2250, 2253]["WS"]
-    |           |     +-Pegged.Primary [2250, 2253]["WS"]
-    |           |        +-Pegged.RhsName [2250, 2253]["WS"]
-    |           |           +-Pegged.Identifier [2250, 2252]["WS"]
-    |           +-Pegged.Prefix [2253, 2276]["Expression"]
-    |              +-Pegged.Suffix [2253, 2276]["Expression"]
-    |                 +-Pegged.Primary [2253, 2276]["Expression"]
-    |                    +-Pegged.RhsName [2253, 2276]["Expression"]
-    |                       +-Pegged.Identifier [2253, 2263]["Expression"]
-    +-Pegged.Definition [2276, 2349]["Swap_stmt", "<-", "\"", "swap", "\"", ":", "WS", "Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |  +-Pegged.LhsName [2276, 2286]["Swap_stmt"]
-    |  |  +-Pegged.Identifier [2276, 2285]["Swap_stmt"]
-    |  +-Pegged.Arrow [2286, 2293]["<-"]
-    |  |  +-Pegged.LEFTARROW [2286, 2293]["<-"]
-    |  +-Pegged.Expression [2293, 2349]["\"", "swap", "\"", ":", "WS", "Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |     +-Pegged.LongestExpression [2293, 2349]["\"", "swap", "\"", ":", "WS", "Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |        +-Pegged.Sequence [2293, 2349]["\"", "swap", "\"", ":", "WS", "Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |           +-Pegged.Prefix [2293, 2301]["\"", "swap", "\""]
-    |           |  +-Pegged.Suffix [2293, 2301]["\"", "swap", "\""]
-    |           |     +-Pegged.Primary [2293, 2301]["\"", "swap", "\""]
-    |           |        +-Pegged.CILiteral [2293, 2301]["\"", "swap", "\""]
-    |           +-Pegged.Prefix [2301, 2305][":", "WS"]
-    |           |  +-Pegged.DISCARD [2301, 2302][":"]
-    |           |  +-Pegged.Suffix [2302, 2305]["WS"]
-    |           |     +-Pegged.Primary [2302, 2305]["WS"]
-    |           |        +-Pegged.RhsName [2302, 2305]["WS"]
-    |           |           +-Pegged.Identifier [2302, 2304]["WS"]
-    |           +-Pegged.Prefix [2305, 2314]["Accessor"]
-    |           |  +-Pegged.Suffix [2305, 2314]["Accessor"]
-    |           |     +-Pegged.Primary [2305, 2314]["Accessor"]
-    |           |        +-Pegged.RhsName [2305, 2314]["Accessor"]
-    |           |           +-Pegged.Identifier [2305, 2313]["Accessor"]
-    |           +-Pegged.Prefix [2314, 2319][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2314, 2315][":"]
-    |           |  +-Pegged.Suffix [2315, 2319]["WS", "?"]
-    |           |     +-Pegged.Primary [2315, 2317]["WS"]
-    |           |     |  +-Pegged.RhsName [2315, 2317]["WS"]
-    |           |     |     +-Pegged.Identifier [2315, 2317]["WS"]
-    |           |     +-Pegged.OPTION [2317, 2319]["?"]
-    |           +-Pegged.Prefix [2319, 2323]["\"", ",", "\""]
-    |           |  +-Pegged.Suffix [2319, 2323]["\"", ",", "\""]
-    |           |     +-Pegged.Primary [2319, 2323]["\"", ",", "\""]
-    |           |        +-Pegged.Literal [2319, 2323]["\"", ",", "\""]
-    |           +-Pegged.Prefix [2323, 2328][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2323, 2324][":"]
-    |           |  +-Pegged.Suffix [2324, 2328]["WS", "?"]
-    |           |     +-Pegged.Primary [2324, 2326]["WS"]
-    |           |     |  +-Pegged.RhsName [2324, 2326]["WS"]
-    |           |     |     +-Pegged.Identifier [2324, 2326]["WS"]
-    |           |     +-Pegged.OPTION [2326, 2328]["?"]
-    |           +-Pegged.Prefix [2328, 2349]["Accessor"]
-    |              +-Pegged.Suffix [2328, 2349]["Accessor"]
-    |                 +-Pegged.Primary [2328, 2349]["Accessor"]
-    |                    +-Pegged.RhsName [2328, 2349]["Accessor"]
-    |                       +-Pegged.Identifier [2328, 2336]["Accessor"]
-    +-Pegged.Definition [2349, 2474]["Input_stmt", "<-", "\"", "input", "\"", ":", "WS", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?", ":", "WS", "?", "AccessorList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |  +-Pegged.LhsName [2349, 2360]["Input_stmt"]
-    |  |  +-Pegged.Identifier [2349, 2359]["Input_stmt"]
-    |  +-Pegged.Arrow [2360, 2366]["<-"]
-    |  |  +-Pegged.LEFTARROW [2360, 2366]["<-"]
-    |  +-Pegged.Expression [2366, 2474]["\"", "input", "\"", ":", "WS", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?", ":", "WS", "?", "AccessorList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |     +-Pegged.LongestExpression [2366, 2474]["\"", "input", "\"", ":", "WS", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?", ":", "WS", "?", "AccessorList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |        +-Pegged.Sequence [2366, 2474]["\"", "input", "\"", ":", "WS", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?", ":", "WS", "?", "AccessorList", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |           +-Pegged.Prefix [2366, 2375]["\"", "input", "\""]
-    |           |  +-Pegged.Suffix [2366, 2375]["\"", "input", "\""]
-    |           |     +-Pegged.Primary [2366, 2375]["\"", "input", "\""]
-    |           |        +-Pegged.CILiteral [2366, 2375]["\"", "input", "\""]
-    |           +-Pegged.Prefix [2375, 2379][":", "WS"]
-    |           |  +-Pegged.DISCARD [2375, 2376][":"]
-    |           |  +-Pegged.Suffix [2376, 2379]["WS"]
-    |           |     +-Pegged.Primary [2376, 2379]["WS"]
-    |           |        +-Pegged.RhsName [2376, 2379]["WS"]
-    |           |           +-Pegged.Identifier [2376, 2378]["WS"]
-    |           +-Pegged.Prefix [2379, 2434]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |           |  +-Pegged.Suffix [2379, 2434]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\"", "?"]
-    |           |     +-Pegged.Primary [2379, 2432]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |  +-Pegged.Expression [2380, 2431]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |     +-Pegged.FirstExpression [2380, 2431]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |        +-Pegged.Sequence [2380, 2412]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |  +-Pegged.Prefix [2380, 2412]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |     +-Pegged.Suffix [2380, 2412]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |        +-Pegged.Primary [2380, 2412]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |           +-Pegged.Expression [2381, 2409]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |              +-Pegged.LongestExpression [2381, 2409]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |                 +-Pegged.Sequence [2381, 2409]["\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        |                    +-Pegged.Prefix [2381, 2385]["\"", "#", "\""]
-    |           |     |        |                    |  +-Pegged.Suffix [2381, 2385]["\"", "#", "\""]
-    |           |     |        |                    |     +-Pegged.Primary [2381, 2385]["\"", "#", "\""]
-    |           |     |        |                    |        +-Pegged.Literal [2381, 2385]["\"", "#", "\""]
-    |           |     |        |                    +-Pegged.Prefix [2385, 2390][":", "WS", "?"]
-    |           |     |        |                    |  +-Pegged.DISCARD [2385, 2386][":"]
-    |           |     |        |                    |  +-Pegged.Suffix [2386, 2390]["WS", "?"]
-    |           |     |        |                    |     +-Pegged.Primary [2386, 2388]["WS"]
-    |           |     |        |                    |     |  +-Pegged.RhsName [2386, 2388]["WS"]
-    |           |     |        |                    |     |     +-Pegged.Identifier [2386, 2388]["WS"]
-    |           |     |        |                    |     +-Pegged.OPTION [2388, 2390]["?"]
-    |           |     |        |                    +-Pegged.Prefix [2390, 2401]["Expression"]
-    |           |     |        |                    |  +-Pegged.Suffix [2390, 2401]["Expression"]
-    |           |     |        |                    |     +-Pegged.Primary [2390, 2401]["Expression"]
-    |           |     |        |                    |        +-Pegged.RhsName [2390, 2401]["Expression"]
-    |           |     |        |                    |           +-Pegged.Identifier [2390, 2400]["Expression"]
-    |           |     |        |                    +-Pegged.Prefix [2401, 2406][":", "WS", "?"]
-    |           |     |        |                    |  +-Pegged.DISCARD [2401, 2402][":"]
-    |           |     |        |                    |  +-Pegged.Suffix [2402, 2406]["WS", "?"]
-    |           |     |        |                    |     +-Pegged.Primary [2402, 2404]["WS"]
-    |           |     |        |                    |     |  +-Pegged.RhsName [2402, 2404]["WS"]
-    |           |     |        |                    |     |     +-Pegged.Identifier [2402, 2404]["WS"]
-    |           |     |        |                    |     +-Pegged.OPTION [2404, 2406]["?"]
-    |           |     |        |                    +-Pegged.Prefix [2406, 2409]["\"", ",", "\""]
-    |           |     |        |                       +-Pegged.Suffix [2406, 2409]["\"", ",", "\""]
-    |           |     |        |                          +-Pegged.Primary [2406, 2409]["\"", ",", "\""]
-    |           |     |        |                             +-Pegged.Literal [2406, 2409]["\"", ",", "\""]
-    |           |     |        +-Pegged.Sequence [2414, 2431]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |           +-Pegged.Prefix [2414, 2431]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |              +-Pegged.Suffix [2414, 2431]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |                 +-Pegged.Primary [2414, 2431]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |                    +-Pegged.Expression [2415, 2430]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |                       +-Pegged.LongestExpression [2415, 2430]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |                          +-Pegged.Sequence [2415, 2430]["String", ":", "WS", "?", "\"", ";", "\""]
-    |           |     |                             +-Pegged.Prefix [2415, 2422]["String"]
-    |           |     |                             |  +-Pegged.Suffix [2415, 2422]["String"]
-    |           |     |                             |     +-Pegged.Primary [2415, 2422]["String"]
-    |           |     |                             |        +-Pegged.RhsName [2415, 2422]["String"]
-    |           |     |                             |           +-Pegged.Identifier [2415, 2421]["String"]
-    |           |     |                             +-Pegged.Prefix [2422, 2427][":", "WS", "?"]
-    |           |     |                             |  +-Pegged.DISCARD [2422, 2423][":"]
-    |           |     |                             |  +-Pegged.Suffix [2423, 2427]["WS", "?"]
-    |           |     |                             |     +-Pegged.Primary [2423, 2425]["WS"]
-    |           |     |                             |     |  +-Pegged.RhsName [2423, 2425]["WS"]
-    |           |     |                             |     |     +-Pegged.Identifier [2423, 2425]["WS"]
-    |           |     |                             |     +-Pegged.OPTION [2425, 2427]["?"]
-    |           |     |                             +-Pegged.Prefix [2427, 2430]["\"", ";", "\""]
-    |           |     |                                +-Pegged.Suffix [2427, 2430]["\"", ";", "\""]
-    |           |     |                                   +-Pegged.Primary [2427, 2430]["\"", ";", "\""]
-    |           |     |                                      +-Pegged.Literal [2427, 2430]["\"", ";", "\""]
-    |           |     +-Pegged.OPTION [2432, 2434]["?"]
-    |           +-Pegged.Prefix [2434, 2439][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2434, 2435][":"]
-    |           |  +-Pegged.Suffix [2435, 2439]["WS", "?"]
-    |           |     +-Pegged.Primary [2435, 2437]["WS"]
-    |           |     |  +-Pegged.RhsName [2435, 2437]["WS"]
-    |           |     |     +-Pegged.Identifier [2435, 2437]["WS"]
-    |           |     +-Pegged.OPTION [2437, 2439]["?"]
-    |           +-Pegged.Prefix [2439, 2452]["AccessorList"]
-    |           |  +-Pegged.Suffix [2439, 2452]["AccessorList"]
-    |           |     +-Pegged.Primary [2439, 2452]["AccessorList"]
-    |           |        +-Pegged.RhsName [2439, 2452]["AccessorList"]
-    |           |           +-Pegged.Identifier [2439, 2451]["AccessorList"]
-    |           +-Pegged.Prefix [2452, 2457][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2452, 2453][":"]
-    |           |  +-Pegged.Suffix [2453, 2457]["WS", "?"]
-    |           |     +-Pegged.Primary [2453, 2455]["WS"]
-    |           |     |  +-Pegged.RhsName [2453, 2455]["WS"]
-    |           |     |     +-Pegged.Identifier [2453, 2455]["WS"]
-    |           |     +-Pegged.OPTION [2455, 2457]["?"]
-    |           +-Pegged.Prefix [2457, 2474]["\"", ";", "\"", "?"]
-    |              +-Pegged.Suffix [2457, 2474]["\"", ";", "\"", "?"]
-    |                 +-Pegged.Primary [2457, 2460]["\"", ";", "\""]
-    |                 |  +-Pegged.Literal [2457, 2460]["\"", ";", "\""]
-    |                 +-Pegged.OPTION [2460, 2474]["?"]
-    +-Pegged.Definition [2474, 2539]["Gosub_stmt", "<-", "\"", "gosub", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |  +-Pegged.LhsName [2474, 2485]["Gosub_stmt"]
-    |  |  +-Pegged.Identifier [2474, 2484]["Gosub_stmt"]
-    |  +-Pegged.Arrow [2485, 2491]["<-"]
-    |  |  +-Pegged.LEFTARROW [2485, 2491]["<-"]
-    |  +-Pegged.Expression [2491, 2539]["\"", "gosub", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |     +-Pegged.LongestExpression [2491, 2539]["\"", "gosub", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |        +-Pegged.Sequence [2491, 2539]["\"", "gosub", "\"", ":", "WS", "Label_ref", "Unsigned"]
-    |           +-Pegged.Prefix [2491, 2500]["\"", "gosub", "\""]
-    |           |  +-Pegged.Suffix [2491, 2500]["\"", "gosub", "\""]
-    |           |     +-Pegged.Primary [2491, 2500]["\"", "gosub", "\""]
-    |           |        +-Pegged.CILiteral [2491, 2500]["\"", "gosub", "\""]
-    |           +-Pegged.Prefix [2500, 2504][":", "WS"]
-    |           |  +-Pegged.DISCARD [2500, 2501][":"]
-    |           |  +-Pegged.Suffix [2501, 2504]["WS"]
-    |           |     +-Pegged.Primary [2501, 2504]["WS"]
-    |           |        +-Pegged.RhsName [2501, 2504]["WS"]
-    |           |           +-Pegged.Identifier [2501, 2503]["WS"]
-    |           +-Pegged.Prefix [2504, 2539]["Label_ref", "Unsigned"]
-    |              +-Pegged.Suffix [2504, 2539]["Label_ref", "Unsigned"]
-    |                 +-Pegged.Primary [2504, 2539]["Label_ref", "Unsigned"]
-    |                    +-Pegged.Expression [2505, 2525]["Label_ref", "Unsigned"]
-    |                       +-Pegged.FirstExpression [2505, 2525]["Label_ref", "Unsigned"]
-    |                          +-Pegged.Sequence [2505, 2515]["Label_ref"]
-    |                          |  +-Pegged.Prefix [2505, 2515]["Label_ref"]
-    |                          |     +-Pegged.Suffix [2505, 2515]["Label_ref"]
-    |                          |        +-Pegged.Primary [2505, 2515]["Label_ref"]
-    |                          |           +-Pegged.RhsName [2505, 2515]["Label_ref"]
-    |                          |              +-Pegged.Identifier [2505, 2514]["Label_ref"]
-    |                          +-Pegged.Sequence [2517, 2525]["Unsigned"]
-    |                             +-Pegged.Prefix [2517, 2525]["Unsigned"]
-    |                                +-Pegged.Suffix [2517, 2525]["Unsigned"]
-    |                                   +-Pegged.Primary [2517, 2525]["Unsigned"]
-    |                                      +-Pegged.RhsName [2517, 2525]["Unsigned"]
-    |                                         +-Pegged.Identifier [2517, 2525]["Unsigned"]
-    +-Pegged.Definition [2539, 2589]["Call_stmt", "<-", "\"", "call", "\"", ":", "WS", "Accessor"]
-    |  +-Pegged.LhsName [2539, 2549]["Call_stmt"]
-    |  |  +-Pegged.Identifier [2539, 2548]["Call_stmt"]
-    |  +-Pegged.Arrow [2549, 2556]["<-"]
-    |  |  +-Pegged.LEFTARROW [2549, 2556]["<-"]
-    |  +-Pegged.Expression [2556, 2589]["\"", "call", "\"", ":", "WS", "Accessor"]
-    |     +-Pegged.LongestExpression [2556, 2589]["\"", "call", "\"", ":", "WS", "Accessor"]
-    |        +-Pegged.Sequence [2556, 2589]["\"", "call", "\"", ":", "WS", "Accessor"]
-    |           +-Pegged.Prefix [2556, 2564]["\"", "call", "\""]
-    |           |  +-Pegged.Suffix [2556, 2564]["\"", "call", "\""]
-    |           |     +-Pegged.Primary [2556, 2564]["\"", "call", "\""]
-    |           |        +-Pegged.CILiteral [2556, 2564]["\"", "call", "\""]
-    |           +-Pegged.Prefix [2564, 2568][":", "WS"]
-    |           |  +-Pegged.DISCARD [2564, 2565][":"]
-    |           |  +-Pegged.Suffix [2565, 2568]["WS"]
-    |           |     +-Pegged.Primary [2565, 2568]["WS"]
-    |           |        +-Pegged.RhsName [2565, 2568]["WS"]
-    |           |           +-Pegged.Identifier [2565, 2567]["WS"]
-    |           +-Pegged.Prefix [2568, 2589]["Accessor"]
-    |              +-Pegged.Suffix [2568, 2589]["Accessor"]
-    |                 +-Pegged.Primary [2568, 2589]["Accessor"]
-    |                    +-Pegged.RhsName [2568, 2589]["Accessor"]
-    |                       +-Pegged.Identifier [2568, 2576]["Accessor"]
-    +-Pegged.Definition [2589, 2628]["Return_stmt", "<-", "\"", "return", "\""]
-    |  +-Pegged.LhsName [2589, 2601]["Return_stmt"]
-    |  |  +-Pegged.Identifier [2589, 2600]["Return_stmt"]
-    |  +-Pegged.Arrow [2601, 2606]["<-"]
-    |  |  +-Pegged.LEFTARROW [2601, 2606]["<-"]
-    |  +-Pegged.Expression [2606, 2628]["\"", "return", "\""]
-    |     +-Pegged.LongestExpression [2606, 2628]["\"", "return", "\""]
-    |        +-Pegged.Sequence [2606, 2628]["\"", "return", "\""]
-    |           +-Pegged.Prefix [2606, 2628]["\"", "return", "\""]
-    |              +-Pegged.Suffix [2606, 2628]["\"", "return", "\""]
-    |                 +-Pegged.Primary [2606, 2628]["\"", "return", "\""]
-    |                    +-Pegged.CILiteral [2606, 2628]["\"", "return", "\""]
-    +-Pegged.Definition [2628, 2683]["Return_fn_stmt", "<-", "\"", "return", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [2628, 2643]["Return_fn_stmt"]
-    |  |  +-Pegged.Identifier [2628, 2642]["Return_fn_stmt"]
-    |  +-Pegged.Arrow [2643, 2646]["<-"]
-    |  |  +-Pegged.LEFTARROW [2643, 2646]["<-"]
-    |  +-Pegged.Expression [2646, 2683]["\"", "return", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [2646, 2683]["\"", "return", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [2646, 2683]["\"", "return", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [2646, 2656]["\"", "return", "\""]
-    |           |  +-Pegged.Suffix [2646, 2656]["\"", "return", "\""]
-    |           |     +-Pegged.Primary [2646, 2656]["\"", "return", "\""]
-    |           |        +-Pegged.CILiteral [2646, 2656]["\"", "return", "\""]
-    |           +-Pegged.Prefix [2656, 2660][":", "WS"]
-    |           |  +-Pegged.DISCARD [2656, 2657][":"]
-    |           |  +-Pegged.Suffix [2657, 2660]["WS"]
-    |           |     +-Pegged.Primary [2657, 2660]["WS"]
-    |           |        +-Pegged.RhsName [2657, 2660]["WS"]
-    |           |           +-Pegged.Identifier [2657, 2659]["WS"]
-    |           +-Pegged.Prefix [2660, 2683]["Expression"]
-    |              +-Pegged.Suffix [2660, 2683]["Expression"]
-    |                 +-Pegged.Primary [2660, 2683]["Expression"]
-    |                    +-Pegged.RhsName [2660, 2683]["Expression"]
-    |                       +-Pegged.Identifier [2660, 2670]["Expression"]
-    +-Pegged.Definition [2683, 2772]["Poke_stmt", "<-", "\"", "poke", "\"", "\"", "doke", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |  +-Pegged.LhsName [2683, 2693]["Poke_stmt"]
-    |  |  +-Pegged.Identifier [2683, 2692]["Poke_stmt"]
-    |  +-Pegged.Arrow [2693, 2700]["<-"]
-    |  |  +-Pegged.LEFTARROW [2693, 2700]["<-"]
-    |  +-Pegged.Expression [2700, 2772]["\"", "poke", "\"", "\"", "doke", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |     +-Pegged.LongestExpression [2700, 2772]["\"", "poke", "\"", "\"", "doke", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |        +-Pegged.Sequence [2700, 2772]["\"", "poke", "\"", "\"", "doke", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           +-Pegged.Prefix [2700, 2720]["\"", "poke", "\"", "\"", "doke", "\""]
-    |           |  +-Pegged.Suffix [2700, 2720]["\"", "poke", "\"", "\"", "doke", "\""]
-    |           |     +-Pegged.Primary [2700, 2720]["\"", "poke", "\"", "\"", "doke", "\""]
-    |           |        +-Pegged.Expression [2701, 2718]["\"", "poke", "\"", "\"", "doke", "\""]
-    |           |           +-Pegged.FirstExpression [2701, 2718]["\"", "poke", "\"", "\"", "doke", "\""]
-    |           |              +-Pegged.Sequence [2701, 2709]["\"", "poke", "\""]
-    |           |              |  +-Pegged.Prefix [2701, 2709]["\"", "poke", "\""]
-    |           |              |     +-Pegged.Suffix [2701, 2709]["\"", "poke", "\""]
-    |           |              |        +-Pegged.Primary [2701, 2709]["\"", "poke", "\""]
-    |           |              |           +-Pegged.CILiteral [2701, 2709]["\"", "poke", "\""]
-    |           |              +-Pegged.Sequence [2711, 2718]["\"", "doke", "\""]
-    |           |                 +-Pegged.Prefix [2711, 2718]["\"", "doke", "\""]
-    |           |                    +-Pegged.Suffix [2711, 2718]["\"", "doke", "\""]
-    |           |                       +-Pegged.Primary [2711, 2718]["\"", "doke", "\""]
-    |           |                          +-Pegged.CILiteral [2711, 2718]["\"", "doke", "\""]
-    |           +-Pegged.Prefix [2720, 2724][":", "WS"]
-    |           |  +-Pegged.DISCARD [2720, 2721][":"]
-    |           |  +-Pegged.Suffix [2721, 2724]["WS"]
-    |           |     +-Pegged.Primary [2721, 2724]["WS"]
-    |           |        +-Pegged.RhsName [2721, 2724]["WS"]
-    |           |           +-Pegged.Identifier [2721, 2723]["WS"]
-    |           +-Pegged.Prefix [2724, 2735]["Expression"]
-    |           |  +-Pegged.Suffix [2724, 2735]["Expression"]
-    |           |     +-Pegged.Primary [2724, 2735]["Expression"]
-    |           |        +-Pegged.RhsName [2724, 2735]["Expression"]
-    |           |           +-Pegged.Identifier [2724, 2734]["Expression"]
-    |           +-Pegged.Prefix [2735, 2740][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2735, 2736][":"]
-    |           |  +-Pegged.Suffix [2736, 2740]["WS", "?"]
-    |           |     +-Pegged.Primary [2736, 2738]["WS"]
-    |           |     |  +-Pegged.RhsName [2736, 2738]["WS"]
-    |           |     |     +-Pegged.Identifier [2736, 2738]["WS"]
-    |           |     +-Pegged.OPTION [2738, 2740]["?"]
-    |           +-Pegged.Prefix [2740, 2744]["\"", ",", "\""]
-    |           |  +-Pegged.Suffix [2740, 2744]["\"", ",", "\""]
-    |           |     +-Pegged.Primary [2740, 2744]["\"", ",", "\""]
-    |           |        +-Pegged.Literal [2740, 2744]["\"", ",", "\""]
-    |           +-Pegged.Prefix [2744, 2749][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [2744, 2745][":"]
-    |           |  +-Pegged.Suffix [2745, 2749]["WS", "?"]
-    |           |     +-Pegged.Primary [2745, 2747]["WS"]
-    |           |     |  +-Pegged.RhsName [2745, 2747]["WS"]
-    |           |     |     +-Pegged.Identifier [2745, 2747]["WS"]
-    |           |     +-Pegged.OPTION [2747, 2749]["?"]
-    |           +-Pegged.Prefix [2749, 2772]["Expression"]
-    |              +-Pegged.Suffix [2749, 2772]["Expression"]
-    |                 +-Pegged.Primary [2749, 2772]["Expression"]
-    |                    +-Pegged.RhsName [2749, 2772]["Expression"]
-    |                       +-Pegged.Identifier [2749, 2759]["Expression"]
-    +-Pegged.Definition [2772, 2851]["Do_stmt", "<-", "\"", "do", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |  +-Pegged.LhsName [2772, 2780]["Do_stmt"]
-    |  |  +-Pegged.Identifier [2772, 2779]["Do_stmt"]
-    |  +-Pegged.Arrow [2780, 2789]["<-"]
-    |  |  +-Pegged.LEFTARROW [2780, 2789]["<-"]
-    |  +-Pegged.Expression [2789, 2851]["\"", "do", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |     +-Pegged.LongestExpression [2789, 2851]["\"", "do", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |        +-Pegged.Sequence [2789, 2851]["\"", "do", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |           +-Pegged.Prefix [2789, 2795]["\"", "do", "\""]
-    |           |  +-Pegged.Suffix [2789, 2795]["\"", "do", "\""]
-    |           |     +-Pegged.Primary [2789, 2795]["\"", "do", "\""]
-    |           |        +-Pegged.CILiteral [2789, 2795]["\"", "do", "\""]
-    |           +-Pegged.Prefix [2795, 2851][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |              +-Pegged.Suffix [2795, 2851][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |                 +-Pegged.Primary [2795, 2837][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |  +-Pegged.Expression [2796, 2836][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |     +-Pegged.LongestExpression [2796, 2836][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |        +-Pegged.Sequence [2796, 2836][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |           +-Pegged.Prefix [2796, 2800][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [2796, 2797][":"]
-    |                 |           |  +-Pegged.Suffix [2797, 2800]["WS"]
-    |                 |           |     +-Pegged.Primary [2797, 2800]["WS"]
-    |                 |           |        +-Pegged.RhsName [2797, 2800]["WS"]
-    |                 |           |           +-Pegged.Identifier [2797, 2799]["WS"]
-    |                 |           +-Pegged.Prefix [2800, 2822]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |  +-Pegged.Suffix [2800, 2822]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |     +-Pegged.Primary [2800, 2822]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |        +-Pegged.Expression [2801, 2820]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |           +-Pegged.FirstExpression [2801, 2820]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |              +-Pegged.Sequence [2801, 2810]["\"", "while", "\""]
-    |                 |           |              |  +-Pegged.Prefix [2801, 2810]["\"", "while", "\""]
-    |                 |           |              |     +-Pegged.Suffix [2801, 2810]["\"", "while", "\""]
-    |                 |           |              |        +-Pegged.Primary [2801, 2810]["\"", "while", "\""]
-    |                 |           |              |           +-Pegged.CILiteral [2801, 2810]["\"", "while", "\""]
-    |                 |           |              +-Pegged.Sequence [2812, 2820]["\"", "until", "\""]
-    |                 |           |                 +-Pegged.Prefix [2812, 2820]["\"", "until", "\""]
-    |                 |           |                    +-Pegged.Suffix [2812, 2820]["\"", "until", "\""]
-    |                 |           |                       +-Pegged.Primary [2812, 2820]["\"", "until", "\""]
-    |                 |           |                          +-Pegged.CILiteral [2812, 2820]["\"", "until", "\""]
-    |                 |           +-Pegged.Prefix [2822, 2826][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [2822, 2823][":"]
-    |                 |           |  +-Pegged.Suffix [2823, 2826]["WS"]
-    |                 |           |     +-Pegged.Primary [2823, 2826]["WS"]
-    |                 |           |        +-Pegged.RhsName [2823, 2826]["WS"]
-    |                 |           |           +-Pegged.Identifier [2823, 2825]["WS"]
-    |                 |           +-Pegged.Prefix [2826, 2836]["Expression"]
-    |                 |              +-Pegged.Suffix [2826, 2836]["Expression"]
-    |                 |                 +-Pegged.Primary [2826, 2836]["Expression"]
-    |                 |                    +-Pegged.RhsName [2826, 2836]["Expression"]
-    |                 |                       +-Pegged.Identifier [2826, 2836]["Expression"]
-    |                 +-Pegged.OPTION [2837, 2851]["?"]
-    +-Pegged.Definition [2851, 2932]["Loop_stmt", "<-", "\"", "loop", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |  +-Pegged.LhsName [2851, 2861]["Loop_stmt"]
-    |  |  +-Pegged.Identifier [2851, 2860]["Loop_stmt"]
-    |  +-Pegged.Arrow [2861, 2868]["<-"]
-    |  |  +-Pegged.LEFTARROW [2861, 2868]["<-"]
-    |  +-Pegged.Expression [2868, 2932]["\"", "loop", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |     +-Pegged.LongestExpression [2868, 2932]["\"", "loop", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |        +-Pegged.Sequence [2868, 2932]["\"", "loop", "\"", ":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |           +-Pegged.Prefix [2868, 2876]["\"", "loop", "\""]
-    |           |  +-Pegged.Suffix [2868, 2876]["\"", "loop", "\""]
-    |           |     +-Pegged.Primary [2868, 2876]["\"", "loop", "\""]
-    |           |        +-Pegged.CILiteral [2868, 2876]["\"", "loop", "\""]
-    |           +-Pegged.Prefix [2876, 2932][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |              +-Pegged.Suffix [2876, 2932][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression", "?"]
-    |                 +-Pegged.Primary [2876, 2918][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |  +-Pegged.Expression [2877, 2917][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |     +-Pegged.LongestExpression [2877, 2917][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |        +-Pegged.Sequence [2877, 2917][":", "WS", "\"", "while", "\"", "\"", "until", "\"", ":", "WS", "Expression"]
-    |                 |           +-Pegged.Prefix [2877, 2881][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [2877, 2878][":"]
-    |                 |           |  +-Pegged.Suffix [2878, 2881]["WS"]
-    |                 |           |     +-Pegged.Primary [2878, 2881]["WS"]
-    |                 |           |        +-Pegged.RhsName [2878, 2881]["WS"]
-    |                 |           |           +-Pegged.Identifier [2878, 2880]["WS"]
-    |                 |           +-Pegged.Prefix [2881, 2903]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |  +-Pegged.Suffix [2881, 2903]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |     +-Pegged.Primary [2881, 2903]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |        +-Pegged.Expression [2882, 2901]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |           +-Pegged.FirstExpression [2882, 2901]["\"", "while", "\"", "\"", "until", "\""]
-    |                 |           |              +-Pegged.Sequence [2882, 2891]["\"", "while", "\""]
-    |                 |           |              |  +-Pegged.Prefix [2882, 2891]["\"", "while", "\""]
-    |                 |           |              |     +-Pegged.Suffix [2882, 2891]["\"", "while", "\""]
-    |                 |           |              |        +-Pegged.Primary [2882, 2891]["\"", "while", "\""]
-    |                 |           |              |           +-Pegged.CILiteral [2882, 2891]["\"", "while", "\""]
-    |                 |           |              +-Pegged.Sequence [2893, 2901]["\"", "until", "\""]
-    |                 |           |                 +-Pegged.Prefix [2893, 2901]["\"", "until", "\""]
-    |                 |           |                    +-Pegged.Suffix [2893, 2901]["\"", "until", "\""]
-    |                 |           |                       +-Pegged.Primary [2893, 2901]["\"", "until", "\""]
-    |                 |           |                          +-Pegged.CILiteral [2893, 2901]["\"", "until", "\""]
-    |                 |           +-Pegged.Prefix [2903, 2907][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [2903, 2904][":"]
-    |                 |           |  +-Pegged.Suffix [2904, 2907]["WS"]
-    |                 |           |     +-Pegged.Primary [2904, 2907]["WS"]
-    |                 |           |        +-Pegged.RhsName [2904, 2907]["WS"]
-    |                 |           |           +-Pegged.Identifier [2904, 2906]["WS"]
-    |                 |           +-Pegged.Prefix [2907, 2917]["Expression"]
-    |                 |              +-Pegged.Suffix [2907, 2917]["Expression"]
-    |                 |                 +-Pegged.Primary [2907, 2917]["Expression"]
-    |                 |                    +-Pegged.RhsName [2907, 2917]["Expression"]
-    |                 |                       +-Pegged.Identifier [2907, 2917]["Expression"]
-    |                 +-Pegged.OPTION [2918, 2932]["?"]
-    +-Pegged.Definition [2932, 2995]["Cont_stmt", "<-", "\"", "continue", "\"", ":", "WS", "\"", "for", "\"", "\"", "do", "\"", "?"]
-    |  +-Pegged.LhsName [2932, 2942]["Cont_stmt"]
-    |  |  +-Pegged.Identifier [2932, 2941]["Cont_stmt"]
-    |  +-Pegged.Arrow [2942, 2949]["<-"]
-    |  |  +-Pegged.LEFTARROW [2942, 2949]["<-"]
-    |  +-Pegged.Expression [2949, 2995]["\"", "continue", "\"", ":", "WS", "\"", "for", "\"", "\"", "do", "\"", "?"]
-    |     +-Pegged.LongestExpression [2949, 2995]["\"", "continue", "\"", ":", "WS", "\"", "for", "\"", "\"", "do", "\"", "?"]
-    |        +-Pegged.Sequence [2949, 2995]["\"", "continue", "\"", ":", "WS", "\"", "for", "\"", "\"", "do", "\"", "?"]
-    |           +-Pegged.Prefix [2949, 2961]["\"", "continue", "\""]
-    |           |  +-Pegged.Suffix [2949, 2961]["\"", "continue", "\""]
-    |           |     +-Pegged.Primary [2949, 2961]["\"", "continue", "\""]
-    |           |        +-Pegged.CILiteral [2949, 2961]["\"", "continue", "\""]
-    |           +-Pegged.Prefix [2961, 2965][":", "WS"]
-    |           |  +-Pegged.DISCARD [2961, 2962][":"]
-    |           |  +-Pegged.Suffix [2962, 2965]["WS"]
-    |           |     +-Pegged.Primary [2962, 2965]["WS"]
-    |           |        +-Pegged.RhsName [2962, 2965]["WS"]
-    |           |           +-Pegged.Identifier [2962, 2964]["WS"]
-    |           +-Pegged.Prefix [2965, 2995]["\"", "for", "\"", "\"", "do", "\"", "?"]
-    |              +-Pegged.Suffix [2965, 2995]["\"", "for", "\"", "\"", "do", "\"", "?"]
-    |                 +-Pegged.Primary [2965, 2981]["\"", "for", "\"", "\"", "do", "\""]
-    |                 |  +-Pegged.Expression [2966, 2980]["\"", "for", "\"", "\"", "do", "\""]
-    |                 |     +-Pegged.FirstExpression [2966, 2980]["\"", "for", "\"", "\"", "do", "\""]
-    |                 |        +-Pegged.Sequence [2966, 2973]["\"", "for", "\""]
-    |                 |        |  +-Pegged.Prefix [2966, 2973]["\"", "for", "\""]
-    |                 |        |     +-Pegged.Suffix [2966, 2973]["\"", "for", "\""]
-    |                 |        |        +-Pegged.Primary [2966, 2973]["\"", "for", "\""]
-    |                 |        |           +-Pegged.CILiteral [2966, 2973]["\"", "for", "\""]
-    |                 |        +-Pegged.Sequence [2975, 2980]["\"", "do", "\""]
-    |                 |           +-Pegged.Prefix [2975, 2980]["\"", "do", "\""]
-    |                 |              +-Pegged.Suffix [2975, 2980]["\"", "do", "\""]
-    |                 |                 +-Pegged.Primary [2975, 2980]["\"", "do", "\""]
-    |                 |                    +-Pegged.CILiteral [2975, 2980]["\"", "do", "\""]
-    |                 +-Pegged.OPTION [2981, 2995]["?"]
-    +-Pegged.Definition [2995, 3035]["Exit_do_stmt", "<-", "\"", "exit do", "\""]
-    |  +-Pegged.LhsName [2995, 3008]["Exit_do_stmt"]
-    |  |  +-Pegged.Identifier [2995, 3007]["Exit_do_stmt"]
-    |  +-Pegged.Arrow [3008, 3012]["<-"]
-    |  |  +-Pegged.LEFTARROW [3008, 3012]["<-"]
-    |  +-Pegged.Expression [3012, 3035]["\"", "exit do", "\""]
-    |     +-Pegged.LongestExpression [3012, 3035]["\"", "exit do", "\""]
-    |        +-Pegged.Sequence [3012, 3035]["\"", "exit do", "\""]
-    |           +-Pegged.Prefix [3012, 3035]["\"", "exit do", "\""]
-    |              +-Pegged.Suffix [3012, 3035]["\"", "exit do", "\""]
-    |                 +-Pegged.Primary [3012, 3035]["\"", "exit do", "\""]
-    |                    +-Pegged.CILiteral [3012, 3035]["\"", "exit do", "\""]
-    +-Pegged.Definition [3035, 3084]["Rem_stmt", "<-", "\"", "rem", "\"", "~", "!", "eol", ".", "*"]
-    |  +-Pegged.LhsName [3035, 3044]["Rem_stmt"]
-    |  |  +-Pegged.Identifier [3035, 3043]["Rem_stmt"]
-    |  +-Pegged.Arrow [3044, 3052]["<-"]
-    |  |  +-Pegged.LEFTARROW [3044, 3052]["<-"]
-    |  +-Pegged.Expression [3052, 3084]["\"", "rem", "\"", "~", "!", "eol", ".", "*"]
-    |     +-Pegged.LongestExpression [3052, 3084]["\"", "rem", "\"", "~", "!", "eol", ".", "*"]
-    |        +-Pegged.Sequence [3052, 3084]["\"", "rem", "\"", "~", "!", "eol", ".", "*"]
-    |           +-Pegged.Prefix [3052, 3059]["\"", "rem", "\""]
-    |           |  +-Pegged.Suffix [3052, 3059]["\"", "rem", "\""]
-    |           |     +-Pegged.Primary [3052, 3059]["\"", "rem", "\""]
-    |           |        +-Pegged.CILiteral [3052, 3059]["\"", "rem", "\""]
-    |           +-Pegged.Prefix [3059, 3084]["~", "!", "eol", ".", "*"]
-    |              +-Pegged.FUSE [3059, 3060]["~"]
-    |              +-Pegged.Suffix [3060, 3084]["!", "eol", ".", "*"]
-    |                 +-Pegged.Primary [3060, 3084]["!", "eol", ".", "*"]
-    |                    +-Pegged.Expression [3061, 3070]["!", "eol", ".", "*"]
-    |                       +-Pegged.LongestExpression [3061, 3070]["!", "eol", ".", "*"]
-    |                          +-Pegged.Sequence [3061, 3070]["!", "eol", ".", "*"]
-    |                             +-Pegged.Prefix [3061, 3070]["!", "eol", ".", "*"]
-    |                                +-Pegged.Suffix [3061, 3070]["!", "eol", ".", "*"]
-    |                                   +-Pegged.Primary [3061, 3069]["!", "eol", "."]
-    |                                   |  +-Pegged.Expression [3062, 3068]["!", "eol", "."]
-    |                                   |     +-Pegged.LongestExpression [3062, 3068]["!", "eol", "."]
-    |                                   |        +-Pegged.Sequence [3062, 3068]["!", "eol", "."]
-    |                                   |           +-Pegged.Prefix [3062, 3067]["!", "eol"]
-    |                                   |           |  +-Pegged.NEG [3062, 3063]["!"]
-    |                                   |           |  +-Pegged.Suffix [3063, 3067]["eol"]
-    |                                   |           |     +-Pegged.Primary [3063, 3067]["eol"]
-    |                                   |           |        +-Pegged.RhsName [3063, 3067]["eol"]
-    |                                   |           |           +-Pegged.Identifier [3063, 3066]["eol"]
-    |                                   |           +-Pegged.Prefix [3067, 3068]["."]
-    |                                   |              +-Pegged.Suffix [3067, 3068]["."]
-    |                                   |                 +-Pegged.Primary [3067, 3068]["."]
-    |                                   |                    +-Pegged.ANY [3067, 3068]["."]
-    |                                   +-Pegged.ZEROORMORE [3069, 3070]["*"]
-    +-Pegged.Definition [3084, 3223]["For_stmt", "<-", "\"", "for", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "to", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |  +-Pegged.LhsName [3084, 3093]["For_stmt"]
-    |  |  +-Pegged.Identifier [3084, 3092]["For_stmt"]
-    |  +-Pegged.Arrow [3093, 3101]["<-"]
-    |  |  +-Pegged.LEFTARROW [3093, 3101]["<-"]
-    |  +-Pegged.Expression [3101, 3223]["\"", "for", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "to", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |     +-Pegged.LongestExpression [3101, 3223]["\"", "for", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "to", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |        +-Pegged.Sequence [3101, 3223]["\"", "for", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "to", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |           +-Pegged.Prefix [3101, 3108]["\"", "for", "\""]
-    |           |  +-Pegged.Suffix [3101, 3108]["\"", "for", "\""]
-    |           |     +-Pegged.Primary [3101, 3108]["\"", "for", "\""]
-    |           |        +-Pegged.CILiteral [3101, 3108]["\"", "for", "\""]
-    |           +-Pegged.Prefix [3108, 3112][":", "WS"]
-    |           |  +-Pegged.DISCARD [3108, 3109][":"]
-    |           |  +-Pegged.Suffix [3109, 3112]["WS"]
-    |           |     +-Pegged.Primary [3109, 3112]["WS"]
-    |           |        +-Pegged.RhsName [3109, 3112]["WS"]
-    |           |           +-Pegged.Identifier [3109, 3111]["WS"]
-    |           +-Pegged.Prefix [3112, 3127]["Varnosubscript"]
-    |           |  +-Pegged.Suffix [3112, 3127]["Varnosubscript"]
-    |           |     +-Pegged.Primary [3112, 3127]["Varnosubscript"]
-    |           |        +-Pegged.RhsName [3112, 3127]["Varnosubscript"]
-    |           |           +-Pegged.Identifier [3112, 3126]["Varnosubscript"]
-    |           +-Pegged.Prefix [3127, 3132][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [3127, 3128][":"]
-    |           |  +-Pegged.Suffix [3128, 3132]["WS", "?"]
-    |           |     +-Pegged.Primary [3128, 3130]["WS"]
-    |           |     |  +-Pegged.RhsName [3128, 3130]["WS"]
-    |           |     |     +-Pegged.Identifier [3128, 3130]["WS"]
-    |           |     +-Pegged.OPTION [3130, 3132]["?"]
-    |           +-Pegged.Prefix [3132, 3136]["\"", "=", "\""]
-    |           |  +-Pegged.Suffix [3132, 3136]["\"", "=", "\""]
-    |           |     +-Pegged.Primary [3132, 3136]["\"", "=", "\""]
-    |           |        +-Pegged.Literal [3132, 3136]["\"", "=", "\""]
-    |           +-Pegged.Prefix [3136, 3141][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [3136, 3137][":"]
-    |           |  +-Pegged.Suffix [3137, 3141]["WS", "?"]
-    |           |     +-Pegged.Primary [3137, 3139]["WS"]
-    |           |     |  +-Pegged.RhsName [3137, 3139]["WS"]
-    |           |     |     +-Pegged.Identifier [3137, 3139]["WS"]
-    |           |     +-Pegged.OPTION [3139, 3141]["?"]
-    |           +-Pegged.Prefix [3141, 3152]["Expression"]
-    |           |  +-Pegged.Suffix [3141, 3152]["Expression"]
-    |           |     +-Pegged.Primary [3141, 3152]["Expression"]
-    |           |        +-Pegged.RhsName [3141, 3152]["Expression"]
-    |           |           +-Pegged.Identifier [3141, 3151]["Expression"]
-    |           +-Pegged.Prefix [3152, 3157][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [3152, 3153][":"]
-    |           |  +-Pegged.Suffix [3153, 3157]["WS", "?"]
-    |           |     +-Pegged.Primary [3153, 3155]["WS"]
-    |           |     |  +-Pegged.RhsName [3153, 3155]["WS"]
-    |           |     |     +-Pegged.Identifier [3153, 3155]["WS"]
-    |           |     +-Pegged.OPTION [3155, 3157]["?"]
-    |           +-Pegged.Prefix [3157, 3163]["\"", "to", "\""]
-    |           |  +-Pegged.Suffix [3157, 3163]["\"", "to", "\""]
-    |           |     +-Pegged.Primary [3157, 3163]["\"", "to", "\""]
-    |           |        +-Pegged.CILiteral [3157, 3163]["\"", "to", "\""]
-    |           +-Pegged.Prefix [3163, 3168][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [3163, 3164][":"]
-    |           |  +-Pegged.Suffix [3164, 3168]["WS", "?"]
-    |           |     +-Pegged.Primary [3164, 3166]["WS"]
-    |           |     |  +-Pegged.RhsName [3164, 3166]["WS"]
-    |           |     |     +-Pegged.Identifier [3164, 3166]["WS"]
-    |           |     +-Pegged.OPTION [3166, 3168]["?"]
-    |           +-Pegged.Prefix [3168, 3179]["Expression"]
-    |           |  +-Pegged.Suffix [3168, 3179]["Expression"]
-    |           |     +-Pegged.Primary [3168, 3179]["Expression"]
-    |           |        +-Pegged.RhsName [3168, 3179]["Expression"]
-    |           |           +-Pegged.Identifier [3168, 3178]["Expression"]
-    |           +-Pegged.Prefix [3179, 3223][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |              +-Pegged.Suffix [3179, 3223][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression", "?"]
-    |                 +-Pegged.Primary [3179, 3209][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression"]
-    |                 |  +-Pegged.Expression [3180, 3208][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression"]
-    |                 |     +-Pegged.LongestExpression [3180, 3208][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression"]
-    |                 |        +-Pegged.Sequence [3180, 3208][":", "WS", "?", "\"", "step", "\"", ":", "WS", "?", "Expression"]
-    |                 |           +-Pegged.Prefix [3180, 3185][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [3180, 3181][":"]
-    |                 |           |  +-Pegged.Suffix [3181, 3185]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [3181, 3183]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [3181, 3183]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [3181, 3183]["WS"]
-    |                 |           |     +-Pegged.OPTION [3183, 3185]["?"]
-    |                 |           +-Pegged.Prefix [3185, 3193]["\"", "step", "\""]
-    |                 |           |  +-Pegged.Suffix [3185, 3193]["\"", "step", "\""]
-    |                 |           |     +-Pegged.Primary [3185, 3193]["\"", "step", "\""]
-    |                 |           |        +-Pegged.CILiteral [3185, 3193]["\"", "step", "\""]
-    |                 |           +-Pegged.Prefix [3193, 3198][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [3193, 3194][":"]
-    |                 |           |  +-Pegged.Suffix [3194, 3198]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [3194, 3196]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [3194, 3196]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [3194, 3196]["WS"]
-    |                 |           |     +-Pegged.OPTION [3196, 3198]["?"]
-    |                 |           +-Pegged.Prefix [3198, 3208]["Expression"]
-    |                 |              +-Pegged.Suffix [3198, 3208]["Expression"]
-    |                 |                 +-Pegged.Primary [3198, 3208]["Expression"]
-    |                 |                    +-Pegged.RhsName [3198, 3208]["Expression"]
-    |                 |                       +-Pegged.Identifier [3198, 3208]["Expression"]
-    |                 +-Pegged.OPTION [3209, 3223]["?"]
-    +-Pegged.Definition [3223, 3275]["Next_stmt", "<-", "\"", "next", "\"", ":", "WS", "Varname", "?"]
-    |  +-Pegged.LhsName [3223, 3233]["Next_stmt"]
-    |  |  +-Pegged.Identifier [3223, 3232]["Next_stmt"]
-    |  +-Pegged.Arrow [3233, 3240]["<-"]
-    |  |  +-Pegged.LEFTARROW [3233, 3240]["<-"]
-    |  +-Pegged.Expression [3240, 3275]["\"", "next", "\"", ":", "WS", "Varname", "?"]
-    |     +-Pegged.LongestExpression [3240, 3275]["\"", "next", "\"", ":", "WS", "Varname", "?"]
-    |        +-Pegged.Sequence [3240, 3275]["\"", "next", "\"", ":", "WS", "Varname", "?"]
-    |           +-Pegged.Prefix [3240, 3248]["\"", "next", "\""]
-    |           |  +-Pegged.Suffix [3240, 3248]["\"", "next", "\""]
-    |           |     +-Pegged.Primary [3240, 3248]["\"", "next", "\""]
-    |           |        +-Pegged.CILiteral [3240, 3248]["\"", "next", "\""]
-    |           +-Pegged.Prefix [3248, 3275][":", "WS", "Varname", "?"]
-    |              +-Pegged.Suffix [3248, 3275][":", "WS", "Varname", "?"]
-    |                 +-Pegged.Primary [3248, 3261][":", "WS", "Varname"]
-    |                 |  +-Pegged.Expression [3249, 3260][":", "WS", "Varname"]
-    |                 |     +-Pegged.LongestExpression [3249, 3260][":", "WS", "Varname"]
-    |                 |        +-Pegged.Sequence [3249, 3260][":", "WS", "Varname"]
-    |                 |           +-Pegged.Prefix [3249, 3253][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [3249, 3250][":"]
-    |                 |           |  +-Pegged.Suffix [3250, 3253]["WS"]
-    |                 |           |     +-Pegged.Primary [3250, 3253]["WS"]
-    |                 |           |        +-Pegged.RhsName [3250, 3253]["WS"]
-    |                 |           |           +-Pegged.Identifier [3250, 3252]["WS"]
-    |                 |           +-Pegged.Prefix [3253, 3260]["Varname"]
-    |                 |              +-Pegged.Suffix [3253, 3260]["Varname"]
-    |                 |                 +-Pegged.Primary [3253, 3260]["Varname"]
-    |                 |                    +-Pegged.RhsName [3253, 3260]["Varname"]
-    |                 |                       +-Pegged.Identifier [3253, 3260]["Varname"]
-    |                 +-Pegged.OPTION [3261, 3275]["?"]
-    +-Pegged.Definition [3275, 3316]["Exit_for_stmt", "<-", "\"", "exit for", "\""]
-    |  +-Pegged.LhsName [3275, 3289]["Exit_for_stmt"]
-    |  |  +-Pegged.Identifier [3275, 3288]["Exit_for_stmt"]
-    |  +-Pegged.Arrow [3289, 3292]["<-"]
-    |  |  +-Pegged.LEFTARROW [3289, 3292]["<-"]
-    |  +-Pegged.Expression [3292, 3316]["\"", "exit for", "\""]
-    |     +-Pegged.LongestExpression [3292, 3316]["\"", "exit for", "\""]
-    |        +-Pegged.Sequence [3292, 3316]["\"", "exit for", "\""]
-    |           +-Pegged.Prefix [3292, 3316]["\"", "exit for", "\""]
-    |              +-Pegged.Suffix [3292, 3316]["\"", "exit for", "\""]
-    |                 +-Pegged.Primary [3292, 3316]["\"", "exit for", "\""]
-    |                    +-Pegged.CILiteral [3292, 3316]["\"", "exit for", "\""]
-    +-Pegged.Definition [3316, 3440]["Dim_stmt", "<-", "\"", "dim", "\"", "\"", "static", "\"", ":", "WS", "Varattrib", ":", "WS", "*", "Vardef", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*", ":", "WS", "?", "Varattrib", "*"]
-    |  +-Pegged.LhsName [3316, 3325]["Dim_stmt"]
-    |  |  +-Pegged.Identifier [3316, 3324]["Dim_stmt"]
-    |  +-Pegged.Arrow [3325, 3333]["<-"]
-    |  |  +-Pegged.LEFTARROW [3325, 3333]["<-"]
-    |  +-Pegged.Expression [3333, 3440]["\"", "dim", "\"", "\"", "static", "\"", ":", "WS", "Varattrib", ":", "WS", "*", "Vardef", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*", ":", "WS", "?", "Varattrib", "*"]
-    |     +-Pegged.LongestExpression [3333, 3440]["\"", "dim", "\"", "\"", "static", "\"", ":", "WS", "Varattrib", ":", "WS", "*", "Vardef", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*", ":", "WS", "?", "Varattrib", "*"]
-    |        +-Pegged.Sequence [3333, 3440]["\"", "dim", "\"", "\"", "static", "\"", ":", "WS", "Varattrib", ":", "WS", "*", "Vardef", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*", ":", "WS", "?", "Varattrib", "*"]
-    |           +-Pegged.Prefix [3333, 3354]["\"", "dim", "\"", "\"", "static", "\""]
-    |           |  +-Pegged.Suffix [3333, 3354]["\"", "dim", "\"", "\"", "static", "\""]
-    |           |     +-Pegged.Primary [3333, 3354]["\"", "dim", "\"", "\"", "static", "\""]
-    |           |        +-Pegged.Expression [3334, 3352]["\"", "dim", "\"", "\"", "static", "\""]
-    |           |           +-Pegged.FirstExpression [3334, 3352]["\"", "dim", "\"", "\"", "static", "\""]
-    |           |              +-Pegged.Sequence [3334, 3341]["\"", "dim", "\""]
-    |           |              |  +-Pegged.Prefix [3334, 3341]["\"", "dim", "\""]
-    |           |              |     +-Pegged.Suffix [3334, 3341]["\"", "dim", "\""]
-    |           |              |        +-Pegged.Primary [3334, 3341]["\"", "dim", "\""]
-    |           |              |           +-Pegged.CILiteral [3334, 3341]["\"", "dim", "\""]
-    |           |              +-Pegged.Sequence [3343, 3352]["\"", "static", "\""]
-    |           |                 +-Pegged.Prefix [3343, 3352]["\"", "static", "\""]
-    |           |                    +-Pegged.Suffix [3343, 3352]["\"", "static", "\""]
-    |           |                       +-Pegged.Primary [3343, 3352]["\"", "static", "\""]
-    |           |                          +-Pegged.CILiteral [3343, 3352]["\"", "static", "\""]
-    |           +-Pegged.Prefix [3354, 3358][":", "WS"]
-    |           |  +-Pegged.DISCARD [3354, 3355][":"]
-    |           |  +-Pegged.Suffix [3355, 3358]["WS"]
-    |           |     +-Pegged.Primary [3355, 3358]["WS"]
-    |           |        +-Pegged.RhsName [3355, 3358]["WS"]
-    |           |           +-Pegged.Identifier [3355, 3357]["WS"]
-    |           +-Pegged.Prefix [3358, 3375]["Varattrib", ":", "WS", "*"]
-    |           |  +-Pegged.Suffix [3358, 3375]["Varattrib", ":", "WS", "*"]
-    |           |     +-Pegged.Primary [3358, 3373]["Varattrib", ":", "WS"]
-    |           |     |  +-Pegged.Expression [3359, 3372]["Varattrib", ":", "WS"]
-    |           |     |     +-Pegged.LongestExpression [3359, 3372]["Varattrib", ":", "WS"]
-    |           |     |        +-Pegged.Sequence [3359, 3372]["Varattrib", ":", "WS"]
-    |           |     |           +-Pegged.Prefix [3359, 3369]["Varattrib"]
-    |           |     |           |  +-Pegged.Suffix [3359, 3369]["Varattrib"]
-    |           |     |           |     +-Pegged.Primary [3359, 3369]["Varattrib"]
-    |           |     |           |        +-Pegged.RhsName [3359, 3369]["Varattrib"]
-    |           |     |           |           +-Pegged.Identifier [3359, 3368]["Varattrib"]
-    |           |     |           +-Pegged.Prefix [3369, 3372][":", "WS"]
-    |           |     |              +-Pegged.DISCARD [3369, 3370][":"]
-    |           |     |              +-Pegged.Suffix [3370, 3372]["WS"]
-    |           |     |                 +-Pegged.Primary [3370, 3372]["WS"]
-    |           |     |                    +-Pegged.RhsName [3370, 3372]["WS"]
-    |           |     |                       +-Pegged.Identifier [3370, 3372]["WS"]
-    |           |     +-Pegged.ZEROORMORE [3373, 3375]["*"]
-    |           +-Pegged.Prefix [3375, 3382]["Vardef"]
-    |           |  +-Pegged.Suffix [3375, 3382]["Vardef"]
-    |           |     +-Pegged.Primary [3375, 3382]["Vardef"]
-    |           |        +-Pegged.RhsName [3375, 3382]["Vardef"]
-    |           |           +-Pegged.Identifier [3375, 3381]["Vardef"]
-    |           +-Pegged.Prefix [3382, 3406][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*"]
-    |           |  +-Pegged.Suffix [3382, 3406][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef", "*"]
-    |           |     +-Pegged.Primary [3382, 3404][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef"]
-    |           |     |  +-Pegged.Expression [3383, 3403][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef"]
-    |           |     |     +-Pegged.LongestExpression [3383, 3403][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef"]
-    |           |     |        +-Pegged.Sequence [3383, 3403][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Vardef"]
-    |           |     |           +-Pegged.Prefix [3383, 3388][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [3383, 3384][":"]
-    |           |     |           |  +-Pegged.Suffix [3384, 3388]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [3384, 3386]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [3384, 3386]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [3384, 3386]["WS"]
-    |           |     |           |     +-Pegged.OPTION [3386, 3388]["?"]
-    |           |     |           +-Pegged.Prefix [3388, 3392]["\"", ",", "\""]
-    |           |     |           |  +-Pegged.Suffix [3388, 3392]["\"", ",", "\""]
-    |           |     |           |     +-Pegged.Primary [3388, 3392]["\"", ",", "\""]
-    |           |     |           |        +-Pegged.Literal [3388, 3392]["\"", ",", "\""]
-    |           |     |           +-Pegged.Prefix [3392, 3397][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [3392, 3393][":"]
-    |           |     |           |  +-Pegged.Suffix [3393, 3397]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [3393, 3395]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [3393, 3395]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [3393, 3395]["WS"]
-    |           |     |           |     +-Pegged.OPTION [3395, 3397]["?"]
-    |           |     |           +-Pegged.Prefix [3397, 3403]["Vardef"]
-    |           |     |              +-Pegged.Suffix [3397, 3403]["Vardef"]
-    |           |     |                 +-Pegged.Primary [3397, 3403]["Vardef"]
-    |           |     |                    +-Pegged.RhsName [3397, 3403]["Vardef"]
-    |           |     |                       +-Pegged.Identifier [3397, 3403]["Vardef"]
-    |           |     +-Pegged.ZEROORMORE [3404, 3406]["*"]
-    |           +-Pegged.Prefix [3406, 3440][":", "WS", "?", "Varattrib", "*"]
-    |              +-Pegged.Suffix [3406, 3440][":", "WS", "?", "Varattrib", "*"]
-    |                 +-Pegged.Primary [3406, 3422][":", "WS", "?", "Varattrib"]
-    |                 |  +-Pegged.Expression [3407, 3421][":", "WS", "?", "Varattrib"]
-    |                 |     +-Pegged.LongestExpression [3407, 3421][":", "WS", "?", "Varattrib"]
-    |                 |        +-Pegged.Sequence [3407, 3421][":", "WS", "?", "Varattrib"]
-    |                 |           +-Pegged.Prefix [3407, 3412][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [3407, 3408][":"]
-    |                 |           |  +-Pegged.Suffix [3408, 3412]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [3408, 3410]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [3408, 3410]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [3408, 3410]["WS"]
-    |                 |           |     +-Pegged.OPTION [3410, 3412]["?"]
-    |                 |           +-Pegged.Prefix [3412, 3421]["Varattrib"]
-    |                 |              +-Pegged.Suffix [3412, 3421]["Varattrib"]
-    |                 |                 +-Pegged.Primary [3412, 3421]["Varattrib"]
-    |                 |                    +-Pegged.RhsName [3412, 3421]["Varattrib"]
-    |                 |                       +-Pegged.Identifier [3412, 3421]["Varattrib"]
-    |                 +-Pegged.ZEROORMORE [3422, 3440]["*"]
-    +-Pegged.Definition [3440, 3489]["Varattrib", "<-", "\"", "fast", "\"", "\"", "shared", "\""]
-    |  +-Pegged.LhsName [3440, 3450]["Varattrib"]
-    |  |  +-Pegged.Identifier [3440, 3449]["Varattrib"]
-    |  +-Pegged.Arrow [3450, 3453]["<-"]
-    |  |  +-Pegged.LEFTARROW [3450, 3453]["<-"]
-    |  +-Pegged.Expression [3453, 3489]["\"", "fast", "\"", "\"", "shared", "\""]
-    |     +-Pegged.FirstExpression [3453, 3489]["\"", "fast", "\"", "\"", "shared", "\""]
-    |        +-Pegged.Sequence [3453, 3461]["\"", "fast", "\""]
-    |        |  +-Pegged.Prefix [3453, 3461]["\"", "fast", "\""]
-    |        |     +-Pegged.Suffix [3453, 3461]["\"", "fast", "\""]
-    |        |        +-Pegged.Primary [3453, 3461]["\"", "fast", "\""]
-    |        |           +-Pegged.CILiteral [3453, 3461]["\"", "fast", "\""]
-    |        +-Pegged.Sequence [3463, 3489]["\"", "shared", "\""]
-    |           +-Pegged.Prefix [3463, 3489]["\"", "shared", "\""]
-    |              +-Pegged.Suffix [3463, 3489]["\"", "shared", "\""]
-    |                 +-Pegged.Primary [3463, 3489]["\"", "shared", "\""]
-    |                    +-Pegged.CILiteral [3463, 3489]["\"", "shared", "\""]
-    +-Pegged.Definition [3489, 3554]["Vardef", "<-", "Var", ":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |  +-Pegged.LhsName [3489, 3496]["Vardef"]
-    |  |  +-Pegged.Identifier [3489, 3495]["Vardef"]
-    |  +-Pegged.Arrow [3496, 3499]["<-"]
-    |  |  +-Pegged.LEFTARROW [3496, 3499]["<-"]
-    |  +-Pegged.Expression [3499, 3554]["Var", ":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |     +-Pegged.LongestExpression [3499, 3554]["Var", ":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |        +-Pegged.Sequence [3499, 3554]["Var", ":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |           +-Pegged.Prefix [3499, 3503]["Var"]
-    |           |  +-Pegged.Suffix [3499, 3503]["Var"]
-    |           |     +-Pegged.Primary [3499, 3503]["Var"]
-    |           |        +-Pegged.RhsName [3499, 3503]["Var"]
-    |           |           +-Pegged.Identifier [3499, 3502]["Var"]
-    |           +-Pegged.Prefix [3503, 3554][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |              +-Pegged.Suffix [3503, 3554][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref", "?"]
-    |                 +-Pegged.Primary [3503, 3540][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |                 |  +-Pegged.Expression [3504, 3539][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |                 |     +-Pegged.LongestExpression [3504, 3539][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |                 |        +-Pegged.Sequence [3504, 3539][":", "WS", "?", ":", "\"", "@", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |                 |           +-Pegged.Prefix [3504, 3509][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [3504, 3505][":"]
-    |                 |           |  +-Pegged.Suffix [3505, 3509]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [3505, 3507]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [3505, 3507]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [3505, 3507]["WS"]
-    |                 |           |     +-Pegged.OPTION [3507, 3509]["?"]
-    |                 |           +-Pegged.Prefix [3509, 3514][":", "\"", "@", "\""]
-    |                 |           |  +-Pegged.DISCARD [3509, 3510][":"]
-    |                 |           |  +-Pegged.Suffix [3510, 3514]["\"", "@", "\""]
-    |                 |           |     +-Pegged.Primary [3510, 3514]["\"", "@", "\""]
-    |                 |           |        +-Pegged.Literal [3510, 3514]["\"", "@", "\""]
-    |                 |           +-Pegged.Prefix [3514, 3519][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [3514, 3515][":"]
-    |                 |           |  +-Pegged.Suffix [3515, 3519]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [3515, 3517]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [3515, 3517]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [3515, 3517]["WS"]
-    |                 |           |     +-Pegged.OPTION [3517, 3519]["?"]
-    |                 |           +-Pegged.Prefix [3519, 3539]["Number", "Label_ref"]
-    |                 |              +-Pegged.Suffix [3519, 3539]["Number", "Label_ref"]
-    |                 |                 +-Pegged.Primary [3519, 3539]["Number", "Label_ref"]
-    |                 |                    +-Pegged.Expression [3520, 3538]["Number", "Label_ref"]
-    |                 |                       +-Pegged.FirstExpression [3520, 3538]["Number", "Label_ref"]
-    |                 |                          +-Pegged.Sequence [3520, 3527]["Number"]
-    |                 |                          |  +-Pegged.Prefix [3520, 3527]["Number"]
-    |                 |                          |     +-Pegged.Suffix [3520, 3527]["Number"]
-    |                 |                          |        +-Pegged.Primary [3520, 3527]["Number"]
-    |                 |                          |           +-Pegged.RhsName [3520, 3527]["Number"]
-    |                 |                          |              +-Pegged.Identifier [3520, 3526]["Number"]
-    |                 |                          +-Pegged.Sequence [3529, 3538]["Label_ref"]
-    |                 |                             +-Pegged.Prefix [3529, 3538]["Label_ref"]
-    |                 |                                +-Pegged.Suffix [3529, 3538]["Label_ref"]
-    |                 |                                   +-Pegged.Primary [3529, 3538]["Label_ref"]
-    |                 |                                      +-Pegged.RhsName [3529, 3538]["Label_ref"]
-    |                 |                                         +-Pegged.Identifier [3529, 3538]["Label_ref"]
-    |                 +-Pegged.OPTION [3540, 3554]["?"]
-    +-Pegged.Definition [3554, 3629]["Data_stmt", "<-", "\"", "shared", "\"", ":", "WS", "?", "\"", "data", "\"", "Vartype", ":", "WS", "Datalist"]
-    |  +-Pegged.LhsName [3554, 3564]["Data_stmt"]
-    |  |  +-Pegged.Identifier [3554, 3563]["Data_stmt"]
-    |  +-Pegged.Arrow [3564, 3571]["<-"]
-    |  |  +-Pegged.LEFTARROW [3564, 3571]["<-"]
-    |  +-Pegged.Expression [3571, 3629]["\"", "shared", "\"", ":", "WS", "?", "\"", "data", "\"", "Vartype", ":", "WS", "Datalist"]
-    |     +-Pegged.LongestExpression [3571, 3629]["\"", "shared", "\"", ":", "WS", "?", "\"", "data", "\"", "Vartype", ":", "WS", "Datalist"]
-    |        +-Pegged.Sequence [3571, 3629]["\"", "shared", "\"", ":", "WS", "?", "\"", "data", "\"", "Vartype", ":", "WS", "Datalist"]
-    |           +-Pegged.Prefix [3571, 3588]["\"", "shared", "\"", ":", "WS", "?"]
-    |           |  +-Pegged.Suffix [3571, 3588]["\"", "shared", "\"", ":", "WS", "?"]
-    |           |     +-Pegged.Primary [3571, 3586]["\"", "shared", "\"", ":", "WS"]
-    |           |     |  +-Pegged.Expression [3572, 3585]["\"", "shared", "\"", ":", "WS"]
-    |           |     |     +-Pegged.LongestExpression [3572, 3585]["\"", "shared", "\"", ":", "WS"]
-    |           |     |        +-Pegged.Sequence [3572, 3585]["\"", "shared", "\"", ":", "WS"]
-    |           |     |           +-Pegged.Prefix [3572, 3582]["\"", "shared", "\""]
-    |           |     |           |  +-Pegged.Suffix [3572, 3582]["\"", "shared", "\""]
-    |           |     |           |     +-Pegged.Primary [3572, 3582]["\"", "shared", "\""]
-    |           |     |           |        +-Pegged.CILiteral [3572, 3582]["\"", "shared", "\""]
-    |           |     |           +-Pegged.Prefix [3582, 3585][":", "WS"]
-    |           |     |              +-Pegged.DISCARD [3582, 3583][":"]
-    |           |     |              +-Pegged.Suffix [3583, 3585]["WS"]
-    |           |     |                 +-Pegged.Primary [3583, 3585]["WS"]
-    |           |     |                    +-Pegged.RhsName [3583, 3585]["WS"]
-    |           |     |                       +-Pegged.Identifier [3583, 3585]["WS"]
-    |           |     +-Pegged.OPTION [3586, 3588]["?"]
-    |           +-Pegged.Prefix [3588, 3596]["\"", "data", "\""]
-    |           |  +-Pegged.Suffix [3588, 3596]["\"", "data", "\""]
-    |           |     +-Pegged.Primary [3588, 3596]["\"", "data", "\""]
-    |           |        +-Pegged.CILiteral [3588, 3596]["\"", "data", "\""]
-    |           +-Pegged.Prefix [3596, 3604]["Vartype"]
-    |           |  +-Pegged.Suffix [3596, 3604]["Vartype"]
-    |           |     +-Pegged.Primary [3596, 3604]["Vartype"]
-    |           |        +-Pegged.RhsName [3596, 3604]["Vartype"]
-    |           |           +-Pegged.Identifier [3596, 3603]["Vartype"]
-    |           +-Pegged.Prefix [3604, 3608][":", "WS"]
-    |           |  +-Pegged.DISCARD [3604, 3605][":"]
-    |           |  +-Pegged.Suffix [3605, 3608]["WS"]
-    |           |     +-Pegged.Primary [3605, 3608]["WS"]
-    |           |        +-Pegged.RhsName [3605, 3608]["WS"]
-    |           |           +-Pegged.Identifier [3605, 3607]["WS"]
-    |           +-Pegged.Prefix [3608, 3629]["Datalist"]
-    |              +-Pegged.Suffix [3608, 3629]["Datalist"]
-    |                 +-Pegged.Primary [3608, 3629]["Datalist"]
-    |                    +-Pegged.RhsName [3608, 3629]["Datalist"]
-    |                       +-Pegged.Identifier [3608, 3616]["Datalist"]
-    +-Pegged.Definition [3629, 3681]["Charat_stmt", "<-", "\"", "charat", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [3629, 3641]["Charat_stmt"]
-    |  |  +-Pegged.Identifier [3629, 3640]["Charat_stmt"]
-    |  +-Pegged.Arrow [3641, 3646]["<-"]
-    |  |  +-Pegged.LEFTARROW [3641, 3646]["<-"]
-    |  +-Pegged.Expression [3646, 3681]["\"", "charat", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [3646, 3681]["\"", "charat", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [3646, 3681]["\"", "charat", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [3646, 3656]["\"", "charat", "\""]
-    |           |  +-Pegged.Suffix [3646, 3656]["\"", "charat", "\""]
-    |           |     +-Pegged.Primary [3646, 3656]["\"", "charat", "\""]
-    |           |        +-Pegged.CILiteral [3646, 3656]["\"", "charat", "\""]
-    |           +-Pegged.Prefix [3656, 3660][":", "WS"]
-    |           |  +-Pegged.DISCARD [3656, 3657][":"]
-    |           |  +-Pegged.Suffix [3657, 3660]["WS"]
-    |           |     +-Pegged.Primary [3657, 3660]["WS"]
-    |           |        +-Pegged.RhsName [3657, 3660]["WS"]
-    |           |           +-Pegged.Identifier [3657, 3659]["WS"]
-    |           +-Pegged.Prefix [3660, 3681]["ExprList"]
-    |              +-Pegged.Suffix [3660, 3681]["ExprList"]
-    |                 +-Pegged.Primary [3660, 3681]["ExprList"]
-    |                    +-Pegged.RhsName [3660, 3681]["ExprList"]
-    |                       +-Pegged.Identifier [3660, 3668]["ExprList"]
-    +-Pegged.Definition [3681, 3733]["Textat_stmt", "<-", "\"", "textat", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [3681, 3693]["Textat_stmt"]
-    |  |  +-Pegged.Identifier [3681, 3692]["Textat_stmt"]
-    |  +-Pegged.Arrow [3693, 3698]["<-"]
-    |  |  +-Pegged.LEFTARROW [3693, 3698]["<-"]
-    |  +-Pegged.Expression [3698, 3733]["\"", "textat", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [3698, 3733]["\"", "textat", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [3698, 3733]["\"", "textat", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [3698, 3708]["\"", "textat", "\""]
-    |           |  +-Pegged.Suffix [3698, 3708]["\"", "textat", "\""]
-    |           |     +-Pegged.Primary [3698, 3708]["\"", "textat", "\""]
-    |           |        +-Pegged.CILiteral [3698, 3708]["\"", "textat", "\""]
-    |           +-Pegged.Prefix [3708, 3712][":", "WS"]
-    |           |  +-Pegged.DISCARD [3708, 3709][":"]
-    |           |  +-Pegged.Suffix [3709, 3712]["WS"]
-    |           |     +-Pegged.Primary [3709, 3712]["WS"]
-    |           |        +-Pegged.RhsName [3709, 3712]["WS"]
-    |           |           +-Pegged.Identifier [3709, 3711]["WS"]
-    |           +-Pegged.Prefix [3712, 3733]["ExprList"]
-    |              +-Pegged.Suffix [3712, 3733]["ExprList"]
-    |                 +-Pegged.Primary [3712, 3733]["ExprList"]
-    |                    +-Pegged.RhsName [3712, 3733]["ExprList"]
-    |                       +-Pegged.Identifier [3712, 3720]["ExprList"]
-    +-Pegged.Definition [3733, 3787]["Screen_stmt", "<-", "\"", "screen", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [3733, 3745]["Screen_stmt"]
-    |  |  +-Pegged.Identifier [3733, 3744]["Screen_stmt"]
-    |  +-Pegged.Arrow [3745, 3750]["<-"]
-    |  |  +-Pegged.LEFTARROW [3745, 3750]["<-"]
-    |  +-Pegged.Expression [3750, 3787]["\"", "screen", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [3750, 3787]["\"", "screen", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [3750, 3787]["\"", "screen", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [3750, 3760]["\"", "screen", "\""]
-    |           |  +-Pegged.Suffix [3750, 3760]["\"", "screen", "\""]
-    |           |     +-Pegged.Primary [3750, 3760]["\"", "screen", "\""]
-    |           |        +-Pegged.CILiteral [3750, 3760]["\"", "screen", "\""]
-    |           +-Pegged.Prefix [3760, 3764][":", "WS"]
-    |           |  +-Pegged.DISCARD [3760, 3761][":"]
-    |           |  +-Pegged.Suffix [3761, 3764]["WS"]
-    |           |     +-Pegged.Primary [3761, 3764]["WS"]
-    |           |        +-Pegged.RhsName [3761, 3764]["WS"]
-    |           |           +-Pegged.Identifier [3761, 3763]["WS"]
-    |           +-Pegged.Prefix [3764, 3787]["Expression"]
-    |              +-Pegged.Suffix [3764, 3787]["Expression"]
-    |                 +-Pegged.Primary [3764, 3787]["Expression"]
-    |                    +-Pegged.RhsName [3764, 3787]["Expression"]
-    |                       +-Pegged.Identifier [3764, 3774]["Expression"]
-    +-Pegged.Definition [3787, 3823]["Asm_stmt", "<-", "\"", "asm", "\""]
-    |  +-Pegged.LhsName [3787, 3796]["Asm_stmt"]
-    |  |  +-Pegged.Identifier [3787, 3795]["Asm_stmt"]
-    |  +-Pegged.Arrow [3796, 3804]["<-"]
-    |  |  +-Pegged.LEFTARROW [3796, 3804]["<-"]
-    |  +-Pegged.Expression [3804, 3823]["\"", "asm", "\""]
-    |     +-Pegged.LongestExpression [3804, 3823]["\"", "asm", "\""]
-    |        +-Pegged.Sequence [3804, 3823]["\"", "asm", "\""]
-    |           +-Pegged.Prefix [3804, 3823]["\"", "asm", "\""]
-    |              +-Pegged.Suffix [3804, 3823]["\"", "asm", "\""]
-    |                 +-Pegged.Primary [3804, 3823]["\"", "asm", "\""]
-    |                    +-Pegged.CILiteral [3804, 3823]["\"", "asm", "\""]
-    +-Pegged.Definition [3823, 3863]["Endasm_stmt", "<-", "\"", "end asm", "\""]
-    |  +-Pegged.LhsName [3823, 3835]["Endasm_stmt"]
-    |  |  +-Pegged.Identifier [3823, 3834]["Endasm_stmt"]
-    |  +-Pegged.Arrow [3835, 3840]["<-"]
-    |  |  +-Pegged.LEFTARROW [3835, 3840]["<-"]
-    |  +-Pegged.Expression [3840, 3863]["\"", "end asm", "\""]
-    |     +-Pegged.LongestExpression [3840, 3863]["\"", "end asm", "\""]
-    |        +-Pegged.Sequence [3840, 3863]["\"", "end asm", "\""]
-    |           +-Pegged.Prefix [3840, 3863]["\"", "end asm", "\""]
-    |              +-Pegged.Suffix [3840, 3863]["\"", "end asm", "\""]
-    |                 +-Pegged.Primary [3840, 3863]["\"", "end asm", "\""]
-    |                    +-Pegged.CILiteral [3840, 3863]["\"", "end asm", "\""]
-    +-Pegged.Definition [3863, 3913]["Incbin_stmt", "<-", "\"", "incbin", "\"", ":", "WS", "String"]
-    |  +-Pegged.LhsName [3863, 3875]["Incbin_stmt"]
-    |  |  +-Pegged.Identifier [3863, 3874]["Incbin_stmt"]
-    |  +-Pegged.Arrow [3875, 3880]["<-"]
-    |  |  +-Pegged.LEFTARROW [3875, 3880]["<-"]
-    |  +-Pegged.Expression [3880, 3913]["\"", "incbin", "\"", ":", "WS", "String"]
-    |     +-Pegged.LongestExpression [3880, 3913]["\"", "incbin", "\"", ":", "WS", "String"]
-    |        +-Pegged.Sequence [3880, 3913]["\"", "incbin", "\"", ":", "WS", "String"]
-    |           +-Pegged.Prefix [3880, 3890]["\"", "incbin", "\""]
-    |           |  +-Pegged.Suffix [3880, 3890]["\"", "incbin", "\""]
-    |           |     +-Pegged.Primary [3880, 3890]["\"", "incbin", "\""]
-    |           |        +-Pegged.CILiteral [3880, 3890]["\"", "incbin", "\""]
-    |           +-Pegged.Prefix [3890, 3894][":", "WS"]
-    |           |  +-Pegged.DISCARD [3890, 3891][":"]
-    |           |  +-Pegged.Suffix [3891, 3894]["WS"]
-    |           |     +-Pegged.Primary [3891, 3894]["WS"]
-    |           |        +-Pegged.RhsName [3891, 3894]["WS"]
-    |           |           +-Pegged.Identifier [3891, 3893]["WS"]
-    |           +-Pegged.Prefix [3894, 3913]["String"]
-    |              +-Pegged.Suffix [3894, 3913]["String"]
-    |                 +-Pegged.Primary [3894, 3913]["String"]
-    |                    +-Pegged.RhsName [3894, 3913]["String"]
-    |                       +-Pegged.Identifier [3894, 3900]["String"]
-    +-Pegged.Definition [3913, 3964]["Include_stmt", "<-", "\"", "include", "\"", ":", "WS", "String"]
-    |  +-Pegged.LhsName [3913, 3926]["Include_stmt"]
-    |  |  +-Pegged.Identifier [3913, 3925]["Include_stmt"]
-    |  +-Pegged.Arrow [3926, 3930]["<-"]
-    |  |  +-Pegged.LEFTARROW [3926, 3930]["<-"]
-    |  +-Pegged.Expression [3930, 3964]["\"", "include", "\"", ":", "WS", "String"]
-    |     +-Pegged.LongestExpression [3930, 3964]["\"", "include", "\"", ":", "WS", "String"]
-    |        +-Pegged.Sequence [3930, 3964]["\"", "include", "\"", ":", "WS", "String"]
-    |           +-Pegged.Prefix [3930, 3941]["\"", "include", "\""]
-    |           |  +-Pegged.Suffix [3930, 3941]["\"", "include", "\""]
-    |           |     +-Pegged.Primary [3930, 3941]["\"", "include", "\""]
-    |           |        +-Pegged.CILiteral [3930, 3941]["\"", "include", "\""]
-    |           +-Pegged.Prefix [3941, 3945][":", "WS"]
-    |           |  +-Pegged.DISCARD [3941, 3942][":"]
-    |           |  +-Pegged.Suffix [3942, 3945]["WS"]
-    |           |     +-Pegged.Primary [3942, 3945]["WS"]
-    |           |        +-Pegged.RhsName [3942, 3945]["WS"]
-    |           |           +-Pegged.Identifier [3942, 3944]["WS"]
-    |           +-Pegged.Prefix [3945, 3964]["String"]
-    |              +-Pegged.Suffix [3945, 3964]["String"]
-    |                 +-Pegged.Primary [3945, 3964]["String"]
-    |                    +-Pegged.RhsName [3945, 3964]["String"]
-    |                       +-Pegged.Identifier [3945, 3951]["String"]
-    +-Pegged.Definition [3964, 4025]["Exitfun_stmt", "<-", "\"", "exit function", "\"", "\"", "exit sub", "\""]
-    |  +-Pegged.LhsName [3964, 3977]["Exitfun_stmt"]
-    |  |  +-Pegged.Identifier [3964, 3976]["Exitfun_stmt"]
-    |  +-Pegged.Arrow [3977, 3981]["<-"]
-    |  |  +-Pegged.LEFTARROW [3977, 3981]["<-"]
-    |  +-Pegged.Expression [3981, 4025]["\"", "exit function", "\"", "\"", "exit sub", "\""]
-    |     +-Pegged.FirstExpression [3981, 4025]["\"", "exit function", "\"", "\"", "exit sub", "\""]
-    |        +-Pegged.Sequence [3981, 3999]["\"", "exit function", "\""]
-    |        |  +-Pegged.Prefix [3981, 3999]["\"", "exit function", "\""]
-    |        |     +-Pegged.Suffix [3981, 3999]["\"", "exit function", "\""]
-    |        |        +-Pegged.Primary [3981, 3999]["\"", "exit function", "\""]
-    |        |           +-Pegged.CILiteral [3981, 3999]["\"", "exit function", "\""]
-    |        +-Pegged.Sequence [4001, 4025]["\"", "exit sub", "\""]
-    |           +-Pegged.Prefix [4001, 4025]["\"", "exit sub", "\""]
-    |              +-Pegged.Suffix [4001, 4025]["\"", "exit sub", "\""]
-    |                 +-Pegged.Primary [4001, 4025]["\"", "exit sub", "\""]
-    |                    +-Pegged.CILiteral [4001, 4025]["\"", "exit sub", "\""]
-    +-Pegged.Definition [4025, 4083]["Endfun_stmt", "<-", "\"", "end function", "\"", "\"", "end sub", "\""]
-    |  +-Pegged.LhsName [4025, 4037]["Endfun_stmt"]
-    |  |  +-Pegged.Identifier [4025, 4036]["Endfun_stmt"]
-    |  +-Pegged.Arrow [4037, 4042]["<-"]
-    |  |  +-Pegged.LEFTARROW [4037, 4042]["<-"]
-    |  +-Pegged.Expression [4042, 4083]["\"", "end function", "\"", "\"", "end sub", "\""]
-    |     +-Pegged.FirstExpression [4042, 4083]["\"", "end function", "\"", "\"", "end sub", "\""]
-    |        +-Pegged.Sequence [4042, 4058]["\"", "end function", "\""]
-    |        |  +-Pegged.Prefix [4042, 4058]["\"", "end function", "\""]
-    |        |     +-Pegged.Suffix [4042, 4058]["\"", "end function", "\""]
-    |        |        +-Pegged.Primary [4042, 4058]["\"", "end function", "\""]
-    |        |           +-Pegged.CILiteral [4042, 4058]["\"", "end function", "\""]
-    |        +-Pegged.Sequence [4060, 4083]["\"", "end sub", "\""]
-    |           +-Pegged.Prefix [4060, 4083]["\"", "end sub", "\""]
-    |              +-Pegged.Suffix [4060, 4083]["\"", "end sub", "\""]
-    |                 +-Pegged.Primary [4060, 4083]["\"", "end sub", "\""]
-    |                    +-Pegged.CILiteral [4060, 4083]["\"", "end sub", "\""]
-    +-Pegged.Definition [4083, 4228]["Fun_stmt", "<-", "\"", "declare", "\"", ":", "WS", "?", "\"", "function", "\"", "\"", "sub", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", ":", "\"", "(", "\"", ":", "WS", "?", "VarList", "?", ":", "WS", "?", ":", "\"", ")", "\"", ":", "WS", "Funcattrib", "*"]
-    |  +-Pegged.LhsName [4083, 4092]["Fun_stmt"]
-    |  |  +-Pegged.Identifier [4083, 4091]["Fun_stmt"]
-    |  +-Pegged.Arrow [4092, 4100]["<-"]
-    |  |  +-Pegged.LEFTARROW [4092, 4100]["<-"]
-    |  +-Pegged.Expression [4100, 4228]["\"", "declare", "\"", ":", "WS", "?", "\"", "function", "\"", "\"", "sub", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", ":", "\"", "(", "\"", ":", "WS", "?", "VarList", "?", ":", "WS", "?", ":", "\"", ")", "\"", ":", "WS", "Funcattrib", "*"]
-    |     +-Pegged.LongestExpression [4100, 4228]["\"", "declare", "\"", ":", "WS", "?", "\"", "function", "\"", "\"", "sub", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", ":", "\"", "(", "\"", ":", "WS", "?", "VarList", "?", ":", "WS", "?", ":", "\"", ")", "\"", ":", "WS", "Funcattrib", "*"]
-    |        +-Pegged.Sequence [4100, 4228]["\"", "declare", "\"", ":", "WS", "?", "\"", "function", "\"", "\"", "sub", "\"", ":", "WS", "Varnosubscript", ":", "WS", "?", ":", "\"", "(", "\"", ":", "WS", "?", "VarList", "?", ":", "WS", "?", ":", "\"", ")", "\"", ":", "WS", "Funcattrib", "*"]
-    |           +-Pegged.Prefix [4100, 4118]["\"", "declare", "\"", ":", "WS", "?"]
-    |           |  +-Pegged.Suffix [4100, 4118]["\"", "declare", "\"", ":", "WS", "?"]
-    |           |     +-Pegged.Primary [4100, 4116]["\"", "declare", "\"", ":", "WS"]
-    |           |     |  +-Pegged.Expression [4101, 4115]["\"", "declare", "\"", ":", "WS"]
-    |           |     |     +-Pegged.LongestExpression [4101, 4115]["\"", "declare", "\"", ":", "WS"]
-    |           |     |        +-Pegged.Sequence [4101, 4115]["\"", "declare", "\"", ":", "WS"]
-    |           |     |           +-Pegged.Prefix [4101, 4112]["\"", "declare", "\""]
-    |           |     |           |  +-Pegged.Suffix [4101, 4112]["\"", "declare", "\""]
-    |           |     |           |     +-Pegged.Primary [4101, 4112]["\"", "declare", "\""]
-    |           |     |           |        +-Pegged.CILiteral [4101, 4112]["\"", "declare", "\""]
-    |           |     |           +-Pegged.Prefix [4112, 4115][":", "WS"]
-    |           |     |              +-Pegged.DISCARD [4112, 4113][":"]
-    |           |     |              +-Pegged.Suffix [4113, 4115]["WS"]
-    |           |     |                 +-Pegged.Primary [4113, 4115]["WS"]
-    |           |     |                    +-Pegged.RhsName [4113, 4115]["WS"]
-    |           |     |                       +-Pegged.Identifier [4113, 4115]["WS"]
-    |           |     +-Pegged.OPTION [4116, 4118]["?"]
-    |           +-Pegged.Prefix [4118, 4141]["\"", "function", "\"", "\"", "sub", "\""]
-    |           |  +-Pegged.Suffix [4118, 4141]["\"", "function", "\"", "\"", "sub", "\""]
-    |           |     +-Pegged.Primary [4118, 4141]["\"", "function", "\"", "\"", "sub", "\""]
-    |           |        +-Pegged.Expression [4119, 4139]["\"", "function", "\"", "\"", "sub", "\""]
-    |           |           +-Pegged.FirstExpression [4119, 4139]["\"", "function", "\"", "\"", "sub", "\""]
-    |           |              +-Pegged.Sequence [4119, 4131]["\"", "function", "\""]
-    |           |              |  +-Pegged.Prefix [4119, 4131]["\"", "function", "\""]
-    |           |              |     +-Pegged.Suffix [4119, 4131]["\"", "function", "\""]
-    |           |              |        +-Pegged.Primary [4119, 4131]["\"", "function", "\""]
-    |           |              |           +-Pegged.CILiteral [4119, 4131]["\"", "function", "\""]
-    |           |              +-Pegged.Sequence [4133, 4139]["\"", "sub", "\""]
-    |           |                 +-Pegged.Prefix [4133, 4139]["\"", "sub", "\""]
-    |           |                    +-Pegged.Suffix [4133, 4139]["\"", "sub", "\""]
-    |           |                       +-Pegged.Primary [4133, 4139]["\"", "sub", "\""]
-    |           |                          +-Pegged.CILiteral [4133, 4139]["\"", "sub", "\""]
-    |           +-Pegged.Prefix [4141, 4145][":", "WS"]
-    |           |  +-Pegged.DISCARD [4141, 4142][":"]
-    |           |  +-Pegged.Suffix [4142, 4145]["WS"]
-    |           |     +-Pegged.Primary [4142, 4145]["WS"]
-    |           |        +-Pegged.RhsName [4142, 4145]["WS"]
-    |           |           +-Pegged.Identifier [4142, 4144]["WS"]
-    |           +-Pegged.Prefix [4145, 4160]["Varnosubscript"]
-    |           |  +-Pegged.Suffix [4145, 4160]["Varnosubscript"]
-    |           |     +-Pegged.Primary [4145, 4160]["Varnosubscript"]
-    |           |        +-Pegged.RhsName [4145, 4160]["Varnosubscript"]
-    |           |           +-Pegged.Identifier [4145, 4159]["Varnosubscript"]
-    |           +-Pegged.Prefix [4160, 4165][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4160, 4161][":"]
-    |           |  +-Pegged.Suffix [4161, 4165]["WS", "?"]
-    |           |     +-Pegged.Primary [4161, 4163]["WS"]
-    |           |     |  +-Pegged.RhsName [4161, 4163]["WS"]
-    |           |     |     +-Pegged.Identifier [4161, 4163]["WS"]
-    |           |     +-Pegged.OPTION [4163, 4165]["?"]
-    |           +-Pegged.Prefix [4165, 4170][":", "\"", "(", "\""]
-    |           |  +-Pegged.DISCARD [4165, 4166][":"]
-    |           |  +-Pegged.Suffix [4166, 4170]["\"", "(", "\""]
-    |           |     +-Pegged.Primary [4166, 4170]["\"", "(", "\""]
-    |           |        +-Pegged.Literal [4166, 4170]["\"", "(", "\""]
-    |           +-Pegged.Prefix [4170, 4175][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4170, 4171][":"]
-    |           |  +-Pegged.Suffix [4171, 4175]["WS", "?"]
-    |           |     +-Pegged.Primary [4171, 4173]["WS"]
-    |           |     |  +-Pegged.RhsName [4171, 4173]["WS"]
-    |           |     |     +-Pegged.Identifier [4171, 4173]["WS"]
-    |           |     +-Pegged.OPTION [4173, 4175]["?"]
-    |           +-Pegged.Prefix [4175, 4184]["VarList", "?"]
-    |           |  +-Pegged.Suffix [4175, 4184]["VarList", "?"]
-    |           |     +-Pegged.Primary [4175, 4182]["VarList"]
-    |           |     |  +-Pegged.RhsName [4175, 4182]["VarList"]
-    |           |     |     +-Pegged.Identifier [4175, 4182]["VarList"]
-    |           |     +-Pegged.OPTION [4182, 4184]["?"]
-    |           +-Pegged.Prefix [4184, 4189][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4184, 4185][":"]
-    |           |  +-Pegged.Suffix [4185, 4189]["WS", "?"]
-    |           |     +-Pegged.Primary [4185, 4187]["WS"]
-    |           |     |  +-Pegged.RhsName [4185, 4187]["WS"]
-    |           |     |     +-Pegged.Identifier [4185, 4187]["WS"]
-    |           |     +-Pegged.OPTION [4187, 4189]["?"]
-    |           +-Pegged.Prefix [4189, 4194][":", "\"", ")", "\""]
-    |           |  +-Pegged.DISCARD [4189, 4190][":"]
-    |           |  +-Pegged.Suffix [4190, 4194]["\"", ")", "\""]
-    |           |     +-Pegged.Primary [4190, 4194]["\"", ")", "\""]
-    |           |        +-Pegged.Literal [4190, 4194]["\"", ")", "\""]
-    |           +-Pegged.Prefix [4194, 4228][":", "WS", "Funcattrib", "*"]
-    |              +-Pegged.Suffix [4194, 4228][":", "WS", "Funcattrib", "*"]
-    |                 +-Pegged.Primary [4194, 4210][":", "WS", "Funcattrib"]
-    |                 |  +-Pegged.Expression [4195, 4209][":", "WS", "Funcattrib"]
-    |                 |     +-Pegged.LongestExpression [4195, 4209][":", "WS", "Funcattrib"]
-    |                 |        +-Pegged.Sequence [4195, 4209][":", "WS", "Funcattrib"]
-    |                 |           +-Pegged.Prefix [4195, 4199][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [4195, 4196][":"]
-    |                 |           |  +-Pegged.Suffix [4196, 4199]["WS"]
-    |                 |           |     +-Pegged.Primary [4196, 4199]["WS"]
-    |                 |           |        +-Pegged.RhsName [4196, 4199]["WS"]
-    |                 |           |           +-Pegged.Identifier [4196, 4198]["WS"]
-    |                 |           +-Pegged.Prefix [4199, 4209]["Funcattrib"]
-    |                 |              +-Pegged.Suffix [4199, 4209]["Funcattrib"]
-    |                 |                 +-Pegged.Primary [4199, 4209]["Funcattrib"]
-    |                 |                    +-Pegged.RhsName [4199, 4209]["Funcattrib"]
-    |                 |                       +-Pegged.Identifier [4199, 4209]["Funcattrib"]
-    |                 +-Pegged.ZEROORMORE [4210, 4228]["*"]
-    +-Pegged.Definition [4228, 4315]["Funcattrib", "<-", "\"", "private", "\"", "\"", "shared", "\"", "\"", "static", "\"", "\"", "overload", "\"", "\"", "inline", "\""]
-    |  +-Pegged.LhsName [4228, 4239]["Funcattrib"]
-    |  |  +-Pegged.Identifier [4228, 4238]["Funcattrib"]
-    |  +-Pegged.Arrow [4239, 4242]["<-"]
-    |  |  +-Pegged.LEFTARROW [4239, 4242]["<-"]
-    |  +-Pegged.Expression [4242, 4315]["\"", "private", "\"", "\"", "shared", "\"", "\"", "static", "\"", "\"", "overload", "\"", "\"", "inline", "\""]
-    |     +-Pegged.FirstExpression [4242, 4315]["\"", "private", "\"", "\"", "shared", "\"", "\"", "static", "\"", "\"", "overload", "\"", "\"", "inline", "\""]
-    |        +-Pegged.Sequence [4242, 4253]["\"", "private", "\""]
-    |        |  +-Pegged.Prefix [4242, 4253]["\"", "private", "\""]
-    |        |     +-Pegged.Suffix [4242, 4253]["\"", "private", "\""]
-    |        |        +-Pegged.Primary [4242, 4253]["\"", "private", "\""]
-    |        |           +-Pegged.CILiteral [4242, 4253]["\"", "private", "\""]
-    |        +-Pegged.Sequence [4255, 4265]["\"", "shared", "\""]
-    |        |  +-Pegged.Prefix [4255, 4265]["\"", "shared", "\""]
-    |        |     +-Pegged.Suffix [4255, 4265]["\"", "shared", "\""]
-    |        |        +-Pegged.Primary [4255, 4265]["\"", "shared", "\""]
-    |        |           +-Pegged.CILiteral [4255, 4265]["\"", "shared", "\""]
-    |        +-Pegged.Sequence [4267, 4277]["\"", "static", "\""]
-    |        |  +-Pegged.Prefix [4267, 4277]["\"", "static", "\""]
-    |        |     +-Pegged.Suffix [4267, 4277]["\"", "static", "\""]
-    |        |        +-Pegged.Primary [4267, 4277]["\"", "static", "\""]
-    |        |           +-Pegged.CILiteral [4267, 4277]["\"", "static", "\""]
-    |        +-Pegged.Sequence [4279, 4291]["\"", "overload", "\""]
-    |        |  +-Pegged.Prefix [4279, 4291]["\"", "overload", "\""]
-    |        |     +-Pegged.Suffix [4279, 4291]["\"", "overload", "\""]
-    |        |        +-Pegged.Primary [4279, 4291]["\"", "overload", "\""]
-    |        |           +-Pegged.CILiteral [4279, 4291]["\"", "overload", "\""]
-    |        +-Pegged.Sequence [4293, 4315]["\"", "inline", "\""]
-    |           +-Pegged.Prefix [4293, 4315]["\"", "inline", "\""]
-    |              +-Pegged.Suffix [4293, 4315]["\"", "inline", "\""]
-    |                 +-Pegged.Primary [4293, 4315]["\"", "inline", "\""]
-    |                    +-Pegged.CILiteral [4293, 4315]["\"", "inline", "\""]
-    +-Pegged.Definition [4315, 4382]["Sys_stmt", "<-", "\"", "sys", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", "fast", "\"", "?"]
-    |  +-Pegged.LhsName [4315, 4324]["Sys_stmt"]
-    |  |  +-Pegged.Identifier [4315, 4323]["Sys_stmt"]
-    |  +-Pegged.Arrow [4324, 4332]["<-"]
-    |  |  +-Pegged.LEFTARROW [4324, 4332]["<-"]
-    |  +-Pegged.Expression [4332, 4382]["\"", "sys", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", "fast", "\"", "?"]
-    |     +-Pegged.LongestExpression [4332, 4382]["\"", "sys", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", "fast", "\"", "?"]
-    |        +-Pegged.Sequence [4332, 4382]["\"", "sys", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", "fast", "\"", "?"]
-    |           +-Pegged.Prefix [4332, 4339]["\"", "sys", "\""]
-    |           |  +-Pegged.Suffix [4332, 4339]["\"", "sys", "\""]
-    |           |     +-Pegged.Primary [4332, 4339]["\"", "sys", "\""]
-    |           |        +-Pegged.CILiteral [4332, 4339]["\"", "sys", "\""]
-    |           +-Pegged.Prefix [4339, 4343][":", "WS"]
-    |           |  +-Pegged.DISCARD [4339, 4340][":"]
-    |           |  +-Pegged.Suffix [4340, 4343]["WS"]
-    |           |     +-Pegged.Primary [4340, 4343]["WS"]
-    |           |        +-Pegged.RhsName [4340, 4343]["WS"]
-    |           |           +-Pegged.Identifier [4340, 4342]["WS"]
-    |           +-Pegged.Prefix [4343, 4354]["Expression"]
-    |           |  +-Pegged.Suffix [4343, 4354]["Expression"]
-    |           |     +-Pegged.Primary [4343, 4354]["Expression"]
-    |           |        +-Pegged.RhsName [4343, 4354]["Expression"]
-    |           |           +-Pegged.Identifier [4343, 4353]["Expression"]
-    |           +-Pegged.Prefix [4354, 4382][":", "WS", "?", "\"", "fast", "\"", "?"]
-    |              +-Pegged.Suffix [4354, 4382][":", "WS", "?", "\"", "fast", "\"", "?"]
-    |                 +-Pegged.Primary [4354, 4368][":", "WS", "?", "\"", "fast", "\""]
-    |                 |  +-Pegged.Expression [4355, 4367][":", "WS", "?", "\"", "fast", "\""]
-    |                 |     +-Pegged.LongestExpression [4355, 4367][":", "WS", "?", "\"", "fast", "\""]
-    |                 |        +-Pegged.Sequence [4355, 4367][":", "WS", "?", "\"", "fast", "\""]
-    |                 |           +-Pegged.Prefix [4355, 4360][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [4355, 4356][":"]
-    |                 |           |  +-Pegged.Suffix [4356, 4360]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [4356, 4358]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [4356, 4358]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [4356, 4358]["WS"]
-    |                 |           |     +-Pegged.OPTION [4358, 4360]["?"]
-    |                 |           +-Pegged.Prefix [4360, 4367]["\"", "fast", "\""]
-    |                 |              +-Pegged.Suffix [4360, 4367]["\"", "fast", "\""]
-    |                 |                 +-Pegged.Primary [4360, 4367]["\"", "fast", "\""]
-    |                 |                    +-Pegged.CILiteral [4360, 4367]["\"", "fast", "\""]
-    |                 +-Pegged.OPTION [4368, 4382]["?"]
-    +-Pegged.Definition [4382, 4432]["Load_stmt", "<-", "\"", "load", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [4382, 4392]["Load_stmt"]
-    |  |  +-Pegged.Identifier [4382, 4391]["Load_stmt"]
-    |  +-Pegged.Arrow [4392, 4399]["<-"]
-    |  |  +-Pegged.LEFTARROW [4392, 4399]["<-"]
-    |  +-Pegged.Expression [4399, 4432]["\"", "load", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [4399, 4432]["\"", "load", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [4399, 4432]["\"", "load", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [4399, 4407]["\"", "load", "\""]
-    |           |  +-Pegged.Suffix [4399, 4407]["\"", "load", "\""]
-    |           |     +-Pegged.Primary [4399, 4407]["\"", "load", "\""]
-    |           |        +-Pegged.CILiteral [4399, 4407]["\"", "load", "\""]
-    |           +-Pegged.Prefix [4407, 4411][":", "WS"]
-    |           |  +-Pegged.DISCARD [4407, 4408][":"]
-    |           |  +-Pegged.Suffix [4408, 4411]["WS"]
-    |           |     +-Pegged.Primary [4408, 4411]["WS"]
-    |           |        +-Pegged.RhsName [4408, 4411]["WS"]
-    |           |           +-Pegged.Identifier [4408, 4410]["WS"]
-    |           +-Pegged.Prefix [4411, 4432]["ExprList"]
-    |              +-Pegged.Suffix [4411, 4432]["ExprList"]
-    |                 +-Pegged.Primary [4411, 4432]["ExprList"]
-    |                    +-Pegged.RhsName [4411, 4432]["ExprList"]
-    |                       +-Pegged.Identifier [4411, 4419]["ExprList"]
-    +-Pegged.Definition [4432, 4482]["Save_stmt", "<-", "\"", "save", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [4432, 4442]["Save_stmt"]
-    |  |  +-Pegged.Identifier [4432, 4441]["Save_stmt"]
-    |  +-Pegged.Arrow [4442, 4449]["<-"]
-    |  |  +-Pegged.LEFTARROW [4442, 4449]["<-"]
-    |  +-Pegged.Expression [4449, 4482]["\"", "save", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [4449, 4482]["\"", "save", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [4449, 4482]["\"", "save", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [4449, 4457]["\"", "save", "\""]
-    |           |  +-Pegged.Suffix [4449, 4457]["\"", "save", "\""]
-    |           |     +-Pegged.Primary [4449, 4457]["\"", "save", "\""]
-    |           |        +-Pegged.CILiteral [4449, 4457]["\"", "save", "\""]
-    |           +-Pegged.Prefix [4457, 4461][":", "WS"]
-    |           |  +-Pegged.DISCARD [4457, 4458][":"]
-    |           |  +-Pegged.Suffix [4458, 4461]["WS"]
-    |           |     +-Pegged.Primary [4458, 4461]["WS"]
-    |           |        +-Pegged.RhsName [4458, 4461]["WS"]
-    |           |           +-Pegged.Identifier [4458, 4460]["WS"]
-    |           +-Pegged.Prefix [4461, 4482]["ExprList"]
-    |              +-Pegged.Suffix [4461, 4482]["ExprList"]
-    |                 +-Pegged.Primary [4461, 4482]["ExprList"]
-    |                    +-Pegged.RhsName [4461, 4482]["ExprList"]
-    |                       +-Pegged.Identifier [4461, 4469]["ExprList"]
-    +-Pegged.Definition [4482, 4546]["Origin_stmt", "<-", "\"", "origin", "\"", ":", "WS", "Number", "Label_ref"]
-    |  +-Pegged.LhsName [4482, 4494]["Origin_stmt"]
-    |  |  +-Pegged.Identifier [4482, 4493]["Origin_stmt"]
-    |  +-Pegged.Arrow [4494, 4499]["<-"]
-    |  |  +-Pegged.LEFTARROW [4494, 4499]["<-"]
-    |  +-Pegged.Expression [4499, 4546]["\"", "origin", "\"", ":", "WS", "Number", "Label_ref"]
-    |     +-Pegged.LongestExpression [4499, 4546]["\"", "origin", "\"", ":", "WS", "Number", "Label_ref"]
-    |        +-Pegged.Sequence [4499, 4546]["\"", "origin", "\"", ":", "WS", "Number", "Label_ref"]
-    |           +-Pegged.Prefix [4499, 4509]["\"", "origin", "\""]
-    |           |  +-Pegged.Suffix [4499, 4509]["\"", "origin", "\""]
-    |           |     +-Pegged.Primary [4499, 4509]["\"", "origin", "\""]
-    |           |        +-Pegged.CILiteral [4499, 4509]["\"", "origin", "\""]
-    |           +-Pegged.Prefix [4509, 4513][":", "WS"]
-    |           |  +-Pegged.DISCARD [4509, 4510][":"]
-    |           |  +-Pegged.Suffix [4510, 4513]["WS"]
-    |           |     +-Pegged.Primary [4510, 4513]["WS"]
-    |           |        +-Pegged.RhsName [4510, 4513]["WS"]
-    |           |           +-Pegged.Identifier [4510, 4512]["WS"]
-    |           +-Pegged.Prefix [4513, 4546]["Number", "Label_ref"]
-    |              +-Pegged.Suffix [4513, 4546]["Number", "Label_ref"]
-    |                 +-Pegged.Primary [4513, 4546]["Number", "Label_ref"]
-    |                    +-Pegged.Expression [4514, 4532]["Number", "Label_ref"]
-    |                       +-Pegged.FirstExpression [4514, 4532]["Number", "Label_ref"]
-    |                          +-Pegged.Sequence [4514, 4521]["Number"]
-    |                          |  +-Pegged.Prefix [4514, 4521]["Number"]
-    |                          |     +-Pegged.Suffix [4514, 4521]["Number"]
-    |                          |        +-Pegged.Primary [4514, 4521]["Number"]
-    |                          |           +-Pegged.RhsName [4514, 4521]["Number"]
-    |                          |              +-Pegged.Identifier [4514, 4520]["Number"]
-    |                          +-Pegged.Sequence [4523, 4532]["Label_ref"]
-    |                             +-Pegged.Prefix [4523, 4532]["Label_ref"]
-    |                                +-Pegged.Suffix [4523, 4532]["Label_ref"]
-    |                                   +-Pegged.Primary [4523, 4532]["Label_ref"]
-    |                                      +-Pegged.RhsName [4523, 4532]["Label_ref"]
-    |                                         +-Pegged.Identifier [4523, 4532]["Label_ref"]
-    +-Pegged.Definition [4546, 4625]["Locate_stmt", "<-", "\"", "locate", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |  +-Pegged.LhsName [4546, 4558]["Locate_stmt"]
-    |  |  +-Pegged.Identifier [4546, 4557]["Locate_stmt"]
-    |  +-Pegged.Arrow [4558, 4563]["<-"]
-    |  |  +-Pegged.LEFTARROW [4558, 4563]["<-"]
-    |  +-Pegged.Expression [4563, 4625]["\"", "locate", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |     +-Pegged.LongestExpression [4563, 4625]["\"", "locate", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |        +-Pegged.Sequence [4563, 4625]["\"", "locate", "\"", ":", "WS", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           +-Pegged.Prefix [4563, 4573]["\"", "locate", "\""]
-    |           |  +-Pegged.Suffix [4563, 4573]["\"", "locate", "\""]
-    |           |     +-Pegged.Primary [4563, 4573]["\"", "locate", "\""]
-    |           |        +-Pegged.CILiteral [4563, 4573]["\"", "locate", "\""]
-    |           +-Pegged.Prefix [4573, 4577][":", "WS"]
-    |           |  +-Pegged.DISCARD [4573, 4574][":"]
-    |           |  +-Pegged.Suffix [4574, 4577]["WS"]
-    |           |     +-Pegged.Primary [4574, 4577]["WS"]
-    |           |        +-Pegged.RhsName [4574, 4577]["WS"]
-    |           |           +-Pegged.Identifier [4574, 4576]["WS"]
-    |           +-Pegged.Prefix [4577, 4588]["Expression"]
-    |           |  +-Pegged.Suffix [4577, 4588]["Expression"]
-    |           |     +-Pegged.Primary [4577, 4588]["Expression"]
-    |           |        +-Pegged.RhsName [4577, 4588]["Expression"]
-    |           |           +-Pegged.Identifier [4577, 4587]["Expression"]
-    |           +-Pegged.Prefix [4588, 4593][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4588, 4589][":"]
-    |           |  +-Pegged.Suffix [4589, 4593]["WS", "?"]
-    |           |     +-Pegged.Primary [4589, 4591]["WS"]
-    |           |     |  +-Pegged.RhsName [4589, 4591]["WS"]
-    |           |     |     +-Pegged.Identifier [4589, 4591]["WS"]
-    |           |     +-Pegged.OPTION [4591, 4593]["?"]
-    |           +-Pegged.Prefix [4593, 4597]["\"", ",", "\""]
-    |           |  +-Pegged.Suffix [4593, 4597]["\"", ",", "\""]
-    |           |     +-Pegged.Primary [4593, 4597]["\"", ",", "\""]
-    |           |        +-Pegged.Literal [4593, 4597]["\"", ",", "\""]
-    |           +-Pegged.Prefix [4597, 4602][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4597, 4598][":"]
-    |           |  +-Pegged.Suffix [4598, 4602]["WS", "?"]
-    |           |     +-Pegged.Primary [4598, 4600]["WS"]
-    |           |     |  +-Pegged.RhsName [4598, 4600]["WS"]
-    |           |     |     +-Pegged.Identifier [4598, 4600]["WS"]
-    |           |     +-Pegged.OPTION [4600, 4602]["?"]
-    |           +-Pegged.Prefix [4602, 4625]["Expression"]
-    |              +-Pegged.Suffix [4602, 4625]["Expression"]
-    |                 +-Pegged.Primary [4602, 4625]["Expression"]
-    |                    +-Pegged.RhsName [4602, 4625]["Expression"]
-    |                       +-Pegged.Identifier [4602, 4612]["Expression"]
-    +-Pegged.Definition [4625, 4818]["On_stmt", "<-", "\"", "on", "\"", ":", "WS", "Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\"", ":", "WS", "Expression", "?", ":", "WS", "Branch_type", ":", "WS", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |  +-Pegged.LhsName [4625, 4633]["On_stmt"]
-    |  |  +-Pegged.Identifier [4625, 4632]["On_stmt"]
-    |  +-Pegged.Arrow [4633, 4642]["<-"]
-    |  |  +-Pegged.LEFTARROW [4633, 4642]["<-"]
-    |  +-Pegged.Expression [4642, 4818]["\"", "on", "\"", ":", "WS", "Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\"", ":", "WS", "Expression", "?", ":", "WS", "Branch_type", ":", "WS", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |     +-Pegged.LongestExpression [4642, 4818]["\"", "on", "\"", ":", "WS", "Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\"", ":", "WS", "Expression", "?", ":", "WS", "Branch_type", ":", "WS", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |        +-Pegged.Sequence [4642, 4818]["\"", "on", "\"", ":", "WS", "Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\"", ":", "WS", "Expression", "?", ":", "WS", "Branch_type", ":", "WS", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |           +-Pegged.Prefix [4642, 4648]["\"", "on", "\""]
-    |           |  +-Pegged.Suffix [4642, 4648]["\"", "on", "\""]
-    |           |     +-Pegged.Primary [4642, 4648]["\"", "on", "\""]
-    |           |        +-Pegged.CILiteral [4642, 4648]["\"", "on", "\""]
-    |           +-Pegged.Prefix [4648, 4652][":", "WS"]
-    |           |  +-Pegged.DISCARD [4648, 4649][":"]
-    |           |  +-Pegged.Suffix [4649, 4652]["WS"]
-    |           |     +-Pegged.Primary [4649, 4652]["WS"]
-    |           |        +-Pegged.RhsName [4649, 4652]["WS"]
-    |           |           +-Pegged.Identifier [4649, 4651]["WS"]
-    |           +-Pegged.Prefix [4652, 4727]["Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\""]
-    |           |  +-Pegged.Suffix [4652, 4727]["Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\""]
-    |           |     +-Pegged.Primary [4652, 4727]["Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\""]
-    |           |        +-Pegged.Expression [4653, 4725]["Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\""]
-    |           |           +-Pegged.FirstExpression [4653, 4725]["Expression", "\"", "error", "\"", "\"", "timer", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "raster", "\""]
-    |           |              +-Pegged.Sequence [4653, 4664]["Expression"]
-    |           |              |  +-Pegged.Prefix [4653, 4664]["Expression"]
-    |           |              |     +-Pegged.Suffix [4653, 4664]["Expression"]
-    |           |              |        +-Pegged.Primary [4653, 4664]["Expression"]
-    |           |              |           +-Pegged.RhsName [4653, 4664]["Expression"]
-    |           |              |              +-Pegged.Identifier [4653, 4663]["Expression"]
-    |           |              +-Pegged.Sequence [4666, 4675]["\"", "error", "\""]
-    |           |              |  +-Pegged.Prefix [4666, 4675]["\"", "error", "\""]
-    |           |              |     +-Pegged.Suffix [4666, 4675]["\"", "error", "\""]
-    |           |              |        +-Pegged.Primary [4666, 4675]["\"", "error", "\""]
-    |           |              |           +-Pegged.CILiteral [4666, 4675]["\"", "error", "\""]
-    |           |              +-Pegged.Sequence [4677, 4686]["\"", "timer", "\""]
-    |           |              |  +-Pegged.Prefix [4677, 4686]["\"", "timer", "\""]
-    |           |              |     +-Pegged.Suffix [4677, 4686]["\"", "timer", "\""]
-    |           |              |        +-Pegged.Primary [4677, 4686]["\"", "timer", "\""]
-    |           |              |           +-Pegged.CILiteral [4677, 4686]["\"", "timer", "\""]
-    |           |              +-Pegged.Sequence [4688, 4698]["\"", "sprite", "\""]
-    |           |              |  +-Pegged.Prefix [4688, 4698]["\"", "sprite", "\""]
-    |           |              |     +-Pegged.Suffix [4688, 4698]["\"", "sprite", "\""]
-    |           |              |        +-Pegged.Primary [4688, 4698]["\"", "sprite", "\""]
-    |           |              |           +-Pegged.CILiteral [4688, 4698]["\"", "sprite", "\""]
-    |           |              +-Pegged.Sequence [4700, 4714]["\"", "background", "\""]
-    |           |              |  +-Pegged.Prefix [4700, 4714]["\"", "background", "\""]
-    |           |              |     +-Pegged.Suffix [4700, 4714]["\"", "background", "\""]
-    |           |              |        +-Pegged.Primary [4700, 4714]["\"", "background", "\""]
-    |           |              |           +-Pegged.CILiteral [4700, 4714]["\"", "background", "\""]
-    |           |              +-Pegged.Sequence [4716, 4725]["\"", "raster", "\""]
-    |           |                 +-Pegged.Prefix [4716, 4725]["\"", "raster", "\""]
-    |           |                    +-Pegged.Suffix [4716, 4725]["\"", "raster", "\""]
-    |           |                       +-Pegged.Primary [4716, 4725]["\"", "raster", "\""]
-    |           |                          +-Pegged.CILiteral [4716, 4725]["\"", "raster", "\""]
-    |           +-Pegged.Prefix [4727, 4745][":", "WS", "Expression", "?"]
-    |           |  +-Pegged.Suffix [4727, 4745][":", "WS", "Expression", "?"]
-    |           |     +-Pegged.Primary [4727, 4743][":", "WS", "Expression"]
-    |           |     |  +-Pegged.Expression [4728, 4742][":", "WS", "Expression"]
-    |           |     |     +-Pegged.LongestExpression [4728, 4742][":", "WS", "Expression"]
-    |           |     |        +-Pegged.Sequence [4728, 4742][":", "WS", "Expression"]
-    |           |     |           +-Pegged.Prefix [4728, 4732][":", "WS"]
-    |           |     |           |  +-Pegged.DISCARD [4728, 4729][":"]
-    |           |     |           |  +-Pegged.Suffix [4729, 4732]["WS"]
-    |           |     |           |     +-Pegged.Primary [4729, 4732]["WS"]
-    |           |     |           |        +-Pegged.RhsName [4729, 4732]["WS"]
-    |           |     |           |           +-Pegged.Identifier [4729, 4731]["WS"]
-    |           |     |           +-Pegged.Prefix [4732, 4742]["Expression"]
-    |           |     |              +-Pegged.Suffix [4732, 4742]["Expression"]
-    |           |     |                 +-Pegged.Primary [4732, 4742]["Expression"]
-    |           |     |                    +-Pegged.RhsName [4732, 4742]["Expression"]
-    |           |     |                       +-Pegged.Identifier [4732, 4742]["Expression"]
-    |           |     +-Pegged.OPTION [4743, 4745]["?"]
-    |           +-Pegged.Prefix [4745, 4749][":", "WS"]
-    |           |  +-Pegged.DISCARD [4745, 4746][":"]
-    |           |  +-Pegged.Suffix [4746, 4749]["WS"]
-    |           |     +-Pegged.Primary [4746, 4749]["WS"]
-    |           |        +-Pegged.RhsName [4746, 4749]["WS"]
-    |           |           +-Pegged.Identifier [4746, 4748]["WS"]
-    |           +-Pegged.Prefix [4749, 4761]["Branch_type"]
-    |           |  +-Pegged.Suffix [4749, 4761]["Branch_type"]
-    |           |     +-Pegged.Primary [4749, 4761]["Branch_type"]
-    |           |        +-Pegged.RhsName [4749, 4761]["Branch_type"]
-    |           |           +-Pegged.Identifier [4749, 4760]["Branch_type"]
-    |           +-Pegged.Prefix [4761, 4765][":", "WS"]
-    |           |  +-Pegged.DISCARD [4761, 4762][":"]
-    |           |  +-Pegged.Suffix [4762, 4765]["WS"]
-    |           |     +-Pegged.Primary [4762, 4765]["WS"]
-    |           |        +-Pegged.RhsName [4762, 4765]["WS"]
-    |           |           +-Pegged.Identifier [4762, 4764]["WS"]
-    |           +-Pegged.Prefix [4765, 4775]["Label_ref"]
-    |           |  +-Pegged.Suffix [4765, 4775]["Label_ref"]
-    |           |     +-Pegged.Primary [4765, 4775]["Label_ref"]
-    |           |        +-Pegged.RhsName [4765, 4775]["Label_ref"]
-    |           |           +-Pegged.Identifier [4765, 4774]["Label_ref"]
-    |           +-Pegged.Prefix [4775, 4818][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |              +-Pegged.Suffix [4775, 4818][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref", "*"]
-    |                 +-Pegged.Primary [4775, 4800][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref"]
-    |                 |  +-Pegged.Expression [4776, 4799][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref"]
-    |                 |     +-Pegged.LongestExpression [4776, 4799][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref"]
-    |                 |        +-Pegged.Sequence [4776, 4799][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Label_ref"]
-    |                 |           +-Pegged.Prefix [4776, 4781][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [4776, 4777][":"]
-    |                 |           |  +-Pegged.Suffix [4777, 4781]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [4777, 4779]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [4777, 4779]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [4777, 4779]["WS"]
-    |                 |           |     +-Pegged.OPTION [4779, 4781]["?"]
-    |                 |           +-Pegged.Prefix [4781, 4785]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [4781, 4785]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [4781, 4785]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [4781, 4785]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [4785, 4790][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [4785, 4786][":"]
-    |                 |           |  +-Pegged.Suffix [4786, 4790]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [4786, 4788]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [4786, 4788]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [4786, 4788]["WS"]
-    |                 |           |     +-Pegged.OPTION [4788, 4790]["?"]
-    |                 |           +-Pegged.Prefix [4790, 4799]["Label_ref"]
-    |                 |              +-Pegged.Suffix [4790, 4799]["Label_ref"]
-    |                 |                 +-Pegged.Primary [4790, 4799]["Label_ref"]
-    |                 |                    +-Pegged.RhsName [4790, 4799]["Label_ref"]
-    |                 |                       +-Pegged.Identifier [4790, 4799]["Label_ref"]
-    |                 +-Pegged.ZEROORMORE [4800, 4818]["*"]
-    +-Pegged.Definition [4818, 4864]["Branch_type", "<-", "\"", "goto", "\"", "\"", "gosub", "\""]
-    |  +-Pegged.LhsName [4818, 4830]["Branch_type"]
-    |  |  +-Pegged.Identifier [4818, 4829]["Branch_type"]
-    |  +-Pegged.Arrow [4830, 4833]["<-"]
-    |  |  +-Pegged.LEFTARROW [4830, 4833]["<-"]
-    |  +-Pegged.Expression [4833, 4864]["\"", "goto", "\"", "\"", "gosub", "\""]
-    |     +-Pegged.FirstExpression [4833, 4864]["\"", "goto", "\"", "\"", "gosub", "\""]
-    |        +-Pegged.Sequence [4833, 4841]["\"", "goto", "\""]
-    |        |  +-Pegged.Prefix [4833, 4841]["\"", "goto", "\""]
-    |        |     +-Pegged.Suffix [4833, 4841]["\"", "goto", "\""]
-    |        |        +-Pegged.Primary [4833, 4841]["\"", "goto", "\""]
-    |        |           +-Pegged.CILiteral [4833, 4841]["\"", "goto", "\""]
-    |        +-Pegged.Sequence [4843, 4864]["\"", "gosub", "\""]
-    |           +-Pegged.Prefix [4843, 4864]["\"", "gosub", "\""]
-    |              +-Pegged.Suffix [4843, 4864]["\"", "gosub", "\""]
-    |                 +-Pegged.Primary [4843, 4864]["\"", "gosub", "\""]
-    |                    +-Pegged.CILiteral [4843, 4864]["\"", "gosub", "\""]
-    +-Pegged.Definition [4864, 4970]["Wait_stmt", "<-", "\"", "wait", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |  +-Pegged.LhsName [4864, 4874]["Wait_stmt"]
-    |  |  +-Pegged.Identifier [4864, 4873]["Wait_stmt"]
-    |  +-Pegged.Arrow [4874, 4881]["<-"]
-    |  |  +-Pegged.LEFTARROW [4874, 4881]["<-"]
-    |  +-Pegged.Expression [4881, 4970]["\"", "wait", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |     +-Pegged.LongestExpression [4881, 4970]["\"", "wait", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |        +-Pegged.Sequence [4881, 4970]["\"", "wait", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |           +-Pegged.Prefix [4881, 4889]["\"", "wait", "\""]
-    |           |  +-Pegged.Suffix [4881, 4889]["\"", "wait", "\""]
-    |           |     +-Pegged.Primary [4881, 4889]["\"", "wait", "\""]
-    |           |        +-Pegged.CILiteral [4881, 4889]["\"", "wait", "\""]
-    |           +-Pegged.Prefix [4889, 4894][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4889, 4890][":"]
-    |           |  +-Pegged.Suffix [4890, 4894]["WS", "?"]
-    |           |     +-Pegged.Primary [4890, 4892]["WS"]
-    |           |     |  +-Pegged.RhsName [4890, 4892]["WS"]
-    |           |     |     +-Pegged.Identifier [4890, 4892]["WS"]
-    |           |     +-Pegged.OPTION [4892, 4894]["?"]
-    |           +-Pegged.Prefix [4894, 4905]["Expression"]
-    |           |  +-Pegged.Suffix [4894, 4905]["Expression"]
-    |           |     +-Pegged.Primary [4894, 4905]["Expression"]
-    |           |        +-Pegged.RhsName [4894, 4905]["Expression"]
-    |           |           +-Pegged.Identifier [4894, 4904]["Expression"]
-    |           +-Pegged.Prefix [4905, 4910][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4905, 4906][":"]
-    |           |  +-Pegged.Suffix [4906, 4910]["WS", "?"]
-    |           |     +-Pegged.Primary [4906, 4908]["WS"]
-    |           |     |  +-Pegged.RhsName [4906, 4908]["WS"]
-    |           |     |     +-Pegged.Identifier [4906, 4908]["WS"]
-    |           |     +-Pegged.OPTION [4908, 4910]["?"]
-    |           +-Pegged.Prefix [4910, 4914]["\"", ",", "\""]
-    |           |  +-Pegged.Suffix [4910, 4914]["\"", ",", "\""]
-    |           |     +-Pegged.Primary [4910, 4914]["\"", ",", "\""]
-    |           |        +-Pegged.Literal [4910, 4914]["\"", ",", "\""]
-    |           +-Pegged.Prefix [4914, 4919][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4914, 4915][":"]
-    |           |  +-Pegged.Suffix [4915, 4919]["WS", "?"]
-    |           |     +-Pegged.Primary [4915, 4917]["WS"]
-    |           |     |  +-Pegged.RhsName [4915, 4917]["WS"]
-    |           |     |     +-Pegged.Identifier [4915, 4917]["WS"]
-    |           |     +-Pegged.OPTION [4917, 4919]["?"]
-    |           +-Pegged.Prefix [4919, 4930]["Expression"]
-    |           |  +-Pegged.Suffix [4919, 4930]["Expression"]
-    |           |     +-Pegged.Primary [4919, 4930]["Expression"]
-    |           |        +-Pegged.RhsName [4919, 4930]["Expression"]
-    |           |           +-Pegged.Identifier [4919, 4929]["Expression"]
-    |           +-Pegged.Prefix [4930, 4970][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |              +-Pegged.Suffix [4930, 4970][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "?"]
-    |                 +-Pegged.Primary [4930, 4956][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |  +-Pegged.Expression [4931, 4955][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |     +-Pegged.LongestExpression [4931, 4955][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |        +-Pegged.Sequence [4931, 4955][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |           +-Pegged.Prefix [4931, 4936][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [4931, 4932][":"]
-    |                 |           |  +-Pegged.Suffix [4932, 4936]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [4932, 4934]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [4932, 4934]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [4932, 4934]["WS"]
-    |                 |           |     +-Pegged.OPTION [4934, 4936]["?"]
-    |                 |           +-Pegged.Prefix [4936, 4940]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [4936, 4940]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [4936, 4940]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [4936, 4940]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [4940, 4945][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [4940, 4941][":"]
-    |                 |           |  +-Pegged.Suffix [4941, 4945]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [4941, 4943]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [4941, 4943]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [4941, 4943]["WS"]
-    |                 |           |     +-Pegged.OPTION [4943, 4945]["?"]
-    |                 |           +-Pegged.Prefix [4945, 4955]["Expression"]
-    |                 |              +-Pegged.Suffix [4945, 4955]["Expression"]
-    |                 |                 +-Pegged.Primary [4945, 4955]["Expression"]
-    |                 |                    +-Pegged.RhsName [4945, 4955]["Expression"]
-    |                 |                       +-Pegged.Identifier [4945, 4955]["Expression"]
-    |                 +-Pegged.OPTION [4956, 4970]["?"]
-    +-Pegged.Definition [4970, 5023]["Memset_stmt", "<-", "\"", "memset", "\"", ":", "WS", "?", "ExprList"]
-    |  +-Pegged.LhsName [4970, 4982]["Memset_stmt"]
-    |  |  +-Pegged.Identifier [4970, 4981]["Memset_stmt"]
-    |  +-Pegged.Arrow [4982, 4987]["<-"]
-    |  |  +-Pegged.LEFTARROW [4982, 4987]["<-"]
-    |  +-Pegged.Expression [4987, 5023]["\"", "memset", "\"", ":", "WS", "?", "ExprList"]
-    |     +-Pegged.LongestExpression [4987, 5023]["\"", "memset", "\"", ":", "WS", "?", "ExprList"]
-    |        +-Pegged.Sequence [4987, 5023]["\"", "memset", "\"", ":", "WS", "?", "ExprList"]
-    |           +-Pegged.Prefix [4987, 4997]["\"", "memset", "\""]
-    |           |  +-Pegged.Suffix [4987, 4997]["\"", "memset", "\""]
-    |           |     +-Pegged.Primary [4987, 4997]["\"", "memset", "\""]
-    |           |        +-Pegged.CILiteral [4987, 4997]["\"", "memset", "\""]
-    |           +-Pegged.Prefix [4997, 5002][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [4997, 4998][":"]
-    |           |  +-Pegged.Suffix [4998, 5002]["WS", "?"]
-    |           |     +-Pegged.Primary [4998, 5000]["WS"]
-    |           |     |  +-Pegged.RhsName [4998, 5000]["WS"]
-    |           |     |     +-Pegged.Identifier [4998, 5000]["WS"]
-    |           |     +-Pegged.OPTION [5000, 5002]["?"]
-    |           +-Pegged.Prefix [5002, 5023]["ExprList"]
-    |              +-Pegged.Suffix [5002, 5023]["ExprList"]
-    |                 +-Pegged.Primary [5002, 5023]["ExprList"]
-    |                    +-Pegged.RhsName [5002, 5023]["ExprList"]
-    |                       +-Pegged.Identifier [5002, 5010]["ExprList"]
-    +-Pegged.Definition [5023, 5076]["Memcpy_stmt", "<-", "\"", "memcpy", "\"", ":", "WS", "?", "ExprList"]
-    |  +-Pegged.LhsName [5023, 5035]["Memcpy_stmt"]
-    |  |  +-Pegged.Identifier [5023, 5034]["Memcpy_stmt"]
-    |  +-Pegged.Arrow [5035, 5040]["<-"]
-    |  |  +-Pegged.LEFTARROW [5035, 5040]["<-"]
-    |  +-Pegged.Expression [5040, 5076]["\"", "memcpy", "\"", ":", "WS", "?", "ExprList"]
-    |     +-Pegged.LongestExpression [5040, 5076]["\"", "memcpy", "\"", ":", "WS", "?", "ExprList"]
-    |        +-Pegged.Sequence [5040, 5076]["\"", "memcpy", "\"", ":", "WS", "?", "ExprList"]
-    |           +-Pegged.Prefix [5040, 5050]["\"", "memcpy", "\""]
-    |           |  +-Pegged.Suffix [5040, 5050]["\"", "memcpy", "\""]
-    |           |     +-Pegged.Primary [5040, 5050]["\"", "memcpy", "\""]
-    |           |        +-Pegged.CILiteral [5040, 5050]["\"", "memcpy", "\""]
-    |           +-Pegged.Prefix [5050, 5055][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [5050, 5051][":"]
-    |           |  +-Pegged.Suffix [5051, 5055]["WS", "?"]
-    |           |     +-Pegged.Primary [5051, 5053]["WS"]
-    |           |     |  +-Pegged.RhsName [5051, 5053]["WS"]
-    |           |     |     +-Pegged.Identifier [5051, 5053]["WS"]
-    |           |     +-Pegged.OPTION [5053, 5055]["?"]
-    |           +-Pegged.Prefix [5055, 5076]["ExprList"]
-    |              +-Pegged.Suffix [5055, 5076]["ExprList"]
-    |                 +-Pegged.Primary [5055, 5076]["ExprList"]
-    |                    +-Pegged.RhsName [5055, 5076]["ExprList"]
-    |                       +-Pegged.Identifier [5055, 5063]["ExprList"]
-    +-Pegged.Definition [5076, 5131]["Memshift_stmt", "<-", "\"", "memshift", "\"", ":", "WS", "?", "ExprList"]
-    |  +-Pegged.LhsName [5076, 5090]["Memshift_stmt"]
-    |  |  +-Pegged.Identifier [5076, 5089]["Memshift_stmt"]
-    |  +-Pegged.Arrow [5090, 5093]["<-"]
-    |  |  +-Pegged.LEFTARROW [5090, 5093]["<-"]
-    |  +-Pegged.Expression [5093, 5131]["\"", "memshift", "\"", ":", "WS", "?", "ExprList"]
-    |     +-Pegged.LongestExpression [5093, 5131]["\"", "memshift", "\"", ":", "WS", "?", "ExprList"]
-    |        +-Pegged.Sequence [5093, 5131]["\"", "memshift", "\"", ":", "WS", "?", "ExprList"]
-    |           +-Pegged.Prefix [5093, 5105]["\"", "memshift", "\""]
-    |           |  +-Pegged.Suffix [5093, 5105]["\"", "memshift", "\""]
-    |           |     +-Pegged.Primary [5093, 5105]["\"", "memshift", "\""]
-    |           |        +-Pegged.CILiteral [5093, 5105]["\"", "memshift", "\""]
-    |           +-Pegged.Prefix [5105, 5110][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [5105, 5106][":"]
-    |           |  +-Pegged.Suffix [5106, 5110]["WS", "?"]
-    |           |     +-Pegged.Primary [5106, 5108]["WS"]
-    |           |     |  +-Pegged.RhsName [5106, 5108]["WS"]
-    |           |     |     +-Pegged.Identifier [5106, 5108]["WS"]
-    |           |     +-Pegged.OPTION [5108, 5110]["?"]
-    |           +-Pegged.Prefix [5110, 5131]["ExprList"]
-    |              +-Pegged.Suffix [5110, 5131]["ExprList"]
-    |                 +-Pegged.Primary [5110, 5131]["ExprList"]
-    |                    +-Pegged.RhsName [5110, 5131]["ExprList"]
-    |                       +-Pegged.Identifier [5110, 5118]["ExprList"]
-    +-Pegged.Definition [5131, 5190]["Randomize_stmt", "<-", "\"", "randomize", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [5131, 5146]["Randomize_stmt"]
-    |  |  +-Pegged.Identifier [5131, 5145]["Randomize_stmt"]
-    |  +-Pegged.Arrow [5146, 5150]["<-"]
-    |  |  +-Pegged.LEFTARROW [5146, 5150]["<-"]
-    |  +-Pegged.Expression [5150, 5190]["\"", "randomize", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [5150, 5190]["\"", "randomize", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [5150, 5190]["\"", "randomize", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [5150, 5163]["\"", "randomize", "\""]
-    |           |  +-Pegged.Suffix [5150, 5163]["\"", "randomize", "\""]
-    |           |     +-Pegged.Primary [5150, 5163]["\"", "randomize", "\""]
-    |           |        +-Pegged.CILiteral [5150, 5163]["\"", "randomize", "\""]
-    |           +-Pegged.Prefix [5163, 5167][":", "WS"]
-    |           |  +-Pegged.DISCARD [5163, 5164][":"]
-    |           |  +-Pegged.Suffix [5164, 5167]["WS"]
-    |           |     +-Pegged.Primary [5164, 5167]["WS"]
-    |           |        +-Pegged.RhsName [5164, 5167]["WS"]
-    |           |           +-Pegged.Identifier [5164, 5166]["WS"]
-    |           +-Pegged.Prefix [5167, 5190]["Expression"]
-    |              +-Pegged.Suffix [5167, 5190]["Expression"]
-    |                 +-Pegged.Primary [5167, 5190]["Expression"]
-    |                    +-Pegged.RhsName [5167, 5190]["Expression"]
-    |                       +-Pegged.Identifier [5167, 5177]["Expression"]
-    +-Pegged.Definition [5190, 5236]["Open_stmt", "<-", "\"", "open", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [5190, 5200]["Open_stmt"]
-    |  |  +-Pegged.Identifier [5190, 5199]["Open_stmt"]
-    |  +-Pegged.Arrow [5200, 5203]["<-"]
-    |  |  +-Pegged.LEFTARROW [5200, 5203]["<-"]
-    |  +-Pegged.Expression [5203, 5236]["\"", "open", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [5203, 5236]["\"", "open", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [5203, 5236]["\"", "open", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [5203, 5211]["\"", "open", "\""]
-    |           |  +-Pegged.Suffix [5203, 5211]["\"", "open", "\""]
-    |           |     +-Pegged.Primary [5203, 5211]["\"", "open", "\""]
-    |           |        +-Pegged.CILiteral [5203, 5211]["\"", "open", "\""]
-    |           +-Pegged.Prefix [5211, 5215][":", "WS"]
-    |           |  +-Pegged.DISCARD [5211, 5212][":"]
-    |           |  +-Pegged.Suffix [5212, 5215]["WS"]
-    |           |     +-Pegged.Primary [5212, 5215]["WS"]
-    |           |        +-Pegged.RhsName [5212, 5215]["WS"]
-    |           |           +-Pegged.Identifier [5212, 5214]["WS"]
-    |           +-Pegged.Prefix [5215, 5236]["ExprList"]
-    |              +-Pegged.Suffix [5215, 5236]["ExprList"]
-    |                 +-Pegged.Primary [5215, 5236]["ExprList"]
-    |                    +-Pegged.RhsName [5215, 5236]["ExprList"]
-    |                       +-Pegged.Identifier [5215, 5223]["ExprList"]
-    +-Pegged.Definition [5236, 5313]["Get_stmt", "<-", "\"", "get", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?", ":", "WS", "?", "Var"]
-    |  +-Pegged.LhsName [5236, 5245]["Get_stmt"]
-    |  |  +-Pegged.Identifier [5236, 5244]["Get_stmt"]
-    |  +-Pegged.Arrow [5245, 5248]["<-"]
-    |  |  +-Pegged.LEFTARROW [5245, 5248]["<-"]
-    |  +-Pegged.Expression [5248, 5313]["\"", "get", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?", ":", "WS", "?", "Var"]
-    |     +-Pegged.LongestExpression [5248, 5313]["\"", "get", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?", ":", "WS", "?", "Var"]
-    |        +-Pegged.Sequence [5248, 5313]["\"", "get", "\"", ":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?", ":", "WS", "?", "Var"]
-    |           +-Pegged.Prefix [5248, 5255]["\"", "get", "\""]
-    |           |  +-Pegged.Suffix [5248, 5255]["\"", "get", "\""]
-    |           |     +-Pegged.Primary [5248, 5255]["\"", "get", "\""]
-    |           |        +-Pegged.CILiteral [5248, 5255]["\"", "get", "\""]
-    |           +-Pegged.Prefix [5255, 5292][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?"]
-    |           |  +-Pegged.Suffix [5255, 5292][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\"", "?"]
-    |           |     +-Pegged.Primary [5255, 5290][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |  +-Pegged.Expression [5256, 5289][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |     +-Pegged.LongestExpression [5256, 5289][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |        +-Pegged.Sequence [5256, 5289][":", "WS", "?", "\"", "#", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", "\"", ",", "\""]
-    |           |     |           +-Pegged.Prefix [5256, 5261][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [5256, 5257][":"]
-    |           |     |           |  +-Pegged.Suffix [5257, 5261]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [5257, 5259]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [5257, 5259]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [5257, 5259]["WS"]
-    |           |     |           |     +-Pegged.OPTION [5259, 5261]["?"]
-    |           |     |           +-Pegged.Prefix [5261, 5265]["\"", "#", "\""]
-    |           |     |           |  +-Pegged.Suffix [5261, 5265]["\"", "#", "\""]
-    |           |     |           |     +-Pegged.Primary [5261, 5265]["\"", "#", "\""]
-    |           |     |           |        +-Pegged.Literal [5261, 5265]["\"", "#", "\""]
-    |           |     |           +-Pegged.Prefix [5265, 5270][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [5265, 5266][":"]
-    |           |     |           |  +-Pegged.Suffix [5266, 5270]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [5266, 5268]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [5266, 5268]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [5266, 5268]["WS"]
-    |           |     |           |     +-Pegged.OPTION [5268, 5270]["?"]
-    |           |     |           +-Pegged.Prefix [5270, 5281]["Expression"]
-    |           |     |           |  +-Pegged.Suffix [5270, 5281]["Expression"]
-    |           |     |           |     +-Pegged.Primary [5270, 5281]["Expression"]
-    |           |     |           |        +-Pegged.RhsName [5270, 5281]["Expression"]
-    |           |     |           |           +-Pegged.Identifier [5270, 5280]["Expression"]
-    |           |     |           +-Pegged.Prefix [5281, 5286][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [5281, 5282][":"]
-    |           |     |           |  +-Pegged.Suffix [5282, 5286]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [5282, 5284]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [5282, 5284]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [5282, 5284]["WS"]
-    |           |     |           |     +-Pegged.OPTION [5284, 5286]["?"]
-    |           |     |           +-Pegged.Prefix [5286, 5289]["\"", ",", "\""]
-    |           |     |              +-Pegged.Suffix [5286, 5289]["\"", ",", "\""]
-    |           |     |                 +-Pegged.Primary [5286, 5289]["\"", ",", "\""]
-    |           |     |                    +-Pegged.Literal [5286, 5289]["\"", ",", "\""]
-    |           |     +-Pegged.OPTION [5290, 5292]["?"]
-    |           +-Pegged.Prefix [5292, 5297][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [5292, 5293][":"]
-    |           |  +-Pegged.Suffix [5293, 5297]["WS", "?"]
-    |           |     +-Pegged.Primary [5293, 5295]["WS"]
-    |           |     |  +-Pegged.RhsName [5293, 5295]["WS"]
-    |           |     |     +-Pegged.Identifier [5293, 5295]["WS"]
-    |           |     +-Pegged.OPTION [5295, 5297]["?"]
-    |           +-Pegged.Prefix [5297, 5313]["Var"]
-    |              +-Pegged.Suffix [5297, 5313]["Var"]
-    |                 +-Pegged.Primary [5297, 5313]["Var"]
-    |                    +-Pegged.RhsName [5297, 5313]["Var"]
-    |                       +-Pegged.Identifier [5297, 5300]["Var"]
-    +-Pegged.Definition [5313, 5363]["Close_stmt", "<-", "\"", "close", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [5313, 5324]["Close_stmt"]
-    |  |  +-Pegged.Identifier [5313, 5323]["Close_stmt"]
-    |  +-Pegged.Arrow [5324, 5327]["<-"]
-    |  |  +-Pegged.LEFTARROW [5324, 5327]["<-"]
-    |  +-Pegged.Expression [5327, 5363]["\"", "close", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [5327, 5363]["\"", "close", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [5327, 5363]["\"", "close", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [5327, 5336]["\"", "close", "\""]
-    |           |  +-Pegged.Suffix [5327, 5336]["\"", "close", "\""]
-    |           |     +-Pegged.Primary [5327, 5336]["\"", "close", "\""]
-    |           |        +-Pegged.CILiteral [5327, 5336]["\"", "close", "\""]
-    |           +-Pegged.Prefix [5336, 5340][":", "WS"]
-    |           |  +-Pegged.DISCARD [5336, 5337][":"]
-    |           |  +-Pegged.Suffix [5337, 5340]["WS"]
-    |           |     +-Pegged.Primary [5337, 5340]["WS"]
-    |           |        +-Pegged.RhsName [5337, 5340]["WS"]
-    |           |           +-Pegged.Identifier [5337, 5339]["WS"]
-    |           +-Pegged.Prefix [5340, 5363]["Expression"]
-    |              +-Pegged.Suffix [5340, 5363]["Expression"]
-    |                 +-Pegged.Primary [5340, 5363]["Expression"]
-    |                    +-Pegged.RhsName [5340, 5363]["Expression"]
-    |                       +-Pegged.Identifier [5340, 5350]["Expression"]
-    +-Pegged.Definition [5363, 5403]["Type_stmt", "<-", "\"", "type", "\"", ":", "WS", "Id"]
-    |  +-Pegged.LhsName [5363, 5373]["Type_stmt"]
-    |  |  +-Pegged.Identifier [5363, 5372]["Type_stmt"]
-    |  +-Pegged.Arrow [5373, 5376]["<-"]
-    |  |  +-Pegged.LEFTARROW [5373, 5376]["<-"]
-    |  +-Pegged.Expression [5376, 5403]["\"", "type", "\"", ":", "WS", "Id"]
-    |     +-Pegged.LongestExpression [5376, 5403]["\"", "type", "\"", ":", "WS", "Id"]
-    |        +-Pegged.Sequence [5376, 5403]["\"", "type", "\"", ":", "WS", "Id"]
-    |           +-Pegged.Prefix [5376, 5384]["\"", "type", "\""]
-    |           |  +-Pegged.Suffix [5376, 5384]["\"", "type", "\""]
-    |           |     +-Pegged.Primary [5376, 5384]["\"", "type", "\""]
-    |           |        +-Pegged.CILiteral [5376, 5384]["\"", "type", "\""]
-    |           +-Pegged.Prefix [5384, 5388][":", "WS"]
-    |           |  +-Pegged.DISCARD [5384, 5385][":"]
-    |           |  +-Pegged.Suffix [5385, 5388]["WS"]
-    |           |     +-Pegged.Primary [5385, 5388]["WS"]
-    |           |        +-Pegged.RhsName [5385, 5388]["WS"]
-    |           |           +-Pegged.Identifier [5385, 5387]["WS"]
-    |           +-Pegged.Prefix [5388, 5403]["Id"]
-    |              +-Pegged.Suffix [5388, 5403]["Id"]
-    |                 +-Pegged.Primary [5388, 5403]["Id"]
-    |                    +-Pegged.RhsName [5388, 5403]["Id"]
-    |                       +-Pegged.Identifier [5388, 5390]["Id"]
-    +-Pegged.Definition [5403, 5432]["Field_def", "<-", "Var"]
-    |  +-Pegged.LhsName [5403, 5413]["Field_def"]
-    |  |  +-Pegged.Identifier [5403, 5412]["Field_def"]
-    |  +-Pegged.Arrow [5413, 5416]["<-"]
-    |  |  +-Pegged.LEFTARROW [5413, 5416]["<-"]
-    |  +-Pegged.Expression [5416, 5432]["Var"]
-    |     +-Pegged.LongestExpression [5416, 5432]["Var"]
-    |        +-Pegged.Sequence [5416, 5432]["Var"]
-    |           +-Pegged.Prefix [5416, 5432]["Var"]
-    |              +-Pegged.Suffix [5416, 5432]["Var"]
-    |                 +-Pegged.Primary [5416, 5432]["Var"]
-    |                    +-Pegged.RhsName [5416, 5432]["Var"]
-    |                       +-Pegged.Identifier [5416, 5419]["Var"]
-    +-Pegged.Definition [5432, 5472]["Endtype_stmt", "<-", "\"", "end type", "\""]
-    |  +-Pegged.LhsName [5432, 5445]["Endtype_stmt"]
-    |  |  +-Pegged.Identifier [5432, 5444]["Endtype_stmt"]
-    |  +-Pegged.Arrow [5445, 5448]["<-"]
-    |  |  +-Pegged.LEFTARROW [5445, 5448]["<-"]
-    |  +-Pegged.Expression [5448, 5472]["\"", "end type", "\""]
-    |     +-Pegged.LongestExpression [5448, 5472]["\"", "end type", "\""]
-    |        +-Pegged.Sequence [5448, 5472]["\"", "end type", "\""]
-    |           +-Pegged.Prefix [5448, 5472]["\"", "end type", "\""]
-    |              +-Pegged.Suffix [5448, 5472]["\"", "end type", "\""]
-    |                 +-Pegged.Primary [5448, 5472]["\"", "end type", "\""]
-    |                    +-Pegged.CILiteral [5448, 5472]["\"", "end type", "\""]
-    +-Pegged.Definition [5472, 5508]["End_stmt", "<-", "\"", "end", "\""]
-    |  +-Pegged.LhsName [5472, 5481]["End_stmt"]
-    |  |  +-Pegged.Identifier [5472, 5480]["End_stmt"]
-    |  +-Pegged.Arrow [5481, 5489]["<-"]
-    |  |  +-Pegged.LEFTARROW [5481, 5489]["<-"]
-    |  +-Pegged.Expression [5489, 5508]["\"", "end", "\""]
-    |     +-Pegged.LongestExpression [5489, 5508]["\"", "end", "\""]
-    |        +-Pegged.Sequence [5489, 5508]["\"", "end", "\""]
-    |           +-Pegged.Prefix [5489, 5508]["\"", "end", "\""]
-    |              +-Pegged.Suffix [5489, 5508]["\"", "end", "\""]
-    |                 +-Pegged.Primary [5489, 5508]["\"", "end", "\""]
-    |                    +-Pegged.CILiteral [5489, 5508]["\"", "end", "\""]
-    +-Pegged.Definition [5508, 5590]["Option_stmt", "<-", "\"", "option", "\"", ":", "WS", "Id", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |  +-Pegged.LhsName [5508, 5520]["Option_stmt"]
-    |  |  +-Pegged.Identifier [5508, 5519]["Option_stmt"]
-    |  +-Pegged.Arrow [5520, 5525]["<-"]
-    |  |  +-Pegged.LEFTARROW [5520, 5525]["<-"]
-    |  +-Pegged.Expression [5525, 5590]["\"", "option", "\"", ":", "WS", "Id", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |     +-Pegged.LongestExpression [5525, 5590]["\"", "option", "\"", ":", "WS", "Id", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |        +-Pegged.Sequence [5525, 5590]["\"", "option", "\"", ":", "WS", "Id", ":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |           +-Pegged.Prefix [5525, 5535]["\"", "option", "\""]
-    |           |  +-Pegged.Suffix [5525, 5535]["\"", "option", "\""]
-    |           |     +-Pegged.Primary [5525, 5535]["\"", "option", "\""]
-    |           |        +-Pegged.CILiteral [5525, 5535]["\"", "option", "\""]
-    |           +-Pegged.Prefix [5535, 5539][":", "WS"]
-    |           |  +-Pegged.DISCARD [5535, 5536][":"]
-    |           |  +-Pegged.Suffix [5536, 5539]["WS"]
-    |           |     +-Pegged.Primary [5536, 5539]["WS"]
-    |           |        +-Pegged.RhsName [5536, 5539]["WS"]
-    |           |           +-Pegged.Identifier [5536, 5538]["WS"]
-    |           +-Pegged.Prefix [5539, 5542]["Id"]
-    |           |  +-Pegged.Suffix [5539, 5542]["Id"]
-    |           |     +-Pegged.Primary [5539, 5542]["Id"]
-    |           |        +-Pegged.RhsName [5539, 5542]["Id"]
-    |           |           +-Pegged.Identifier [5539, 5541]["Id"]
-    |           +-Pegged.Prefix [5542, 5590][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |              +-Pegged.Suffix [5542, 5590][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String", "?"]
-    |                 +-Pegged.Primary [5542, 5575][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String"]
-    |                 |  +-Pegged.Expression [5543, 5574][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String"]
-    |                 |     +-Pegged.LongestExpression [5543, 5574][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String"]
-    |                 |        +-Pegged.Sequence [5543, 5574][":", "WS", "?", "\"", "=", "\"", ":", "WS", "?", "Number", "String"]
-    |                 |           +-Pegged.Prefix [5543, 5548][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [5543, 5544][":"]
-    |                 |           |  +-Pegged.Suffix [5544, 5548]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [5544, 5546]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [5544, 5546]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [5544, 5546]["WS"]
-    |                 |           |     +-Pegged.OPTION [5546, 5548]["?"]
-    |                 |           +-Pegged.Prefix [5548, 5552]["\"", "=", "\""]
-    |                 |           |  +-Pegged.Suffix [5548, 5552]["\"", "=", "\""]
-    |                 |           |     +-Pegged.Primary [5548, 5552]["\"", "=", "\""]
-    |                 |           |        +-Pegged.Literal [5548, 5552]["\"", "=", "\""]
-    |                 |           +-Pegged.Prefix [5552, 5557][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [5552, 5553][":"]
-    |                 |           |  +-Pegged.Suffix [5553, 5557]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [5553, 5555]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [5553, 5555]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [5553, 5555]["WS"]
-    |                 |           |     +-Pegged.OPTION [5555, 5557]["?"]
-    |                 |           +-Pegged.Prefix [5557, 5574]["Number", "String"]
-    |                 |              +-Pegged.Suffix [5557, 5574]["Number", "String"]
-    |                 |                 +-Pegged.Primary [5557, 5574]["Number", "String"]
-    |                 |                    +-Pegged.Expression [5558, 5573]["Number", "String"]
-    |                 |                       +-Pegged.FirstExpression [5558, 5573]["Number", "String"]
-    |                 |                          +-Pegged.Sequence [5558, 5565]["Number"]
-    |                 |                          |  +-Pegged.Prefix [5558, 5565]["Number"]
-    |                 |                          |     +-Pegged.Suffix [5558, 5565]["Number"]
-    |                 |                          |        +-Pegged.Primary [5558, 5565]["Number"]
-    |                 |                          |           +-Pegged.RhsName [5558, 5565]["Number"]
-    |                 |                          |              +-Pegged.Identifier [5558, 5564]["Number"]
-    |                 |                          +-Pegged.Sequence [5567, 5573]["String"]
-    |                 |                             +-Pegged.Prefix [5567, 5573]["String"]
-    |                 |                                +-Pegged.Suffix [5567, 5573]["String"]
-    |                 |                                   +-Pegged.Primary [5567, 5573]["String"]
-    |                 |                                      +-Pegged.RhsName [5567, 5573]["String"]
-    |                 |                                         +-Pegged.Identifier [5567, 5573]["String"]
-    |                 +-Pegged.OPTION [5575, 5590]["?"]
-    +-Pegged.Definition [5590, 5647]["Select_stmt", "<-", "\"", "select case", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [5590, 5602]["Select_stmt"]
-    |  |  +-Pegged.Identifier [5590, 5601]["Select_stmt"]
-    |  +-Pegged.Arrow [5602, 5605]["<-"]
-    |  |  +-Pegged.LEFTARROW [5602, 5605]["<-"]
-    |  +-Pegged.Expression [5605, 5647]["\"", "select case", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [5605, 5647]["\"", "select case", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [5605, 5647]["\"", "select case", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [5605, 5620]["\"", "select case", "\""]
-    |           |  +-Pegged.Suffix [5605, 5620]["\"", "select case", "\""]
-    |           |     +-Pegged.Primary [5605, 5620]["\"", "select case", "\""]
-    |           |        +-Pegged.CILiteral [5605, 5620]["\"", "select case", "\""]
-    |           +-Pegged.Prefix [5620, 5624][":", "WS"]
-    |           |  +-Pegged.DISCARD [5620, 5621][":"]
-    |           |  +-Pegged.Suffix [5621, 5624]["WS"]
-    |           |     +-Pegged.Primary [5621, 5624]["WS"]
-    |           |        +-Pegged.RhsName [5621, 5624]["WS"]
-    |           |           +-Pegged.Identifier [5621, 5623]["WS"]
-    |           +-Pegged.Prefix [5624, 5647]["Expression"]
-    |              +-Pegged.Suffix [5624, 5647]["Expression"]
-    |                 +-Pegged.Primary [5624, 5647]["Expression"]
-    |                    +-Pegged.RhsName [5624, 5647]["Expression"]
-    |                       +-Pegged.Identifier [5624, 5634]["Expression"]
-    +-Pegged.Definition [5647, 5740]["Case_stmt", "<-", "Case_else_stmt", "Case_is_stmt", "Case_range_stmt", "Case_set_stmt"]
-    |  +-Pegged.LhsName [5647, 5657]["Case_stmt"]
-    |  |  +-Pegged.Identifier [5647, 5656]["Case_stmt"]
-    |  +-Pegged.Arrow [5657, 5660]["<-"]
-    |  |  +-Pegged.LEFTARROW [5657, 5660]["<-"]
-    |  +-Pegged.Expression [5660, 5740]["Case_else_stmt", "Case_is_stmt", "Case_range_stmt", "Case_set_stmt"]
-    |     +-Pegged.FirstExpression [5660, 5740]["Case_else_stmt", "Case_is_stmt", "Case_range_stmt", "Case_set_stmt"]
-    |        +-Pegged.Sequence [5660, 5675]["Case_else_stmt"]
-    |        |  +-Pegged.Prefix [5660, 5675]["Case_else_stmt"]
-    |        |     +-Pegged.Suffix [5660, 5675]["Case_else_stmt"]
-    |        |        +-Pegged.Primary [5660, 5675]["Case_else_stmt"]
-    |        |           +-Pegged.RhsName [5660, 5675]["Case_else_stmt"]
-    |        |              +-Pegged.Identifier [5660, 5674]["Case_else_stmt"]
-    |        +-Pegged.Sequence [5677, 5690]["Case_is_stmt"]
-    |        |  +-Pegged.Prefix [5677, 5690]["Case_is_stmt"]
-    |        |     +-Pegged.Suffix [5677, 5690]["Case_is_stmt"]
-    |        |        +-Pegged.Primary [5677, 5690]["Case_is_stmt"]
-    |        |           +-Pegged.RhsName [5677, 5690]["Case_is_stmt"]
-    |        |              +-Pegged.Identifier [5677, 5689]["Case_is_stmt"]
-    |        +-Pegged.Sequence [5692, 5708]["Case_range_stmt"]
-    |        |  +-Pegged.Prefix [5692, 5708]["Case_range_stmt"]
-    |        |     +-Pegged.Suffix [5692, 5708]["Case_range_stmt"]
-    |        |        +-Pegged.Primary [5692, 5708]["Case_range_stmt"]
-    |        |           +-Pegged.RhsName [5692, 5708]["Case_range_stmt"]
-    |        |              +-Pegged.Identifier [5692, 5707]["Case_range_stmt"]
-    |        +-Pegged.Sequence [5710, 5740]["Case_set_stmt"]
-    |           +-Pegged.Prefix [5710, 5740]["Case_set_stmt"]
-    |              +-Pegged.Suffix [5710, 5740]["Case_set_stmt"]
-    |                 +-Pegged.Primary [5710, 5740]["Case_set_stmt"]
-    |                    +-Pegged.RhsName [5710, 5740]["Case_set_stmt"]
-    |                       +-Pegged.Identifier [5710, 5723]["Case_set_stmt"]
-    +-Pegged.Definition [5740, 5811]["Case_is_stmt", "<-", "\"", "case is", "\"", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Expression"]
-    |  +-Pegged.LhsName [5740, 5753]["Case_is_stmt"]
-    |  |  +-Pegged.Identifier [5740, 5752]["Case_is_stmt"]
-    |  +-Pegged.Arrow [5753, 5756]["<-"]
-    |  |  +-Pegged.LEFTARROW [5753, 5756]["<-"]
-    |  +-Pegged.Expression [5756, 5811]["\"", "case is", "\"", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Expression"]
-    |     +-Pegged.LongestExpression [5756, 5811]["\"", "case is", "\"", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Expression"]
-    |        +-Pegged.Sequence [5756, 5811]["\"", "case is", "\"", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Expression"]
-    |           +-Pegged.Prefix [5756, 5767]["\"", "case is", "\""]
-    |           |  +-Pegged.Suffix [5756, 5767]["\"", "case is", "\""]
-    |           |     +-Pegged.Primary [5756, 5767]["\"", "case is", "\""]
-    |           |        +-Pegged.CILiteral [5756, 5767]["\"", "case is", "\""]
-    |           +-Pegged.Prefix [5767, 5772][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [5767, 5768][":"]
-    |           |  +-Pegged.Suffix [5768, 5772]["WS", "?"]
-    |           |     +-Pegged.Primary [5768, 5770]["WS"]
-    |           |     |  +-Pegged.RhsName [5768, 5770]["WS"]
-    |           |     |     +-Pegged.Identifier [5768, 5770]["WS"]
-    |           |     +-Pegged.OPTION [5770, 5772]["?"]
-    |           +-Pegged.Prefix [5772, 5779]["REL_OP"]
-    |           |  +-Pegged.Suffix [5772, 5779]["REL_OP"]
-    |           |     +-Pegged.Primary [5772, 5779]["REL_OP"]
-    |           |        +-Pegged.RhsName [5772, 5779]["REL_OP"]
-    |           |           +-Pegged.Identifier [5772, 5778]["REL_OP"]
-    |           +-Pegged.Prefix [5779, 5784][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [5779, 5780][":"]
-    |           |  +-Pegged.Suffix [5780, 5784]["WS", "?"]
-    |           |     +-Pegged.Primary [5780, 5782]["WS"]
-    |           |     |  +-Pegged.RhsName [5780, 5782]["WS"]
-    |           |     |     +-Pegged.Identifier [5780, 5782]["WS"]
-    |           |     +-Pegged.OPTION [5782, 5784]["?"]
-    |           +-Pegged.Prefix [5784, 5811]["Expression"]
-    |              +-Pegged.Suffix [5784, 5811]["Expression"]
-    |                 +-Pegged.Primary [5784, 5811]["Expression"]
-    |                    +-Pegged.RhsName [5784, 5811]["Expression"]
-    |                       +-Pegged.Identifier [5784, 5794]["Expression"]
-    +-Pegged.Definition [5811, 5894]["Case_range_stmt", "<-", "\"", "case", "\"", ":", "WS", "Expression", ":", "WS", "\"", "to", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [5811, 5827]["Case_range_stmt"]
-    |  |  +-Pegged.Identifier [5811, 5826]["Case_range_stmt"]
-    |  +-Pegged.Arrow [5827, 5830]["<-"]
-    |  |  +-Pegged.LEFTARROW [5827, 5830]["<-"]
-    |  +-Pegged.Expression [5830, 5894]["\"", "case", "\"", ":", "WS", "Expression", ":", "WS", "\"", "to", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [5830, 5894]["\"", "case", "\"", ":", "WS", "Expression", ":", "WS", "\"", "to", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [5830, 5894]["\"", "case", "\"", ":", "WS", "Expression", ":", "WS", "\"", "to", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [5830, 5838]["\"", "case", "\""]
-    |           |  +-Pegged.Suffix [5830, 5838]["\"", "case", "\""]
-    |           |     +-Pegged.Primary [5830, 5838]["\"", "case", "\""]
-    |           |        +-Pegged.CILiteral [5830, 5838]["\"", "case", "\""]
-    |           +-Pegged.Prefix [5838, 5842][":", "WS"]
-    |           |  +-Pegged.DISCARD [5838, 5839][":"]
-    |           |  +-Pegged.Suffix [5839, 5842]["WS"]
-    |           |     +-Pegged.Primary [5839, 5842]["WS"]
-    |           |        +-Pegged.RhsName [5839, 5842]["WS"]
-    |           |           +-Pegged.Identifier [5839, 5841]["WS"]
-    |           +-Pegged.Prefix [5842, 5853]["Expression"]
-    |           |  +-Pegged.Suffix [5842, 5853]["Expression"]
-    |           |     +-Pegged.Primary [5842, 5853]["Expression"]
-    |           |        +-Pegged.RhsName [5842, 5853]["Expression"]
-    |           |           +-Pegged.Identifier [5842, 5852]["Expression"]
-    |           +-Pegged.Prefix [5853, 5857][":", "WS"]
-    |           |  +-Pegged.DISCARD [5853, 5854][":"]
-    |           |  +-Pegged.Suffix [5854, 5857]["WS"]
-    |           |     +-Pegged.Primary [5854, 5857]["WS"]
-    |           |        +-Pegged.RhsName [5854, 5857]["WS"]
-    |           |           +-Pegged.Identifier [5854, 5856]["WS"]
-    |           +-Pegged.Prefix [5857, 5863]["\"", "to", "\""]
-    |           |  +-Pegged.Suffix [5857, 5863]["\"", "to", "\""]
-    |           |     +-Pegged.Primary [5857, 5863]["\"", "to", "\""]
-    |           |        +-Pegged.CILiteral [5857, 5863]["\"", "to", "\""]
-    |           +-Pegged.Prefix [5863, 5867][":", "WS"]
-    |           |  +-Pegged.DISCARD [5863, 5864][":"]
-    |           |  +-Pegged.Suffix [5864, 5867]["WS"]
-    |           |     +-Pegged.Primary [5864, 5867]["WS"]
-    |           |        +-Pegged.RhsName [5864, 5867]["WS"]
-    |           |           +-Pegged.Identifier [5864, 5866]["WS"]
-    |           +-Pegged.Prefix [5867, 5894]["Expression"]
-    |              +-Pegged.Suffix [5867, 5894]["Expression"]
-    |                 +-Pegged.Primary [5867, 5894]["Expression"]
-    |                    +-Pegged.RhsName [5867, 5894]["Expression"]
-    |                       +-Pegged.Identifier [5867, 5877]["Expression"]
-    +-Pegged.Definition [5894, 5948]["Case_set_stmt", "<-", "\"", "case", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [5894, 5908]["Case_set_stmt"]
-    |  |  +-Pegged.Identifier [5894, 5907]["Case_set_stmt"]
-    |  +-Pegged.Arrow [5908, 5911]["<-"]
-    |  |  +-Pegged.LEFTARROW [5908, 5911]["<-"]
-    |  +-Pegged.Expression [5911, 5948]["\"", "case", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [5911, 5948]["\"", "case", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [5911, 5948]["\"", "case", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [5911, 5919]["\"", "case", "\""]
-    |           |  +-Pegged.Suffix [5911, 5919]["\"", "case", "\""]
-    |           |     +-Pegged.Primary [5911, 5919]["\"", "case", "\""]
-    |           |        +-Pegged.CILiteral [5911, 5919]["\"", "case", "\""]
-    |           +-Pegged.Prefix [5919, 5923][":", "WS"]
-    |           |  +-Pegged.DISCARD [5919, 5920][":"]
-    |           |  +-Pegged.Suffix [5920, 5923]["WS"]
-    |           |     +-Pegged.Primary [5920, 5923]["WS"]
-    |           |        +-Pegged.RhsName [5920, 5923]["WS"]
-    |           |           +-Pegged.Identifier [5920, 5922]["WS"]
-    |           +-Pegged.Prefix [5923, 5948]["ExprList"]
-    |              +-Pegged.Suffix [5923, 5948]["ExprList"]
-    |                 +-Pegged.Primary [5923, 5948]["ExprList"]
-    |                    +-Pegged.RhsName [5923, 5948]["ExprList"]
-    |                       +-Pegged.Identifier [5923, 5931]["ExprList"]
-    +-Pegged.Definition [5948, 5991]["Case_else_stmt", "<-", "\"", "case else", "\""]
-    |  +-Pegged.LhsName [5948, 5963]["Case_else_stmt"]
-    |  |  +-Pegged.Identifier [5948, 5962]["Case_else_stmt"]
-    |  +-Pegged.Arrow [5963, 5966]["<-"]
-    |  |  +-Pegged.LEFTARROW [5963, 5966]["<-"]
-    |  +-Pegged.Expression [5966, 5991]["\"", "case else", "\""]
-    |     +-Pegged.LongestExpression [5966, 5991]["\"", "case else", "\""]
-    |        +-Pegged.Sequence [5966, 5991]["\"", "case else", "\""]
-    |           +-Pegged.Prefix [5966, 5991]["\"", "case else", "\""]
-    |              +-Pegged.Suffix [5966, 5991]["\"", "case else", "\""]
-    |                 +-Pegged.Primary [5966, 5991]["\"", "case else", "\""]
-    |                    +-Pegged.CILiteral [5966, 5991]["\"", "case else", "\""]
-    +-Pegged.Definition [5991, 6036]["Endselect_stmt", "<-", "\"", "end select", "\""]
-    |  +-Pegged.LhsName [5991, 6006]["Endselect_stmt"]
-    |  |  +-Pegged.Identifier [5991, 6005]["Endselect_stmt"]
-    |  +-Pegged.Arrow [6006, 6009]["<-"]
-    |  |  +-Pegged.LEFTARROW [6006, 6009]["<-"]
-    |  +-Pegged.Expression [6009, 6036]["\"", "end select", "\""]
-    |     +-Pegged.LongestExpression [6009, 6036]["\"", "end select", "\""]
-    |        +-Pegged.Sequence [6009, 6036]["\"", "end select", "\""]
-    |           +-Pegged.Prefix [6009, 6036]["\"", "end select", "\""]
-    |              +-Pegged.Suffix [6009, 6036]["\"", "end select", "\""]
-    |                 +-Pegged.Primary [6009, 6036]["\"", "end select", "\""]
-    |                    +-Pegged.CILiteral [6009, 6036]["\"", "end select", "\""]
-    +-Pegged.Definition [6036, 6174]["Irq_stmt", "<-", "\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\"", ":", "WS", "\"", "interrupt", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |  +-Pegged.LhsName [6036, 6045]["Irq_stmt"]
-    |  |  +-Pegged.Identifier [6036, 6044]["Irq_stmt"]
-    |  +-Pegged.Arrow [6045, 6048]["<-"]
-    |  |  +-Pegged.LEFTARROW [6045, 6048]["<-"]
-    |  +-Pegged.Expression [6048, 6174]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\"", ":", "WS", "\"", "interrupt", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |     +-Pegged.LongestExpression [6048, 6174]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\"", ":", "WS", "\"", "interrupt", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |        +-Pegged.Sequence [6048, 6174]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\"", ":", "WS", "\"", "interrupt", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |           +-Pegged.Prefix [6048, 6111]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\""]
-    |           |  +-Pegged.Suffix [6048, 6111]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\""]
-    |           |     +-Pegged.Primary [6048, 6111]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\""]
-    |           |        +-Pegged.Expression [6049, 6109]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\""]
-    |           |           +-Pegged.FirstExpression [6049, 6109]["\"", "timer", "\"", "\"", "raster", "\"", "\"", "sprite", "\"", "\"", "background", "\"", "\"", "system", "\""]
-    |           |              +-Pegged.Sequence [6049, 6058]["\"", "timer", "\""]
-    |           |              |  +-Pegged.Prefix [6049, 6058]["\"", "timer", "\""]
-    |           |              |     +-Pegged.Suffix [6049, 6058]["\"", "timer", "\""]
-    |           |              |        +-Pegged.Primary [6049, 6058]["\"", "timer", "\""]
-    |           |              |           +-Pegged.CILiteral [6049, 6058]["\"", "timer", "\""]
-    |           |              +-Pegged.Sequence [6060, 6070]["\"", "raster", "\""]
-    |           |              |  +-Pegged.Prefix [6060, 6070]["\"", "raster", "\""]
-    |           |              |     +-Pegged.Suffix [6060, 6070]["\"", "raster", "\""]
-    |           |              |        +-Pegged.Primary [6060, 6070]["\"", "raster", "\""]
-    |           |              |           +-Pegged.CILiteral [6060, 6070]["\"", "raster", "\""]
-    |           |              +-Pegged.Sequence [6072, 6082]["\"", "sprite", "\""]
-    |           |              |  +-Pegged.Prefix [6072, 6082]["\"", "sprite", "\""]
-    |           |              |     +-Pegged.Suffix [6072, 6082]["\"", "sprite", "\""]
-    |           |              |        +-Pegged.Primary [6072, 6082]["\"", "sprite", "\""]
-    |           |              |           +-Pegged.CILiteral [6072, 6082]["\"", "sprite", "\""]
-    |           |              +-Pegged.Sequence [6084, 6098]["\"", "background", "\""]
-    |           |              |  +-Pegged.Prefix [6084, 6098]["\"", "background", "\""]
-    |           |              |     +-Pegged.Suffix [6084, 6098]["\"", "background", "\""]
-    |           |              |        +-Pegged.Primary [6084, 6098]["\"", "background", "\""]
-    |           |              |           +-Pegged.CILiteral [6084, 6098]["\"", "background", "\""]
-    |           |              +-Pegged.Sequence [6100, 6109]["\"", "system", "\""]
-    |           |                 +-Pegged.Prefix [6100, 6109]["\"", "system", "\""]
-    |           |                    +-Pegged.Suffix [6100, 6109]["\"", "system", "\""]
-    |           |                       +-Pegged.Primary [6100, 6109]["\"", "system", "\""]
-    |           |                          +-Pegged.CILiteral [6100, 6109]["\"", "system", "\""]
-    |           +-Pegged.Prefix [6111, 6115][":", "WS"]
-    |           |  +-Pegged.DISCARD [6111, 6112][":"]
-    |           |  +-Pegged.Suffix [6112, 6115]["WS"]
-    |           |     +-Pegged.Primary [6112, 6115]["WS"]
-    |           |        +-Pegged.RhsName [6112, 6115]["WS"]
-    |           |           +-Pegged.Identifier [6112, 6114]["WS"]
-    |           +-Pegged.Prefix [6115, 6128]["\"", "interrupt", "\""]
-    |           |  +-Pegged.Suffix [6115, 6128]["\"", "interrupt", "\""]
-    |           |     +-Pegged.Primary [6115, 6128]["\"", "interrupt", "\""]
-    |           |        +-Pegged.CILiteral [6115, 6128]["\"", "interrupt", "\""]
-    |           +-Pegged.Prefix [6128, 6132][":", "WS"]
-    |           |  +-Pegged.DISCARD [6128, 6129][":"]
-    |           |  +-Pegged.Suffix [6129, 6132]["WS"]
-    |           |     +-Pegged.Primary [6129, 6132]["WS"]
-    |           |        +-Pegged.RhsName [6129, 6132]["WS"]
-    |           |           +-Pegged.Identifier [6129, 6131]["WS"]
-    |           +-Pegged.Prefix [6132, 6174]["\"", "on", "\"", "\"", "off", "\""]
-    |              +-Pegged.Suffix [6132, 6174]["\"", "on", "\"", "\"", "off", "\""]
-    |                 +-Pegged.Primary [6132, 6174]["\"", "on", "\"", "\"", "off", "\""]
-    |                    +-Pegged.Expression [6133, 6147]["\"", "on", "\"", "\"", "off", "\""]
-    |                       +-Pegged.FirstExpression [6133, 6147]["\"", "on", "\"", "\"", "off", "\""]
-    |                          +-Pegged.Sequence [6133, 6139]["\"", "on", "\""]
-    |                          |  +-Pegged.Prefix [6133, 6139]["\"", "on", "\""]
-    |                          |     +-Pegged.Suffix [6133, 6139]["\"", "on", "\""]
-    |                          |        +-Pegged.Primary [6133, 6139]["\"", "on", "\""]
-    |                          |           +-Pegged.CILiteral [6133, 6139]["\"", "on", "\""]
-    |                          +-Pegged.Sequence [6141, 6147]["\"", "off", "\""]
-    |                             +-Pegged.Prefix [6141, 6147]["\"", "off", "\""]
-    |                                +-Pegged.Suffix [6141, 6147]["\"", "off", "\""]
-    |                                   +-Pegged.Primary [6141, 6147]["\"", "off", "\""]
-    |                                      +-Pegged.CILiteral [6141, 6147]["\"", "off", "\""]
-    +-Pegged.Definition [6174, 6249]["Sprite_stmt", "<-", "\"", "sprite", "\"", ":", "WS", "Expression", ":", "WS", "SprSubCmd", "*"]
-    |  +-Pegged.LhsName [6174, 6186]["Sprite_stmt"]
-    |  |  +-Pegged.Identifier [6174, 6185]["Sprite_stmt"]
-    |  +-Pegged.Arrow [6186, 6191]["<-"]
-    |  |  +-Pegged.LEFTARROW [6186, 6191]["<-"]
-    |  +-Pegged.Expression [6191, 6249]["\"", "sprite", "\"", ":", "WS", "Expression", ":", "WS", "SprSubCmd", "*"]
-    |     +-Pegged.LongestExpression [6191, 6249]["\"", "sprite", "\"", ":", "WS", "Expression", ":", "WS", "SprSubCmd", "*"]
-    |        +-Pegged.Sequence [6191, 6249]["\"", "sprite", "\"", ":", "WS", "Expression", ":", "WS", "SprSubCmd", "*"]
-    |           +-Pegged.Prefix [6191, 6201]["\"", "sprite", "\""]
-    |           |  +-Pegged.Suffix [6191, 6201]["\"", "sprite", "\""]
-    |           |     +-Pegged.Primary [6191, 6201]["\"", "sprite", "\""]
-    |           |        +-Pegged.CILiteral [6191, 6201]["\"", "sprite", "\""]
-    |           +-Pegged.Prefix [6201, 6205][":", "WS"]
-    |           |  +-Pegged.DISCARD [6201, 6202][":"]
-    |           |  +-Pegged.Suffix [6202, 6205]["WS"]
-    |           |     +-Pegged.Primary [6202, 6205]["WS"]
-    |           |        +-Pegged.RhsName [6202, 6205]["WS"]
-    |           |           +-Pegged.Identifier [6202, 6204]["WS"]
-    |           +-Pegged.Prefix [6205, 6216]["Expression"]
-    |           |  +-Pegged.Suffix [6205, 6216]["Expression"]
-    |           |     +-Pegged.Primary [6205, 6216]["Expression"]
-    |           |        +-Pegged.RhsName [6205, 6216]["Expression"]
-    |           |           +-Pegged.Identifier [6205, 6215]["Expression"]
-    |           +-Pegged.Prefix [6216, 6249][":", "WS", "SprSubCmd", "*"]
-    |              +-Pegged.Suffix [6216, 6249][":", "WS", "SprSubCmd", "*"]
-    |                 +-Pegged.Primary [6216, 6231][":", "WS", "SprSubCmd"]
-    |                 |  +-Pegged.Expression [6217, 6230][":", "WS", "SprSubCmd"]
-    |                 |     +-Pegged.LongestExpression [6217, 6230][":", "WS", "SprSubCmd"]
-    |                 |        +-Pegged.Sequence [6217, 6230][":", "WS", "SprSubCmd"]
-    |                 |           +-Pegged.Prefix [6217, 6221][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [6217, 6218][":"]
-    |                 |           |  +-Pegged.Suffix [6218, 6221]["WS"]
-    |                 |           |     +-Pegged.Primary [6218, 6221]["WS"]
-    |                 |           |        +-Pegged.RhsName [6218, 6221]["WS"]
-    |                 |           |           +-Pegged.Identifier [6218, 6220]["WS"]
-    |                 |           +-Pegged.Prefix [6221, 6230]["SprSubCmd"]
-    |                 |              +-Pegged.Suffix [6221, 6230]["SprSubCmd"]
-    |                 |                 +-Pegged.Primary [6221, 6230]["SprSubCmd"]
-    |                 |                    +-Pegged.RhsName [6221, 6230]["SprSubCmd"]
-    |                 |                       +-Pegged.Identifier [6221, 6230]["SprSubCmd"]
-    |                 +-Pegged.ZEROORMORE [6231, 6249]["*"]
-    +-Pegged.Definition [6249, 6472]["SprSubCmd", "<-", "SprSubCmdOnUnderBg", "SprSubCmdOnOff", "SprSubCmdAt", "SprSubCmdColor", "SprSubCmdHiresMulti", "SprSubCmdShape", "SprSubCmdXYSize"]
-    |  +-Pegged.LhsName [6249, 6259]["SprSubCmd"]
-    |  |  +-Pegged.Identifier [6249, 6258]["SprSubCmd"]
-    |  +-Pegged.Arrow [6259, 6263]["<-"]
-    |  |  +-Pegged.LEFTARROW [6259, 6263]["<-"]
-    |  +-Pegged.Expression [6263, 6472]["SprSubCmdOnUnderBg", "SprSubCmdOnOff", "SprSubCmdAt", "SprSubCmdColor", "SprSubCmdHiresMulti", "SprSubCmdShape", "SprSubCmdXYSize"]
-    |     +-Pegged.FirstExpression [6263, 6472]["SprSubCmdOnUnderBg", "SprSubCmdOnOff", "SprSubCmdAt", "SprSubCmdColor", "SprSubCmdHiresMulti", "SprSubCmdShape", "SprSubCmdXYSize"]
-    |        +-Pegged.Sequence [6263, 6282]["SprSubCmdOnUnderBg"]
-    |        |  +-Pegged.Prefix [6263, 6282]["SprSubCmdOnUnderBg"]
-    |        |     +-Pegged.Suffix [6263, 6282]["SprSubCmdOnUnderBg"]
-    |        |        +-Pegged.Primary [6263, 6282]["SprSubCmdOnUnderBg"]
-    |        |           +-Pegged.RhsName [6263, 6282]["SprSubCmdOnUnderBg"]
-    |        |              +-Pegged.Identifier [6263, 6281]["SprSubCmdOnUnderBg"]
-    |        +-Pegged.Sequence [6283, 6298]["SprSubCmdOnOff"]
-    |        |  +-Pegged.Prefix [6283, 6298]["SprSubCmdOnOff"]
-    |        |     +-Pegged.Suffix [6283, 6298]["SprSubCmdOnOff"]
-    |        |        +-Pegged.Primary [6283, 6298]["SprSubCmdOnOff"]
-    |        |           +-Pegged.RhsName [6283, 6298]["SprSubCmdOnOff"]
-    |        |              +-Pegged.Identifier [6283, 6297]["SprSubCmdOnOff"]
-    |        +-Pegged.Sequence [6308, 6320]["SprSubCmdAt"]
-    |        |  +-Pegged.Prefix [6308, 6320]["SprSubCmdAt"]
-    |        |     +-Pegged.Suffix [6308, 6320]["SprSubCmdAt"]
-    |        |        +-Pegged.Primary [6308, 6320]["SprSubCmdAt"]
-    |        |           +-Pegged.RhsName [6308, 6320]["SprSubCmdAt"]
-    |        |              +-Pegged.Identifier [6308, 6319]["SprSubCmdAt"]
-    |        +-Pegged.Sequence [6322, 6337]["SprSubCmdColor"]
-    |        |  +-Pegged.Prefix [6322, 6337]["SprSubCmdColor"]
-    |        |     +-Pegged.Suffix [6322, 6337]["SprSubCmdColor"]
-    |        |        +-Pegged.Primary [6322, 6337]["SprSubCmdColor"]
-    |        |           +-Pegged.RhsName [6322, 6337]["SprSubCmdColor"]
-    |        |              +-Pegged.Identifier [6322, 6336]["SprSubCmdColor"]
-    |        +-Pegged.Sequence [6368, 6388]["SprSubCmdHiresMulti"]
-    |        |  +-Pegged.Prefix [6368, 6388]["SprSubCmdHiresMulti"]
-    |        |     +-Pegged.Suffix [6368, 6388]["SprSubCmdHiresMulti"]
-    |        |        +-Pegged.Primary [6368, 6388]["SprSubCmdHiresMulti"]
-    |        |           +-Pegged.RhsName [6368, 6388]["SprSubCmdHiresMulti"]
-    |        |              +-Pegged.Identifier [6368, 6387]["SprSubCmdHiresMulti"]
-    |        +-Pegged.Sequence [6419, 6434]["SprSubCmdShape"]
-    |        |  +-Pegged.Prefix [6419, 6434]["SprSubCmdShape"]
-    |        |     +-Pegged.Suffix [6419, 6434]["SprSubCmdShape"]
-    |        |        +-Pegged.Primary [6419, 6434]["SprSubCmdShape"]
-    |        |           +-Pegged.RhsName [6419, 6434]["SprSubCmdShape"]
-    |        |              +-Pegged.Identifier [6419, 6433]["SprSubCmdShape"]
-    |        +-Pegged.Sequence [6436, 6472]["SprSubCmdXYSize"]
-    |           +-Pegged.Prefix [6436, 6472]["SprSubCmdXYSize"]
-    |              +-Pegged.Suffix [6436, 6472]["SprSubCmdXYSize"]
-    |                 +-Pegged.Primary [6436, 6472]["SprSubCmdXYSize"]
-    |                    +-Pegged.RhsName [6436, 6472]["SprSubCmdXYSize"]
-    |                       +-Pegged.Identifier [6436, 6451]["SprSubCmdXYSize"]
-    +-Pegged.Definition [6472, 6525]["SprSubCmdOnOff", "<-", "\"", "on", "\"", "\"", "off", "\""]
-    |  +-Pegged.LhsName [6472, 6487]["SprSubCmdOnOff"]
-    |  |  +-Pegged.Identifier [6472, 6486]["SprSubCmdOnOff"]
-    |  +-Pegged.Arrow [6487, 6490]["<-"]
-    |  |  +-Pegged.LEFTARROW [6487, 6490]["<-"]
-    |  +-Pegged.Expression [6490, 6525]["\"", "on", "\"", "\"", "off", "\""]
-    |     +-Pegged.FirstExpression [6490, 6525]["\"", "on", "\"", "\"", "off", "\""]
-    |        +-Pegged.Sequence [6490, 6496]["\"", "on", "\""]
-    |        |  +-Pegged.Prefix [6490, 6496]["\"", "on", "\""]
-    |        |     +-Pegged.Suffix [6490, 6496]["\"", "on", "\""]
-    |        |        +-Pegged.Primary [6490, 6496]["\"", "on", "\""]
-    |        |           +-Pegged.CILiteral [6490, 6496]["\"", "on", "\""]
-    |        +-Pegged.Sequence [6498, 6525]["\"", "off", "\""]
-    |           +-Pegged.Prefix [6498, 6525]["\"", "off", "\""]
-    |              +-Pegged.Suffix [6498, 6525]["\"", "off", "\""]
-    |                 +-Pegged.Primary [6498, 6525]["\"", "off", "\""]
-    |                    +-Pegged.CILiteral [6498, 6525]["\"", "off", "\""]
-    +-Pegged.Definition [6525, 6579]["SprSubCmdAt", "<-", "\"", "at", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [6525, 6537]["SprSubCmdAt"]
-    |  |  +-Pegged.Identifier [6525, 6536]["SprSubCmdAt"]
-    |  +-Pegged.Arrow [6537, 6540]["<-"]
-    |  |  +-Pegged.LEFTARROW [6537, 6540]["<-"]
-    |  +-Pegged.Expression [6540, 6579]["\"", "at", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [6540, 6579]["\"", "at", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [6540, 6579]["\"", "at", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [6540, 6546]["\"", "at", "\""]
-    |           |  +-Pegged.Suffix [6540, 6546]["\"", "at", "\""]
-    |           |     +-Pegged.Primary [6540, 6546]["\"", "at", "\""]
-    |           |        +-Pegged.CILiteral [6540, 6546]["\"", "at", "\""]
-    |           +-Pegged.Prefix [6546, 6550][":", "WS"]
-    |           |  +-Pegged.DISCARD [6546, 6547][":"]
-    |           |  +-Pegged.Suffix [6547, 6550]["WS"]
-    |           |     +-Pegged.Primary [6547, 6550]["WS"]
-    |           |        +-Pegged.RhsName [6547, 6550]["WS"]
-    |           |           +-Pegged.Identifier [6547, 6549]["WS"]
-    |           +-Pegged.Prefix [6550, 6579]["ExprList"]
-    |              +-Pegged.Suffix [6550, 6579]["ExprList"]
-    |                 +-Pegged.Primary [6550, 6579]["ExprList"]
-    |                    +-Pegged.RhsName [6550, 6579]["ExprList"]
-    |                       +-Pegged.Identifier [6550, 6558]["ExprList"]
-    +-Pegged.Definition [6579, 6641]["SprSubCmdColor", "<-", "\"", "color", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [6579, 6594]["SprSubCmdColor"]
-    |  |  +-Pegged.Identifier [6579, 6593]["SprSubCmdColor"]
-    |  +-Pegged.Arrow [6594, 6597]["<-"]
-    |  |  +-Pegged.LEFTARROW [6594, 6597]["<-"]
-    |  +-Pegged.Expression [6597, 6641]["\"", "color", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [6597, 6641]["\"", "color", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [6597, 6641]["\"", "color", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [6597, 6606]["\"", "color", "\""]
-    |           |  +-Pegged.Suffix [6597, 6606]["\"", "color", "\""]
-    |           |     +-Pegged.Primary [6597, 6606]["\"", "color", "\""]
-    |           |        +-Pegged.CILiteral [6597, 6606]["\"", "color", "\""]
-    |           +-Pegged.Prefix [6606, 6610][":", "WS"]
-    |           |  +-Pegged.DISCARD [6606, 6607][":"]
-    |           |  +-Pegged.Suffix [6607, 6610]["WS"]
-    |           |     +-Pegged.Primary [6607, 6610]["WS"]
-    |           |        +-Pegged.RhsName [6607, 6610]["WS"]
-    |           |           +-Pegged.Identifier [6607, 6609]["WS"]
-    |           +-Pegged.Prefix [6610, 6641]["Expression"]
-    |              +-Pegged.Suffix [6610, 6641]["Expression"]
-    |                 +-Pegged.Primary [6610, 6641]["Expression"]
-    |                    +-Pegged.RhsName [6610, 6641]["Expression"]
-    |                       +-Pegged.Identifier [6610, 6620]["Expression"]
-    +-Pegged.Definition [6641, 6704]["SprSubCmdHiresMulti", "<-", "\"", "hires", "\"", "\"", "multi", "\""]
-    |  +-Pegged.LhsName [6641, 6661]["SprSubCmdHiresMulti"]
-    |  |  +-Pegged.Identifier [6641, 6660]["SprSubCmdHiresMulti"]
-    |  +-Pegged.Arrow [6661, 6664]["<-"]
-    |  |  +-Pegged.LEFTARROW [6661, 6664]["<-"]
-    |  +-Pegged.Expression [6664, 6704]["\"", "hires", "\"", "\"", "multi", "\""]
-    |     +-Pegged.FirstExpression [6664, 6704]["\"", "hires", "\"", "\"", "multi", "\""]
-    |        +-Pegged.Sequence [6664, 6673]["\"", "hires", "\""]
-    |        |  +-Pegged.Prefix [6664, 6673]["\"", "hires", "\""]
-    |        |     +-Pegged.Suffix [6664, 6673]["\"", "hires", "\""]
-    |        |        +-Pegged.Primary [6664, 6673]["\"", "hires", "\""]
-    |        |           +-Pegged.CILiteral [6664, 6673]["\"", "hires", "\""]
-    |        +-Pegged.Sequence [6675, 6704]["\"", "multi", "\""]
-    |           +-Pegged.Prefix [6675, 6704]["\"", "multi", "\""]
-    |              +-Pegged.Suffix [6675, 6704]["\"", "multi", "\""]
-    |                 +-Pegged.Primary [6675, 6704]["\"", "multi", "\""]
-    |                    +-Pegged.CILiteral [6675, 6704]["\"", "multi", "\""]
-    +-Pegged.Definition [6704, 6783]["SprSubCmdOnUnderBg", "<-", "\"", "on", "\"", "\"", "under", "\"", ":", "WS", "\"", "background", "\""]
-    |  +-Pegged.LhsName [6704, 6723]["SprSubCmdOnUnderBg"]
-    |  |  +-Pegged.Identifier [6704, 6722]["SprSubCmdOnUnderBg"]
-    |  +-Pegged.Arrow [6723, 6726]["<-"]
-    |  |  +-Pegged.LEFTARROW [6723, 6726]["<-"]
-    |  +-Pegged.Expression [6726, 6783]["\"", "on", "\"", "\"", "under", "\"", ":", "WS", "\"", "background", "\""]
-    |     +-Pegged.LongestExpression [6726, 6783]["\"", "on", "\"", "\"", "under", "\"", ":", "WS", "\"", "background", "\""]
-    |        +-Pegged.Sequence [6726, 6783]["\"", "on", "\"", "\"", "under", "\"", ":", "WS", "\"", "background", "\""]
-    |           +-Pegged.Prefix [6726, 6745]["\"", "on", "\"", "\"", "under", "\""]
-    |           |  +-Pegged.Suffix [6726, 6745]["\"", "on", "\"", "\"", "under", "\""]
-    |           |     +-Pegged.Primary [6726, 6745]["\"", "on", "\"", "\"", "under", "\""]
-    |           |        +-Pegged.Expression [6727, 6743]["\"", "on", "\"", "\"", "under", "\""]
-    |           |           +-Pegged.LongestExpression [6727, 6743]["\"", "on", "\"", "\"", "under", "\""]
-    |           |              +-Pegged.Sequence [6727, 6733]["\"", "on", "\""]
-    |           |              |  +-Pegged.Prefix [6727, 6733]["\"", "on", "\""]
-    |           |              |     +-Pegged.Suffix [6727, 6733]["\"", "on", "\""]
-    |           |              |        +-Pegged.Primary [6727, 6733]["\"", "on", "\""]
-    |           |              |           +-Pegged.CILiteral [6727, 6733]["\"", "on", "\""]
-    |           |              +-Pegged.Sequence [6735, 6743]["\"", "under", "\""]
-    |           |                 +-Pegged.Prefix [6735, 6743]["\"", "under", "\""]
-    |           |                    +-Pegged.Suffix [6735, 6743]["\"", "under", "\""]
-    |           |                       +-Pegged.Primary [6735, 6743]["\"", "under", "\""]
-    |           |                          +-Pegged.CILiteral [6735, 6743]["\"", "under", "\""]
-    |           +-Pegged.Prefix [6745, 6749][":", "WS"]
-    |           |  +-Pegged.DISCARD [6745, 6746][":"]
-    |           |  +-Pegged.Suffix [6746, 6749]["WS"]
-    |           |     +-Pegged.Primary [6746, 6749]["WS"]
-    |           |        +-Pegged.RhsName [6746, 6749]["WS"]
-    |           |           +-Pegged.Identifier [6746, 6748]["WS"]
-    |           +-Pegged.Prefix [6749, 6783]["\"", "background", "\""]
-    |              +-Pegged.Suffix [6749, 6783]["\"", "background", "\""]
-    |                 +-Pegged.Primary [6749, 6783]["\"", "background", "\""]
-    |                    +-Pegged.CILiteral [6749, 6783]["\"", "background", "\""]
-    +-Pegged.Definition [6783, 6845]["SprSubCmdShape", "<-", "\"", "shape", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [6783, 6798]["SprSubCmdShape"]
-    |  |  +-Pegged.Identifier [6783, 6797]["SprSubCmdShape"]
-    |  +-Pegged.Arrow [6798, 6801]["<-"]
-    |  |  +-Pegged.LEFTARROW [6798, 6801]["<-"]
-    |  +-Pegged.Expression [6801, 6845]["\"", "shape", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [6801, 6845]["\"", "shape", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [6801, 6845]["\"", "shape", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [6801, 6810]["\"", "shape", "\""]
-    |           |  +-Pegged.Suffix [6801, 6810]["\"", "shape", "\""]
-    |           |     +-Pegged.Primary [6801, 6810]["\"", "shape", "\""]
-    |           |        +-Pegged.CILiteral [6801, 6810]["\"", "shape", "\""]
-    |           +-Pegged.Prefix [6810, 6814][":", "WS"]
-    |           |  +-Pegged.DISCARD [6810, 6811][":"]
-    |           |  +-Pegged.Suffix [6811, 6814]["WS"]
-    |           |     +-Pegged.Primary [6811, 6814]["WS"]
-    |           |        +-Pegged.RhsName [6811, 6814]["WS"]
-    |           |           +-Pegged.Identifier [6811, 6813]["WS"]
-    |           +-Pegged.Prefix [6814, 6845]["Expression"]
-    |              +-Pegged.Suffix [6814, 6845]["Expression"]
-    |                 +-Pegged.Primary [6814, 6845]["Expression"]
-    |                    +-Pegged.RhsName [6814, 6845]["Expression"]
-    |                       +-Pegged.Identifier [6814, 6824]["Expression"]
-    +-Pegged.Definition [6845, 6899]["SprSubCmdXYSize", "<-", "\"", "xysize", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [6845, 6861]["SprSubCmdXYSize"]
-    |  |  +-Pegged.Identifier [6845, 6860]["SprSubCmdXYSize"]
-    |  +-Pegged.Arrow [6861, 6864]["<-"]
-    |  |  +-Pegged.LEFTARROW [6861, 6864]["<-"]
-    |  +-Pegged.Expression [6864, 6899]["\"", "xysize", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [6864, 6899]["\"", "xysize", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [6864, 6899]["\"", "xysize", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [6864, 6874]["\"", "xysize", "\""]
-    |           |  +-Pegged.Suffix [6864, 6874]["\"", "xysize", "\""]
-    |           |     +-Pegged.Primary [6864, 6874]["\"", "xysize", "\""]
-    |           |        +-Pegged.CILiteral [6864, 6874]["\"", "xysize", "\""]
-    |           +-Pegged.Prefix [6874, 6878][":", "WS"]
-    |           |  +-Pegged.DISCARD [6874, 6875][":"]
-    |           |  +-Pegged.Suffix [6875, 6878]["WS"]
-    |           |     +-Pegged.Primary [6875, 6878]["WS"]
-    |           |        +-Pegged.RhsName [6875, 6878]["WS"]
-    |           |           +-Pegged.Identifier [6875, 6877]["WS"]
-    |           +-Pegged.Prefix [6878, 6899]["ExprList"]
-    |              +-Pegged.Suffix [6878, 6899]["ExprList"]
-    |                 +-Pegged.Primary [6878, 6899]["ExprList"]
-    |                    +-Pegged.RhsName [6878, 6899]["ExprList"]
-    |                       +-Pegged.Identifier [6878, 6886]["ExprList"]
-    +-Pegged.Definition [6899, 6969]["Sprite_clearhit_stmt", "<-", "\"", "sprite", "\"", ":", "WS", "\"", "clear", "\"", ":", "WS", "\"", "hit", "\""]
-    |  +-Pegged.LhsName [6899, 6920]["Sprite_clearhit_stmt"]
-    |  |  +-Pegged.Identifier [6899, 6919]["Sprite_clearhit_stmt"]
-    |  +-Pegged.Arrow [6920, 6923]["<-"]
-    |  |  +-Pegged.LEFTARROW [6920, 6923]["<-"]
-    |  +-Pegged.Expression [6923, 6969]["\"", "sprite", "\"", ":", "WS", "\"", "clear", "\"", ":", "WS", "\"", "hit", "\""]
-    |     +-Pegged.LongestExpression [6923, 6969]["\"", "sprite", "\"", ":", "WS", "\"", "clear", "\"", ":", "WS", "\"", "hit", "\""]
-    |        +-Pegged.Sequence [6923, 6969]["\"", "sprite", "\"", ":", "WS", "\"", "clear", "\"", ":", "WS", "\"", "hit", "\""]
-    |           +-Pegged.Prefix [6923, 6933]["\"", "sprite", "\""]
-    |           |  +-Pegged.Suffix [6923, 6933]["\"", "sprite", "\""]
-    |           |     +-Pegged.Primary [6923, 6933]["\"", "sprite", "\""]
-    |           |        +-Pegged.CILiteral [6923, 6933]["\"", "sprite", "\""]
-    |           +-Pegged.Prefix [6933, 6937][":", "WS"]
-    |           |  +-Pegged.DISCARD [6933, 6934][":"]
-    |           |  +-Pegged.Suffix [6934, 6937]["WS"]
-    |           |     +-Pegged.Primary [6934, 6937]["WS"]
-    |           |        +-Pegged.RhsName [6934, 6937]["WS"]
-    |           |           +-Pegged.Identifier [6934, 6936]["WS"]
-    |           +-Pegged.Prefix [6937, 6946]["\"", "clear", "\""]
-    |           |  +-Pegged.Suffix [6937, 6946]["\"", "clear", "\""]
-    |           |     +-Pegged.Primary [6937, 6946]["\"", "clear", "\""]
-    |           |        +-Pegged.CILiteral [6937, 6946]["\"", "clear", "\""]
-    |           +-Pegged.Prefix [6946, 6950][":", "WS"]
-    |           |  +-Pegged.DISCARD [6946, 6947][":"]
-    |           |  +-Pegged.Suffix [6947, 6950]["WS"]
-    |           |     +-Pegged.Primary [6947, 6950]["WS"]
-    |           |        +-Pegged.RhsName [6947, 6950]["WS"]
-    |           |           +-Pegged.Identifier [6947, 6949]["WS"]
-    |           +-Pegged.Prefix [6950, 6969]["\"", "hit", "\""]
-    |              +-Pegged.Suffix [6950, 6969]["\"", "hit", "\""]
-    |                 +-Pegged.Primary [6950, 6969]["\"", "hit", "\""]
-    |                    +-Pegged.CILiteral [6950, 6969]["\"", "hit", "\""]
-    +-Pegged.Definition [6969, 7061]["Sprite_multicolor_stmt", "<-", "\"", "sprite", "\"", ":", "WS", "\"", "multicolor", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [6969, 6992]["Sprite_multicolor_stmt"]
-    |  |  +-Pegged.Identifier [6969, 6991]["Sprite_multicolor_stmt"]
-    |  +-Pegged.Arrow [6992, 6995]["<-"]
-    |  |  +-Pegged.LEFTARROW [6992, 6995]["<-"]
-    |  +-Pegged.Expression [6995, 7061]["\"", "sprite", "\"", ":", "WS", "\"", "multicolor", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [6995, 7061]["\"", "sprite", "\"", ":", "WS", "\"", "multicolor", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [6995, 7061]["\"", "sprite", "\"", ":", "WS", "\"", "multicolor", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [6995, 7005]["\"", "sprite", "\""]
-    |           |  +-Pegged.Suffix [6995, 7005]["\"", "sprite", "\""]
-    |           |     +-Pegged.Primary [6995, 7005]["\"", "sprite", "\""]
-    |           |        +-Pegged.CILiteral [6995, 7005]["\"", "sprite", "\""]
-    |           +-Pegged.Prefix [7005, 7009][":", "WS"]
-    |           |  +-Pegged.DISCARD [7005, 7006][":"]
-    |           |  +-Pegged.Suffix [7006, 7009]["WS"]
-    |           |     +-Pegged.Primary [7006, 7009]["WS"]
-    |           |        +-Pegged.RhsName [7006, 7009]["WS"]
-    |           |           +-Pegged.Identifier [7006, 7008]["WS"]
-    |           +-Pegged.Prefix [7009, 7023]["\"", "multicolor", "\""]
-    |           |  +-Pegged.Suffix [7009, 7023]["\"", "multicolor", "\""]
-    |           |     +-Pegged.Primary [7009, 7023]["\"", "multicolor", "\""]
-    |           |        +-Pegged.CILiteral [7009, 7023]["\"", "multicolor", "\""]
-    |           +-Pegged.Prefix [7023, 7027][":", "WS"]
-    |           |  +-Pegged.DISCARD [7023, 7024][":"]
-    |           |  +-Pegged.Suffix [7024, 7027]["WS"]
-    |           |     +-Pegged.Primary [7024, 7027]["WS"]
-    |           |        +-Pegged.RhsName [7024, 7027]["WS"]
-    |           |           +-Pegged.Identifier [7024, 7026]["WS"]
-    |           +-Pegged.Prefix [7027, 7061]["ExprList"]
-    |              +-Pegged.Suffix [7027, 7061]["ExprList"]
-    |                 +-Pegged.Primary [7027, 7061]["ExprList"]
-    |                    +-Pegged.RhsName [7027, 7061]["ExprList"]
-    |                       +-Pegged.Identifier [7027, 7035]["ExprList"]
-    +-Pegged.Definition [7061, 7112]["Border_stmt", "<-", "\"", "border", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [7061, 7073]["Border_stmt"]
-    |  |  +-Pegged.Identifier [7061, 7072]["Border_stmt"]
-    |  +-Pegged.Arrow [7073, 7077]["<-"]
-    |  |  +-Pegged.LEFTARROW [7073, 7077]["<-"]
-    |  +-Pegged.Expression [7077, 7112]["\"", "border", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [7077, 7112]["\"", "border", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [7077, 7112]["\"", "border", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [7077, 7087]["\"", "border", "\""]
-    |           |  +-Pegged.Suffix [7077, 7087]["\"", "border", "\""]
-    |           |     +-Pegged.Primary [7077, 7087]["\"", "border", "\""]
-    |           |        +-Pegged.CILiteral [7077, 7087]["\"", "border", "\""]
-    |           +-Pegged.Prefix [7087, 7091][":", "WS"]
-    |           |  +-Pegged.DISCARD [7087, 7088][":"]
-    |           |  +-Pegged.Suffix [7088, 7091]["WS"]
-    |           |     +-Pegged.Primary [7088, 7091]["WS"]
-    |           |        +-Pegged.RhsName [7088, 7091]["WS"]
-    |           |           +-Pegged.Identifier [7088, 7090]["WS"]
-    |           +-Pegged.Prefix [7091, 7112]["ExprList"]
-    |              +-Pegged.Suffix [7091, 7112]["ExprList"]
-    |                 +-Pegged.Primary [7091, 7112]["ExprList"]
-    |                    +-Pegged.RhsName [7091, 7112]["ExprList"]
-    |                       +-Pegged.Identifier [7091, 7099]["ExprList"]
-    +-Pegged.Definition [7112, 7172]["Background_stmt", "<-", "\"", "background", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [7112, 7128]["Background_stmt"]
-    |  |  +-Pegged.Identifier [7112, 7127]["Background_stmt"]
-    |  +-Pegged.Arrow [7128, 7132]["<-"]
-    |  |  +-Pegged.LEFTARROW [7128, 7132]["<-"]
-    |  +-Pegged.Expression [7132, 7172]["\"", "background", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [7132, 7172]["\"", "background", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [7132, 7172]["\"", "background", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [7132, 7146]["\"", "background", "\""]
-    |           |  +-Pegged.Suffix [7132, 7146]["\"", "background", "\""]
-    |           |     +-Pegged.Primary [7132, 7146]["\"", "background", "\""]
-    |           |        +-Pegged.CILiteral [7132, 7146]["\"", "background", "\""]
-    |           +-Pegged.Prefix [7146, 7150][":", "WS"]
-    |           |  +-Pegged.DISCARD [7146, 7147][":"]
-    |           |  +-Pegged.Suffix [7147, 7150]["WS"]
-    |           |     +-Pegged.Primary [7147, 7150]["WS"]
-    |           |        +-Pegged.RhsName [7147, 7150]["WS"]
-    |           |           +-Pegged.Identifier [7147, 7149]["WS"]
-    |           +-Pegged.Prefix [7150, 7172]["ExprList"]
-    |              +-Pegged.Suffix [7150, 7172]["ExprList"]
-    |                 +-Pegged.Primary [7150, 7172]["ExprList"]
-    |                    +-Pegged.RhsName [7150, 7172]["ExprList"]
-    |                       +-Pegged.Identifier [7150, 7158]["ExprList"]
-    +-Pegged.Definition [7172, 7226]["Sound_clear_stmt", "<-", "\"", "sound", "\"", ":", "WS", "\"", "clear", "\""]
-    |  +-Pegged.LhsName [7172, 7189]["Sound_clear_stmt"]
-    |  |  +-Pegged.Identifier [7172, 7188]["Sound_clear_stmt"]
-    |  +-Pegged.Arrow [7189, 7192]["<-"]
-    |  |  +-Pegged.LEFTARROW [7189, 7192]["<-"]
-    |  +-Pegged.Expression [7192, 7226]["\"", "sound", "\"", ":", "WS", "\"", "clear", "\""]
-    |     +-Pegged.LongestExpression [7192, 7226]["\"", "sound", "\"", ":", "WS", "\"", "clear", "\""]
-    |        +-Pegged.Sequence [7192, 7226]["\"", "sound", "\"", ":", "WS", "\"", "clear", "\""]
-    |           +-Pegged.Prefix [7192, 7201]["\"", "sound", "\""]
-    |           |  +-Pegged.Suffix [7192, 7201]["\"", "sound", "\""]
-    |           |     +-Pegged.Primary [7192, 7201]["\"", "sound", "\""]
-    |           |        +-Pegged.CILiteral [7192, 7201]["\"", "sound", "\""]
-    |           +-Pegged.Prefix [7201, 7205][":", "WS"]
-    |           |  +-Pegged.DISCARD [7201, 7202][":"]
-    |           |  +-Pegged.Suffix [7202, 7205]["WS"]
-    |           |     +-Pegged.Primary [7202, 7205]["WS"]
-    |           |        +-Pegged.RhsName [7202, 7205]["WS"]
-    |           |           +-Pegged.Identifier [7202, 7204]["WS"]
-    |           +-Pegged.Prefix [7205, 7226]["\"", "clear", "\""]
-    |              +-Pegged.Suffix [7205, 7226]["\"", "clear", "\""]
-    |                 +-Pegged.Primary [7205, 7226]["\"", "clear", "\""]
-    |                    +-Pegged.CILiteral [7205, 7226]["\"", "clear", "\""]
-    +-Pegged.Definition [7226, 7278]["Volume_stmt", "<-", "\"", "volume", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [7226, 7238]["Volume_stmt"]
-    |  |  +-Pegged.Identifier [7226, 7237]["Volume_stmt"]
-    |  +-Pegged.Arrow [7238, 7241]["<-"]
-    |  |  +-Pegged.LEFTARROW [7238, 7241]["<-"]
-    |  +-Pegged.Expression [7241, 7278]["\"", "volume", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [7241, 7278]["\"", "volume", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [7241, 7278]["\"", "volume", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [7241, 7251]["\"", "volume", "\""]
-    |           |  +-Pegged.Suffix [7241, 7251]["\"", "volume", "\""]
-    |           |     +-Pegged.Primary [7241, 7251]["\"", "volume", "\""]
-    |           |        +-Pegged.CILiteral [7241, 7251]["\"", "volume", "\""]
-    |           +-Pegged.Prefix [7251, 7255][":", "WS"]
-    |           |  +-Pegged.DISCARD [7251, 7252][":"]
-    |           |  +-Pegged.Suffix [7252, 7255]["WS"]
-    |           |     +-Pegged.Primary [7252, 7255]["WS"]
-    |           |        +-Pegged.RhsName [7252, 7255]["WS"]
-    |           |           +-Pegged.Identifier [7252, 7254]["WS"]
-    |           +-Pegged.Prefix [7255, 7278]["Expression"]
-    |              +-Pegged.Suffix [7255, 7278]["Expression"]
-    |                 +-Pegged.Primary [7255, 7278]["Expression"]
-    |                    +-Pegged.RhsName [7255, 7278]["Expression"]
-    |                       +-Pegged.Identifier [7255, 7265]["Expression"]
-    +-Pegged.Definition [7278, 7347]["Voice_stmt", "<-", "\"", "voice", "\"", ":", "WS", "Number", ":", "WS", "VoiceSubCmd", "+"]
-    |  +-Pegged.LhsName [7278, 7289]["Voice_stmt"]
-    |  |  +-Pegged.Identifier [7278, 7288]["Voice_stmt"]
-    |  +-Pegged.Arrow [7289, 7292]["<-"]
-    |  |  +-Pegged.LEFTARROW [7289, 7292]["<-"]
-    |  +-Pegged.Expression [7292, 7347]["\"", "voice", "\"", ":", "WS", "Number", ":", "WS", "VoiceSubCmd", "+"]
-    |     +-Pegged.LongestExpression [7292, 7347]["\"", "voice", "\"", ":", "WS", "Number", ":", "WS", "VoiceSubCmd", "+"]
-    |        +-Pegged.Sequence [7292, 7347]["\"", "voice", "\"", ":", "WS", "Number", ":", "WS", "VoiceSubCmd", "+"]
-    |           +-Pegged.Prefix [7292, 7301]["\"", "voice", "\""]
-    |           |  +-Pegged.Suffix [7292, 7301]["\"", "voice", "\""]
-    |           |     +-Pegged.Primary [7292, 7301]["\"", "voice", "\""]
-    |           |        +-Pegged.CILiteral [7292, 7301]["\"", "voice", "\""]
-    |           +-Pegged.Prefix [7301, 7305][":", "WS"]
-    |           |  +-Pegged.DISCARD [7301, 7302][":"]
-    |           |  +-Pegged.Suffix [7302, 7305]["WS"]
-    |           |     +-Pegged.Primary [7302, 7305]["WS"]
-    |           |        +-Pegged.RhsName [7302, 7305]["WS"]
-    |           |           +-Pegged.Identifier [7302, 7304]["WS"]
-    |           +-Pegged.Prefix [7305, 7312]["Number"]
-    |           |  +-Pegged.Suffix [7305, 7312]["Number"]
-    |           |     +-Pegged.Primary [7305, 7312]["Number"]
-    |           |        +-Pegged.RhsName [7305, 7312]["Number"]
-    |           |           +-Pegged.Identifier [7305, 7311]["Number"]
-    |           +-Pegged.Prefix [7312, 7347][":", "WS", "VoiceSubCmd", "+"]
-    |              +-Pegged.Suffix [7312, 7347][":", "WS", "VoiceSubCmd", "+"]
-    |                 +-Pegged.Primary [7312, 7329][":", "WS", "VoiceSubCmd"]
-    |                 |  +-Pegged.Expression [7313, 7328][":", "WS", "VoiceSubCmd"]
-    |                 |     +-Pegged.LongestExpression [7313, 7328][":", "WS", "VoiceSubCmd"]
-    |                 |        +-Pegged.Sequence [7313, 7328][":", "WS", "VoiceSubCmd"]
-    |                 |           +-Pegged.Prefix [7313, 7317][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [7313, 7314][":"]
-    |                 |           |  +-Pegged.Suffix [7314, 7317]["WS"]
-    |                 |           |     +-Pegged.Primary [7314, 7317]["WS"]
-    |                 |           |        +-Pegged.RhsName [7314, 7317]["WS"]
-    |                 |           |           +-Pegged.Identifier [7314, 7316]["WS"]
-    |                 |           +-Pegged.Prefix [7317, 7328]["VoiceSubCmd"]
-    |                 |              +-Pegged.Suffix [7317, 7328]["VoiceSubCmd"]
-    |                 |                 +-Pegged.Primary [7317, 7328]["VoiceSubCmd"]
-    |                 |                    +-Pegged.RhsName [7317, 7328]["VoiceSubCmd"]
-    |                 |                       +-Pegged.Identifier [7317, 7328]["VoiceSubCmd"]
-    |                 +-Pegged.ONEORMORE [7329, 7347]["+"]
-    +-Pegged.Definition [7347, 7557]["VoiceSubCmd", "<-", "VoiceSubCmdOnOff", "VoiceSubCmdADSR", "VoiceSubCmdTone", "VoiceSubCmdWave", "VoiceSubCmdPulse", "VoiceSubCmdFilterOnOff"]
-    |  +-Pegged.LhsName [7347, 7359]["VoiceSubCmd"]
-    |  |  +-Pegged.Identifier [7347, 7358]["VoiceSubCmd"]
-    |  +-Pegged.Arrow [7359, 7362]["<-"]
-    |  |  +-Pegged.LEFTARROW [7359, 7362]["<-"]
-    |  +-Pegged.Expression [7362, 7557]["VoiceSubCmdOnOff", "VoiceSubCmdADSR", "VoiceSubCmdTone", "VoiceSubCmdWave", "VoiceSubCmdPulse", "VoiceSubCmdFilterOnOff"]
-    |     +-Pegged.FirstExpression [7362, 7557]["VoiceSubCmdOnOff", "VoiceSubCmdADSR", "VoiceSubCmdTone", "VoiceSubCmdWave", "VoiceSubCmdPulse", "VoiceSubCmdFilterOnOff"]
-    |        +-Pegged.Sequence [7362, 7379]["VoiceSubCmdOnOff"]
-    |        |  +-Pegged.Prefix [7362, 7379]["VoiceSubCmdOnOff"]
-    |        |     +-Pegged.Suffix [7362, 7379]["VoiceSubCmdOnOff"]
-    |        |        +-Pegged.Primary [7362, 7379]["VoiceSubCmdOnOff"]
-    |        |           +-Pegged.RhsName [7362, 7379]["VoiceSubCmdOnOff"]
-    |        |              +-Pegged.Identifier [7362, 7378]["VoiceSubCmdOnOff"]
-    |        +-Pegged.Sequence [7381, 7397]["VoiceSubCmdADSR"]
-    |        |  +-Pegged.Prefix [7381, 7397]["VoiceSubCmdADSR"]
-    |        |     +-Pegged.Suffix [7381, 7397]["VoiceSubCmdADSR"]
-    |        |        +-Pegged.Primary [7381, 7397]["VoiceSubCmdADSR"]
-    |        |           +-Pegged.RhsName [7381, 7397]["VoiceSubCmdADSR"]
-    |        |              +-Pegged.Identifier [7381, 7396]["VoiceSubCmdADSR"]
-    |        +-Pegged.Sequence [7429, 7445]["VoiceSubCmdTone"]
-    |        |  +-Pegged.Prefix [7429, 7445]["VoiceSubCmdTone"]
-    |        |     +-Pegged.Suffix [7429, 7445]["VoiceSubCmdTone"]
-    |        |        +-Pegged.Primary [7429, 7445]["VoiceSubCmdTone"]
-    |        |           +-Pegged.RhsName [7429, 7445]["VoiceSubCmdTone"]
-    |        |              +-Pegged.Identifier [7429, 7444]["VoiceSubCmdTone"]
-    |        +-Pegged.Sequence [7447, 7463]["VoiceSubCmdWave"]
-    |        |  +-Pegged.Prefix [7447, 7463]["VoiceSubCmdWave"]
-    |        |     +-Pegged.Suffix [7447, 7463]["VoiceSubCmdWave"]
-    |        |        +-Pegged.Primary [7447, 7463]["VoiceSubCmdWave"]
-    |        |           +-Pegged.RhsName [7447, 7463]["VoiceSubCmdWave"]
-    |        |              +-Pegged.Identifier [7447, 7462]["VoiceSubCmdWave"]
-    |        +-Pegged.Sequence [7465, 7482]["VoiceSubCmdPulse"]
-    |        |  +-Pegged.Prefix [7465, 7482]["VoiceSubCmdPulse"]
-    |        |     +-Pegged.Suffix [7465, 7482]["VoiceSubCmdPulse"]
-    |        |        +-Pegged.Primary [7465, 7482]["VoiceSubCmdPulse"]
-    |        |           +-Pegged.RhsName [7465, 7482]["VoiceSubCmdPulse"]
-    |        |              +-Pegged.Identifier [7465, 7481]["VoiceSubCmdPulse"]
-    |        +-Pegged.Sequence [7514, 7557]["VoiceSubCmdFilterOnOff"]
-    |           +-Pegged.Prefix [7514, 7557]["VoiceSubCmdFilterOnOff"]
-    |              +-Pegged.Suffix [7514, 7557]["VoiceSubCmdFilterOnOff"]
-    |                 +-Pegged.Primary [7514, 7557]["VoiceSubCmdFilterOnOff"]
-    |                    +-Pegged.RhsName [7514, 7557]["VoiceSubCmdFilterOnOff"]
-    |                       +-Pegged.Identifier [7514, 7536]["VoiceSubCmdFilterOnOff"]
-    +-Pegged.Definition [7557, 7612]["VoiceSubCmdOnOff", "<-", "\"", "on", "\"", "\"", "off", "\""]
-    |  +-Pegged.LhsName [7557, 7574]["VoiceSubCmdOnOff"]
-    |  |  +-Pegged.Identifier [7557, 7573]["VoiceSubCmdOnOff"]
-    |  +-Pegged.Arrow [7574, 7577]["<-"]
-    |  |  +-Pegged.LEFTARROW [7574, 7577]["<-"]
-    |  +-Pegged.Expression [7577, 7612]["\"", "on", "\"", "\"", "off", "\""]
-    |     +-Pegged.FirstExpression [7577, 7612]["\"", "on", "\"", "\"", "off", "\""]
-    |        +-Pegged.Sequence [7577, 7583]["\"", "on", "\""]
-    |        |  +-Pegged.Prefix [7577, 7583]["\"", "on", "\""]
-    |        |     +-Pegged.Suffix [7577, 7583]["\"", "on", "\""]
-    |        |        +-Pegged.Primary [7577, 7583]["\"", "on", "\""]
-    |        |           +-Pegged.CILiteral [7577, 7583]["\"", "on", "\""]
-    |        +-Pegged.Sequence [7585, 7612]["\"", "off", "\""]
-    |           +-Pegged.Prefix [7585, 7612]["\"", "off", "\""]
-    |              +-Pegged.Suffix [7585, 7612]["\"", "off", "\""]
-    |                 +-Pegged.Primary [7585, 7612]["\"", "off", "\""]
-    |                    +-Pegged.CILiteral [7585, 7612]["\"", "off", "\""]
-    +-Pegged.Definition [7612, 7672]["VoiceSubCmdADSR", "<-", "\"", "adsr", "\"", ":", "WS", "ExprList"]
-    |  +-Pegged.LhsName [7612, 7628]["VoiceSubCmdADSR"]
-    |  |  +-Pegged.Identifier [7612, 7627]["VoiceSubCmdADSR"]
-    |  +-Pegged.Arrow [7628, 7631]["<-"]
-    |  |  +-Pegged.LEFTARROW [7628, 7631]["<-"]
-    |  +-Pegged.Expression [7631, 7672]["\"", "adsr", "\"", ":", "WS", "ExprList"]
-    |     +-Pegged.LongestExpression [7631, 7672]["\"", "adsr", "\"", ":", "WS", "ExprList"]
-    |        +-Pegged.Sequence [7631, 7672]["\"", "adsr", "\"", ":", "WS", "ExprList"]
-    |           +-Pegged.Prefix [7631, 7639]["\"", "adsr", "\""]
-    |           |  +-Pegged.Suffix [7631, 7639]["\"", "adsr", "\""]
-    |           |     +-Pegged.Primary [7631, 7639]["\"", "adsr", "\""]
-    |           |        +-Pegged.CILiteral [7631, 7639]["\"", "adsr", "\""]
-    |           +-Pegged.Prefix [7639, 7643][":", "WS"]
-    |           |  +-Pegged.DISCARD [7639, 7640][":"]
-    |           |  +-Pegged.Suffix [7640, 7643]["WS"]
-    |           |     +-Pegged.Primary [7640, 7643]["WS"]
-    |           |        +-Pegged.RhsName [7640, 7643]["WS"]
-    |           |           +-Pegged.Identifier [7640, 7642]["WS"]
-    |           +-Pegged.Prefix [7643, 7672]["ExprList"]
-    |              +-Pegged.Suffix [7643, 7672]["ExprList"]
-    |                 +-Pegged.Primary [7643, 7672]["ExprList"]
-    |                    +-Pegged.RhsName [7643, 7672]["ExprList"]
-    |                       +-Pegged.Identifier [7643, 7651]["ExprList"]
-    +-Pegged.Definition [7672, 7734]["VoiceSubCmdTone", "<-", "\"", "tone", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [7672, 7688]["VoiceSubCmdTone"]
-    |  |  +-Pegged.Identifier [7672, 7687]["VoiceSubCmdTone"]
-    |  +-Pegged.Arrow [7688, 7691]["<-"]
-    |  |  +-Pegged.LEFTARROW [7688, 7691]["<-"]
-    |  +-Pegged.Expression [7691, 7734]["\"", "tone", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [7691, 7734]["\"", "tone", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [7691, 7734]["\"", "tone", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [7691, 7699]["\"", "tone", "\""]
-    |           |  +-Pegged.Suffix [7691, 7699]["\"", "tone", "\""]
-    |           |     +-Pegged.Primary [7691, 7699]["\"", "tone", "\""]
-    |           |        +-Pegged.CILiteral [7691, 7699]["\"", "tone", "\""]
-    |           +-Pegged.Prefix [7699, 7703][":", "WS"]
-    |           |  +-Pegged.DISCARD [7699, 7700][":"]
-    |           |  +-Pegged.Suffix [7700, 7703]["WS"]
-    |           |     +-Pegged.Primary [7700, 7703]["WS"]
-    |           |        +-Pegged.RhsName [7700, 7703]["WS"]
-    |           |           +-Pegged.Identifier [7700, 7702]["WS"]
-    |           +-Pegged.Prefix [7703, 7734]["Expression"]
-    |              +-Pegged.Suffix [7703, 7734]["Expression"]
-    |                 +-Pegged.Primary [7703, 7734]["Expression"]
-    |                    +-Pegged.RhsName [7703, 7734]["Expression"]
-    |                       +-Pegged.Identifier [7703, 7713]["Expression"]
-    +-Pegged.Definition [7734, 7826]["VoiceSubCmdWave", "<-", "\"", "wave", "\"", ":", "WS", "\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |  +-Pegged.LhsName [7734, 7750]["VoiceSubCmdWave"]
-    |  |  +-Pegged.Identifier [7734, 7749]["VoiceSubCmdWave"]
-    |  +-Pegged.Arrow [7750, 7753]["<-"]
-    |  |  +-Pegged.LEFTARROW [7750, 7753]["<-"]
-    |  +-Pegged.Expression [7753, 7826]["\"", "wave", "\"", ":", "WS", "\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |     +-Pegged.LongestExpression [7753, 7826]["\"", "wave", "\"", ":", "WS", "\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |        +-Pegged.Sequence [7753, 7826]["\"", "wave", "\"", ":", "WS", "\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |           +-Pegged.Prefix [7753, 7761]["\"", "wave", "\""]
-    |           |  +-Pegged.Suffix [7753, 7761]["\"", "wave", "\""]
-    |           |     +-Pegged.Primary [7753, 7761]["\"", "wave", "\""]
-    |           |        +-Pegged.CILiteral [7753, 7761]["\"", "wave", "\""]
-    |           +-Pegged.Prefix [7761, 7765][":", "WS"]
-    |           |  +-Pegged.DISCARD [7761, 7762][":"]
-    |           |  +-Pegged.Suffix [7762, 7765]["WS"]
-    |           |     +-Pegged.Primary [7762, 7765]["WS"]
-    |           |        +-Pegged.RhsName [7762, 7765]["WS"]
-    |           |           +-Pegged.Identifier [7762, 7764]["WS"]
-    |           +-Pegged.Prefix [7765, 7826]["\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |              +-Pegged.Suffix [7765, 7826]["\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |                 +-Pegged.Primary [7765, 7826]["\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |                    +-Pegged.Expression [7766, 7804]["\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |                       +-Pegged.FirstExpression [7766, 7804]["\"", "saw", "\"", "\"", "tri", "\"", "\"", "pulse", "\"", "\"", "noise", "\""]
-    |                          +-Pegged.Sequence [7766, 7773]["\"", "saw", "\""]
-    |                          |  +-Pegged.Prefix [7766, 7773]["\"", "saw", "\""]
-    |                          |     +-Pegged.Suffix [7766, 7773]["\"", "saw", "\""]
-    |                          |        +-Pegged.Primary [7766, 7773]["\"", "saw", "\""]
-    |                          |           +-Pegged.CILiteral [7766, 7773]["\"", "saw", "\""]
-    |                          +-Pegged.Sequence [7775, 7782]["\"", "tri", "\""]
-    |                          |  +-Pegged.Prefix [7775, 7782]["\"", "tri", "\""]
-    |                          |     +-Pegged.Suffix [7775, 7782]["\"", "tri", "\""]
-    |                          |        +-Pegged.Primary [7775, 7782]["\"", "tri", "\""]
-    |                          |           +-Pegged.CILiteral [7775, 7782]["\"", "tri", "\""]
-    |                          +-Pegged.Sequence [7784, 7793]["\"", "pulse", "\""]
-    |                          |  +-Pegged.Prefix [7784, 7793]["\"", "pulse", "\""]
-    |                          |     +-Pegged.Suffix [7784, 7793]["\"", "pulse", "\""]
-    |                          |        +-Pegged.Primary [7784, 7793]["\"", "pulse", "\""]
-    |                          |           +-Pegged.CILiteral [7784, 7793]["\"", "pulse", "\""]
-    |                          +-Pegged.Sequence [7795, 7804]["\"", "noise", "\""]
-    |                             +-Pegged.Prefix [7795, 7804]["\"", "noise", "\""]
-    |                                +-Pegged.Suffix [7795, 7804]["\"", "noise", "\""]
-    |                                   +-Pegged.Primary [7795, 7804]["\"", "noise", "\""]
-    |                                      +-Pegged.CILiteral [7795, 7804]["\"", "noise", "\""]
-    +-Pegged.Definition [7826, 7890]["VoiceSubCmdPulse", "<-", "\"", "pulse", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [7826, 7843]["VoiceSubCmdPulse"]
-    |  |  +-Pegged.Identifier [7826, 7842]["VoiceSubCmdPulse"]
-    |  +-Pegged.Arrow [7843, 7846]["<-"]
-    |  |  +-Pegged.LEFTARROW [7843, 7846]["<-"]
-    |  +-Pegged.Expression [7846, 7890]["\"", "pulse", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [7846, 7890]["\"", "pulse", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [7846, 7890]["\"", "pulse", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [7846, 7855]["\"", "pulse", "\""]
-    |           |  +-Pegged.Suffix [7846, 7855]["\"", "pulse", "\""]
-    |           |     +-Pegged.Primary [7846, 7855]["\"", "pulse", "\""]
-    |           |        +-Pegged.CILiteral [7846, 7855]["\"", "pulse", "\""]
-    |           +-Pegged.Prefix [7855, 7859][":", "WS"]
-    |           |  +-Pegged.DISCARD [7855, 7856][":"]
-    |           |  +-Pegged.Suffix [7856, 7859]["WS"]
-    |           |     +-Pegged.Primary [7856, 7859]["WS"]
-    |           |        +-Pegged.RhsName [7856, 7859]["WS"]
-    |           |           +-Pegged.Identifier [7856, 7858]["WS"]
-    |           +-Pegged.Prefix [7859, 7890]["Expression"]
-    |              +-Pegged.Suffix [7859, 7890]["Expression"]
-    |                 +-Pegged.Primary [7859, 7890]["Expression"]
-    |                    +-Pegged.RhsName [7859, 7890]["Expression"]
-    |                       +-Pegged.Identifier [7859, 7869]["Expression"]
-    +-Pegged.Definition [7890, 7959]["VoiceSubCmdFilterOnOff", "<-", "\"", "filter", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |  +-Pegged.LhsName [7890, 7913]["VoiceSubCmdFilterOnOff"]
-    |  |  +-Pegged.Identifier [7890, 7912]["VoiceSubCmdFilterOnOff"]
-    |  +-Pegged.Arrow [7913, 7916]["<-"]
-    |  |  +-Pegged.LEFTARROW [7913, 7916]["<-"]
-    |  +-Pegged.Expression [7916, 7959]["\"", "filter", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |     +-Pegged.LongestExpression [7916, 7959]["\"", "filter", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |        +-Pegged.Sequence [7916, 7959]["\"", "filter", "\"", ":", "WS", "\"", "on", "\"", "\"", "off", "\""]
-    |           +-Pegged.Prefix [7916, 7926]["\"", "filter", "\""]
-    |           |  +-Pegged.Suffix [7916, 7926]["\"", "filter", "\""]
-    |           |     +-Pegged.Primary [7916, 7926]["\"", "filter", "\""]
-    |           |        +-Pegged.CILiteral [7916, 7926]["\"", "filter", "\""]
-    |           +-Pegged.Prefix [7926, 7930][":", "WS"]
-    |           |  +-Pegged.DISCARD [7926, 7927][":"]
-    |           |  +-Pegged.Suffix [7927, 7930]["WS"]
-    |           |     +-Pegged.Primary [7927, 7930]["WS"]
-    |           |        +-Pegged.RhsName [7927, 7930]["WS"]
-    |           |           +-Pegged.Identifier [7927, 7929]["WS"]
-    |           +-Pegged.Prefix [7930, 7959]["\"", "on", "\"", "\"", "off", "\""]
-    |              +-Pegged.Suffix [7930, 7959]["\"", "on", "\"", "\"", "off", "\""]
-    |                 +-Pegged.Primary [7930, 7959]["\"", "on", "\"", "\"", "off", "\""]
-    |                    +-Pegged.Expression [7931, 7945]["\"", "on", "\"", "\"", "off", "\""]
-    |                       +-Pegged.FirstExpression [7931, 7945]["\"", "on", "\"", "\"", "off", "\""]
-    |                          +-Pegged.Sequence [7931, 7937]["\"", "on", "\""]
-    |                          |  +-Pegged.Prefix [7931, 7937]["\"", "on", "\""]
-    |                          |     +-Pegged.Suffix [7931, 7937]["\"", "on", "\""]
-    |                          |        +-Pegged.Primary [7931, 7937]["\"", "on", "\""]
-    |                          |           +-Pegged.CILiteral [7931, 7937]["\"", "on", "\""]
-    |                          +-Pegged.Sequence [7939, 7945]["\"", "off", "\""]
-    |                             +-Pegged.Prefix [7939, 7945]["\"", "off", "\""]
-    |                                +-Pegged.Suffix [7939, 7945]["\"", "off", "\""]
-    |                                   +-Pegged.Primary [7939, 7945]["\"", "off", "\""]
-    |                                      +-Pegged.CILiteral [7939, 7945]["\"", "off", "\""]
-    +-Pegged.Definition [7959, 8020]["Filter_stmt", "<-", "\"", "filter", "\"", ":", "WS", "FilterSubCmd", "+"]
-    |  +-Pegged.LhsName [7959, 7971]["Filter_stmt"]
-    |  |  +-Pegged.Identifier [7959, 7970]["Filter_stmt"]
-    |  +-Pegged.Arrow [7971, 7974]["<-"]
-    |  |  +-Pegged.LEFTARROW [7971, 7974]["<-"]
-    |  +-Pegged.Expression [7974, 8020]["\"", "filter", "\"", ":", "WS", "FilterSubCmd", "+"]
-    |     +-Pegged.LongestExpression [7974, 8020]["\"", "filter", "\"", ":", "WS", "FilterSubCmd", "+"]
-    |        +-Pegged.Sequence [7974, 8020]["\"", "filter", "\"", ":", "WS", "FilterSubCmd", "+"]
-    |           +-Pegged.Prefix [7974, 7984]["\"", "filter", "\""]
-    |           |  +-Pegged.Suffix [7974, 7984]["\"", "filter", "\""]
-    |           |     +-Pegged.Primary [7974, 7984]["\"", "filter", "\""]
-    |           |        +-Pegged.CILiteral [7974, 7984]["\"", "filter", "\""]
-    |           +-Pegged.Prefix [7984, 8020][":", "WS", "FilterSubCmd", "+"]
-    |              +-Pegged.Suffix [7984, 8020][":", "WS", "FilterSubCmd", "+"]
-    |                 +-Pegged.Primary [7984, 8002][":", "WS", "FilterSubCmd"]
-    |                 |  +-Pegged.Expression [7985, 8001][":", "WS", "FilterSubCmd"]
-    |                 |     +-Pegged.LongestExpression [7985, 8001][":", "WS", "FilterSubCmd"]
-    |                 |        +-Pegged.Sequence [7985, 8001][":", "WS", "FilterSubCmd"]
-    |                 |           +-Pegged.Prefix [7985, 7989][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [7985, 7986][":"]
-    |                 |           |  +-Pegged.Suffix [7986, 7989]["WS"]
-    |                 |           |     +-Pegged.Primary [7986, 7989]["WS"]
-    |                 |           |        +-Pegged.RhsName [7986, 7989]["WS"]
-    |                 |           |           +-Pegged.Identifier [7986, 7988]["WS"]
-    |                 |           +-Pegged.Prefix [7989, 8001]["FilterSubCmd"]
-    |                 |              +-Pegged.Suffix [7989, 8001]["FilterSubCmd"]
-    |                 |                 +-Pegged.Primary [7989, 8001]["FilterSubCmd"]
-    |                 |                    +-Pegged.RhsName [7989, 8001]["FilterSubCmd"]
-    |                 |                       +-Pegged.Identifier [7989, 8001]["FilterSubCmd"]
-    |                 +-Pegged.ONEORMORE [8002, 8020]["+"]
-    +-Pegged.Definition [8020, 8150]["FilterSubCmd", "<-", "FilterSubCmdCutoff", "FilterSubCmdResonance", "FilterSubCmdPass"]
-    |  +-Pegged.LhsName [8020, 8033]["FilterSubCmd"]
-    |  |  +-Pegged.Identifier [8020, 8032]["FilterSubCmd"]
-    |  +-Pegged.Arrow [8033, 8036]["<-"]
-    |  |  +-Pegged.LEFTARROW [8033, 8036]["<-"]
-    |  +-Pegged.Expression [8036, 8150]["FilterSubCmdCutoff", "FilterSubCmdResonance", "FilterSubCmdPass"]
-    |     +-Pegged.FirstExpression [8036, 8150]["FilterSubCmdCutoff", "FilterSubCmdResonance", "FilterSubCmdPass"]
-    |        +-Pegged.Sequence [8036, 8055]["FilterSubCmdCutoff"]
-    |        |  +-Pegged.Prefix [8036, 8055]["FilterSubCmdCutoff"]
-    |        |     +-Pegged.Suffix [8036, 8055]["FilterSubCmdCutoff"]
-    |        |        +-Pegged.Primary [8036, 8055]["FilterSubCmdCutoff"]
-    |        |           +-Pegged.RhsName [8036, 8055]["FilterSubCmdCutoff"]
-    |        |              +-Pegged.Identifier [8036, 8054]["FilterSubCmdCutoff"]
-    |        +-Pegged.Sequence [8057, 8079]["FilterSubCmdResonance"]
-    |        |  +-Pegged.Prefix [8057, 8079]["FilterSubCmdResonance"]
-    |        |     +-Pegged.Suffix [8057, 8079]["FilterSubCmdResonance"]
-    |        |        +-Pegged.Primary [8057, 8079]["FilterSubCmdResonance"]
-    |        |           +-Pegged.RhsName [8057, 8079]["FilterSubCmdResonance"]
-    |        |              +-Pegged.Identifier [8057, 8078]["FilterSubCmdResonance"]
-    |        +-Pegged.Sequence [8113, 8150]["FilterSubCmdPass"]
-    |           +-Pegged.Prefix [8113, 8150]["FilterSubCmdPass"]
-    |              +-Pegged.Suffix [8113, 8150]["FilterSubCmdPass"]
-    |                 +-Pegged.Primary [8113, 8150]["FilterSubCmdPass"]
-    |                    +-Pegged.RhsName [8113, 8150]["FilterSubCmdPass"]
-    |                       +-Pegged.Identifier [8113, 8129]["FilterSubCmdPass"]
-    +-Pegged.Definition [8150, 8217]["FilterSubCmdCutoff", "<-", "\"", "cutoff", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8150, 8169]["FilterSubCmdCutoff"]
-    |  |  +-Pegged.Identifier [8150, 8168]["FilterSubCmdCutoff"]
-    |  +-Pegged.Arrow [8169, 8172]["<-"]
-    |  |  +-Pegged.LEFTARROW [8169, 8172]["<-"]
-    |  +-Pegged.Expression [8172, 8217]["\"", "cutoff", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8172, 8217]["\"", "cutoff", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8172, 8217]["\"", "cutoff", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8172, 8182]["\"", "cutoff", "\""]
-    |           |  +-Pegged.Suffix [8172, 8182]["\"", "cutoff", "\""]
-    |           |     +-Pegged.Primary [8172, 8182]["\"", "cutoff", "\""]
-    |           |        +-Pegged.CILiteral [8172, 8182]["\"", "cutoff", "\""]
-    |           +-Pegged.Prefix [8182, 8186][":", "WS"]
-    |           |  +-Pegged.DISCARD [8182, 8183][":"]
-    |           |  +-Pegged.Suffix [8183, 8186]["WS"]
-    |           |     +-Pegged.Primary [8183, 8186]["WS"]
-    |           |        +-Pegged.RhsName [8183, 8186]["WS"]
-    |           |           +-Pegged.Identifier [8183, 8185]["WS"]
-    |           +-Pegged.Prefix [8186, 8217]["Expression"]
-    |              +-Pegged.Suffix [8186, 8217]["Expression"]
-    |                 +-Pegged.Primary [8186, 8217]["Expression"]
-    |                    +-Pegged.RhsName [8186, 8217]["Expression"]
-    |                       +-Pegged.Identifier [8186, 8196]["Expression"]
-    +-Pegged.Definition [8217, 8290]["FilterSubCmdResonance", "<-", "\"", "resonance", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8217, 8239]["FilterSubCmdResonance"]
-    |  |  +-Pegged.Identifier [8217, 8238]["FilterSubCmdResonance"]
-    |  +-Pegged.Arrow [8239, 8242]["<-"]
-    |  |  +-Pegged.LEFTARROW [8239, 8242]["<-"]
-    |  +-Pegged.Expression [8242, 8290]["\"", "resonance", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8242, 8290]["\"", "resonance", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8242, 8290]["\"", "resonance", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8242, 8255]["\"", "resonance", "\""]
-    |           |  +-Pegged.Suffix [8242, 8255]["\"", "resonance", "\""]
-    |           |     +-Pegged.Primary [8242, 8255]["\"", "resonance", "\""]
-    |           |        +-Pegged.CILiteral [8242, 8255]["\"", "resonance", "\""]
-    |           +-Pegged.Prefix [8255, 8259][":", "WS"]
-    |           |  +-Pegged.DISCARD [8255, 8256][":"]
-    |           |  +-Pegged.Suffix [8256, 8259]["WS"]
-    |           |     +-Pegged.Primary [8256, 8259]["WS"]
-    |           |        +-Pegged.RhsName [8256, 8259]["WS"]
-    |           |           +-Pegged.Identifier [8256, 8258]["WS"]
-    |           +-Pegged.Prefix [8259, 8290]["Expression"]
-    |              +-Pegged.Suffix [8259, 8290]["Expression"]
-    |                 +-Pegged.Primary [8259, 8290]["Expression"]
-    |                    +-Pegged.RhsName [8259, 8290]["Expression"]
-    |                       +-Pegged.Identifier [8259, 8269]["Expression"]
-    +-Pegged.Definition [8290, 8365]["FilterSubCmdPass", "<-", "\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\"", ":", "WS", "\"", "pass", "\""]
-    |  +-Pegged.LhsName [8290, 8307]["FilterSubCmdPass"]
-    |  |  +-Pegged.Identifier [8290, 8306]["FilterSubCmdPass"]
-    |  +-Pegged.Arrow [8307, 8311]["<-"]
-    |  |  +-Pegged.LEFTARROW [8307, 8311]["<-"]
-    |  +-Pegged.Expression [8311, 8365]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\"", ":", "WS", "\"", "pass", "\""]
-    |     +-Pegged.LongestExpression [8311, 8365]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\"", ":", "WS", "\"", "pass", "\""]
-    |        +-Pegged.Sequence [8311, 8365]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\"", ":", "WS", "\"", "pass", "\""]
-    |           +-Pegged.Prefix [8311, 8340]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\""]
-    |           |  +-Pegged.Suffix [8311, 8340]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\""]
-    |           |     +-Pegged.Primary [8311, 8340]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\""]
-    |           |        +-Pegged.Expression [8312, 8338]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\""]
-    |           |           +-Pegged.FirstExpression [8312, 8338]["\"", "low", "\"", "\"", "band", "\"", "\"", "high", "\""]
-    |           |              +-Pegged.Sequence [8312, 8319]["\"", "low", "\""]
-    |           |              |  +-Pegged.Prefix [8312, 8319]["\"", "low", "\""]
-    |           |              |     +-Pegged.Suffix [8312, 8319]["\"", "low", "\""]
-    |           |              |        +-Pegged.Primary [8312, 8319]["\"", "low", "\""]
-    |           |              |           +-Pegged.CILiteral [8312, 8319]["\"", "low", "\""]
-    |           |              +-Pegged.Sequence [8321, 8329]["\"", "band", "\""]
-    |           |              |  +-Pegged.Prefix [8321, 8329]["\"", "band", "\""]
-    |           |              |     +-Pegged.Suffix [8321, 8329]["\"", "band", "\""]
-    |           |              |        +-Pegged.Primary [8321, 8329]["\"", "band", "\""]
-    |           |              |           +-Pegged.CILiteral [8321, 8329]["\"", "band", "\""]
-    |           |              +-Pegged.Sequence [8331, 8338]["\"", "high", "\""]
-    |           |                 +-Pegged.Prefix [8331, 8338]["\"", "high", "\""]
-    |           |                    +-Pegged.Suffix [8331, 8338]["\"", "high", "\""]
-    |           |                       +-Pegged.Primary [8331, 8338]["\"", "high", "\""]
-    |           |                          +-Pegged.CILiteral [8331, 8338]["\"", "high", "\""]
-    |           +-Pegged.Prefix [8340, 8344][":", "WS"]
-    |           |  +-Pegged.DISCARD [8340, 8341][":"]
-    |           |  +-Pegged.Suffix [8341, 8344]["WS"]
-    |           |     +-Pegged.Primary [8341, 8344]["WS"]
-    |           |        +-Pegged.RhsName [8341, 8344]["WS"]
-    |           |           +-Pegged.Identifier [8341, 8343]["WS"]
-    |           +-Pegged.Prefix [8344, 8365]["\"", "pass", "\""]
-    |              +-Pegged.Suffix [8344, 8365]["\"", "pass", "\""]
-    |                 +-Pegged.Primary [8344, 8365]["\"", "pass", "\""]
-    |                    +-Pegged.CILiteral [8344, 8365]["\"", "pass", "\""]
-    +-Pegged.Definition [8365, 8442]["Charset_stmt", "<-", "\"", "charset", "\"", ":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8365, 8378]["Charset_stmt"]
-    |  |  +-Pegged.Identifier [8365, 8377]["Charset_stmt"]
-    |  +-Pegged.Arrow [8378, 8381]["<-"]
-    |  |  +-Pegged.LEFTARROW [8378, 8381]["<-"]
-    |  +-Pegged.Expression [8381, 8442]["\"", "charset", "\"", ":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8381, 8442]["\"", "charset", "\"", ":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8381, 8442]["\"", "charset", "\"", ":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8381, 8392]["\"", "charset", "\""]
-    |           |  +-Pegged.Suffix [8381, 8392]["\"", "charset", "\""]
-    |           |     +-Pegged.Primary [8381, 8392]["\"", "charset", "\""]
-    |           |        +-Pegged.CILiteral [8381, 8392]["\"", "charset", "\""]
-    |           +-Pegged.Prefix [8392, 8415][":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?"]
-    |           |  +-Pegged.Suffix [8392, 8415][":", "WS", "\"", "rom", "\"", "\"", "ram", "\"", "?"]
-    |           |     +-Pegged.Primary [8392, 8413][":", "WS", "\"", "rom", "\"", "\"", "ram", "\""]
-    |           |     |  +-Pegged.Expression [8393, 8412][":", "WS", "\"", "rom", "\"", "\"", "ram", "\""]
-    |           |     |     +-Pegged.FirstExpression [8393, 8412][":", "WS", "\"", "rom", "\"", "\"", "ram", "\""]
-    |           |     |        +-Pegged.Sequence [8393, 8404][":", "WS", "\"", "rom", "\""]
-    |           |     |        |  +-Pegged.Prefix [8393, 8397][":", "WS"]
-    |           |     |        |  |  +-Pegged.DISCARD [8393, 8394][":"]
-    |           |     |        |  |  +-Pegged.Suffix [8394, 8397]["WS"]
-    |           |     |        |  |     +-Pegged.Primary [8394, 8397]["WS"]
-    |           |     |        |  |        +-Pegged.RhsName [8394, 8397]["WS"]
-    |           |     |        |  |           +-Pegged.Identifier [8394, 8396]["WS"]
-    |           |     |        |  +-Pegged.Prefix [8397, 8404]["\"", "rom", "\""]
-    |           |     |        |     +-Pegged.Suffix [8397, 8404]["\"", "rom", "\""]
-    |           |     |        |        +-Pegged.Primary [8397, 8404]["\"", "rom", "\""]
-    |           |     |        |           +-Pegged.CILiteral [8397, 8404]["\"", "rom", "\""]
-    |           |     |        +-Pegged.Sequence [8406, 8412]["\"", "ram", "\""]
-    |           |     |           +-Pegged.Prefix [8406, 8412]["\"", "ram", "\""]
-    |           |     |              +-Pegged.Suffix [8406, 8412]["\"", "ram", "\""]
-    |           |     |                 +-Pegged.Primary [8406, 8412]["\"", "ram", "\""]
-    |           |     |                    +-Pegged.CILiteral [8406, 8412]["\"", "ram", "\""]
-    |           |     +-Pegged.OPTION [8413, 8415]["?"]
-    |           +-Pegged.Prefix [8415, 8419][":", "WS"]
-    |           |  +-Pegged.DISCARD [8415, 8416][":"]
-    |           |  +-Pegged.Suffix [8416, 8419]["WS"]
-    |           |     +-Pegged.Primary [8416, 8419]["WS"]
-    |           |        +-Pegged.RhsName [8416, 8419]["WS"]
-    |           |           +-Pegged.Identifier [8416, 8418]["WS"]
-    |           +-Pegged.Prefix [8419, 8442]["Expression"]
-    |              +-Pegged.Suffix [8419, 8442]["Expression"]
-    |                 +-Pegged.Primary [8419, 8442]["Expression"]
-    |                    +-Pegged.RhsName [8419, 8442]["Expression"]
-    |                       +-Pegged.Identifier [8419, 8429]["Expression"]
-    +-Pegged.Definition [8442, 8508]["Scroll_stmt", "<-", "\"", "h", "\"", "\"", "v", "\"", "\"", "scroll", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8442, 8454]["Scroll_stmt"]
-    |  |  +-Pegged.Identifier [8442, 8453]["Scroll_stmt"]
-    |  +-Pegged.Arrow [8454, 8457]["<-"]
-    |  |  +-Pegged.LEFTARROW [8454, 8457]["<-"]
-    |  +-Pegged.Expression [8457, 8508]["\"", "h", "\"", "\"", "v", "\"", "\"", "scroll", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8457, 8508]["\"", "h", "\"", "\"", "v", "\"", "\"", "scroll", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8457, 8508]["\"", "h", "\"", "\"", "v", "\"", "\"", "scroll", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8457, 8471]["\"", "h", "\"", "\"", "v", "\""]
-    |           |  +-Pegged.Suffix [8457, 8471]["\"", "h", "\"", "\"", "v", "\""]
-    |           |     +-Pegged.Primary [8457, 8471]["\"", "h", "\"", "\"", "v", "\""]
-    |           |        +-Pegged.Expression [8458, 8469]["\"", "h", "\"", "\"", "v", "\""]
-    |           |           +-Pegged.FirstExpression [8458, 8469]["\"", "h", "\"", "\"", "v", "\""]
-    |           |              +-Pegged.Sequence [8458, 8463]["\"", "h", "\""]
-    |           |              |  +-Pegged.Prefix [8458, 8463]["\"", "h", "\""]
-    |           |              |     +-Pegged.Suffix [8458, 8463]["\"", "h", "\""]
-    |           |              |        +-Pegged.Primary [8458, 8463]["\"", "h", "\""]
-    |           |              |           +-Pegged.CILiteral [8458, 8463]["\"", "h", "\""]
-    |           |              +-Pegged.Sequence [8465, 8469]["\"", "v", "\""]
-    |           |                 +-Pegged.Prefix [8465, 8469]["\"", "v", "\""]
-    |           |                    +-Pegged.Suffix [8465, 8469]["\"", "v", "\""]
-    |           |                       +-Pegged.Primary [8465, 8469]["\"", "v", "\""]
-    |           |                          +-Pegged.CILiteral [8465, 8469]["\"", "v", "\""]
-    |           +-Pegged.Prefix [8471, 8481]["\"", "scroll", "\""]
-    |           |  +-Pegged.Suffix [8471, 8481]["\"", "scroll", "\""]
-    |           |     +-Pegged.Primary [8471, 8481]["\"", "scroll", "\""]
-    |           |        +-Pegged.CILiteral [8471, 8481]["\"", "scroll", "\""]
-    |           +-Pegged.Prefix [8481, 8485][":", "WS"]
-    |           |  +-Pegged.DISCARD [8481, 8482][":"]
-    |           |  +-Pegged.Suffix [8482, 8485]["WS"]
-    |           |     +-Pegged.Primary [8482, 8485]["WS"]
-    |           |        +-Pegged.RhsName [8482, 8485]["WS"]
-    |           |           +-Pegged.Identifier [8482, 8484]["WS"]
-    |           +-Pegged.Prefix [8485, 8508]["Expression"]
-    |              +-Pegged.Suffix [8485, 8508]["Expression"]
-    |                 +-Pegged.Primary [8485, 8508]["Expression"]
-    |                    +-Pegged.RhsName [8485, 8508]["Expression"]
-    |                       +-Pegged.Identifier [8485, 8495]["Expression"]
-    +-Pegged.Definition [8508, 8566]["VMode_stmt", "<-", "\"", "vmode", "\"", ":", "WS", "VModeSubCmd", "+"]
-    |  +-Pegged.LhsName [8508, 8519]["VMode_stmt"]
-    |  |  +-Pegged.Identifier [8508, 8518]["VMode_stmt"]
-    |  +-Pegged.Arrow [8519, 8522]["<-"]
-    |  |  +-Pegged.LEFTARROW [8519, 8522]["<-"]
-    |  +-Pegged.Expression [8522, 8566]["\"", "vmode", "\"", ":", "WS", "VModeSubCmd", "+"]
-    |     +-Pegged.LongestExpression [8522, 8566]["\"", "vmode", "\"", ":", "WS", "VModeSubCmd", "+"]
-    |        +-Pegged.Sequence [8522, 8566]["\"", "vmode", "\"", ":", "WS", "VModeSubCmd", "+"]
-    |           +-Pegged.Prefix [8522, 8531]["\"", "vmode", "\""]
-    |           |  +-Pegged.Suffix [8522, 8531]["\"", "vmode", "\""]
-    |           |     +-Pegged.Primary [8522, 8531]["\"", "vmode", "\""]
-    |           |        +-Pegged.CILiteral [8522, 8531]["\"", "vmode", "\""]
-    |           +-Pegged.Prefix [8531, 8566][":", "WS", "VModeSubCmd", "+"]
-    |              +-Pegged.Suffix [8531, 8566][":", "WS", "VModeSubCmd", "+"]
-    |                 +-Pegged.Primary [8531, 8548][":", "WS", "VModeSubCmd"]
-    |                 |  +-Pegged.Expression [8532, 8547][":", "WS", "VModeSubCmd"]
-    |                 |     +-Pegged.LongestExpression [8532, 8547][":", "WS", "VModeSubCmd"]
-    |                 |        +-Pegged.Sequence [8532, 8547][":", "WS", "VModeSubCmd"]
-    |                 |           +-Pegged.Prefix [8532, 8536][":", "WS"]
-    |                 |           |  +-Pegged.DISCARD [8532, 8533][":"]
-    |                 |           |  +-Pegged.Suffix [8533, 8536]["WS"]
-    |                 |           |     +-Pegged.Primary [8533, 8536]["WS"]
-    |                 |           |        +-Pegged.RhsName [8533, 8536]["WS"]
-    |                 |           |           +-Pegged.Identifier [8533, 8535]["WS"]
-    |                 |           +-Pegged.Prefix [8536, 8547]["VModeSubCmd"]
-    |                 |              +-Pegged.Suffix [8536, 8547]["VModeSubCmd"]
-    |                 |                 +-Pegged.Primary [8536, 8547]["VModeSubCmd"]
-    |                 |                    +-Pegged.RhsName [8536, 8547]["VModeSubCmd"]
-    |                 |                       +-Pegged.Identifier [8536, 8547]["VModeSubCmd"]
-    |                 +-Pegged.ONEORMORE [8548, 8566]["+"]
-    +-Pegged.Definition [8566, 8710]["VModeSubCmd", "<-", "VModeSubCmdTextBitmap", "VModeSubCmdColor", "VModeSubCmdRsel", "VModeSubCmdCsel"]
-    |  +-Pegged.LhsName [8566, 8578]["VModeSubCmd"]
-    |  |  +-Pegged.Identifier [8566, 8577]["VModeSubCmd"]
-    |  +-Pegged.Arrow [8578, 8581]["<-"]
-    |  |  +-Pegged.LEFTARROW [8578, 8581]["<-"]
-    |  +-Pegged.Expression [8581, 8710]["VModeSubCmdTextBitmap", "VModeSubCmdColor", "VModeSubCmdRsel", "VModeSubCmdCsel"]
-    |     +-Pegged.FirstExpression [8581, 8710]["VModeSubCmdTextBitmap", "VModeSubCmdColor", "VModeSubCmdRsel", "VModeSubCmdCsel"]
-    |        +-Pegged.Sequence [8581, 8603]["VModeSubCmdTextBitmap"]
-    |        |  +-Pegged.Prefix [8581, 8603]["VModeSubCmdTextBitmap"]
-    |        |     +-Pegged.Suffix [8581, 8603]["VModeSubCmdTextBitmap"]
-    |        |        +-Pegged.Primary [8581, 8603]["VModeSubCmdTextBitmap"]
-    |        |           +-Pegged.RhsName [8581, 8603]["VModeSubCmdTextBitmap"]
-    |        |              +-Pegged.Identifier [8581, 8602]["VModeSubCmdTextBitmap"]
-    |        +-Pegged.Sequence [8605, 8622]["VModeSubCmdColor"]
-    |        |  +-Pegged.Prefix [8605, 8622]["VModeSubCmdColor"]
-    |        |     +-Pegged.Suffix [8605, 8622]["VModeSubCmdColor"]
-    |        |        +-Pegged.Primary [8605, 8622]["VModeSubCmdColor"]
-    |        |           +-Pegged.RhsName [8605, 8622]["VModeSubCmdColor"]
-    |        |              +-Pegged.Identifier [8605, 8621]["VModeSubCmdColor"]
-    |        +-Pegged.Sequence [8656, 8672]["VModeSubCmdRsel"]
-    |        |  +-Pegged.Prefix [8656, 8672]["VModeSubCmdRsel"]
-    |        |     +-Pegged.Suffix [8656, 8672]["VModeSubCmdRsel"]
-    |        |        +-Pegged.Primary [8656, 8672]["VModeSubCmdRsel"]
-    |        |           +-Pegged.RhsName [8656, 8672]["VModeSubCmdRsel"]
-    |        |              +-Pegged.Identifier [8656, 8671]["VModeSubCmdRsel"]
-    |        +-Pegged.Sequence [8674, 8710]["VModeSubCmdCsel"]
-    |           +-Pegged.Prefix [8674, 8710]["VModeSubCmdCsel"]
-    |              +-Pegged.Suffix [8674, 8710]["VModeSubCmdCsel"]
-    |                 +-Pegged.Primary [8674, 8710]["VModeSubCmdCsel"]
-    |                    +-Pegged.RhsName [8674, 8710]["VModeSubCmdCsel"]
-    |                       +-Pegged.Identifier [8674, 8689]["VModeSubCmdCsel"]
-    +-Pegged.Definition [8710, 8784]["VModeSubCmdTextBitmap", "<-", "\"", "text", "\"", "\"", "bitmap", "\"", "\"", "ext", "\""]
-    |  +-Pegged.LhsName [8710, 8732]["VModeSubCmdTextBitmap"]
-    |  |  +-Pegged.Identifier [8710, 8731]["VModeSubCmdTextBitmap"]
-    |  +-Pegged.Arrow [8732, 8735]["<-"]
-    |  |  +-Pegged.LEFTARROW [8732, 8735]["<-"]
-    |  +-Pegged.Expression [8735, 8784]["\"", "text", "\"", "\"", "bitmap", "\"", "\"", "ext", "\""]
-    |     +-Pegged.FirstExpression [8735, 8784]["\"", "text", "\"", "\"", "bitmap", "\"", "\"", "ext", "\""]
-    |        +-Pegged.Sequence [8735, 8743]["\"", "text", "\""]
-    |        |  +-Pegged.Prefix [8735, 8743]["\"", "text", "\""]
-    |        |     +-Pegged.Suffix [8735, 8743]["\"", "text", "\""]
-    |        |        +-Pegged.Primary [8735, 8743]["\"", "text", "\""]
-    |        |           +-Pegged.CILiteral [8735, 8743]["\"", "text", "\""]
-    |        +-Pegged.Sequence [8745, 8755]["\"", "bitmap", "\""]
-    |        |  +-Pegged.Prefix [8745, 8755]["\"", "bitmap", "\""]
-    |        |     +-Pegged.Suffix [8745, 8755]["\"", "bitmap", "\""]
-    |        |        +-Pegged.Primary [8745, 8755]["\"", "bitmap", "\""]
-    |        |           +-Pegged.CILiteral [8745, 8755]["\"", "bitmap", "\""]
-    |        +-Pegged.Sequence [8757, 8784]["\"", "ext", "\""]
-    |           +-Pegged.Prefix [8757, 8784]["\"", "ext", "\""]
-    |              +-Pegged.Suffix [8757, 8784]["\"", "ext", "\""]
-    |                 +-Pegged.Primary [8757, 8784]["\"", "ext", "\""]
-    |                    +-Pegged.CILiteral [8757, 8784]["\"", "ext", "\""]
-    +-Pegged.Definition [8784, 8844]["VModeSubCmdColor", "<-", "\"", "hires", "\"", "\"", "multi", "\""]
-    |  +-Pegged.LhsName [8784, 8801]["VModeSubCmdColor"]
-    |  |  +-Pegged.Identifier [8784, 8800]["VModeSubCmdColor"]
-    |  +-Pegged.Arrow [8801, 8804]["<-"]
-    |  |  +-Pegged.LEFTARROW [8801, 8804]["<-"]
-    |  +-Pegged.Expression [8804, 8844]["\"", "hires", "\"", "\"", "multi", "\""]
-    |     +-Pegged.FirstExpression [8804, 8844]["\"", "hires", "\"", "\"", "multi", "\""]
-    |        +-Pegged.Sequence [8804, 8813]["\"", "hires", "\""]
-    |        |  +-Pegged.Prefix [8804, 8813]["\"", "hires", "\""]
-    |        |     +-Pegged.Suffix [8804, 8813]["\"", "hires", "\""]
-    |        |        +-Pegged.Primary [8804, 8813]["\"", "hires", "\""]
-    |        |           +-Pegged.CILiteral [8804, 8813]["\"", "hires", "\""]
-    |        +-Pegged.Sequence [8815, 8844]["\"", "multi", "\""]
-    |           +-Pegged.Prefix [8815, 8844]["\"", "multi", "\""]
-    |              +-Pegged.Suffix [8815, 8844]["\"", "multi", "\""]
-    |                 +-Pegged.Primary [8815, 8844]["\"", "multi", "\""]
-    |                    +-Pegged.CILiteral [8815, 8844]["\"", "multi", "\""]
-    +-Pegged.Definition [8844, 8906]["VModeSubCmdRsel", "<-", "\"", "rows", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8844, 8860]["VModeSubCmdRsel"]
-    |  |  +-Pegged.Identifier [8844, 8859]["VModeSubCmdRsel"]
-    |  +-Pegged.Arrow [8860, 8863]["<-"]
-    |  |  +-Pegged.LEFTARROW [8860, 8863]["<-"]
-    |  +-Pegged.Expression [8863, 8906]["\"", "rows", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8863, 8906]["\"", "rows", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8863, 8906]["\"", "rows", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8863, 8871]["\"", "rows", "\""]
-    |           |  +-Pegged.Suffix [8863, 8871]["\"", "rows", "\""]
-    |           |     +-Pegged.Primary [8863, 8871]["\"", "rows", "\""]
-    |           |        +-Pegged.CILiteral [8863, 8871]["\"", "rows", "\""]
-    |           +-Pegged.Prefix [8871, 8875][":", "WS"]
-    |           |  +-Pegged.DISCARD [8871, 8872][":"]
-    |           |  +-Pegged.Suffix [8872, 8875]["WS"]
-    |           |     +-Pegged.Primary [8872, 8875]["WS"]
-    |           |        +-Pegged.RhsName [8872, 8875]["WS"]
-    |           |           +-Pegged.Identifier [8872, 8874]["WS"]
-    |           +-Pegged.Prefix [8875, 8906]["Expression"]
-    |              +-Pegged.Suffix [8875, 8906]["Expression"]
-    |                 +-Pegged.Primary [8875, 8906]["Expression"]
-    |                    +-Pegged.RhsName [8875, 8906]["Expression"]
-    |                       +-Pegged.Identifier [8875, 8885]["Expression"]
-    +-Pegged.Definition [8906, 8961]["VModeSubCmdCsel", "<-", "\"", "cols", "\"", ":", "WS", "Expression"]
-    |  +-Pegged.LhsName [8906, 8922]["VModeSubCmdCsel"]
-    |  |  +-Pegged.Identifier [8906, 8921]["VModeSubCmdCsel"]
-    |  +-Pegged.Arrow [8922, 8925]["<-"]
-    |  |  +-Pegged.LEFTARROW [8922, 8925]["<-"]
-    |  +-Pegged.Expression [8925, 8961]["\"", "cols", "\"", ":", "WS", "Expression"]
-    |     +-Pegged.LongestExpression [8925, 8961]["\"", "cols", "\"", ":", "WS", "Expression"]
-    |        +-Pegged.Sequence [8925, 8961]["\"", "cols", "\"", ":", "WS", "Expression"]
-    |           +-Pegged.Prefix [8925, 8933]["\"", "cols", "\""]
-    |           |  +-Pegged.Suffix [8925, 8933]["\"", "cols", "\""]
-    |           |     +-Pegged.Primary [8925, 8933]["\"", "cols", "\""]
-    |           |        +-Pegged.CILiteral [8925, 8933]["\"", "cols", "\""]
-    |           +-Pegged.Prefix [8933, 8937][":", "WS"]
-    |           |  +-Pegged.DISCARD [8933, 8934][":"]
-    |           |  +-Pegged.Suffix [8934, 8937]["WS"]
-    |           |     +-Pegged.Primary [8934, 8937]["WS"]
-    |           |        +-Pegged.RhsName [8934, 8937]["WS"]
-    |           |           +-Pegged.Identifier [8934, 8936]["WS"]
-    |           +-Pegged.Prefix [8937, 8961]["Expression"]
-    |              +-Pegged.Suffix [8937, 8961]["Expression"]
-    |                 +-Pegged.Primary [8937, 8961]["Expression"]
-    |                    +-Pegged.RhsName [8937, 8961]["Expression"]
-    |                       +-Pegged.Identifier [8937, 8947]["Expression"]
-    +-Pegged.Definition [8961, 9024]["ExprList", "<-", "Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |  +-Pegged.LhsName [8961, 8970]["ExprList"]
-    |  |  +-Pegged.Identifier [8961, 8969]["ExprList"]
-    |  +-Pegged.Arrow [8970, 8973]["<-"]
-    |  |  +-Pegged.LEFTARROW [8970, 8973]["<-"]
-    |  +-Pegged.Expression [8973, 9024]["Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |     +-Pegged.LongestExpression [8973, 9024]["Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |        +-Pegged.Sequence [8973, 9024]["Expression", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |           +-Pegged.Prefix [8973, 8984]["Expression"]
-    |           |  +-Pegged.Suffix [8973, 8984]["Expression"]
-    |           |     +-Pegged.Primary [8973, 8984]["Expression"]
-    |           |        +-Pegged.RhsName [8973, 8984]["Expression"]
-    |           |           +-Pegged.Identifier [8973, 8983]["Expression"]
-    |           +-Pegged.Prefix [8984, 9024][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |              +-Pegged.Suffix [8984, 9024][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |                 +-Pegged.Primary [8984, 9010][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |  +-Pegged.Expression [8985, 9009][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |     +-Pegged.LongestExpression [8985, 9009][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |        +-Pegged.Sequence [8985, 9009][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |                 |           +-Pegged.Prefix [8985, 8990][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [8985, 8986][":"]
-    |                 |           |  +-Pegged.Suffix [8986, 8990]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [8986, 8988]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [8986, 8988]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [8986, 8988]["WS"]
-    |                 |           |     +-Pegged.OPTION [8988, 8990]["?"]
-    |                 |           +-Pegged.Prefix [8990, 8994]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [8990, 8994]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [8990, 8994]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [8990, 8994]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [8994, 8999][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [8994, 8995][":"]
-    |                 |           |  +-Pegged.Suffix [8995, 8999]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [8995, 8997]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [8995, 8997]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [8995, 8997]["WS"]
-    |                 |           |     +-Pegged.OPTION [8997, 8999]["?"]
-    |                 |           +-Pegged.Prefix [8999, 9009]["Expression"]
-    |                 |              +-Pegged.Suffix [8999, 9009]["Expression"]
-    |                 |                 +-Pegged.Primary [8999, 9009]["Expression"]
-    |                 |                    +-Pegged.RhsName [8999, 9009]["Expression"]
-    |                 |                       +-Pegged.Identifier [8999, 9009]["Expression"]
-    |                 +-Pegged.ZEROORMORE [9010, 9024]["*"]
-    +-Pegged.Definition [9024, 9087]["AccessorList", "<-", "Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |  +-Pegged.LhsName [9024, 9037]["AccessorList"]
-    |  |  +-Pegged.Identifier [9024, 9036]["AccessorList"]
-    |  +-Pegged.Arrow [9037, 9040]["<-"]
-    |  |  +-Pegged.LEFTARROW [9037, 9040]["<-"]
-    |  +-Pegged.Expression [9040, 9087]["Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |     +-Pegged.LongestExpression [9040, 9087]["Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |        +-Pegged.Sequence [9040, 9087]["Accessor", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |           +-Pegged.Prefix [9040, 9049]["Accessor"]
-    |           |  +-Pegged.Suffix [9040, 9049]["Accessor"]
-    |           |     +-Pegged.Primary [9040, 9049]["Accessor"]
-    |           |        +-Pegged.RhsName [9040, 9049]["Accessor"]
-    |           |           +-Pegged.Identifier [9040, 9048]["Accessor"]
-    |           +-Pegged.Prefix [9049, 9087][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |              +-Pegged.Suffix [9049, 9087][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor", "*"]
-    |                 +-Pegged.Primary [9049, 9073][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |                 |  +-Pegged.Expression [9050, 9072][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |                 |     +-Pegged.LongestExpression [9050, 9072][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |                 |        +-Pegged.Sequence [9050, 9072][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Accessor"]
-    |                 |           +-Pegged.Prefix [9050, 9055][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9050, 9051][":"]
-    |                 |           |  +-Pegged.Suffix [9051, 9055]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9051, 9053]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9051, 9053]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9051, 9053]["WS"]
-    |                 |           |     +-Pegged.OPTION [9053, 9055]["?"]
-    |                 |           +-Pegged.Prefix [9055, 9059]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [9055, 9059]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [9055, 9059]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [9055, 9059]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [9059, 9064][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9059, 9060][":"]
-    |                 |           |  +-Pegged.Suffix [9060, 9064]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9060, 9062]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9060, 9062]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9060, 9062]["WS"]
-    |                 |           |     +-Pegged.OPTION [9062, 9064]["?"]
-    |                 |           +-Pegged.Prefix [9064, 9072]["Accessor"]
-    |                 |              +-Pegged.Suffix [9064, 9072]["Accessor"]
-    |                 |                 +-Pegged.Primary [9064, 9072]["Accessor"]
-    |                 |                    +-Pegged.RhsName [9064, 9072]["Accessor"]
-    |                 |                       +-Pegged.Identifier [9064, 9072]["Accessor"]
-    |                 +-Pegged.ZEROORMORE [9073, 9087]["*"]
-    +-Pegged.Definition [9087, 9182]["PrintableList", "<-", "Expression", ":", "WS", "?", ":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*", "NlSupp", "?"]
-    |  +-Pegged.LhsName [9087, 9101]["PrintableList"]
-    |  |  +-Pegged.Identifier [9087, 9100]["PrintableList"]
-    |  +-Pegged.Arrow [9101, 9104]["<-"]
-    |  |  +-Pegged.LEFTARROW [9101, 9104]["<-"]
-    |  +-Pegged.Expression [9104, 9182]["Expression", ":", "WS", "?", ":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*", "NlSupp", "?"]
-    |     +-Pegged.LongestExpression [9104, 9182]["Expression", ":", "WS", "?", ":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*", "NlSupp", "?"]
-    |        +-Pegged.Sequence [9104, 9182]["Expression", ":", "WS", "?", ":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*", "NlSupp", "?"]
-    |           +-Pegged.Prefix [9104, 9115]["Expression"]
-    |           |  +-Pegged.Suffix [9104, 9115]["Expression"]
-    |           |     +-Pegged.Primary [9104, 9115]["Expression"]
-    |           |        +-Pegged.RhsName [9104, 9115]["Expression"]
-    |           |           +-Pegged.Identifier [9104, 9114]["Expression"]
-    |           +-Pegged.Prefix [9115, 9120][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [9115, 9116][":"]
-    |           |  +-Pegged.Suffix [9116, 9120]["WS", "?"]
-    |           |     +-Pegged.Primary [9116, 9118]["WS"]
-    |           |     |  +-Pegged.RhsName [9116, 9118]["WS"]
-    |           |     |     +-Pegged.Identifier [9116, 9118]["WS"]
-    |           |     +-Pegged.OPTION [9118, 9120]["?"]
-    |           +-Pegged.Prefix [9120, 9162][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*"]
-    |           |  +-Pegged.Suffix [9120, 9162][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression", "*"]
-    |           |     +-Pegged.Primary [9120, 9160][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression"]
-    |           |     |  +-Pegged.Expression [9121, 9159][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression"]
-    |           |     |     +-Pegged.LongestExpression [9121, 9159][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression"]
-    |           |     |        +-Pegged.Sequence [9121, 9159][":", "WS", "?", "TabSep", "NlSupp", ":", "WS", "?", "Expression"]
-    |           |     |           +-Pegged.Prefix [9121, 9126][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [9121, 9122][":"]
-    |           |     |           |  +-Pegged.Suffix [9122, 9126]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [9122, 9124]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [9122, 9124]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [9122, 9124]["WS"]
-    |           |     |           |     +-Pegged.OPTION [9124, 9126]["?"]
-    |           |     |           +-Pegged.Prefix [9126, 9144]["TabSep", "NlSupp"]
-    |           |     |           |  +-Pegged.Suffix [9126, 9144]["TabSep", "NlSupp"]
-    |           |     |           |     +-Pegged.Primary [9126, 9144]["TabSep", "NlSupp"]
-    |           |     |           |        +-Pegged.Expression [9127, 9142]["TabSep", "NlSupp"]
-    |           |     |           |           +-Pegged.FirstExpression [9127, 9142]["TabSep", "NlSupp"]
-    |           |     |           |              +-Pegged.Sequence [9127, 9134]["TabSep"]
-    |           |     |           |              |  +-Pegged.Prefix [9127, 9134]["TabSep"]
-    |           |     |           |              |     +-Pegged.Suffix [9127, 9134]["TabSep"]
-    |           |     |           |              |        +-Pegged.Primary [9127, 9134]["TabSep"]
-    |           |     |           |              |           +-Pegged.RhsName [9127, 9134]["TabSep"]
-    |           |     |           |              |              +-Pegged.Identifier [9127, 9133]["TabSep"]
-    |           |     |           |              +-Pegged.Sequence [9136, 9142]["NlSupp"]
-    |           |     |           |                 +-Pegged.Prefix [9136, 9142]["NlSupp"]
-    |           |     |           |                    +-Pegged.Suffix [9136, 9142]["NlSupp"]
-    |           |     |           |                       +-Pegged.Primary [9136, 9142]["NlSupp"]
-    |           |     |           |                          +-Pegged.RhsName [9136, 9142]["NlSupp"]
-    |           |     |           |                             +-Pegged.Identifier [9136, 9142]["NlSupp"]
-    |           |     |           +-Pegged.Prefix [9144, 9149][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [9144, 9145][":"]
-    |           |     |           |  +-Pegged.Suffix [9145, 9149]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [9145, 9147]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [9145, 9147]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [9145, 9147]["WS"]
-    |           |     |           |     +-Pegged.OPTION [9147, 9149]["?"]
-    |           |     |           +-Pegged.Prefix [9149, 9159]["Expression"]
-    |           |     |              +-Pegged.Suffix [9149, 9159]["Expression"]
-    |           |     |                 +-Pegged.Primary [9149, 9159]["Expression"]
-    |           |     |                    +-Pegged.RhsName [9149, 9159]["Expression"]
-    |           |     |                       +-Pegged.Identifier [9149, 9159]["Expression"]
-    |           |     +-Pegged.ZEROORMORE [9160, 9162]["*"]
-    |           +-Pegged.Prefix [9162, 9182]["NlSupp", "?"]
-    |              +-Pegged.Suffix [9162, 9182]["NlSupp", "?"]
-    |                 +-Pegged.Primary [9162, 9168]["NlSupp"]
-    |                 |  +-Pegged.RhsName [9162, 9168]["NlSupp"]
-    |                 |     +-Pegged.Identifier [9162, 9168]["NlSupp"]
-    |                 +-Pegged.OPTION [9168, 9182]["?"]
-    +-Pegged.Definition [9182, 9208]["TabSep", "<-", "\"", ",", "\""]
-    |  +-Pegged.LhsName [9182, 9189]["TabSep"]
-    |  |  +-Pegged.Identifier [9182, 9188]["TabSep"]
-    |  +-Pegged.Arrow [9189, 9192]["<-"]
-    |  |  +-Pegged.LEFTARROW [9189, 9192]["<-"]
-    |  +-Pegged.Expression [9192, 9208]["\"", ",", "\""]
-    |     +-Pegged.LongestExpression [9192, 9208]["\"", ",", "\""]
-    |        +-Pegged.Sequence [9192, 9208]["\"", ",", "\""]
-    |           +-Pegged.Prefix [9192, 9208]["\"", ",", "\""]
-    |              +-Pegged.Suffix [9192, 9208]["\"", ",", "\""]
-    |                 +-Pegged.Primary [9192, 9208]["\"", ",", "\""]
-    |                    +-Pegged.Literal [9192, 9208]["\"", ",", "\""]
-    +-Pegged.Definition [9208, 9234]["NlSupp", "<-", "\"", ";", "\""]
-    |  +-Pegged.LhsName [9208, 9215]["NlSupp"]
-    |  |  +-Pegged.Identifier [9208, 9214]["NlSupp"]
-    |  +-Pegged.Arrow [9215, 9218]["<-"]
-    |  |  +-Pegged.LEFTARROW [9215, 9218]["<-"]
-    |  +-Pegged.Expression [9218, 9234]["\"", ";", "\""]
-    |     +-Pegged.LongestExpression [9218, 9234]["\"", ";", "\""]
-    |        +-Pegged.Sequence [9218, 9234]["\"", ";", "\""]
-    |           +-Pegged.Prefix [9218, 9234]["\"", ";", "\""]
-    |              +-Pegged.Suffix [9218, 9234]["\"", ";", "\""]
-    |                 +-Pegged.Primary [9218, 9234]["\"", ";", "\""]
-    |                    +-Pegged.Literal [9218, 9234]["\"", ";", "\""]
-    +-Pegged.Definition [9234, 9282]["VarList", "<-", "Var", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |  +-Pegged.LhsName [9234, 9242]["VarList"]
-    |  |  +-Pegged.Identifier [9234, 9241]["VarList"]
-    |  +-Pegged.Arrow [9242, 9245]["<-"]
-    |  |  +-Pegged.LEFTARROW [9242, 9245]["<-"]
-    |  +-Pegged.Expression [9245, 9282]["Var", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |     +-Pegged.LongestExpression [9245, 9282]["Var", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |        +-Pegged.Sequence [9245, 9282]["Var", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |           +-Pegged.Prefix [9245, 9249]["Var"]
-    |           |  +-Pegged.Suffix [9245, 9249]["Var"]
-    |           |     +-Pegged.Primary [9245, 9249]["Var"]
-    |           |        +-Pegged.RhsName [9245, 9249]["Var"]
-    |           |           +-Pegged.Identifier [9245, 9248]["Var"]
-    |           +-Pegged.Prefix [9249, 9282][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |              +-Pegged.Suffix [9249, 9282][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var", "*"]
-    |                 +-Pegged.Primary [9249, 9268][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var"]
-    |                 |  +-Pegged.Expression [9250, 9267][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var"]
-    |                 |     +-Pegged.LongestExpression [9250, 9267][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var"]
-    |                 |        +-Pegged.Sequence [9250, 9267][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Var"]
-    |                 |           +-Pegged.Prefix [9250, 9255][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9250, 9251][":"]
-    |                 |           |  +-Pegged.Suffix [9251, 9255]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9251, 9253]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9251, 9253]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9251, 9253]["WS"]
-    |                 |           |     +-Pegged.OPTION [9253, 9255]["?"]
-    |                 |           +-Pegged.Prefix [9255, 9259]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [9255, 9259]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [9255, 9259]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [9255, 9259]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [9259, 9264][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9259, 9260][":"]
-    |                 |           |  +-Pegged.Suffix [9260, 9264]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9260, 9262]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9260, 9262]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9260, 9262]["WS"]
-    |                 |           |     +-Pegged.OPTION [9262, 9264]["?"]
-    |                 |           +-Pegged.Prefix [9264, 9267]["Var"]
-    |                 |              +-Pegged.Suffix [9264, 9267]["Var"]
-    |                 |                 +-Pegged.Primary [9264, 9267]["Var"]
-    |                 |                    +-Pegged.RhsName [9264, 9267]["Var"]
-    |                 |                       +-Pegged.Identifier [9264, 9267]["Var"]
-    |                 +-Pegged.ZEROORMORE [9268, 9282]["*"]
-    +-Pegged.Definition [9282, 9389]["Datalist", "<-", "Number", "String", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |  +-Pegged.LhsName [9282, 9291]["Datalist"]
-    |  |  +-Pegged.Identifier [9282, 9290]["Datalist"]
-    |  +-Pegged.Arrow [9291, 9294]["<-"]
-    |  |  +-Pegged.LEFTARROW [9291, 9294]["<-"]
-    |  +-Pegged.Expression [9294, 9389]["Number", "String", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |     +-Pegged.LongestExpression [9294, 9389]["Number", "String", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |        +-Pegged.Sequence [9294, 9389]["Number", "String", "Label_ref", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |           +-Pegged.Prefix [9294, 9324]["Number", "String", "Label_ref"]
-    |           |  +-Pegged.Suffix [9294, 9324]["Number", "String", "Label_ref"]
-    |           |     +-Pegged.Primary [9294, 9324]["Number", "String", "Label_ref"]
-    |           |        +-Pegged.Expression [9295, 9322]["Number", "String", "Label_ref"]
-    |           |           +-Pegged.FirstExpression [9295, 9322]["Number", "String", "Label_ref"]
-    |           |              +-Pegged.Sequence [9295, 9302]["Number"]
-    |           |              |  +-Pegged.Prefix [9295, 9302]["Number"]
-    |           |              |     +-Pegged.Suffix [9295, 9302]["Number"]
-    |           |              |        +-Pegged.Primary [9295, 9302]["Number"]
-    |           |              |           +-Pegged.RhsName [9295, 9302]["Number"]
-    |           |              |              +-Pegged.Identifier [9295, 9301]["Number"]
-    |           |              +-Pegged.Sequence [9304, 9311]["String"]
-    |           |              |  +-Pegged.Prefix [9304, 9311]["String"]
-    |           |              |     +-Pegged.Suffix [9304, 9311]["String"]
-    |           |              |        +-Pegged.Primary [9304, 9311]["String"]
-    |           |              |           +-Pegged.RhsName [9304, 9311]["String"]
-    |           |              |              +-Pegged.Identifier [9304, 9310]["String"]
-    |           |              +-Pegged.Sequence [9313, 9322]["Label_ref"]
-    |           |                 +-Pegged.Prefix [9313, 9322]["Label_ref"]
-    |           |                    +-Pegged.Suffix [9313, 9322]["Label_ref"]
-    |           |                       +-Pegged.Primary [9313, 9322]["Label_ref"]
-    |           |                          +-Pegged.RhsName [9313, 9322]["Label_ref"]
-    |           |                             +-Pegged.Identifier [9313, 9322]["Label_ref"]
-    |           +-Pegged.Prefix [9324, 9389][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |              +-Pegged.Suffix [9324, 9389][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?", "*"]
-    |                 +-Pegged.Primary [9324, 9374][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?"]
-    |                 |  +-Pegged.Expression [9325, 9373][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?"]
-    |                 |     +-Pegged.LongestExpression [9325, 9373][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?"]
-    |                 |        +-Pegged.Sequence [9325, 9373][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Number", "String", "Label_ref", ":", "WS", "?"]
-    |                 |           +-Pegged.Prefix [9325, 9330][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9325, 9326][":"]
-    |                 |           |  +-Pegged.Suffix [9326, 9330]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9326, 9328]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9326, 9328]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9326, 9328]["WS"]
-    |                 |           |     +-Pegged.OPTION [9328, 9330]["?"]
-    |                 |           +-Pegged.Prefix [9330, 9334]["\"", ",", "\""]
-    |                 |           |  +-Pegged.Suffix [9330, 9334]["\"", ",", "\""]
-    |                 |           |     +-Pegged.Primary [9330, 9334]["\"", ",", "\""]
-    |                 |           |        +-Pegged.Literal [9330, 9334]["\"", ",", "\""]
-    |                 |           +-Pegged.Prefix [9334, 9339][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9334, 9335][":"]
-    |                 |           |  +-Pegged.Suffix [9335, 9339]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9335, 9337]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9335, 9337]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9335, 9337]["WS"]
-    |                 |           |     +-Pegged.OPTION [9337, 9339]["?"]
-    |                 |           +-Pegged.Prefix [9339, 9369]["Number", "String", "Label_ref"]
-    |                 |           |  +-Pegged.Suffix [9339, 9369]["Number", "String", "Label_ref"]
-    |                 |           |     +-Pegged.Primary [9339, 9369]["Number", "String", "Label_ref"]
-    |                 |           |        +-Pegged.Expression [9340, 9367]["Number", "String", "Label_ref"]
-    |                 |           |           +-Pegged.FirstExpression [9340, 9367]["Number", "String", "Label_ref"]
-    |                 |           |              +-Pegged.Sequence [9340, 9347]["Number"]
-    |                 |           |              |  +-Pegged.Prefix [9340, 9347]["Number"]
-    |                 |           |              |     +-Pegged.Suffix [9340, 9347]["Number"]
-    |                 |           |              |        +-Pegged.Primary [9340, 9347]["Number"]
-    |                 |           |              |           +-Pegged.RhsName [9340, 9347]["Number"]
-    |                 |           |              |              +-Pegged.Identifier [9340, 9346]["Number"]
-    |                 |           |              +-Pegged.Sequence [9349, 9356]["String"]
-    |                 |           |              |  +-Pegged.Prefix [9349, 9356]["String"]
-    |                 |           |              |     +-Pegged.Suffix [9349, 9356]["String"]
-    |                 |           |              |        +-Pegged.Primary [9349, 9356]["String"]
-    |                 |           |              |           +-Pegged.RhsName [9349, 9356]["String"]
-    |                 |           |              |              +-Pegged.Identifier [9349, 9355]["String"]
-    |                 |           |              +-Pegged.Sequence [9358, 9367]["Label_ref"]
-    |                 |           |                 +-Pegged.Prefix [9358, 9367]["Label_ref"]
-    |                 |           |                    +-Pegged.Suffix [9358, 9367]["Label_ref"]
-    |                 |           |                       +-Pegged.Primary [9358, 9367]["Label_ref"]
-    |                 |           |                          +-Pegged.RhsName [9358, 9367]["Label_ref"]
-    |                 |           |                             +-Pegged.Identifier [9358, 9367]["Label_ref"]
-    |                 |           +-Pegged.Prefix [9369, 9373][":", "WS", "?"]
-    |                 |              +-Pegged.DISCARD [9369, 9370][":"]
-    |                 |              +-Pegged.Suffix [9370, 9373]["WS", "?"]
-    |                 |                 +-Pegged.Primary [9370, 9372]["WS"]
-    |                 |                 |  +-Pegged.RhsName [9370, 9372]["WS"]
-    |                 |                 |     +-Pegged.Identifier [9370, 9372]["WS"]
-    |                 |                 +-Pegged.OPTION [9372, 9373]["?"]
-    |                 +-Pegged.ZEROORMORE [9374, 9389]["*"]
-    +-Pegged.Definition [9389, 9452]["Expression", "<-", "Relation", ":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |  +-Pegged.LhsName [9389, 9400]["Expression"]
-    |  |  +-Pegged.Identifier [9389, 9399]["Expression"]
-    |  +-Pegged.Arrow [9400, 9403]["<-"]
-    |  |  +-Pegged.LEFTARROW [9400, 9403]["<-"]
-    |  +-Pegged.Expression [9403, 9452]["Relation", ":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |     +-Pegged.LongestExpression [9403, 9452]["Relation", ":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |        +-Pegged.Sequence [9403, 9452]["Relation", ":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |           +-Pegged.Prefix [9403, 9412]["Relation"]
-    |           |  +-Pegged.Suffix [9403, 9412]["Relation"]
-    |           |     +-Pegged.Primary [9403, 9412]["Relation"]
-    |           |        +-Pegged.RhsName [9403, 9412]["Relation"]
-    |           |           +-Pegged.Identifier [9403, 9411]["Relation"]
-    |           +-Pegged.Prefix [9412, 9452][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |              +-Pegged.Suffix [9412, 9452][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation", "*"]
-    |                 +-Pegged.Primary [9412, 9438][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation"]
-    |                 |  +-Pegged.Expression [9413, 9437][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation"]
-    |                 |     +-Pegged.LongestExpression [9413, 9437][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation"]
-    |                 |        +-Pegged.Sequence [9413, 9437][":", "WS", "?", "BW_OP", ":", "WS", "?", "Relation"]
-    |                 |           +-Pegged.Prefix [9413, 9418][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9413, 9414][":"]
-    |                 |           |  +-Pegged.Suffix [9414, 9418]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9414, 9416]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9414, 9416]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9414, 9416]["WS"]
-    |                 |           |     +-Pegged.OPTION [9416, 9418]["?"]
-    |                 |           +-Pegged.Prefix [9418, 9424]["BW_OP"]
-    |                 |           |  +-Pegged.Suffix [9418, 9424]["BW_OP"]
-    |                 |           |     +-Pegged.Primary [9418, 9424]["BW_OP"]
-    |                 |           |        +-Pegged.RhsName [9418, 9424]["BW_OP"]
-    |                 |           |           +-Pegged.Identifier [9418, 9423]["BW_OP"]
-    |                 |           +-Pegged.Prefix [9424, 9429][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9424, 9425][":"]
-    |                 |           |  +-Pegged.Suffix [9425, 9429]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9425, 9427]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9425, 9427]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9425, 9427]["WS"]
-    |                 |           |     +-Pegged.OPTION [9427, 9429]["?"]
-    |                 |           +-Pegged.Prefix [9429, 9437]["Relation"]
-    |                 |              +-Pegged.Suffix [9429, 9437]["Relation"]
-    |                 |                 +-Pegged.Primary [9429, 9437]["Relation"]
-    |                 |                    +-Pegged.RhsName [9429, 9437]["Relation"]
-    |                 |                       +-Pegged.Identifier [9429, 9437]["Relation"]
-    |                 +-Pegged.ZEROORMORE [9438, 9452]["*"]
-    +-Pegged.Definition [9452, 9514]["Relation", "<-", "Simplexp", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |  +-Pegged.LhsName [9452, 9461]["Relation"]
-    |  |  +-Pegged.Identifier [9452, 9460]["Relation"]
-    |  +-Pegged.Arrow [9461, 9464]["<-"]
-    |  |  +-Pegged.LEFTARROW [9461, 9464]["<-"]
-    |  +-Pegged.Expression [9464, 9514]["Simplexp", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |     +-Pegged.LongestExpression [9464, 9514]["Simplexp", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |        +-Pegged.Sequence [9464, 9514]["Simplexp", ":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |           +-Pegged.Prefix [9464, 9473]["Simplexp"]
-    |           |  +-Pegged.Suffix [9464, 9473]["Simplexp"]
-    |           |     +-Pegged.Primary [9464, 9473]["Simplexp"]
-    |           |        +-Pegged.RhsName [9464, 9473]["Simplexp"]
-    |           |           +-Pegged.Identifier [9464, 9472]["Simplexp"]
-    |           +-Pegged.Prefix [9473, 9514][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |              +-Pegged.Suffix [9473, 9514][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp", "?"]
-    |                 +-Pegged.Primary [9473, 9500][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp"]
-    |                 |  +-Pegged.Expression [9474, 9499][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp"]
-    |                 |     +-Pegged.LongestExpression [9474, 9499][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp"]
-    |                 |        +-Pegged.Sequence [9474, 9499][":", "WS", "?", "REL_OP", ":", "WS", "?", "Simplexp"]
-    |                 |           +-Pegged.Prefix [9474, 9479][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9474, 9475][":"]
-    |                 |           |  +-Pegged.Suffix [9475, 9479]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9475, 9477]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9475, 9477]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9475, 9477]["WS"]
-    |                 |           |     +-Pegged.OPTION [9477, 9479]["?"]
-    |                 |           +-Pegged.Prefix [9479, 9486]["REL_OP"]
-    |                 |           |  +-Pegged.Suffix [9479, 9486]["REL_OP"]
-    |                 |           |     +-Pegged.Primary [9479, 9486]["REL_OP"]
-    |                 |           |        +-Pegged.RhsName [9479, 9486]["REL_OP"]
-    |                 |           |           +-Pegged.Identifier [9479, 9485]["REL_OP"]
-    |                 |           +-Pegged.Prefix [9486, 9491][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9486, 9487][":"]
-    |                 |           |  +-Pegged.Suffix [9487, 9491]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9487, 9489]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9487, 9489]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9487, 9489]["WS"]
-    |                 |           |     +-Pegged.OPTION [9489, 9491]["?"]
-    |                 |           +-Pegged.Prefix [9491, 9499]["Simplexp"]
-    |                 |              +-Pegged.Suffix [9491, 9499]["Simplexp"]
-    |                 |                 +-Pegged.Primary [9491, 9499]["Simplexp"]
-    |                 |                    +-Pegged.RhsName [9491, 9499]["Simplexp"]
-    |                 |                       +-Pegged.Identifier [9491, 9499]["Simplexp"]
-    |                 +-Pegged.OPTION [9500, 9514]["?"]
-    +-Pegged.Definition [9514, 9566]["Simplexp", "<-", "Term", ":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |  +-Pegged.LhsName [9514, 9523]["Simplexp"]
-    |  |  +-Pegged.Identifier [9514, 9522]["Simplexp"]
-    |  +-Pegged.Arrow [9523, 9526]["<-"]
-    |  |  +-Pegged.LEFTARROW [9523, 9526]["<-"]
-    |  +-Pegged.Expression [9526, 9566]["Term", ":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |     +-Pegged.LongestExpression [9526, 9566]["Term", ":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |        +-Pegged.Sequence [9526, 9566]["Term", ":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |           +-Pegged.Prefix [9526, 9531]["Term"]
-    |           |  +-Pegged.Suffix [9526, 9531]["Term"]
-    |           |     +-Pegged.Primary [9526, 9531]["Term"]
-    |           |        +-Pegged.RhsName [9526, 9531]["Term"]
-    |           |           +-Pegged.Identifier [9526, 9530]["Term"]
-    |           +-Pegged.Prefix [9531, 9566][":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |              +-Pegged.Suffix [9531, 9566][":", "WS", "?", "E_OP", ":", "WS", "?", "Term", "*"]
-    |                 +-Pegged.Primary [9531, 9552][":", "WS", "?", "E_OP", ":", "WS", "?", "Term"]
-    |                 |  +-Pegged.Expression [9532, 9551][":", "WS", "?", "E_OP", ":", "WS", "?", "Term"]
-    |                 |     +-Pegged.LongestExpression [9532, 9551][":", "WS", "?", "E_OP", ":", "WS", "?", "Term"]
-    |                 |        +-Pegged.Sequence [9532, 9551][":", "WS", "?", "E_OP", ":", "WS", "?", "Term"]
-    |                 |           +-Pegged.Prefix [9532, 9537][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9532, 9533][":"]
-    |                 |           |  +-Pegged.Suffix [9533, 9537]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9533, 9535]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9533, 9535]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9533, 9535]["WS"]
-    |                 |           |     +-Pegged.OPTION [9535, 9537]["?"]
-    |                 |           +-Pegged.Prefix [9537, 9542]["E_OP"]
-    |                 |           |  +-Pegged.Suffix [9537, 9542]["E_OP"]
-    |                 |           |     +-Pegged.Primary [9537, 9542]["E_OP"]
-    |                 |           |        +-Pegged.RhsName [9537, 9542]["E_OP"]
-    |                 |           |           +-Pegged.Identifier [9537, 9541]["E_OP"]
-    |                 |           +-Pegged.Prefix [9542, 9547][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9542, 9543][":"]
-    |                 |           |  +-Pegged.Suffix [9543, 9547]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9543, 9545]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9543, 9545]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9543, 9545]["WS"]
-    |                 |           |     +-Pegged.OPTION [9545, 9547]["?"]
-    |                 |           +-Pegged.Prefix [9547, 9551]["Term"]
-    |                 |              +-Pegged.Suffix [9547, 9551]["Term"]
-    |                 |                 +-Pegged.Primary [9547, 9551]["Term"]
-    |                 |                    +-Pegged.RhsName [9547, 9551]["Term"]
-    |                 |                       +-Pegged.Identifier [9547, 9551]["Term"]
-    |                 +-Pegged.ZEROORMORE [9552, 9566]["*"]
-    +-Pegged.Definition [9566, 9618]["Term", "<-", "Factor", ":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |  +-Pegged.LhsName [9566, 9571]["Term"]
-    |  |  +-Pegged.Identifier [9566, 9570]["Term"]
-    |  +-Pegged.Arrow [9571, 9574]["<-"]
-    |  |  +-Pegged.LEFTARROW [9571, 9574]["<-"]
-    |  +-Pegged.Expression [9574, 9618]["Factor", ":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |     +-Pegged.LongestExpression [9574, 9618]["Factor", ":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |        +-Pegged.Sequence [9574, 9618]["Factor", ":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |           +-Pegged.Prefix [9574, 9581]["Factor"]
-    |           |  +-Pegged.Suffix [9574, 9581]["Factor"]
-    |           |     +-Pegged.Primary [9574, 9581]["Factor"]
-    |           |        +-Pegged.RhsName [9574, 9581]["Factor"]
-    |           |           +-Pegged.Identifier [9574, 9580]["Factor"]
-    |           +-Pegged.Prefix [9581, 9618][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |              +-Pegged.Suffix [9581, 9618][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor", "*"]
-    |                 +-Pegged.Primary [9581, 9604][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor"]
-    |                 |  +-Pegged.Expression [9582, 9603][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor"]
-    |                 |     +-Pegged.LongestExpression [9582, 9603][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor"]
-    |                 |        +-Pegged.Sequence [9582, 9603][":", "WS", "?", "T_OP", ":", "WS", "?", "Factor"]
-    |                 |           +-Pegged.Prefix [9582, 9587][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9582, 9583][":"]
-    |                 |           |  +-Pegged.Suffix [9583, 9587]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9583, 9585]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9583, 9585]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9583, 9585]["WS"]
-    |                 |           |     +-Pegged.OPTION [9585, 9587]["?"]
-    |                 |           +-Pegged.Prefix [9587, 9592]["T_OP"]
-    |                 |           |  +-Pegged.Suffix [9587, 9592]["T_OP"]
-    |                 |           |     +-Pegged.Primary [9587, 9592]["T_OP"]
-    |                 |           |        +-Pegged.RhsName [9587, 9592]["T_OP"]
-    |                 |           |           +-Pegged.Identifier [9587, 9591]["T_OP"]
-    |                 |           +-Pegged.Prefix [9592, 9597][":", "WS", "?"]
-    |                 |           |  +-Pegged.DISCARD [9592, 9593][":"]
-    |                 |           |  +-Pegged.Suffix [9593, 9597]["WS", "?"]
-    |                 |           |     +-Pegged.Primary [9593, 9595]["WS"]
-    |                 |           |     |  +-Pegged.RhsName [9593, 9595]["WS"]
-    |                 |           |     |     +-Pegged.Identifier [9593, 9595]["WS"]
-    |                 |           |     +-Pegged.OPTION [9595, 9597]["?"]
-    |                 |           +-Pegged.Prefix [9597, 9603]["Factor"]
-    |                 |              +-Pegged.Suffix [9597, 9603]["Factor"]
-    |                 |                 +-Pegged.Primary [9597, 9603]["Factor"]
-    |                 |                    +-Pegged.RhsName [9597, 9603]["Factor"]
-    |                 |                       +-Pegged.Identifier [9597, 9603]["Factor"]
-    |                 +-Pegged.ZEROORMORE [9604, 9618]["*"]
-    +-Pegged.Definition [9618, 9773]["Factor", "<-", "UN_OP", "?", ":", "WS", "?", "Accessor", "Number", "UN_OP", "?", ":", "WS", "?", "Parenthesis", "String", "UN_OP", "?", ":", "WS", "?", "Expression", "UN_OP", "?", ":", "WS", "?", "Address"]
-    |  +-Pegged.LhsName [9618, 9625]["Factor"]
-    |  |  +-Pegged.Identifier [9618, 9624]["Factor"]
-    |  +-Pegged.Arrow [9625, 9628]["<-"]
-    |  |  +-Pegged.LEFTARROW [9625, 9628]["<-"]
-    |  +-Pegged.Expression [9628, 9773]["UN_OP", "?", ":", "WS", "?", "Accessor", "Number", "UN_OP", "?", ":", "WS", "?", "Parenthesis", "String", "UN_OP", "?", ":", "WS", "?", "Expression", "UN_OP", "?", ":", "WS", "?", "Address"]
-    |     +-Pegged.FirstExpression [9628, 9773]["UN_OP", "?", ":", "WS", "?", "Accessor", "Number", "UN_OP", "?", ":", "WS", "?", "Parenthesis", "String", "UN_OP", "?", ":", "WS", "?", "Expression", "UN_OP", "?", ":", "WS", "?", "Address"]
-    |        +-Pegged.Sequence [9628, 9651]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |  +-Pegged.Prefix [9628, 9651]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |     +-Pegged.Suffix [9628, 9651]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |        +-Pegged.Primary [9628, 9651]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |           +-Pegged.Expression [9629, 9649]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |              +-Pegged.LongestExpression [9629, 9649]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |                 +-Pegged.Sequence [9629, 9649]["UN_OP", "?", ":", "WS", "?", "Accessor"]
-    |        |                    +-Pegged.Prefix [9629, 9636]["UN_OP", "?"]
-    |        |                    |  +-Pegged.Suffix [9629, 9636]["UN_OP", "?"]
-    |        |                    |     +-Pegged.Primary [9629, 9634]["UN_OP"]
-    |        |                    |     |  +-Pegged.RhsName [9629, 9634]["UN_OP"]
-    |        |                    |     |     +-Pegged.Identifier [9629, 9634]["UN_OP"]
-    |        |                    |     +-Pegged.OPTION [9634, 9636]["?"]
-    |        |                    +-Pegged.Prefix [9636, 9641][":", "WS", "?"]
-    |        |                    |  +-Pegged.DISCARD [9636, 9637][":"]
-    |        |                    |  +-Pegged.Suffix [9637, 9641]["WS", "?"]
-    |        |                    |     +-Pegged.Primary [9637, 9639]["WS"]
-    |        |                    |     |  +-Pegged.RhsName [9637, 9639]["WS"]
-    |        |                    |     |     +-Pegged.Identifier [9637, 9639]["WS"]
-    |        |                    |     +-Pegged.OPTION [9639, 9641]["?"]
-    |        |                    +-Pegged.Prefix [9641, 9649]["Accessor"]
-    |        |                       +-Pegged.Suffix [9641, 9649]["Accessor"]
-    |        |                          +-Pegged.Primary [9641, 9649]["Accessor"]
-    |        |                             +-Pegged.RhsName [9641, 9649]["Accessor"]
-    |        |                                +-Pegged.Identifier [9641, 9649]["Accessor"]
-    |        +-Pegged.Sequence [9653, 9660]["Number"]
-    |        |  +-Pegged.Prefix [9653, 9660]["Number"]
-    |        |     +-Pegged.Suffix [9653, 9660]["Number"]
-    |        |        +-Pegged.Primary [9653, 9660]["Number"]
-    |        |           +-Pegged.RhsName [9653, 9660]["Number"]
-    |        |              +-Pegged.Identifier [9653, 9659]["Number"]
-    |        +-Pegged.Sequence [9662, 9688]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |  +-Pegged.Prefix [9662, 9688]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |     +-Pegged.Suffix [9662, 9688]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |        +-Pegged.Primary [9662, 9688]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |           +-Pegged.Expression [9663, 9686]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |              +-Pegged.LongestExpression [9663, 9686]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |                 +-Pegged.Sequence [9663, 9686]["UN_OP", "?", ":", "WS", "?", "Parenthesis"]
-    |        |                    +-Pegged.Prefix [9663, 9670]["UN_OP", "?"]
-    |        |                    |  +-Pegged.Suffix [9663, 9670]["UN_OP", "?"]
-    |        |                    |     +-Pegged.Primary [9663, 9668]["UN_OP"]
-    |        |                    |     |  +-Pegged.RhsName [9663, 9668]["UN_OP"]
-    |        |                    |     |     +-Pegged.Identifier [9663, 9668]["UN_OP"]
-    |        |                    |     +-Pegged.OPTION [9668, 9670]["?"]
-    |        |                    +-Pegged.Prefix [9670, 9675][":", "WS", "?"]
-    |        |                    |  +-Pegged.DISCARD [9670, 9671][":"]
-    |        |                    |  +-Pegged.Suffix [9671, 9675]["WS", "?"]
-    |        |                    |     +-Pegged.Primary [9671, 9673]["WS"]
-    |        |                    |     |  +-Pegged.RhsName [9671, 9673]["WS"]
-    |        |                    |     |     +-Pegged.Identifier [9671, 9673]["WS"]
-    |        |                    |     +-Pegged.OPTION [9673, 9675]["?"]
-    |        |                    +-Pegged.Prefix [9675, 9686]["Parenthesis"]
-    |        |                       +-Pegged.Suffix [9675, 9686]["Parenthesis"]
-    |        |                          +-Pegged.Primary [9675, 9686]["Parenthesis"]
-    |        |                             +-Pegged.RhsName [9675, 9686]["Parenthesis"]
-    |        |                                +-Pegged.Identifier [9675, 9686]["Parenthesis"]
-    |        +-Pegged.Sequence [9690, 9697]["String"]
-    |        |  +-Pegged.Prefix [9690, 9697]["String"]
-    |        |     +-Pegged.Suffix [9690, 9697]["String"]
-    |        |        +-Pegged.Primary [9690, 9697]["String"]
-    |        |           +-Pegged.RhsName [9690, 9697]["String"]
-    |        |              +-Pegged.Identifier [9690, 9696]["String"]
-    |        +-Pegged.Sequence [9699, 9724]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |  +-Pegged.Prefix [9699, 9724]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |     +-Pegged.Suffix [9699, 9724]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |        +-Pegged.Primary [9699, 9724]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |           +-Pegged.Expression [9700, 9722]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |              +-Pegged.LongestExpression [9700, 9722]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |                 +-Pegged.Sequence [9700, 9722]["UN_OP", "?", ":", "WS", "?", "Expression"]
-    |        |                    +-Pegged.Prefix [9700, 9707]["UN_OP", "?"]
-    |        |                    |  +-Pegged.Suffix [9700, 9707]["UN_OP", "?"]
-    |        |                    |     +-Pegged.Primary [9700, 9705]["UN_OP"]
-    |        |                    |     |  +-Pegged.RhsName [9700, 9705]["UN_OP"]
-    |        |                    |     |     +-Pegged.Identifier [9700, 9705]["UN_OP"]
-    |        |                    |     +-Pegged.OPTION [9705, 9707]["?"]
-    |        |                    +-Pegged.Prefix [9707, 9712][":", "WS", "?"]
-    |        |                    |  +-Pegged.DISCARD [9707, 9708][":"]
-    |        |                    |  +-Pegged.Suffix [9708, 9712]["WS", "?"]
-    |        |                    |     +-Pegged.Primary [9708, 9710]["WS"]
-    |        |                    |     |  +-Pegged.RhsName [9708, 9710]["WS"]
-    |        |                    |     |     +-Pegged.Identifier [9708, 9710]["WS"]
-    |        |                    |     +-Pegged.OPTION [9710, 9712]["?"]
-    |        |                    +-Pegged.Prefix [9712, 9722]["Expression"]
-    |        |                       +-Pegged.Suffix [9712, 9722]["Expression"]
-    |        |                          +-Pegged.Primary [9712, 9722]["Expression"]
-    |        |                             +-Pegged.RhsName [9712, 9722]["Expression"]
-    |        |                                +-Pegged.Identifier [9712, 9722]["Expression"]
-    |        +-Pegged.Sequence [9726, 9773]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |           +-Pegged.Prefix [9726, 9773]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |              +-Pegged.Suffix [9726, 9773]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |                 +-Pegged.Primary [9726, 9773]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |                    +-Pegged.Expression [9727, 9746]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |                       +-Pegged.LongestExpression [9727, 9746]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |                          +-Pegged.Sequence [9727, 9746]["UN_OP", "?", ":", "WS", "?", "Address"]
-    |                             +-Pegged.Prefix [9727, 9734]["UN_OP", "?"]
-    |                             |  +-Pegged.Suffix [9727, 9734]["UN_OP", "?"]
-    |                             |     +-Pegged.Primary [9727, 9732]["UN_OP"]
-    |                             |     |  +-Pegged.RhsName [9727, 9732]["UN_OP"]
-    |                             |     |     +-Pegged.Identifier [9727, 9732]["UN_OP"]
-    |                             |     +-Pegged.OPTION [9732, 9734]["?"]
-    |                             +-Pegged.Prefix [9734, 9739][":", "WS", "?"]
-    |                             |  +-Pegged.DISCARD [9734, 9735][":"]
-    |                             |  +-Pegged.Suffix [9735, 9739]["WS", "?"]
-    |                             |     +-Pegged.Primary [9735, 9737]["WS"]
-    |                             |     |  +-Pegged.RhsName [9735, 9737]["WS"]
-    |                             |     |     +-Pegged.Identifier [9735, 9737]["WS"]
-    |                             |     +-Pegged.OPTION [9737, 9739]["?"]
-    |                             +-Pegged.Prefix [9739, 9746]["Address"]
-    |                                +-Pegged.Suffix [9739, 9746]["Address"]
-    |                                   +-Pegged.Primary [9739, 9746]["Address"]
-    |                                      +-Pegged.RhsName [9739, 9746]["Address"]
-    |                                         +-Pegged.Identifier [9739, 9746]["Address"]
-    +-Pegged.Definition [9773, 9815]["UN_OP", "<-", "\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |  +-Pegged.LhsName [9773, 9779]["UN_OP"]
-    |  |  +-Pegged.Identifier [9773, 9778]["UN_OP"]
-    |  +-Pegged.Arrow [9779, 9782]["<-"]
-    |  |  +-Pegged.LEFTARROW [9779, 9782]["<-"]
-    |  +-Pegged.Expression [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |     +-Pegged.LongestExpression [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |        +-Pegged.Sequence [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |           +-Pegged.Prefix [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |              +-Pegged.Suffix [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |                 +-Pegged.Primary [9782, 9815]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |                    +-Pegged.Expression [9783, 9801]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |                       +-Pegged.FirstExpression [9783, 9801]["\"", "-", "\"", "\"", "not", "\"", ":", "WS"]
-    |                          +-Pegged.Sequence [9783, 9787]["\"", "-", "\""]
-    |                          |  +-Pegged.Prefix [9783, 9787]["\"", "-", "\""]
-    |                          |     +-Pegged.Suffix [9783, 9787]["\"", "-", "\""]
-    |                          |        +-Pegged.Primary [9783, 9787]["\"", "-", "\""]
-    |                          |           +-Pegged.Literal [9783, 9787]["\"", "-", "\""]
-    |                          +-Pegged.Sequence [9789, 9801]["\"", "not", "\"", ":", "WS"]
-    |                             +-Pegged.Prefix [9789, 9801]["\"", "not", "\"", ":", "WS"]
-    |                                +-Pegged.Suffix [9789, 9801]["\"", "not", "\"", ":", "WS"]
-    |                                   +-Pegged.Primary [9789, 9801]["\"", "not", "\"", ":", "WS"]
-    |                                      +-Pegged.Expression [9790, 9800]["\"", "not", "\"", ":", "WS"]
-    |                                         +-Pegged.LongestExpression [9790, 9800]["\"", "not", "\"", ":", "WS"]
-    |                                            +-Pegged.Sequence [9790, 9800]["\"", "not", "\"", ":", "WS"]
-    |                                               +-Pegged.Prefix [9790, 9797]["\"", "not", "\""]
-    |                                               |  +-Pegged.Suffix [9790, 9797]["\"", "not", "\""]
-    |                                               |     +-Pegged.Primary [9790, 9797]["\"", "not", "\""]
-    |                                               |        +-Pegged.CILiteral [9790, 9797]["\"", "not", "\""]
-    |                                               +-Pegged.Prefix [9797, 9800][":", "WS"]
-    |                                                  +-Pegged.DISCARD [9797, 9798][":"]
-    |                                                  +-Pegged.Suffix [9798, 9800]["WS"]
-    |                                                     +-Pegged.Primary [9798, 9800]["WS"]
-    |                                                        +-Pegged.RhsName [9798, 9800]["WS"]
-    |                                                           +-Pegged.Identifier [9798, 9800]["WS"]
-    +-Pegged.Definition [9815, 9856]["T_OP", "<-", "\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |  +-Pegged.LhsName [9815, 9820]["T_OP"]
-    |  |  +-Pegged.Identifier [9815, 9819]["T_OP"]
-    |  +-Pegged.Arrow [9820, 9823]["<-"]
-    |  |  +-Pegged.LEFTARROW [9820, 9823]["<-"]
-    |  +-Pegged.Expression [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |     +-Pegged.LongestExpression [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |        +-Pegged.Sequence [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |           +-Pegged.Prefix [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |              +-Pegged.Suffix [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |                 +-Pegged.Primary [9823, 9856]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |                    +-Pegged.Expression [9824, 9842]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |                       +-Pegged.FirstExpression [9824, 9842]["\"", "*", "\"", "\"", "/", "\"", "\"", "mod", "\""]
-    |                          +-Pegged.Sequence [9824, 9828]["\"", "*", "\""]
-    |                          |  +-Pegged.Prefix [9824, 9828]["\"", "*", "\""]
-    |                          |     +-Pegged.Suffix [9824, 9828]["\"", "*", "\""]
-    |                          |        +-Pegged.Primary [9824, 9828]["\"", "*", "\""]
-    |                          |           +-Pegged.Literal [9824, 9828]["\"", "*", "\""]
-    |                          +-Pegged.Sequence [9830, 9834]["\"", "/", "\""]
-    |                          |  +-Pegged.Prefix [9830, 9834]["\"", "/", "\""]
-    |                          |     +-Pegged.Suffix [9830, 9834]["\"", "/", "\""]
-    |                          |        +-Pegged.Primary [9830, 9834]["\"", "/", "\""]
-    |                          |           +-Pegged.Literal [9830, 9834]["\"", "/", "\""]
-    |                          +-Pegged.Sequence [9836, 9842]["\"", "mod", "\""]
-    |                             +-Pegged.Prefix [9836, 9842]["\"", "mod", "\""]
-    |                                +-Pegged.Suffix [9836, 9842]["\"", "mod", "\""]
-    |                                   +-Pegged.Primary [9836, 9842]["\"", "mod", "\""]
-    |                                      +-Pegged.CILiteral [9836, 9842]["\"", "mod", "\""]
-    +-Pegged.Definition [9856, 9888]["E_OP", "<-", "\"", "+", "\"", "\"", "-", "\""]
-    |  +-Pegged.LhsName [9856, 9861]["E_OP"]
-    |  |  +-Pegged.Identifier [9856, 9860]["E_OP"]
-    |  +-Pegged.Arrow [9861, 9864]["<-"]
-    |  |  +-Pegged.LEFTARROW [9861, 9864]["<-"]
-    |  +-Pegged.Expression [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |     +-Pegged.LongestExpression [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |        +-Pegged.Sequence [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |           +-Pegged.Prefix [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |              +-Pegged.Suffix [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |                 +-Pegged.Primary [9864, 9888]["\"", "+", "\"", "\"", "-", "\""]
-    |                    +-Pegged.Expression [9865, 9874]["\"", "+", "\"", "\"", "-", "\""]
-    |                       +-Pegged.FirstExpression [9865, 9874]["\"", "+", "\"", "\"", "-", "\""]
-    |                          +-Pegged.Sequence [9865, 9869]["\"", "+", "\""]
-    |                          |  +-Pegged.Prefix [9865, 9869]["\"", "+", "\""]
-    |                          |     +-Pegged.Suffix [9865, 9869]["\"", "+", "\""]
-    |                          |        +-Pegged.Primary [9865, 9869]["\"", "+", "\""]
-    |                          |           +-Pegged.Literal [9865, 9869]["\"", "+", "\""]
-    |                          +-Pegged.Sequence [9871, 9874]["\"", "-", "\""]
-    |                             +-Pegged.Prefix [9871, 9874]["\"", "-", "\""]
-    |                                +-Pegged.Suffix [9871, 9874]["\"", "-", "\""]
-    |                                   +-Pegged.Primary [9871, 9874]["\"", "-", "\""]
-    |                                      +-Pegged.Literal [9871, 9874]["\"", "-", "\""]
-    +-Pegged.Definition [9888, 9935]["BW_OP", "<-", "\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |  +-Pegged.LhsName [9888, 9894]["BW_OP"]
-    |  |  +-Pegged.Identifier [9888, 9893]["BW_OP"]
-    |  +-Pegged.Arrow [9894, 9897]["<-"]
-    |  |  +-Pegged.LEFTARROW [9894, 9897]["<-"]
-    |  +-Pegged.Expression [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |     +-Pegged.LongestExpression [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |        +-Pegged.Sequence [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |           +-Pegged.Prefix [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |              +-Pegged.Suffix [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |                 +-Pegged.Primary [9897, 9935]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |                    +-Pegged.Expression [9898, 9921]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |                       +-Pegged.FirstExpression [9898, 9921]["\"", "and", "\"", "\"", "or", "\"", "\"", "xor", "\""]
-    |                          +-Pegged.Sequence [9898, 9905]["\"", "and", "\""]
-    |                          |  +-Pegged.Prefix [9898, 9905]["\"", "and", "\""]
-    |                          |     +-Pegged.Suffix [9898, 9905]["\"", "and", "\""]
-    |                          |        +-Pegged.Primary [9898, 9905]["\"", "and", "\""]
-    |                          |           +-Pegged.CILiteral [9898, 9905]["\"", "and", "\""]
-    |                          +-Pegged.Sequence [9907, 9913]["\"", "or", "\""]
-    |                          |  +-Pegged.Prefix [9907, 9913]["\"", "or", "\""]
-    |                          |     +-Pegged.Suffix [9907, 9913]["\"", "or", "\""]
-    |                          |        +-Pegged.Primary [9907, 9913]["\"", "or", "\""]
-    |                          |           +-Pegged.CILiteral [9907, 9913]["\"", "or", "\""]
-    |                          +-Pegged.Sequence [9915, 9921]["\"", "xor", "\""]
-    |                             +-Pegged.Prefix [9915, 9921]["\"", "xor", "\""]
-    |                                +-Pegged.Suffix [9915, 9921]["\"", "xor", "\""]
-    |                                   +-Pegged.Primary [9915, 9921]["\"", "xor", "\""]
-    |                                      +-Pegged.CILiteral [9915, 9921]["\"", "xor", "\""]
-    +-Pegged.Definition [9935, 9997]["REL_OP", "<-", "\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |  +-Pegged.LhsName [9935, 9942]["REL_OP"]
-    |  |  +-Pegged.Identifier [9935, 9941]["REL_OP"]
-    |  +-Pegged.Arrow [9942, 9945]["<-"]
-    |  |  +-Pegged.LEFTARROW [9942, 9945]["<-"]
-    |  +-Pegged.Expression [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |     +-Pegged.LongestExpression [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |        +-Pegged.Sequence [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |           +-Pegged.Prefix [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |              +-Pegged.Suffix [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |                 +-Pegged.Primary [9945, 9997]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |                    +-Pegged.Expression [9946, 9982]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |                       +-Pegged.FirstExpression [9946, 9982]["\"", "<=", "\"", "\"", "<>", "\"", "\"", "<", "\"", "\"", "=", "\"", "\"", ">=", "\"", "\"", ">", "\""]
-    |                          +-Pegged.Sequence [9946, 9951]["\"", "<=", "\""]
-    |                          |  +-Pegged.Prefix [9946, 9951]["\"", "<=", "\""]
-    |                          |     +-Pegged.Suffix [9946, 9951]["\"", "<=", "\""]
-    |                          |        +-Pegged.Primary [9946, 9951]["\"", "<=", "\""]
-    |                          |           +-Pegged.Literal [9946, 9951]["\"", "<=", "\""]
-    |                          +-Pegged.Sequence [9953, 9958]["\"", "<>", "\""]
-    |                          |  +-Pegged.Prefix [9953, 9958]["\"", "<>", "\""]
-    |                          |     +-Pegged.Suffix [9953, 9958]["\"", "<>", "\""]
-    |                          |        +-Pegged.Primary [9953, 9958]["\"", "<>", "\""]
-    |                          |           +-Pegged.Literal [9953, 9958]["\"", "<>", "\""]
-    |                          +-Pegged.Sequence [9960, 9964]["\"", "<", "\""]
-    |                          |  +-Pegged.Prefix [9960, 9964]["\"", "<", "\""]
-    |                          |     +-Pegged.Suffix [9960, 9964]["\"", "<", "\""]
-    |                          |        +-Pegged.Primary [9960, 9964]["\"", "<", "\""]
-    |                          |           +-Pegged.Literal [9960, 9964]["\"", "<", "\""]
-    |                          +-Pegged.Sequence [9966, 9970]["\"", "=", "\""]
-    |                          |  +-Pegged.Prefix [9966, 9970]["\"", "=", "\""]
-    |                          |     +-Pegged.Suffix [9966, 9970]["\"", "=", "\""]
-    |                          |        +-Pegged.Primary [9966, 9970]["\"", "=", "\""]
-    |                          |           +-Pegged.Literal [9966, 9970]["\"", "=", "\""]
-    |                          +-Pegged.Sequence [9972, 9977]["\"", ">=", "\""]
-    |                          |  +-Pegged.Prefix [9972, 9977]["\"", ">=", "\""]
-    |                          |     +-Pegged.Suffix [9972, 9977]["\"", ">=", "\""]
-    |                          |        +-Pegged.Primary [9972, 9977]["\"", ">=", "\""]
-    |                          |           +-Pegged.Literal [9972, 9977]["\"", ">=", "\""]
-    |                          +-Pegged.Sequence [9979, 9982]["\"", ">", "\""]
-    |                             +-Pegged.Prefix [9979, 9982]["\"", ">", "\""]
-    |                                +-Pegged.Suffix [9979, 9982]["\"", ">", "\""]
-    |                                   +-Pegged.Primary [9979, 9982]["\"", ">", "\""]
-    |                                      +-Pegged.Literal [9979, 9982]["\"", ">", "\""]
-    +-Pegged.Definition [9997, 10056]["Parenthesis", "<-", ":", "\"", "(", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", ":", "\"", ")", "\""]
-    |  +-Pegged.LhsName [9997, 10009]["Parenthesis"]
-    |  |  +-Pegged.Identifier [9997, 10008]["Parenthesis"]
-    |  +-Pegged.Arrow [10009, 10012]["<-"]
-    |  |  +-Pegged.LEFTARROW [10009, 10012]["<-"]
-    |  +-Pegged.Expression [10012, 10056][":", "\"", "(", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", ":", "\"", ")", "\""]
-    |     +-Pegged.LongestExpression [10012, 10056][":", "\"", "(", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", ":", "\"", ")", "\""]
-    |        +-Pegged.Sequence [10012, 10056][":", "\"", "(", "\"", ":", "WS", "?", "Expression", ":", "WS", "?", ":", "\"", ")", "\""]
-    |           +-Pegged.Prefix [10012, 10017][":", "\"", "(", "\""]
-    |           |  +-Pegged.DISCARD [10012, 10013][":"]
-    |           |  +-Pegged.Suffix [10013, 10017]["\"", "(", "\""]
-    |           |     +-Pegged.Primary [10013, 10017]["\"", "(", "\""]
-    |           |        +-Pegged.Literal [10013, 10017]["\"", "(", "\""]
-    |           +-Pegged.Prefix [10017, 10022][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [10017, 10018][":"]
-    |           |  +-Pegged.Suffix [10018, 10022]["WS", "?"]
-    |           |     +-Pegged.Primary [10018, 10020]["WS"]
-    |           |     |  +-Pegged.RhsName [10018, 10020]["WS"]
-    |           |     |     +-Pegged.Identifier [10018, 10020]["WS"]
-    |           |     +-Pegged.OPTION [10020, 10022]["?"]
-    |           +-Pegged.Prefix [10022, 10033]["Expression"]
-    |           |  +-Pegged.Suffix [10022, 10033]["Expression"]
-    |           |     +-Pegged.Primary [10022, 10033]["Expression"]
-    |           |        +-Pegged.RhsName [10022, 10033]["Expression"]
-    |           |           +-Pegged.Identifier [10022, 10032]["Expression"]
-    |           +-Pegged.Prefix [10033, 10038][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [10033, 10034][":"]
-    |           |  +-Pegged.Suffix [10034, 10038]["WS", "?"]
-    |           |     +-Pegged.Primary [10034, 10036]["WS"]
-    |           |     |  +-Pegged.RhsName [10034, 10036]["WS"]
-    |           |     |     +-Pegged.Identifier [10034, 10036]["WS"]
-    |           |     +-Pegged.OPTION [10036, 10038]["?"]
-    |           +-Pegged.Prefix [10038, 10056][":", "\"", ")", "\""]
-    |              +-Pegged.DISCARD [10038, 10039][":"]
-    |              +-Pegged.Suffix [10039, 10056]["\"", ")", "\""]
-    |                 +-Pegged.Primary [10039, 10056]["\"", ")", "\""]
-    |                    +-Pegged.Literal [10039, 10056]["\"", ")", "\""]
-    +-Pegged.Definition [10056, 10103]["Varnosubscript", "<-", "Varname", "Vartype", "?"]
-    |  +-Pegged.LhsName [10056, 10071]["Varnosubscript"]
-    |  |  +-Pegged.Identifier [10056, 10070]["Varnosubscript"]
-    |  +-Pegged.Arrow [10071, 10074]["<-"]
-    |  |  +-Pegged.LEFTARROW [10071, 10074]["<-"]
-    |  +-Pegged.Expression [10074, 10103]["Varname", "Vartype", "?"]
-    |     +-Pegged.LongestExpression [10074, 10103]["Varname", "Vartype", "?"]
-    |        +-Pegged.Sequence [10074, 10103]["Varname", "Vartype", "?"]
-    |           +-Pegged.Prefix [10074, 10082]["Varname"]
-    |           |  +-Pegged.Suffix [10074, 10082]["Varname"]
-    |           |     +-Pegged.Primary [10074, 10082]["Varname"]
-    |           |        +-Pegged.RhsName [10074, 10082]["Varname"]
-    |           |           +-Pegged.Identifier [10074, 10081]["Varname"]
-    |           +-Pegged.Prefix [10082, 10103]["Vartype", "?"]
-    |              +-Pegged.Suffix [10082, 10103]["Vartype", "?"]
-    |                 +-Pegged.Primary [10082, 10089]["Vartype"]
-    |                 |  +-Pegged.RhsName [10082, 10089]["Vartype"]
-    |                 |     +-Pegged.Identifier [10082, 10089]["Vartype"]
-    |                 +-Pegged.OPTION [10089, 10103]["?"]
-    +-Pegged.Definition [10103, 10163]["Var", "<-", "Varname", "Subscript", "?", "Vartype", "?"]
-    |  +-Pegged.LhsName [10103, 10107]["Var"]
-    |  |  +-Pegged.Identifier [10103, 10106]["Var"]
-    |  +-Pegged.Arrow [10107, 10110]["<-"]
-    |  |  +-Pegged.LEFTARROW [10107, 10110]["<-"]
-    |  +-Pegged.Expression [10110, 10163]["Varname", "Subscript", "?", "Vartype", "?"]
-    |     +-Pegged.LongestExpression [10110, 10163]["Varname", "Subscript", "?", "Vartype", "?"]
-    |        +-Pegged.Sequence [10110, 10163]["Varname", "Subscript", "?", "Vartype", "?"]
-    |           +-Pegged.Prefix [10110, 10118]["Varname"]
-    |           |  +-Pegged.Suffix [10110, 10118]["Varname"]
-    |           |     +-Pegged.Primary [10110, 10118]["Varname"]
-    |           |        +-Pegged.RhsName [10110, 10118]["Varname"]
-    |           |           +-Pegged.Identifier [10110, 10117]["Varname"]
-    |           +-Pegged.Prefix [10118, 10129]["Subscript", "?"]
-    |           |  +-Pegged.Suffix [10118, 10129]["Subscript", "?"]
-    |           |     +-Pegged.Primary [10118, 10127]["Subscript"]
-    |           |     |  +-Pegged.RhsName [10118, 10127]["Subscript"]
-    |           |     |     +-Pegged.Identifier [10118, 10127]["Subscript"]
-    |           |     +-Pegged.OPTION [10127, 10129]["?"]
-    |           +-Pegged.Prefix [10129, 10163]["Vartype", "?"]
-    |              +-Pegged.Suffix [10129, 10163]["Vartype", "?"]
-    |                 +-Pegged.Primary [10129, 10136]["Vartype"]
-    |                 |  +-Pegged.RhsName [10129, 10136]["Vartype"]
-    |                 |     +-Pegged.Identifier [10129, 10136]["Vartype"]
-    |                 +-Pegged.OPTION [10136, 10163]["?"]
-    +-Pegged.Definition [10163, 10204]["IdentifierStart", "<~", "a", "-", "z", "A", "-", "Z", "_"]
-    |  +-Pegged.LhsName [10163, 10179]["IdentifierStart"]
-    |  |  +-Pegged.Identifier [10163, 10178]["IdentifierStart"]
-    |  +-Pegged.Arrow [10179, 10182]["<~"]
-    |  |  +-Pegged.FUSEARROW [10179, 10182]["<~"]
-    |  +-Pegged.Expression [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |     +-Pegged.LongestExpression [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |        +-Pegged.Sequence [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |           +-Pegged.Prefix [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |              +-Pegged.Suffix [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |                 +-Pegged.Primary [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |                    +-Pegged.CharClass [10182, 10204]["a", "-", "z", "A", "-", "Z", "_"]
-    |                       +-Pegged.CharRange [10183, 10186]["a", "-", "z"]
-    |                       |  +-Pegged.Char [10183, 10184]["a"]
-    |                       |  +-Pegged.Char [10185, 10186]["z"]
-    |                       +-Pegged.CharRange [10186, 10189]["A", "-", "Z"]
-    |                       |  +-Pegged.Char [10186, 10187]["A"]
-    |                       |  +-Pegged.Char [10188, 10189]["Z"]
-    |                       +-Pegged.CharRange [10189, 10190]["_"]
-    |                          +-Pegged.Char [10189, 10190]["_"]
-    +-Pegged.Definition [10204, 10248]["IdentifierCont", "<~", "a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |  +-Pegged.LhsName [10204, 10219]["IdentifierCont"]
-    |  |  +-Pegged.Identifier [10204, 10218]["IdentifierCont"]
-    |  +-Pegged.Arrow [10219, 10222]["<~"]
-    |  |  +-Pegged.FUSEARROW [10219, 10222]["<~"]
-    |  +-Pegged.Expression [10222, 10248]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |     +-Pegged.LongestExpression [10222, 10248]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |        +-Pegged.Sequence [10222, 10248]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |           +-Pegged.Prefix [10222, 10248]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |              +-Pegged.Suffix [10222, 10248]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_", "+"]
-    |                 +-Pegged.Primary [10222, 10234]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_"]
-    |                 |  +-Pegged.CharClass [10222, 10234]["a", "-", "z", "A", "-", "Z", "0", "-", "9", "_"]
-    |                 |     +-Pegged.CharRange [10223, 10226]["a", "-", "z"]
-    |                 |     |  +-Pegged.Char [10223, 10224]["a"]
-    |                 |     |  +-Pegged.Char [10225, 10226]["z"]
-    |                 |     +-Pegged.CharRange [10226, 10229]["A", "-", "Z"]
-    |                 |     |  +-Pegged.Char [10226, 10227]["A"]
-    |                 |     |  +-Pegged.Char [10228, 10229]["Z"]
-    |                 |     +-Pegged.CharRange [10229, 10232]["0", "-", "9"]
-    |                 |     |  +-Pegged.Char [10229, 10230]["0"]
-    |                 |     |  +-Pegged.Char [10231, 10232]["9"]
-    |                 |     +-Pegged.CharRange [10232, 10233]["_"]
-    |                 |        +-Pegged.Char [10232, 10233]["_"]
-    |                 +-Pegged.ONEORMORE [10234, 10248]["+"]
-    +-Pegged.Definition [10248, 10337]["Varname", "<~", "!", "Reserved", "!", "IdentifierCont", "IdentifierStart", "IdentifierCont", "?", "\"", "$", "\"", "?"]
-    |  +-Pegged.LhsName [10248, 10256]["Varname"]
-    |  |  +-Pegged.Identifier [10248, 10255]["Varname"]
-    |  +-Pegged.Arrow [10256, 10259]["<~"]
-    |  |  +-Pegged.FUSEARROW [10256, 10259]["<~"]
-    |  +-Pegged.Expression [10259, 10337]["!", "Reserved", "!", "IdentifierCont", "IdentifierStart", "IdentifierCont", "?", "\"", "$", "\"", "?"]
-    |     +-Pegged.LongestExpression [10259, 10337]["!", "Reserved", "!", "IdentifierCont", "IdentifierStart", "IdentifierCont", "?", "\"", "$", "\"", "?"]
-    |        +-Pegged.Sequence [10259, 10337]["!", "Reserved", "!", "IdentifierCont", "IdentifierStart", "IdentifierCont", "?", "\"", "$", "\"", "?"]
-    |           +-Pegged.Prefix [10259, 10287]["!", "Reserved", "!", "IdentifierCont"]
-    |           |  +-Pegged.NEG [10259, 10260]["!"]
-    |           |  +-Pegged.Suffix [10260, 10287]["Reserved", "!", "IdentifierCont"]
-    |           |     +-Pegged.Primary [10260, 10287]["Reserved", "!", "IdentifierCont"]
-    |           |        +-Pegged.Expression [10261, 10285]["Reserved", "!", "IdentifierCont"]
-    |           |           +-Pegged.LongestExpression [10261, 10285]["Reserved", "!", "IdentifierCont"]
-    |           |              +-Pegged.Sequence [10261, 10285]["Reserved", "!", "IdentifierCont"]
-    |           |                 +-Pegged.Prefix [10261, 10270]["Reserved"]
-    |           |                 |  +-Pegged.Suffix [10261, 10270]["Reserved"]
-    |           |                 |     +-Pegged.Primary [10261, 10270]["Reserved"]
-    |           |                 |        +-Pegged.RhsName [10261, 10270]["Reserved"]
-    |           |                 |           +-Pegged.Identifier [10261, 10269]["Reserved"]
-    |           |                 +-Pegged.Prefix [10270, 10285]["!", "IdentifierCont"]
-    |           |                    +-Pegged.NEG [10270, 10271]["!"]
-    |           |                    +-Pegged.Suffix [10271, 10285]["IdentifierCont"]
-    |           |                       +-Pegged.Primary [10271, 10285]["IdentifierCont"]
-    |           |                          +-Pegged.RhsName [10271, 10285]["IdentifierCont"]
-    |           |                             +-Pegged.Identifier [10271, 10285]["IdentifierCont"]
-    |           +-Pegged.Prefix [10287, 10303]["IdentifierStart"]
-    |           |  +-Pegged.Suffix [10287, 10303]["IdentifierStart"]
-    |           |     +-Pegged.Primary [10287, 10303]["IdentifierStart"]
-    |           |        +-Pegged.RhsName [10287, 10303]["IdentifierStart"]
-    |           |           +-Pegged.Identifier [10287, 10302]["IdentifierStart"]
-    |           +-Pegged.Prefix [10303, 10319]["IdentifierCont", "?"]
-    |           |  +-Pegged.Suffix [10303, 10319]["IdentifierCont", "?"]
-    |           |     +-Pegged.Primary [10303, 10317]["IdentifierCont"]
-    |           |     |  +-Pegged.RhsName [10303, 10317]["IdentifierCont"]
-    |           |     |     +-Pegged.Identifier [10303, 10317]["IdentifierCont"]
-    |           |     +-Pegged.OPTION [10317, 10319]["?"]
-    |           +-Pegged.Prefix [10319, 10337]["\"", "$", "\"", "?"]
-    |              +-Pegged.Suffix [10319, 10337]["\"", "$", "\"", "?"]
-    |                 +-Pegged.Primary [10319, 10322]["\"", "$", "\""]
-    |                 |  +-Pegged.Literal [10319, 10322]["\"", "$", "\""]
-    |                 +-Pegged.OPTION [10322, 10337]["?"]
-    +-Pegged.Definition [10337, 10374]["Address", "<-", "\"", "@", "\"", "Accessor"]
-    |  +-Pegged.LhsName [10337, 10345]["Address"]
-    |  |  +-Pegged.Identifier [10337, 10344]["Address"]
-    |  +-Pegged.Arrow [10345, 10348]["<-"]
-    |  |  +-Pegged.LEFTARROW [10345, 10348]["<-"]
-    |  +-Pegged.Expression [10348, 10374]["\"", "@", "\"", "Accessor"]
-    |     +-Pegged.LongestExpression [10348, 10374]["\"", "@", "\"", "Accessor"]
-    |        +-Pegged.Sequence [10348, 10374]["\"", "@", "\"", "Accessor"]
-    |           +-Pegged.Prefix [10348, 10352]["\"", "@", "\""]
-    |           |  +-Pegged.Suffix [10348, 10352]["\"", "@", "\""]
-    |           |     +-Pegged.Primary [10348, 10352]["\"", "@", "\""]
-    |           |        +-Pegged.Literal [10348, 10352]["\"", "@", "\""]
-    |           +-Pegged.Prefix [10352, 10374]["Accessor"]
-    |              +-Pegged.Suffix [10352, 10374]["Accessor"]
-    |                 +-Pegged.Primary [10352, 10374]["Accessor"]
-    |                    +-Pegged.RhsName [10352, 10374]["Accessor"]
-    |                       +-Pegged.Identifier [10352, 10360]["Accessor"]
-    +-Pegged.Definition [10374, 10445]["Accessor", "<-", "Varname", "Subscript", "?", ":", "\"", ".", "\"", "Varname", "*", "Subscript", "?"]
-    |  +-Pegged.LhsName [10374, 10383]["Accessor"]
-    |  |  +-Pegged.Identifier [10374, 10382]["Accessor"]
-    |  +-Pegged.Arrow [10383, 10386]["<-"]
-    |  |  +-Pegged.LEFTARROW [10383, 10386]["<-"]
-    |  +-Pegged.Expression [10386, 10445]["Varname", "Subscript", "?", ":", "\"", ".", "\"", "Varname", "*", "Subscript", "?"]
-    |     +-Pegged.LongestExpression [10386, 10445]["Varname", "Subscript", "?", ":", "\"", ".", "\"", "Varname", "*", "Subscript", "?"]
-    |        +-Pegged.Sequence [10386, 10445]["Varname", "Subscript", "?", ":", "\"", ".", "\"", "Varname", "*", "Subscript", "?"]
-    |           +-Pegged.Prefix [10386, 10394]["Varname"]
-    |           |  +-Pegged.Suffix [10386, 10394]["Varname"]
-    |           |     +-Pegged.Primary [10386, 10394]["Varname"]
-    |           |        +-Pegged.RhsName [10386, 10394]["Varname"]
-    |           |           +-Pegged.Identifier [10386, 10393]["Varname"]
-    |           +-Pegged.Prefix [10394, 10405]["Subscript", "?"]
-    |           |  +-Pegged.Suffix [10394, 10405]["Subscript", "?"]
-    |           |     +-Pegged.Primary [10394, 10403]["Subscript"]
-    |           |     |  +-Pegged.RhsName [10394, 10403]["Subscript"]
-    |           |     |     +-Pegged.Identifier [10394, 10403]["Subscript"]
-    |           |     +-Pegged.OPTION [10403, 10405]["?"]
-    |           +-Pegged.Prefix [10405, 10421][":", "\"", ".", "\"", "Varname", "*"]
-    |           |  +-Pegged.Suffix [10405, 10421][":", "\"", ".", "\"", "Varname", "*"]
-    |           |     +-Pegged.Primary [10405, 10419][":", "\"", ".", "\"", "Varname"]
-    |           |     |  +-Pegged.Expression [10406, 10418][":", "\"", ".", "\"", "Varname"]
-    |           |     |     +-Pegged.LongestExpression [10406, 10418][":", "\"", ".", "\"", "Varname"]
-    |           |     |        +-Pegged.Sequence [10406, 10418][":", "\"", ".", "\"", "Varname"]
-    |           |     |           +-Pegged.Prefix [10406, 10411][":", "\"", ".", "\""]
-    |           |     |           |  +-Pegged.DISCARD [10406, 10407][":"]
-    |           |     |           |  +-Pegged.Suffix [10407, 10411]["\"", ".", "\""]
-    |           |     |           |     +-Pegged.Primary [10407, 10411]["\"", ".", "\""]
-    |           |     |           |        +-Pegged.Literal [10407, 10411]["\"", ".", "\""]
-    |           |     |           +-Pegged.Prefix [10411, 10418]["Varname"]
-    |           |     |              +-Pegged.Suffix [10411, 10418]["Varname"]
-    |           |     |                 +-Pegged.Primary [10411, 10418]["Varname"]
-    |           |     |                    +-Pegged.RhsName [10411, 10418]["Varname"]
-    |           |     |                       +-Pegged.Identifier [10411, 10418]["Varname"]
-    |           |     +-Pegged.ZEROORMORE [10419, 10421]["*"]
-    |           +-Pegged.Prefix [10421, 10445]["Subscript", "?"]
-    |              +-Pegged.Suffix [10421, 10445]["Subscript", "?"]
-    |                 +-Pegged.Primary [10421, 10430]["Subscript"]
-    |                 |  +-Pegged.RhsName [10421, 10430]["Subscript"]
-    |                 |     +-Pegged.Identifier [10421, 10430]["Subscript"]
-    |                 +-Pegged.OPTION [10430, 10445]["?"]
-    +-Pegged.Definition [10445, 10487]["Id", "<-", "a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |  +-Pegged.LhsName [10445, 10448]["Id"]
-    |  |  +-Pegged.Identifier [10445, 10447]["Id"]
-    |  +-Pegged.Arrow [10448, 10451]["<-"]
-    |  |  +-Pegged.LEFTARROW [10448, 10451]["<-"]
-    |  +-Pegged.Expression [10451, 10487]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |     +-Pegged.LongestExpression [10451, 10487]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |        +-Pegged.Sequence [10451, 10487]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |           +-Pegged.Prefix [10451, 10461]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |  +-Pegged.Suffix [10451, 10461]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |     +-Pegged.Primary [10451, 10461]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |        +-Pegged.CharClass [10451, 10461]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |           +-Pegged.CharRange [10452, 10455]["a", "-", "z"]
-    |           |           |  +-Pegged.Char [10452, 10453]["a"]
-    |           |           |  +-Pegged.Char [10454, 10455]["z"]
-    |           |           +-Pegged.CharRange [10455, 10458]["A", "-", "Z"]
-    |           |           |  +-Pegged.Char [10455, 10456]["A"]
-    |           |           |  +-Pegged.Char [10457, 10458]["Z"]
-    |           |           +-Pegged.CharRange [10458, 10459]["_"]
-    |           |              +-Pegged.Char [10458, 10459]["_"]
-    |           +-Pegged.Prefix [10461, 10487]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |              +-Pegged.Suffix [10461, 10487]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |                 +-Pegged.Primary [10461, 10473]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |                 |  +-Pegged.CharClass [10461, 10473]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |                 |     +-Pegged.CharRange [10462, 10465]["a", "-", "z"]
-    |                 |     |  +-Pegged.Char [10462, 10463]["a"]
-    |                 |     |  +-Pegged.Char [10464, 10465]["z"]
-    |                 |     +-Pegged.CharRange [10465, 10468]["A", "-", "Z"]
-    |                 |     |  +-Pegged.Char [10465, 10466]["A"]
-    |                 |     |  +-Pegged.Char [10467, 10468]["Z"]
-    |                 |     +-Pegged.CharRange [10468, 10469]["_"]
-    |                 |     |  +-Pegged.Char [10468, 10469]["_"]
-    |                 |     +-Pegged.CharRange [10469, 10472]["0", "-", "9"]
-    |                 |        +-Pegged.Char [10469, 10470]["0"]
-    |                 |        +-Pegged.Char [10471, 10472]["9"]
-    |                 +-Pegged.ZEROORMORE [10473, 10487]["*"]
-    +-Pegged.Definition [10487, 10544]["Str_typeLen", "<-", "\"", "*", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |  +-Pegged.LhsName [10487, 10499]["Str_typeLen"]
-    |  |  +-Pegged.Identifier [10487, 10498]["Str_typeLen"]
-    |  +-Pegged.Arrow [10499, 10502]["<-"]
-    |  |  +-Pegged.LEFTARROW [10499, 10502]["<-"]
-    |  +-Pegged.Expression [10502, 10544]["\"", "*", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |     +-Pegged.LongestExpression [10502, 10544]["\"", "*", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |        +-Pegged.Sequence [10502, 10544]["\"", "*", "\"", ":", "WS", "?", "Number", "Label_ref"]
-    |           +-Pegged.Prefix [10502, 10506]["\"", "*", "\""]
-    |           |  +-Pegged.Suffix [10502, 10506]["\"", "*", "\""]
-    |           |     +-Pegged.Primary [10502, 10506]["\"", "*", "\""]
-    |           |        +-Pegged.Literal [10502, 10506]["\"", "*", "\""]
-    |           +-Pegged.Prefix [10506, 10511][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [10506, 10507][":"]
-    |           |  +-Pegged.Suffix [10507, 10511]["WS", "?"]
-    |           |     +-Pegged.Primary [10507, 10509]["WS"]
-    |           |     |  +-Pegged.RhsName [10507, 10509]["WS"]
-    |           |     |     +-Pegged.Identifier [10507, 10509]["WS"]
-    |           |     +-Pegged.OPTION [10509, 10511]["?"]
-    |           +-Pegged.Prefix [10511, 10544]["Number", "Label_ref"]
-    |              +-Pegged.Suffix [10511, 10544]["Number", "Label_ref"]
-    |                 +-Pegged.Primary [10511, 10544]["Number", "Label_ref"]
-    |                    +-Pegged.Expression [10512, 10530]["Number", "Label_ref"]
-    |                       +-Pegged.FirstExpression [10512, 10530]["Number", "Label_ref"]
-    |                          +-Pegged.Sequence [10512, 10519]["Number"]
-    |                          |  +-Pegged.Prefix [10512, 10519]["Number"]
-    |                          |     +-Pegged.Suffix [10512, 10519]["Number"]
-    |                          |        +-Pegged.Primary [10512, 10519]["Number"]
-    |                          |           +-Pegged.RhsName [10512, 10519]["Number"]
-    |                          |              +-Pegged.Identifier [10512, 10518]["Number"]
-    |                          +-Pegged.Sequence [10521, 10530]["Label_ref"]
-    |                             +-Pegged.Prefix [10521, 10530]["Label_ref"]
-    |                                +-Pegged.Suffix [10521, 10530]["Label_ref"]
-    |                                   +-Pegged.Primary [10521, 10530]["Label_ref"]
-    |                                      +-Pegged.RhsName [10521, 10530]["Label_ref"]
-    |                                         +-Pegged.Identifier [10521, 10530]["Label_ref"]
-    +-Pegged.Definition [10544, 10613]["Vartype", "<-", ":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?", "eps"]
-    |  +-Pegged.LhsName [10544, 10552]["Vartype"]
-    |  |  +-Pegged.Identifier [10544, 10551]["Vartype"]
-    |  +-Pegged.Arrow [10552, 10555]["<-"]
-    |  |  +-Pegged.LEFTARROW [10552, 10555]["<-"]
-    |  +-Pegged.Expression [10555, 10613][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?", "eps"]
-    |     +-Pegged.FirstExpression [10555, 10613][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?", "eps"]
-    |        +-Pegged.Sequence [10555, 10595][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |  +-Pegged.Prefix [10555, 10595][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |     +-Pegged.Suffix [10555, 10595][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |        +-Pegged.Primary [10555, 10595][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |           +-Pegged.Expression [10556, 10593][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |              +-Pegged.LongestExpression [10556, 10593][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |                 +-Pegged.Sequence [10556, 10593][":", "WS", ":", "\"", "as", "\"", ":", "WS", "Id", ":", "WS", "?", "Str_typeLen", "?"]
-    |        |                    +-Pegged.Prefix [10556, 10560][":", "WS"]
-    |        |                    |  +-Pegged.DISCARD [10556, 10557][":"]
-    |        |                    |  +-Pegged.Suffix [10557, 10560]["WS"]
-    |        |                    |     +-Pegged.Primary [10557, 10560]["WS"]
-    |        |                    |        +-Pegged.RhsName [10557, 10560]["WS"]
-    |        |                    |           +-Pegged.Identifier [10557, 10559]["WS"]
-    |        |                    +-Pegged.Prefix [10560, 10567][":", "\"", "as", "\""]
-    |        |                    |  +-Pegged.DISCARD [10560, 10561][":"]
-    |        |                    |  +-Pegged.Suffix [10561, 10567]["\"", "as", "\""]
-    |        |                    |     +-Pegged.Primary [10561, 10567]["\"", "as", "\""]
-    |        |                    |        +-Pegged.CILiteral [10561, 10567]["\"", "as", "\""]
-    |        |                    +-Pegged.Prefix [10567, 10571][":", "WS"]
-    |        |                    |  +-Pegged.DISCARD [10567, 10568][":"]
-    |        |                    |  +-Pegged.Suffix [10568, 10571]["WS"]
-    |        |                    |     +-Pegged.Primary [10568, 10571]["WS"]
-    |        |                    |        +-Pegged.RhsName [10568, 10571]["WS"]
-    |        |                    |           +-Pegged.Identifier [10568, 10570]["WS"]
-    |        |                    +-Pegged.Prefix [10571, 10574]["Id"]
-    |        |                    |  +-Pegged.Suffix [10571, 10574]["Id"]
-    |        |                    |     +-Pegged.Primary [10571, 10574]["Id"]
-    |        |                    |        +-Pegged.RhsName [10571, 10574]["Id"]
-    |        |                    |           +-Pegged.Identifier [10571, 10573]["Id"]
-    |        |                    +-Pegged.Prefix [10574, 10593][":", "WS", "?", "Str_typeLen", "?"]
-    |        |                       +-Pegged.Suffix [10574, 10593][":", "WS", "?", "Str_typeLen", "?"]
-    |        |                          +-Pegged.Primary [10574, 10592][":", "WS", "?", "Str_typeLen"]
-    |        |                          |  +-Pegged.Expression [10575, 10591][":", "WS", "?", "Str_typeLen"]
-    |        |                          |     +-Pegged.LongestExpression [10575, 10591][":", "WS", "?", "Str_typeLen"]
-    |        |                          |        +-Pegged.Sequence [10575, 10591][":", "WS", "?", "Str_typeLen"]
-    |        |                          |           +-Pegged.Prefix [10575, 10580][":", "WS", "?"]
-    |        |                          |           |  +-Pegged.DISCARD [10575, 10576][":"]
-    |        |                          |           |  +-Pegged.Suffix [10576, 10580]["WS", "?"]
-    |        |                          |           |     +-Pegged.Primary [10576, 10578]["WS"]
-    |        |                          |           |     |  +-Pegged.RhsName [10576, 10578]["WS"]
-    |        |                          |           |     |     +-Pegged.Identifier [10576, 10578]["WS"]
-    |        |                          |           |     +-Pegged.OPTION [10578, 10580]["?"]
-    |        |                          |           +-Pegged.Prefix [10580, 10591]["Str_typeLen"]
-    |        |                          |              +-Pegged.Suffix [10580, 10591]["Str_typeLen"]
-    |        |                          |                 +-Pegged.Primary [10580, 10591]["Str_typeLen"]
-    |        |                          |                    +-Pegged.RhsName [10580, 10591]["Str_typeLen"]
-    |        |                          |                       +-Pegged.Identifier [10580, 10591]["Str_typeLen"]
-    |        |                          +-Pegged.OPTION [10592, 10593]["?"]
-    |        +-Pegged.Sequence [10597, 10613]["eps"]
-    |           +-Pegged.Prefix [10597, 10613]["eps"]
-    |              +-Pegged.Suffix [10597, 10613]["eps"]
-    |                 +-Pegged.Primary [10597, 10613]["eps"]
-    |                    +-Pegged.RhsName [10597, 10613]["eps"]
-    |                       +-Pegged.Identifier [10597, 10600]["eps"]
-    +-Pegged.Definition [10613, 10696]["Subscript", "<-", "\"", "(", "\"", ":", "WS", "?", "Expression", "?", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*", ":", "WS", "?", "\"", ")", "\""]
-    |  +-Pegged.LhsName [10613, 10623]["Subscript"]
-    |  |  +-Pegged.Identifier [10613, 10622]["Subscript"]
-    |  +-Pegged.Arrow [10623, 10626]["<-"]
-    |  |  +-Pegged.LEFTARROW [10623, 10626]["<-"]
-    |  +-Pegged.Expression [10626, 10696]["\"", "(", "\"", ":", "WS", "?", "Expression", "?", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*", ":", "WS", "?", "\"", ")", "\""]
-    |     +-Pegged.LongestExpression [10626, 10696]["\"", "(", "\"", ":", "WS", "?", "Expression", "?", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*", ":", "WS", "?", "\"", ")", "\""]
-    |        +-Pegged.Sequence [10626, 10696]["\"", "(", "\"", ":", "WS", "?", "Expression", "?", ":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*", ":", "WS", "?", "\"", ")", "\""]
-    |           +-Pegged.Prefix [10626, 10630]["\"", "(", "\""]
-    |           |  +-Pegged.Suffix [10626, 10630]["\"", "(", "\""]
-    |           |     +-Pegged.Primary [10626, 10630]["\"", "(", "\""]
-    |           |        +-Pegged.Literal [10626, 10630]["\"", "(", "\""]
-    |           +-Pegged.Prefix [10630, 10635][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [10630, 10631][":"]
-    |           |  +-Pegged.Suffix [10631, 10635]["WS", "?"]
-    |           |     +-Pegged.Primary [10631, 10633]["WS"]
-    |           |     |  +-Pegged.RhsName [10631, 10633]["WS"]
-    |           |     |     +-Pegged.Identifier [10631, 10633]["WS"]
-    |           |     +-Pegged.OPTION [10633, 10635]["?"]
-    |           +-Pegged.Prefix [10635, 10647]["Expression", "?"]
-    |           |  +-Pegged.Suffix [10635, 10647]["Expression", "?"]
-    |           |     +-Pegged.Primary [10635, 10645]["Expression"]
-    |           |     |  +-Pegged.RhsName [10635, 10645]["Expression"]
-    |           |     |     +-Pegged.Identifier [10635, 10645]["Expression"]
-    |           |     +-Pegged.OPTION [10645, 10647]["?"]
-    |           +-Pegged.Prefix [10647, 10675][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |           |  +-Pegged.Suffix [10647, 10675][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression", "*"]
-    |           |     +-Pegged.Primary [10647, 10673][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           |     |  +-Pegged.Expression [10648, 10672][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           |     |     +-Pegged.LongestExpression [10648, 10672][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           |     |        +-Pegged.Sequence [10648, 10672][":", "WS", "?", "\"", ",", "\"", ":", "WS", "?", "Expression"]
-    |           |     |           +-Pegged.Prefix [10648, 10653][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [10648, 10649][":"]
-    |           |     |           |  +-Pegged.Suffix [10649, 10653]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [10649, 10651]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [10649, 10651]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [10649, 10651]["WS"]
-    |           |     |           |     +-Pegged.OPTION [10651, 10653]["?"]
-    |           |     |           +-Pegged.Prefix [10653, 10657]["\"", ",", "\""]
-    |           |     |           |  +-Pegged.Suffix [10653, 10657]["\"", ",", "\""]
-    |           |     |           |     +-Pegged.Primary [10653, 10657]["\"", ",", "\""]
-    |           |     |           |        +-Pegged.Literal [10653, 10657]["\"", ",", "\""]
-    |           |     |           +-Pegged.Prefix [10657, 10662][":", "WS", "?"]
-    |           |     |           |  +-Pegged.DISCARD [10657, 10658][":"]
-    |           |     |           |  +-Pegged.Suffix [10658, 10662]["WS", "?"]
-    |           |     |           |     +-Pegged.Primary [10658, 10660]["WS"]
-    |           |     |           |     |  +-Pegged.RhsName [10658, 10660]["WS"]
-    |           |     |           |     |     +-Pegged.Identifier [10658, 10660]["WS"]
-    |           |     |           |     +-Pegged.OPTION [10660, 10662]["?"]
-    |           |     |           +-Pegged.Prefix [10662, 10672]["Expression"]
-    |           |     |              +-Pegged.Suffix [10662, 10672]["Expression"]
-    |           |     |                 +-Pegged.Primary [10662, 10672]["Expression"]
-    |           |     |                    +-Pegged.RhsName [10662, 10672]["Expression"]
-    |           |     |                       +-Pegged.Identifier [10662, 10672]["Expression"]
-    |           |     +-Pegged.ZEROORMORE [10673, 10675]["*"]
-    |           +-Pegged.Prefix [10675, 10680][":", "WS", "?"]
-    |           |  +-Pegged.DISCARD [10675, 10676][":"]
-    |           |  +-Pegged.Suffix [10676, 10680]["WS", "?"]
-    |           |     +-Pegged.Primary [10676, 10678]["WS"]
-    |           |     |  +-Pegged.RhsName [10676, 10678]["WS"]
-    |           |     |     +-Pegged.Identifier [10676, 10678]["WS"]
-    |           |     +-Pegged.OPTION [10678, 10680]["?"]
-    |           +-Pegged.Prefix [10680, 10696]["\"", ")", "\""]
-    |              +-Pegged.Suffix [10680, 10696]["\"", ")", "\""]
-    |                 +-Pegged.Primary [10680, 10696]["\"", ")", "\""]
-    |                    +-Pegged.Literal [10680, 10696]["\"", ")", "\""]
-    +-Pegged.Definition [10696, 10768]["String", "<-", "doublequote", "!", "doublequote", ".", "^", "'", " ", "'", "*", "doublequote"]
-    |  +-Pegged.LhsName [10696, 10703]["String"]
-    |  |  +-Pegged.Identifier [10696, 10702]["String"]
-    |  +-Pegged.Arrow [10703, 10706]["<-"]
-    |  |  +-Pegged.LEFTARROW [10703, 10706]["<-"]
-    |  +-Pegged.Expression [10706, 10768]["doublequote", "!", "doublequote", ".", "^", "'", " ", "'", "*", "doublequote"]
-    |     +-Pegged.LongestExpression [10706, 10768]["doublequote", "!", "doublequote", ".", "^", "'", " ", "'", "*", "doublequote"]
-    |        +-Pegged.Sequence [10706, 10768]["doublequote", "!", "doublequote", ".", "^", "'", " ", "'", "*", "doublequote"]
-    |           +-Pegged.Prefix [10706, 10718]["doublequote"]
-    |           |  +-Pegged.Suffix [10706, 10718]["doublequote"]
-    |           |     +-Pegged.Primary [10706, 10718]["doublequote"]
-    |           |        +-Pegged.RhsName [10706, 10718]["doublequote"]
-    |           |           +-Pegged.Identifier [10706, 10717]["doublequote"]
-    |           +-Pegged.Prefix [10718, 10743]["!", "doublequote", ".", "^", "'", " ", "'", "*"]
-    |           |  +-Pegged.Suffix [10718, 10743]["!", "doublequote", ".", "^", "'", " ", "'", "*"]
-    |           |     +-Pegged.Primary [10718, 10741]["!", "doublequote", ".", "^", "'", " ", "'"]
-    |           |     |  +-Pegged.Expression [10719, 10740]["!", "doublequote", ".", "^", "'", " ", "'"]
-    |           |     |     +-Pegged.FirstExpression [10719, 10740]["!", "doublequote", ".", "^", "'", " ", "'"]
-    |           |     |        +-Pegged.Sequence [10719, 10734]["!", "doublequote", "."]
-    |           |     |        |  +-Pegged.Prefix [10719, 10732]["!", "doublequote"]
-    |           |     |        |  |  +-Pegged.NEG [10719, 10720]["!"]
-    |           |     |        |  |  +-Pegged.Suffix [10720, 10732]["doublequote"]
-    |           |     |        |  |     +-Pegged.Primary [10720, 10732]["doublequote"]
-    |           |     |        |  |        +-Pegged.RhsName [10720, 10732]["doublequote"]
-    |           |     |        |  |           +-Pegged.Identifier [10720, 10731]["doublequote"]
-    |           |     |        |  +-Pegged.Prefix [10732, 10734]["."]
-    |           |     |        |     +-Pegged.Suffix [10732, 10734]["."]
-    |           |     |        |        +-Pegged.Primary [10732, 10734]["."]
-    |           |     |        |           +-Pegged.ANY [10732, 10734]["."]
-    |           |     |        +-Pegged.Sequence [10736, 10740]["^", "'", " ", "'"]
-    |           |     |           +-Pegged.Prefix [10736, 10740]["^", "'", " ", "'"]
-    |           |     |              +-Pegged.KEEP [10736, 10737]["^"]
-    |           |     |              +-Pegged.Suffix [10737, 10740]["'", " ", "'"]
-    |           |     |                 +-Pegged.Primary [10737, 10740]["'", " ", "'"]
-    |           |     |                    +-Pegged.Literal [10737, 10740]["'", " ", "'"]
-    |           |     +-Pegged.ZEROORMORE [10741, 10743]["*"]
-    |           +-Pegged.Prefix [10743, 10768]["doublequote"]
-    |              +-Pegged.Suffix [10743, 10768]["doublequote"]
-    |                 +-Pegged.Primary [10743, 10768]["doublequote"]
-    |                    +-Pegged.RhsName [10743, 10768]["doublequote"]
-    |                       +-Pegged.Identifier [10743, 10754]["doublequote"]
-    +-Pegged.Definition [10768, 10801]["Unsigned", "<-", "0", "-", "9", "+"]
-    |  +-Pegged.LhsName [10768, 10779]["Unsigned"]
-    |  |  +-Pegged.Identifier [10768, 10776]["Unsigned"]
-    |  +-Pegged.Arrow [10779, 10782]["<-"]
-    |  |  +-Pegged.LEFTARROW [10779, 10782]["<-"]
-    |  +-Pegged.Expression [10782, 10801]["0", "-", "9", "+"]
-    |     +-Pegged.LongestExpression [10782, 10801]["0", "-", "9", "+"]
-    |        +-Pegged.Sequence [10782, 10801]["0", "-", "9", "+"]
-    |           +-Pegged.Prefix [10782, 10801]["0", "-", "9", "+"]
-    |              +-Pegged.Suffix [10782, 10801]["0", "-", "9", "+"]
-    |                 +-Pegged.Primary [10782, 10787]["0", "-", "9"]
-    |                 |  +-Pegged.CharClass [10782, 10787]["0", "-", "9"]
-    |                 |     +-Pegged.CharRange [10783, 10786]["0", "-", "9"]
-    |                 |        +-Pegged.Char [10783, 10784]["0"]
-    |                 |        +-Pegged.Char [10785, 10786]["9"]
-    |                 +-Pegged.ONEORMORE [10787, 10801]["+"]
-    +-Pegged.Definition [10801, 10840]["Decimal", "<-", "Unsigned", "\"", "d", "\""]
-    |  +-Pegged.LhsName [10801, 10812]["Decimal"]
-    |  |  +-Pegged.Identifier [10801, 10808]["Decimal"]
-    |  +-Pegged.Arrow [10812, 10815]["<-"]
-    |  |  +-Pegged.LEFTARROW [10812, 10815]["<-"]
-    |  +-Pegged.Expression [10815, 10840]["Unsigned", "\"", "d", "\""]
-    |     +-Pegged.LongestExpression [10815, 10840]["Unsigned", "\"", "d", "\""]
-    |        +-Pegged.Sequence [10815, 10840]["Unsigned", "\"", "d", "\""]
-    |           +-Pegged.Prefix [10815, 10824]["Unsigned"]
-    |           |  +-Pegged.Suffix [10815, 10824]["Unsigned"]
-    |           |     +-Pegged.Primary [10815, 10824]["Unsigned"]
-    |           |        +-Pegged.RhsName [10815, 10824]["Unsigned"]
-    |           |           +-Pegged.Identifier [10815, 10823]["Unsigned"]
-    |           +-Pegged.Prefix [10824, 10840]["\"", "d", "\""]
-    |              +-Pegged.Suffix [10824, 10840]["\"", "d", "\""]
-    |                 +-Pegged.Primary [10824, 10840]["\"", "d", "\""]
-    |                    +-Pegged.Literal [10824, 10840]["\"", "d", "\""]
-    +-Pegged.Definition [10840, 10880]["Integer", "<-", "\"", "-", "\"", "?", "Unsigned"]
-    |  +-Pegged.LhsName [10840, 10851]["Integer"]
-    |  |  +-Pegged.Identifier [10840, 10847]["Integer"]
-    |  +-Pegged.Arrow [10851, 10854]["<-"]
-    |  |  +-Pegged.LEFTARROW [10851, 10854]["<-"]
-    |  +-Pegged.Expression [10854, 10880]["\"", "-", "\"", "?", "Unsigned"]
-    |     +-Pegged.LongestExpression [10854, 10880]["\"", "-", "\"", "?", "Unsigned"]
-    |        +-Pegged.Sequence [10854, 10880]["\"", "-", "\"", "?", "Unsigned"]
-    |           +-Pegged.Prefix [10854, 10859]["\"", "-", "\"", "?"]
-    |           |  +-Pegged.Suffix [10854, 10859]["\"", "-", "\"", "?"]
-    |           |     +-Pegged.Primary [10854, 10857]["\"", "-", "\""]
-    |           |     |  +-Pegged.Literal [10854, 10857]["\"", "-", "\""]
-    |           |     +-Pegged.OPTION [10857, 10859]["?"]
-    |           +-Pegged.Prefix [10859, 10880]["Unsigned"]
-    |              +-Pegged.Suffix [10859, 10880]["Unsigned"]
-    |                 +-Pegged.Primary [10859, 10880]["Unsigned"]
-    |                    +-Pegged.RhsName [10859, 10880]["Unsigned"]
-    |                       +-Pegged.Identifier [10859, 10867]["Unsigned"]
-    +-Pegged.Definition [10880, 10923]["Hexa", "<-", "\"", "$", "\"", "0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |  +-Pegged.LhsName [10880, 10891]["Hexa"]
-    |  |  +-Pegged.Identifier [10880, 10884]["Hexa"]
-    |  +-Pegged.Arrow [10891, 10894]["<-"]
-    |  |  +-Pegged.LEFTARROW [10891, 10894]["<-"]
-    |  +-Pegged.Expression [10894, 10923]["\"", "$", "\"", "0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |     +-Pegged.LongestExpression [10894, 10923]["\"", "$", "\"", "0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |        +-Pegged.Sequence [10894, 10923]["\"", "$", "\"", "0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |           +-Pegged.Prefix [10894, 10898]["\"", "$", "\""]
-    |           |  +-Pegged.Suffix [10894, 10898]["\"", "$", "\""]
-    |           |     +-Pegged.Primary [10894, 10898]["\"", "$", "\""]
-    |           |        +-Pegged.Literal [10894, 10898]["\"", "$", "\""]
-    |           +-Pegged.Prefix [10898, 10923]["0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |              +-Pegged.Suffix [10898, 10923]["0", "-", "9", "a", "-", "f", "A", "-", "F", "+"]
-    |                 +-Pegged.Primary [10898, 10909]["0", "-", "9", "a", "-", "f", "A", "-", "F"]
-    |                 |  +-Pegged.CharClass [10898, 10909]["0", "-", "9", "a", "-", "f", "A", "-", "F"]
-    |                 |     +-Pegged.CharRange [10899, 10902]["0", "-", "9"]
-    |                 |     |  +-Pegged.Char [10899, 10900]["0"]
-    |                 |     |  +-Pegged.Char [10901, 10902]["9"]
-    |                 |     +-Pegged.CharRange [10902, 10905]["a", "-", "f"]
-    |                 |     |  +-Pegged.Char [10902, 10903]["a"]
-    |                 |     |  +-Pegged.Char [10904, 10905]["f"]
-    |                 |     +-Pegged.CharRange [10905, 10908]["A", "-", "F"]
-    |                 |        +-Pegged.Char [10905, 10906]["A"]
-    |                 |        +-Pegged.Char [10907, 10908]["F"]
-    |                 +-Pegged.ONEORMORE [10909, 10923]["+"]
-    +-Pegged.Definition [10923, 10966]["Binary", "<-", "\"", "%", "\"", "\"", "0", "\"", "\"", "1", "\"", "+"]
-    |  +-Pegged.LhsName [10923, 10934]["Binary"]
-    |  |  +-Pegged.Identifier [10923, 10929]["Binary"]
-    |  +-Pegged.Arrow [10934, 10937]["<-"]
-    |  |  +-Pegged.LEFTARROW [10934, 10937]["<-"]
-    |  +-Pegged.Expression [10937, 10966]["\"", "%", "\"", "\"", "0", "\"", "\"", "1", "\"", "+"]
-    |     +-Pegged.LongestExpression [10937, 10966]["\"", "%", "\"", "\"", "0", "\"", "\"", "1", "\"", "+"]
-    |        +-Pegged.Sequence [10937, 10966]["\"", "%", "\"", "\"", "0", "\"", "\"", "1", "\"", "+"]
-    |           +-Pegged.Prefix [10937, 10941]["\"", "%", "\""]
-    |           |  +-Pegged.Suffix [10937, 10941]["\"", "%", "\""]
-    |           |     +-Pegged.Primary [10937, 10941]["\"", "%", "\""]
-    |           |        +-Pegged.Literal [10937, 10941]["\"", "%", "\""]
-    |           +-Pegged.Prefix [10941, 10966]["\"", "0", "\"", "\"", "1", "\"", "+"]
-    |              +-Pegged.Suffix [10941, 10966]["\"", "0", "\"", "\"", "1", "\"", "+"]
-    |                 +-Pegged.Primary [10941, 10952]["\"", "0", "\"", "\"", "1", "\""]
-    |                 |  +-Pegged.Expression [10942, 10951]["\"", "0", "\"", "\"", "1", "\""]
-    |                 |     +-Pegged.FirstExpression [10942, 10951]["\"", "0", "\"", "\"", "1", "\""]
-    |                 |        +-Pegged.Sequence [10942, 10946]["\"", "0", "\""]
-    |                 |        |  +-Pegged.Prefix [10942, 10946]["\"", "0", "\""]
-    |                 |        |     +-Pegged.Suffix [10942, 10946]["\"", "0", "\""]
-    |                 |        |        +-Pegged.Primary [10942, 10946]["\"", "0", "\""]
-    |                 |        |           +-Pegged.Literal [10942, 10946]["\"", "0", "\""]
-    |                 |        +-Pegged.Sequence [10948, 10951]["\"", "1", "\""]
-    |                 |           +-Pegged.Prefix [10948, 10951]["\"", "1", "\""]
-    |                 |              +-Pegged.Suffix [10948, 10951]["\"", "1", "\""]
-    |                 |                 +-Pegged.Primary [10948, 10951]["\"", "1", "\""]
-    |                 |                    +-Pegged.Literal [10948, 10951]["\"", "1", "\""]
-    |                 +-Pegged.ONEORMORE [10952, 10966]["+"]
-    +-Pegged.Definition [10966, 11022]["Scientific", "<-", "Floating", "'", "e", "'", "'", "E", "'", "Integer"]
-    |  +-Pegged.LhsName [10966, 10977]["Scientific"]
-    |  |  +-Pegged.Identifier [10966, 10976]["Scientific"]
-    |  +-Pegged.Arrow [10977, 10980]["<-"]
-    |  |  +-Pegged.LEFTARROW [10977, 10980]["<-"]
-    |  +-Pegged.Expression [10980, 11022]["Floating", "'", "e", "'", "'", "E", "'", "Integer"]
-    |     +-Pegged.LongestExpression [10980, 11022]["Floating", "'", "e", "'", "'", "E", "'", "Integer"]
-    |        +-Pegged.Sequence [10980, 11022]["Floating", "'", "e", "'", "'", "E", "'", "Integer"]
-    |           +-Pegged.Prefix [10980, 10989]["Floating"]
-    |           |  +-Pegged.Suffix [10980, 10989]["Floating"]
-    |           |     +-Pegged.Primary [10980, 10989]["Floating"]
-    |           |        +-Pegged.RhsName [10980, 10989]["Floating"]
-    |           |           +-Pegged.Identifier [10980, 10988]["Floating"]
-    |           +-Pegged.Prefix [10989, 11002]["'", "e", "'", "'", "E", "'"]
-    |           |  +-Pegged.Suffix [10989, 11002]["'", "e", "'", "'", "E", "'"]
-    |           |     +-Pegged.Primary [10989, 11002]["'", "e", "'", "'", "E", "'"]
-    |           |        +-Pegged.Expression [10990, 11000]["'", "e", "'", "'", "E", "'"]
-    |           |           +-Pegged.FirstExpression [10990, 11000]["'", "e", "'", "'", "E", "'"]
-    |           |              +-Pegged.Sequence [10990, 10994]["'", "e", "'"]
-    |           |              |  +-Pegged.Prefix [10990, 10994]["'", "e", "'"]
-    |           |              |     +-Pegged.Suffix [10990, 10994]["'", "e", "'"]
-    |           |              |        +-Pegged.Primary [10990, 10994]["'", "e", "'"]
-    |           |              |           +-Pegged.Literal [10990, 10994]["'", "e", "'"]
-    |           |              +-Pegged.Sequence [10996, 11000]["'", "E", "'"]
-    |           |                 +-Pegged.Prefix [10996, 11000]["'", "E", "'"]
-    |           |                    +-Pegged.Suffix [10996, 11000]["'", "E", "'"]
-    |           |                       +-Pegged.Primary [10996, 11000]["'", "E", "'"]
-    |           |                          +-Pegged.Literal [10996, 11000]["'", "E", "'"]
-    |           +-Pegged.Prefix [11002, 11022]["Integer"]
-    |              +-Pegged.Suffix [11002, 11022]["Integer"]
-    |                 +-Pegged.Primary [11002, 11022]["Integer"]
-    |                    +-Pegged.RhsName [11002, 11022]["Integer"]
-    |                       +-Pegged.Identifier [11002, 11009]["Integer"]
-    +-Pegged.Definition [11022, 11075]["Floating", "<-", "\"", "-", "\"", "?", "Unsigned", "\"", ".", "\"", "Unsigned"]
-    |  +-Pegged.LhsName [11022, 11033]["Floating"]
-    |  |  +-Pegged.Identifier [11022, 11030]["Floating"]
-    |  +-Pegged.Arrow [11033, 11036]["<-"]
-    |  |  +-Pegged.LEFTARROW [11033, 11036]["<-"]
-    |  +-Pegged.Expression [11036, 11075]["\"", "-", "\"", "?", "Unsigned", "\"", ".", "\"", "Unsigned"]
-    |     +-Pegged.LongestExpression [11036, 11075]["\"", "-", "\"", "?", "Unsigned", "\"", ".", "\"", "Unsigned"]
-    |        +-Pegged.Sequence [11036, 11075]["\"", "-", "\"", "?", "Unsigned", "\"", ".", "\"", "Unsigned"]
-    |           +-Pegged.Prefix [11036, 11041]["\"", "-", "\"", "?"]
-    |           |  +-Pegged.Suffix [11036, 11041]["\"", "-", "\"", "?"]
-    |           |     +-Pegged.Primary [11036, 11039]["\"", "-", "\""]
-    |           |     |  +-Pegged.Literal [11036, 11039]["\"", "-", "\""]
-    |           |     +-Pegged.OPTION [11039, 11041]["?"]
-    |           +-Pegged.Prefix [11041, 11050]["Unsigned"]
-    |           |  +-Pegged.Suffix [11041, 11050]["Unsigned"]
-    |           |     +-Pegged.Primary [11041, 11050]["Unsigned"]
-    |           |        +-Pegged.RhsName [11041, 11050]["Unsigned"]
-    |           |           +-Pegged.Identifier [11041, 11049]["Unsigned"]
-    |           +-Pegged.Prefix [11050, 11054]["\"", ".", "\""]
-    |           |  +-Pegged.Suffix [11050, 11054]["\"", ".", "\""]
-    |           |     +-Pegged.Primary [11050, 11054]["\"", ".", "\""]
-    |           |        +-Pegged.Literal [11050, 11054]["\"", ".", "\""]
-    |           +-Pegged.Prefix [11054, 11075]["Unsigned"]
-    |              +-Pegged.Suffix [11054, 11075]["Unsigned"]
-    |                 +-Pegged.Primary [11054, 11075]["Unsigned"]
-    |                    +-Pegged.RhsName [11054, 11075]["Unsigned"]
-    |                       +-Pegged.Identifier [11054, 11062]["Unsigned"]
-    +-Pegged.Definition [11075, 11142]["Charlit", "<-", "\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\"", "\"", "'", "\"", ".", "\"", "'", "\""]
-    |  +-Pegged.LhsName [11075, 11086]["Charlit"]
-    |  |  +-Pegged.Identifier [11075, 11082]["Charlit"]
-    |  +-Pegged.Arrow [11086, 11089]["<-"]
-    |  |  +-Pegged.LEFTARROW [11086, 11089]["<-"]
-    |  +-Pegged.Expression [11089, 11142]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\"", "\"", "'", "\"", ".", "\"", "'", "\""]
-    |     +-Pegged.FirstExpression [11089, 11142]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\"", "\"", "'", "\"", ".", "\"", "'", "\""]
-    |        +-Pegged.Sequence [11089, 11115]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |  +-Pegged.Prefix [11089, 11115]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |     +-Pegged.Suffix [11089, 11115]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |        +-Pegged.Primary [11089, 11115]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |           +-Pegged.Expression [11090, 11113]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |              +-Pegged.LongestExpression [11090, 11113]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |                 +-Pegged.Sequence [11090, 11113]["\"", "'{", "\"", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+", "\"", "}'", "\""]
-    |        |                    +-Pegged.Prefix [11090, 11095]["\"", "'{", "\""]
-    |        |                    |  +-Pegged.Suffix [11090, 11095]["\"", "'{", "\""]
-    |        |                    |     +-Pegged.Primary [11090, 11095]["\"", "'{", "\""]
-    |        |                    |        +-Pegged.Literal [11090, 11095]["\"", "'{", "\""]
-    |        |                    +-Pegged.Prefix [11095, 11109]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+"]
-    |        |                    |  +-Pegged.Suffix [11095, 11109]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "+"]
-    |        |                    |     +-Pegged.Primary [11095, 11107]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |        |                    |     |  +-Pegged.CharClass [11095, 11107]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |        |                    |     |     +-Pegged.CharRange [11096, 11099]["a", "-", "z"]
-    |        |                    |     |     |  +-Pegged.Char [11096, 11097]["a"]
-    |        |                    |     |     |  +-Pegged.Char [11098, 11099]["z"]
-    |        |                    |     |     +-Pegged.CharRange [11099, 11102]["A", "-", "Z"]
-    |        |                    |     |     |  +-Pegged.Char [11099, 11100]["A"]
-    |        |                    |     |     |  +-Pegged.Char [11101, 11102]["Z"]
-    |        |                    |     |     +-Pegged.CharRange [11102, 11103]["_"]
-    |        |                    |     |     |  +-Pegged.Char [11102, 11103]["_"]
-    |        |                    |     |     +-Pegged.CharRange [11103, 11106]["0", "-", "9"]
-    |        |                    |     |        +-Pegged.Char [11103, 11104]["0"]
-    |        |                    |     |        +-Pegged.Char [11105, 11106]["9"]
-    |        |                    |     +-Pegged.ONEORMORE [11107, 11109]["+"]
-    |        |                    +-Pegged.Prefix [11109, 11113]["\"", "}'", "\""]
-    |        |                       +-Pegged.Suffix [11109, 11113]["\"", "}'", "\""]
-    |        |                          +-Pegged.Primary [11109, 11113]["\"", "}'", "\""]
-    |        |                             +-Pegged.Literal [11109, 11113]["\"", "}'", "\""]
-    |        +-Pegged.Sequence [11117, 11142]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |           +-Pegged.Prefix [11117, 11142]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |              +-Pegged.Suffix [11117, 11142]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |                 +-Pegged.Primary [11117, 11142]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |                    +-Pegged.Expression [11118, 11127]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |                       +-Pegged.LongestExpression [11118, 11127]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |                          +-Pegged.Sequence [11118, 11127]["\"", "'", "\"", ".", "\"", "'", "\""]
-    |                             +-Pegged.Prefix [11118, 11122]["\"", "'", "\""]
-    |                             |  +-Pegged.Suffix [11118, 11122]["\"", "'", "\""]
-    |                             |     +-Pegged.Primary [11118, 11122]["\"", "'", "\""]
-    |                             |        +-Pegged.Literal [11118, 11122]["\"", "'", "\""]
-    |                             +-Pegged.Prefix [11122, 11124]["."]
-    |                             |  +-Pegged.Suffix [11122, 11124]["."]
-    |                             |     +-Pegged.Primary [11122, 11124]["."]
-    |                             |        +-Pegged.ANY [11122, 11124]["."]
-    |                             +-Pegged.Prefix [11124, 11127]["\"", "'", "\""]
-    |                                +-Pegged.Suffix [11124, 11127]["\"", "'", "\""]
-    |                                   +-Pegged.Primary [11124, 11127]["\"", "'", "\""]
-    |                                      +-Pegged.Literal [11124, 11127]["\"", "'", "\""]
-    +-Pegged.Definition [11142, 11235]["Number", "<-", "Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |  +-Pegged.LhsName [11142, 11149]["Number"]
-    |  |  +-Pegged.Identifier [11142, 11148]["Number"]
-    |  +-Pegged.Arrow [11149, 11152]["<-"]
-    |  |  +-Pegged.LEFTARROW [11149, 11152]["<-"]
-    |  +-Pegged.Expression [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |     +-Pegged.LongestExpression [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |        +-Pegged.Sequence [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |           +-Pegged.Prefix [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |              +-Pegged.Suffix [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |                 +-Pegged.Primary [11152, 11235]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |                    +-Pegged.Expression [11153, 11220]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |                       +-Pegged.FirstExpression [11153, 11220]["Decimal", "Scientific", "Floating", "Integer", "Hexa", "Binary", "Charlit"]
-    |                          +-Pegged.Sequence [11153, 11161]["Decimal"]
-    |                          |  +-Pegged.Prefix [11153, 11161]["Decimal"]
-    |                          |     +-Pegged.Suffix [11153, 11161]["Decimal"]
-    |                          |        +-Pegged.Primary [11153, 11161]["Decimal"]
-    |                          |           +-Pegged.RhsName [11153, 11161]["Decimal"]
-    |                          |              +-Pegged.Identifier [11153, 11160]["Decimal"]
-    |                          +-Pegged.Sequence [11163, 11174]["Scientific"]
-    |                          |  +-Pegged.Prefix [11163, 11174]["Scientific"]
-    |                          |     +-Pegged.Suffix [11163, 11174]["Scientific"]
-    |                          |        +-Pegged.Primary [11163, 11174]["Scientific"]
-    |                          |           +-Pegged.RhsName [11163, 11174]["Scientific"]
-    |                          |              +-Pegged.Identifier [11163, 11173]["Scientific"]
-    |                          +-Pegged.Sequence [11176, 11185]["Floating"]
-    |                          |  +-Pegged.Prefix [11176, 11185]["Floating"]
-    |                          |     +-Pegged.Suffix [11176, 11185]["Floating"]
-    |                          |        +-Pegged.Primary [11176, 11185]["Floating"]
-    |                          |           +-Pegged.RhsName [11176, 11185]["Floating"]
-    |                          |              +-Pegged.Identifier [11176, 11184]["Floating"]
-    |                          +-Pegged.Sequence [11187, 11195]["Integer"]
-    |                          |  +-Pegged.Prefix [11187, 11195]["Integer"]
-    |                          |     +-Pegged.Suffix [11187, 11195]["Integer"]
-    |                          |        +-Pegged.Primary [11187, 11195]["Integer"]
-    |                          |           +-Pegged.RhsName [11187, 11195]["Integer"]
-    |                          |              +-Pegged.Identifier [11187, 11194]["Integer"]
-    |                          +-Pegged.Sequence [11197, 11202]["Hexa"]
-    |                          |  +-Pegged.Prefix [11197, 11202]["Hexa"]
-    |                          |     +-Pegged.Suffix [11197, 11202]["Hexa"]
-    |                          |        +-Pegged.Primary [11197, 11202]["Hexa"]
-    |                          |           +-Pegged.RhsName [11197, 11202]["Hexa"]
-    |                          |              +-Pegged.Identifier [11197, 11201]["Hexa"]
-    |                          +-Pegged.Sequence [11204, 11211]["Binary"]
-    |                          |  +-Pegged.Prefix [11204, 11211]["Binary"]
-    |                          |     +-Pegged.Suffix [11204, 11211]["Binary"]
-    |                          |        +-Pegged.Primary [11204, 11211]["Binary"]
-    |                          |           +-Pegged.RhsName [11204, 11211]["Binary"]
-    |                          |              +-Pegged.Identifier [11204, 11210]["Binary"]
-    |                          +-Pegged.Sequence [11213, 11220]["Charlit"]
-    |                             +-Pegged.Prefix [11213, 11220]["Charlit"]
-    |                                +-Pegged.Suffix [11213, 11220]["Charlit"]
-    |                                   +-Pegged.Primary [11213, 11220]["Charlit"]
-    |                                      +-Pegged.RhsName [11213, 11220]["Charlit"]
-    |                                         +-Pegged.Identifier [11213, 11220]["Charlit"]
-    +-Pegged.Definition [11235, 11284]["Label", "<-", "a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*", "\"", ":", "\""]
-    |  +-Pegged.LhsName [11235, 11241]["Label"]
-    |  |  +-Pegged.Identifier [11235, 11240]["Label"]
-    |  +-Pegged.Arrow [11241, 11244]["<-"]
-    |  |  +-Pegged.LEFTARROW [11241, 11244]["<-"]
-    |  +-Pegged.Expression [11244, 11284]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*", "\"", ":", "\""]
-    |     +-Pegged.LongestExpression [11244, 11284]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*", "\"", ":", "\""]
-    |        +-Pegged.Sequence [11244, 11284]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*", "\"", ":", "\""]
-    |           +-Pegged.Prefix [11244, 11254]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |  +-Pegged.Suffix [11244, 11254]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |     +-Pegged.Primary [11244, 11254]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |        +-Pegged.CharClass [11244, 11254]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |           +-Pegged.CharRange [11245, 11248]["a", "-", "z"]
-    |           |           |  +-Pegged.Char [11245, 11246]["a"]
-    |           |           |  +-Pegged.Char [11247, 11248]["z"]
-    |           |           +-Pegged.CharRange [11248, 11251]["A", "-", "Z"]
-    |           |           |  +-Pegged.Char [11248, 11249]["A"]
-    |           |           |  +-Pegged.Char [11250, 11251]["Z"]
-    |           |           +-Pegged.CharRange [11251, 11252]["_"]
-    |           |              +-Pegged.Char [11251, 11252]["_"]
-    |           +-Pegged.Prefix [11254, 11268]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |           |  +-Pegged.Suffix [11254, 11268]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |           |     +-Pegged.Primary [11254, 11266]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |           |     |  +-Pegged.CharClass [11254, 11266]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |           |     |     +-Pegged.CharRange [11255, 11258]["a", "-", "z"]
-    |           |     |     |  +-Pegged.Char [11255, 11256]["a"]
-    |           |     |     |  +-Pegged.Char [11257, 11258]["z"]
-    |           |     |     +-Pegged.CharRange [11258, 11261]["A", "-", "Z"]
-    |           |     |     |  +-Pegged.Char [11258, 11259]["A"]
-    |           |     |     |  +-Pegged.Char [11260, 11261]["Z"]
-    |           |     |     +-Pegged.CharRange [11261, 11262]["_"]
-    |           |     |     |  +-Pegged.Char [11261, 11262]["_"]
-    |           |     |     +-Pegged.CharRange [11262, 11265]["0", "-", "9"]
-    |           |     |        +-Pegged.Char [11262, 11263]["0"]
-    |           |     |        +-Pegged.Char [11264, 11265]["9"]
-    |           |     +-Pegged.ZEROORMORE [11266, 11268]["*"]
-    |           +-Pegged.Prefix [11268, 11284]["\"", ":", "\""]
-    |              +-Pegged.Suffix [11268, 11284]["\"", ":", "\""]
-    |                 +-Pegged.Primary [11268, 11284]["\"", ":", "\""]
-    |                    +-Pegged.Literal [11268, 11284]["\"", ":", "\""]
-    +-Pegged.Definition [11284, 11334]["Label_ref", "<-", "a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |  +-Pegged.LhsName [11284, 11294]["Label_ref"]
-    |  |  +-Pegged.Identifier [11284, 11293]["Label_ref"]
-    |  +-Pegged.Arrow [11294, 11297]["<-"]
-    |  |  +-Pegged.LEFTARROW [11294, 11297]["<-"]
-    |  +-Pegged.Expression [11297, 11334]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |     +-Pegged.LongestExpression [11297, 11334]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |        +-Pegged.Sequence [11297, 11334]["a", "-", "z", "A", "-", "Z", "_", "a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |           +-Pegged.Prefix [11297, 11307]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |  +-Pegged.Suffix [11297, 11307]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |     +-Pegged.Primary [11297, 11307]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |        +-Pegged.CharClass [11297, 11307]["a", "-", "z", "A", "-", "Z", "_"]
-    |           |           +-Pegged.CharRange [11298, 11301]["a", "-", "z"]
-    |           |           |  +-Pegged.Char [11298, 11299]["a"]
-    |           |           |  +-Pegged.Char [11300, 11301]["z"]
-    |           |           +-Pegged.CharRange [11301, 11304]["A", "-", "Z"]
-    |           |           |  +-Pegged.Char [11301, 11302]["A"]
-    |           |           |  +-Pegged.Char [11303, 11304]["Z"]
-    |           |           +-Pegged.CharRange [11304, 11305]["_"]
-    |           |              +-Pegged.Char [11304, 11305]["_"]
-    |           +-Pegged.Prefix [11307, 11334]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |              +-Pegged.Suffix [11307, 11334]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9", "*"]
-    |                 +-Pegged.Primary [11307, 11319]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |                 |  +-Pegged.CharClass [11307, 11319]["a", "-", "z", "A", "-", "Z", "_", "0", "-", "9"]
-    |                 |     +-Pegged.CharRange [11308, 11311]["a", "-", "z"]
-    |                 |     |  +-Pegged.Char [11308, 11309]["a"]
-    |                 |     |  +-Pegged.Char [11310, 11311]["z"]
-    |                 |     +-Pegged.CharRange [11311, 11314]["A", "-", "Z"]
-    |                 |     |  +-Pegged.Char [11311, 11312]["A"]
-    |                 |     |  +-Pegged.Char [11313, 11314]["Z"]
-    |                 |     +-Pegged.CharRange [11314, 11315]["_"]
-    |                 |     |  +-Pegged.Char [11314, 11315]["_"]
-    |                 |     +-Pegged.CharRange [11315, 11318]["0", "-", "9"]
-    |                 |        +-Pegged.Char [11315, 11316]["0"]
-    |                 |        +-Pegged.Char [11317, 11318]["9"]
-    |                 +-Pegged.ZEROORMORE [11319, 11334]["*"]
-    +-Pegged.Definition [11334, 11371]["Line_id", "<-", "Label", "Unsigned", "eps"]
-    |  +-Pegged.LhsName [11334, 11342]["Line_id"]
-    |  |  +-Pegged.Identifier [11334, 11341]["Line_id"]
-    |  +-Pegged.Arrow [11342, 11345]["<-"]
-    |  |  +-Pegged.LEFTARROW [11342, 11345]["<-"]
-    |  +-Pegged.Expression [11345, 11371]["Label", "Unsigned", "eps"]
-    |     +-Pegged.LongestExpression [11345, 11371]["Label", "Unsigned", "eps"]
-    |        +-Pegged.Sequence [11345, 11371]["Label", "Unsigned", "eps"]
-    |           +-Pegged.Prefix [11345, 11371]["Label", "Unsigned", "eps"]
-    |              +-Pegged.Suffix [11345, 11371]["Label", "Unsigned", "eps"]
-    |                 +-Pegged.Primary [11345, 11371]["Label", "Unsigned", "eps"]
-    |                    +-Pegged.Expression [11346, 11368]["Label", "Unsigned", "eps"]
-    |                       +-Pegged.FirstExpression [11346, 11368]["Label", "Unsigned", "eps"]
-    |                          +-Pegged.Sequence [11346, 11352]["Label"]
-    |                          |  +-Pegged.Prefix [11346, 11352]["Label"]
-    |                          |     +-Pegged.Suffix [11346, 11352]["Label"]
-    |                          |        +-Pegged.Primary [11346, 11352]["Label"]
-    |                          |           +-Pegged.RhsName [11346, 11352]["Label"]
-    |                          |              +-Pegged.Identifier [11346, 11351]["Label"]
-    |                          +-Pegged.Sequence [11354, 11363]["Unsigned"]
-    |                          |  +-Pegged.Prefix [11354, 11363]["Unsigned"]
-    |                          |     +-Pegged.Suffix [11354, 11363]["Unsigned"]
-    |                          |        +-Pegged.Primary [11354, 11363]["Unsigned"]
-    |                          |           +-Pegged.RhsName [11354, 11363]["Unsigned"]
-    |                          |              +-Pegged.Identifier [11354, 11362]["Unsigned"]
-    |                          +-Pegged.Sequence [11365, 11368]["eps"]
-    |                             +-Pegged.Prefix [11365, 11368]["eps"]
-    |                                +-Pegged.Suffix [11365, 11368]["eps"]
-    |                                   +-Pegged.Primary [11365, 11368]["eps"]
-    |                                      +-Pegged.RhsName [11365, 11368]["eps"]
-    |                                         +-Pegged.Identifier [11365, 11368]["eps"]
-    +-discard!(eoi) failure at line 193, col 0, after "d / eps)\n\n" expected "end of input", but got "<<<<<<< HE"
-`);
+/** Left-recursive cycles:
+Simplexp <- Term <- Factor <- Expression <- Relation
+*/
+
+/** Rules that stop left-recursive cycles, followed by rules for which
+ *  memoization is blocked during recursion:
+Simplexp: Simplexp, Term, Factor, Expression, Relation
+*/
+
+struct GenericXCBASIC(TParseTree)
+{
+    import std.functional : toDelegate;
+    import pegged.dynamic.grammar;
+    static import pegged.peg;
+    struct XCBASIC
+    {
+    enum name = "XCBASIC";
+    static ParseTree delegate(ParseTree)[string] before;
+    static ParseTree delegate(ParseTree)[string] after;
+    static ParseTree delegate(ParseTree)[string] rules;
+    import std.typecons:Tuple, tuple;
+    static TParseTree[Tuple!(string, size_t)] memo;
+    import std.algorithm: canFind, countUntil, remove;
+    static size_t[] blockMemoAtPos;
+    static this()
+    {
+        rules["Program"] = toDelegate(&Program);
+        rules["Line"] = toDelegate(&Line);
+        rules["Statements"] = toDelegate(&Statements);
+        rules["Statement"] = toDelegate(&Statement);
+        rules["Const_stmt"] = toDelegate(&Const_stmt);
+        rules["Let_stmt"] = toDelegate(&Let_stmt);
+        rules["Print_stmt"] = toDelegate(&Print_stmt);
+        rules["Write_stmt"] = toDelegate(&Write_stmt);
+        rules["Read_stmt"] = toDelegate(&Read_stmt);
+        rules["If_stmt"] = toDelegate(&If_stmt);
+        rules["If_sa_stmt"] = toDelegate(&If_sa_stmt);
+        rules["Else_stmt"] = toDelegate(&Else_stmt);
+        rules["Endif_stmt"] = toDelegate(&Endif_stmt);
+        rules["Goto_stmt"] = toDelegate(&Goto_stmt);
+        rules["Error_stmt"] = toDelegate(&Error_stmt);
+        rules["Swap_stmt"] = toDelegate(&Swap_stmt);
+        rules["Input_stmt"] = toDelegate(&Input_stmt);
+        rules["Gosub_stmt"] = toDelegate(&Gosub_stmt);
+        rules["Call_stmt"] = toDelegate(&Call_stmt);
+        rules["Return_stmt"] = toDelegate(&Return_stmt);
+        rules["Return_fn_stmt"] = toDelegate(&Return_fn_stmt);
+        rules["Poke_stmt"] = toDelegate(&Poke_stmt);
+        rules["Do_stmt"] = toDelegate(&Do_stmt);
+        rules["Loop_stmt"] = toDelegate(&Loop_stmt);
+        rules["Cont_stmt"] = toDelegate(&Cont_stmt);
+        rules["Exit_do_stmt"] = toDelegate(&Exit_do_stmt);
+        rules["Rem_stmt"] = toDelegate(&Rem_stmt);
+        rules["For_stmt"] = toDelegate(&For_stmt);
+        rules["Next_stmt"] = toDelegate(&Next_stmt);
+        rules["Exit_for_stmt"] = toDelegate(&Exit_for_stmt);
+        rules["Dim_stmt"] = toDelegate(&Dim_stmt);
+        rules["Varattrib"] = toDelegate(&Varattrib);
+        rules["Vardef"] = toDelegate(&Vardef);
+        rules["Data_stmt"] = toDelegate(&Data_stmt);
+        rules["Charat_stmt"] = toDelegate(&Charat_stmt);
+        rules["Textat_stmt"] = toDelegate(&Textat_stmt);
+        rules["Screen_stmt"] = toDelegate(&Screen_stmt);
+        rules["Asm_stmt"] = toDelegate(&Asm_stmt);
+        rules["Endasm_stmt"] = toDelegate(&Endasm_stmt);
+        rules["Incbin_stmt"] = toDelegate(&Incbin_stmt);
+        rules["Include_stmt"] = toDelegate(&Include_stmt);
+        rules["Exitfun_stmt"] = toDelegate(&Exitfun_stmt);
+        rules["Endfun_stmt"] = toDelegate(&Endfun_stmt);
+        rules["Fun_stmt"] = toDelegate(&Fun_stmt);
+        rules["Funcattrib"] = toDelegate(&Funcattrib);
+        rules["Sys_stmt"] = toDelegate(&Sys_stmt);
+        rules["Load_stmt"] = toDelegate(&Load_stmt);
+        rules["Save_stmt"] = toDelegate(&Save_stmt);
+        rules["Origin_stmt"] = toDelegate(&Origin_stmt);
+        rules["Locate_stmt"] = toDelegate(&Locate_stmt);
+        rules["On_stmt"] = toDelegate(&On_stmt);
+        rules["Branch_type"] = toDelegate(&Branch_type);
+        rules["Wait_stmt"] = toDelegate(&Wait_stmt);
+        rules["Memset_stmt"] = toDelegate(&Memset_stmt);
+        rules["Memcpy_stmt"] = toDelegate(&Memcpy_stmt);
+        rules["Memshift_stmt"] = toDelegate(&Memshift_stmt);
+        rules["Randomize_stmt"] = toDelegate(&Randomize_stmt);
+        rules["Open_stmt"] = toDelegate(&Open_stmt);
+        rules["Get_stmt"] = toDelegate(&Get_stmt);
+        rules["Close_stmt"] = toDelegate(&Close_stmt);
+        rules["Type_stmt"] = toDelegate(&Type_stmt);
+        rules["Field_def"] = toDelegate(&Field_def);
+        rules["Endtype_stmt"] = toDelegate(&Endtype_stmt);
+        rules["End_stmt"] = toDelegate(&End_stmt);
+        rules["Option_stmt"] = toDelegate(&Option_stmt);
+        rules["Select_stmt"] = toDelegate(&Select_stmt);
+        rules["Case_stmt"] = toDelegate(&Case_stmt);
+        rules["Case_is_stmt"] = toDelegate(&Case_is_stmt);
+        rules["Case_range_stmt"] = toDelegate(&Case_range_stmt);
+        rules["Case_set_stmt"] = toDelegate(&Case_set_stmt);
+        rules["Case_else_stmt"] = toDelegate(&Case_else_stmt);
+        rules["Endselect_stmt"] = toDelegate(&Endselect_stmt);
+        rules["Irq_stmt"] = toDelegate(&Irq_stmt);
+        rules["Sprite_stmt"] = toDelegate(&Sprite_stmt);
+        rules["SprSubCmd"] = toDelegate(&SprSubCmd);
+        rules["SprSubCmdOnOff"] = toDelegate(&SprSubCmdOnOff);
+        rules["SprSubCmdAt"] = toDelegate(&SprSubCmdAt);
+        rules["SprSubCmdColor"] = toDelegate(&SprSubCmdColor);
+        rules["SprSubCmdHiresMulti"] = toDelegate(&SprSubCmdHiresMulti);
+        rules["SprSubCmdOnUnderBg"] = toDelegate(&SprSubCmdOnUnderBg);
+        rules["SprSubCmdShape"] = toDelegate(&SprSubCmdShape);
+        rules["SprSubCmdXYSize"] = toDelegate(&SprSubCmdXYSize);
+        rules["Sprite_clearhit_stmt"] = toDelegate(&Sprite_clearhit_stmt);
+        rules["Sprite_multicolor_stmt"] = toDelegate(&Sprite_multicolor_stmt);
+        rules["Border_stmt"] = toDelegate(&Border_stmt);
+        rules["Background_stmt"] = toDelegate(&Background_stmt);
+        rules["Sound_clear_stmt"] = toDelegate(&Sound_clear_stmt);
+        rules["Volume_stmt"] = toDelegate(&Volume_stmt);
+        rules["Voice_stmt"] = toDelegate(&Voice_stmt);
+        rules["VoiceSubCmd"] = toDelegate(&VoiceSubCmd);
+        rules["VoiceSubCmdOnOff"] = toDelegate(&VoiceSubCmdOnOff);
+        rules["VoiceSubCmdADSR"] = toDelegate(&VoiceSubCmdADSR);
+        rules["VoiceSubCmdTone"] = toDelegate(&VoiceSubCmdTone);
+        rules["VoiceSubCmdWave"] = toDelegate(&VoiceSubCmdWave);
+        rules["VoiceSubCmdPulse"] = toDelegate(&VoiceSubCmdPulse);
+        rules["VoiceSubCmdFilterOnOff"] = toDelegate(&VoiceSubCmdFilterOnOff);
+        rules["Filter_stmt"] = toDelegate(&Filter_stmt);
+        rules["FilterSubCmd"] = toDelegate(&FilterSubCmd);
+        rules["FilterSubCmdCutoff"] = toDelegate(&FilterSubCmdCutoff);
+        rules["FilterSubCmdResonance"] = toDelegate(&FilterSubCmdResonance);
+        rules["FilterSubCmdPass"] = toDelegate(&FilterSubCmdPass);
+        rules["Charset_stmt"] = toDelegate(&Charset_stmt);
+        rules["Scroll_stmt"] = toDelegate(&Scroll_stmt);
+        rules["VMode_stmt"] = toDelegate(&VMode_stmt);
+        rules["VModeSubCmd"] = toDelegate(&VModeSubCmd);
+        rules["VModeSubCmdTextBitmap"] = toDelegate(&VModeSubCmdTextBitmap);
+        rules["VModeSubCmdColor"] = toDelegate(&VModeSubCmdColor);
+        rules["VModeSubCmdRsel"] = toDelegate(&VModeSubCmdRsel);
+        rules["VModeSubCmdCsel"] = toDelegate(&VModeSubCmdCsel);
+        rules["ExprList"] = toDelegate(&ExprList);
+        rules["AccessorList"] = toDelegate(&AccessorList);
+        rules["PrintableList"] = toDelegate(&PrintableList);
+        rules["TabSep"] = toDelegate(&TabSep);
+        rules["NlSupp"] = toDelegate(&NlSupp);
+        rules["VarList"] = toDelegate(&VarList);
+        rules["Datalist"] = toDelegate(&Datalist);
+        rules["Expression"] = toDelegate(&Expression);
+        rules["Relation"] = toDelegate(&Relation);
+        rules["Simplexp"] = toDelegate(&Simplexp);
+        rules["Term"] = toDelegate(&Term);
+        rules["Factor"] = toDelegate(&Factor);
+        rules["UN_OP"] = toDelegate(&UN_OP);
+        rules["T_OP"] = toDelegate(&T_OP);
+        rules["E_OP"] = toDelegate(&E_OP);
+        rules["BW_OP"] = toDelegate(&BW_OP);
+        rules["REL_OP"] = toDelegate(&REL_OP);
+        rules["Parenthesis"] = toDelegate(&Parenthesis);
+        rules["Varnosubscript"] = toDelegate(&Varnosubscript);
+        rules["Var"] = toDelegate(&Var);
+        rules["IdentifierStart"] = toDelegate(&IdentifierStart);
+        rules["IdentifierCont"] = toDelegate(&IdentifierCont);
+        rules["Varname"] = toDelegate(&Varname);
+        rules["Address"] = toDelegate(&Address);
+        rules["Accessor"] = toDelegate(&Accessor);
+        rules["Id"] = toDelegate(&Id);
+        rules["Str_typeLen"] = toDelegate(&Str_typeLen);
+        rules["Vartype"] = toDelegate(&Vartype);
+        rules["Subscript"] = toDelegate(&Subscript);
+        rules["String"] = toDelegate(&String);
+        rules["Unsigned"] = toDelegate(&Unsigned);
+        rules["Decimal"] = toDelegate(&Decimal);
+        rules["Integer"] = toDelegate(&Integer);
+        rules["Hexa"] = toDelegate(&Hexa);
+        rules["Binary"] = toDelegate(&Binary);
+        rules["Scientific"] = toDelegate(&Scientific);
+        rules["Floating"] = toDelegate(&Floating);
+        rules["Charlit"] = toDelegate(&Charlit);
+        rules["Number"] = toDelegate(&Number);
+        rules["Label"] = toDelegate(&Label);
+        rules["Label_ref"] = toDelegate(&Label_ref);
+        rules["Line_id"] = toDelegate(&Line_id);
+        rules["Reserved"] = toDelegate(&Reserved);
+        rules["WS"] = toDelegate(&WS);
+        rules["EOI"] = toDelegate(&EOI);
+        rules["Spacing"] = toDelegate(&Spacing);
+    }
+
+    template hooked(alias r, string name)
+    {
+        static ParseTree hooked(ParseTree p)
+        {
+            ParseTree result;
+
+            if (name in before)
+            {
+                result = before[name](p);
+                if (result.successful)
+                    return result;
+            }
+
+            result = r(p);
+            if (result.successful || name !in after)
+                return result;
+
+            result = after[name](p);
+            return result;
+        }
+
+        static ParseTree hooked(string input)
+        {
+            return hooked!(r, name)(ParseTree("",false,[],input));
+        }
+    }
+
+    static void addRuleBefore(string parentRule, string ruleSyntax)
+    {
+        // enum name is the current grammar name
+        DynamicGrammar dg = pegged.dynamic.grammar.grammar(name ~ ": " ~ ruleSyntax, rules);
+        foreach(ruleName,rule; dg.rules)
+            if (ruleName != "Spacing") // Keep the local Spacing rule, do not overwrite it
+                rules[ruleName] = rule;
+        before[parentRule] = rules[dg.startingRule];
+    }
+
+    static void addRuleAfter(string parentRule, string ruleSyntax)
+    {
+        // enum name is the current grammar named
+        DynamicGrammar dg = pegged.dynamic.grammar.grammar(name ~ ": " ~ ruleSyntax, rules);
+        foreach(name,rule; dg.rules)
+        {
+            if (name != "Spacing")
+                rules[name] = rule;
+        }
+        after[parentRule] = rules[dg.startingRule];
+    }
+
+    static bool isRule(string s)
+    {
+		import std.algorithm : startsWith;
+        return s.startsWith("XCBASIC.");
+    }
+    mixin decimateTree;
+
+    static TParseTree Program(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Program`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program"), "Program")(p);
+                memo[tuple(`Program`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Program(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Line, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.oneOrMore!(endOfLine), Line)), EOI), "XCBASIC.Program"), "Program")(TParseTree("", false,[], s));
+        }
+    }
+    static string Program(GetName g)
+    {
+        return "XCBASIC.Program";
+    }
+
+    static TParseTree Line(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements), pegged.peg.discard!(pegged.peg.option!(WS))), "XCBASIC.Line")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Line`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements), pegged.peg.discard!(pegged.peg.option!(WS))), "XCBASIC.Line"), "Line")(p);
+                memo[tuple(`Line`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Line(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements), pegged.peg.discard!(pegged.peg.option!(WS))), "XCBASIC.Line")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Line_id, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Statements), pegged.peg.discard!(pegged.peg.option!(WS))), "XCBASIC.Line"), "Line")(TParseTree("", false,[], s));
+        }
+    }
+    static string Line(GetName g)
+    {
+        return "XCBASIC.Line";
+    }
+
+    static TParseTree Statements(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Statement, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(":"), pegged.peg.discard!(pegged.peg.option!(WS)), Statement))), "XCBASIC.Statements")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Statements`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Statement, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(":"), pegged.peg.discard!(pegged.peg.option!(WS)), Statement))), "XCBASIC.Statements"), "Statements")(p);
+                memo[tuple(`Statements`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Statements(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Statement, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(":"), pegged.peg.discard!(pegged.peg.option!(WS)), Statement))), "XCBASIC.Statements")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Statement, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(":"), pegged.peg.discard!(pegged.peg.option!(WS)), Statement))), "XCBASIC.Statements"), "Statements")(TParseTree("", false,[], s));
+        }
+    }
+    static string Statements(GetName g)
+    {
+        return "XCBASIC.Statements";
+    }
+
+    static TParseTree Statement(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Statement`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(p);
+                memo[tuple(`Statement`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Statement(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(TParseTree("", false,[], s));
+        }
+    }
+    static string Statement(GetName g)
+    {
+        return "XCBASIC.Statement";
+    }
+
+    static TParseTree Const_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Const_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(p);
+                memo[tuple(`Const_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Const_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Const_stmt(GetName g)
+    {
+        return "XCBASIC.Const_stmt";
+    }
+
+    static TParseTree Let_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Let_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(p);
+                memo[tuple(`Let_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Let_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Let_stmt(GetName g)
+    {
+        return "XCBASIC.Let_stmt";
+    }
+
+    static TParseTree Print_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Print_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(p);
+                memo[tuple(`Print_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Print_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Print_stmt(GetName g)
+    {
+        return "XCBASIC.Print_stmt";
+    }
+
+    static TParseTree Write_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Write_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Write_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Write_stmt"), "Write_stmt")(p);
+                memo[tuple(`Write_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Write_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Write_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Write_stmt"), "Write_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Write_stmt(GetName g)
+    {
+        return "XCBASIC.Write_stmt";
+    }
+
+    static TParseTree Read_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList), "XCBASIC.Read_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Read_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList), "XCBASIC.Read_stmt"), "Read_stmt")(p);
+                memo[tuple(`Read_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Read_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList), "XCBASIC.Read_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList), "XCBASIC.Read_stmt"), "Read_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Read_stmt(GetName g)
+    {
+        return "XCBASIC.Read_stmt";
+    }
+
+    static TParseTree If_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.discard!(WS), Statements, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.discard!(WS), Statements))), "XCBASIC.If_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`If_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.discard!(WS), Statements, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.discard!(WS), Statements))), "XCBASIC.If_stmt"), "If_stmt")(p);
+                memo[tuple(`If_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree If_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.discard!(WS), Statements, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.discard!(WS), Statements))), "XCBASIC.If_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.discard!(WS), Statements, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.discard!(WS), Statements))), "XCBASIC.If_stmt"), "If_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string If_stmt(GetName g)
+    {
+        return "XCBASIC.If_stmt";
+    }
+
+    static TParseTree If_sa_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then")), "XCBASIC.If_sa_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`If_sa_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then")), "XCBASIC.If_sa_stmt"), "If_sa_stmt")(p);
+                memo[tuple(`If_sa_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree If_sa_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then")), "XCBASIC.If_sa_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("then")), "XCBASIC.If_sa_stmt"), "If_sa_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string If_sa_stmt(GetName g)
+    {
+        return "XCBASIC.If_sa_stmt";
+    }
+
+    static TParseTree Else_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("else"), "XCBASIC.Else_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Else_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("else"), "XCBASIC.Else_stmt"), "Else_stmt")(p);
+                memo[tuple(`Else_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Else_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("else"), "XCBASIC.Else_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("else"), "XCBASIC.Else_stmt"), "Else_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Else_stmt(GetName g)
+    {
+        return "XCBASIC.Else_stmt";
+    }
+
+    static TParseTree Endif_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end if"), "XCBASIC.Endif_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endif_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end if"), "XCBASIC.Endif_stmt"), "Endif_stmt")(p);
+                memo[tuple(`Endif_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endif_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end if"), "XCBASIC.Endif_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end if"), "XCBASIC.Endif_stmt"), "Endif_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endif_stmt(GetName g)
+    {
+        return "XCBASIC.Endif_stmt";
+    }
+
+    static TParseTree Goto_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Goto_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Goto_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Goto_stmt"), "Goto_stmt")(p);
+                memo[tuple(`Goto_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Goto_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Goto_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Goto_stmt"), "Goto_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Goto_stmt(GetName g)
+    {
+        return "XCBASIC.Goto_stmt";
+    }
+
+    static TParseTree Error_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.discard!(WS), Expression), "XCBASIC.Error_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Error_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.discard!(WS), Expression), "XCBASIC.Error_stmt"), "Error_stmt")(p);
+                memo[tuple(`Error_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Error_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.discard!(WS), Expression), "XCBASIC.Error_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.discard!(WS), Expression), "XCBASIC.Error_stmt"), "Error_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Error_stmt(GetName g)
+    {
+        return "XCBASIC.Error_stmt";
+    }
+
+    static TParseTree Swap_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.discard!(WS), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), "XCBASIC.Swap_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Swap_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.discard!(WS), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), "XCBASIC.Swap_stmt"), "Swap_stmt")(p);
+                memo[tuple(`Swap_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Swap_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.discard!(WS), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), "XCBASIC.Swap_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.discard!(WS), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), "XCBASIC.Swap_stmt"), "Swap_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Swap_stmt(GetName g)
+    {
+        return "XCBASIC.Swap_stmt";
+    }
+
+    static TParseTree Input_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(",")), pegged.peg.and!(String, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(";")))), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Input_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Input_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(",")), pegged.peg.and!(String, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(";")))), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Input_stmt"), "Input_stmt")(p);
+                memo[tuple(`Input_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Input_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(",")), pegged.peg.and!(String, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(";")))), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Input_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(",")), pegged.peg.and!(String, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(";")))), pegged.peg.discard!(pegged.peg.option!(WS)), AccessorList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Input_stmt"), "Input_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Input_stmt(GetName g)
+    {
+        return "XCBASIC.Input_stmt";
+    }
+
+    static TParseTree Gosub_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Gosub_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Gosub_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Gosub_stmt"), "Gosub_stmt")(p);
+                memo[tuple(`Gosub_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Gosub_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Gosub_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.discard!(WS), pegged.peg.or!(Label_ref, Unsigned)), "XCBASIC.Gosub_stmt"), "Gosub_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Gosub_stmt(GetName g)
+    {
+        return "XCBASIC.Gosub_stmt";
+    }
+
+    static TParseTree Call_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.discard!(WS), Accessor), "XCBASIC.Call_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Call_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.discard!(WS), Accessor), "XCBASIC.Call_stmt"), "Call_stmt")(p);
+                memo[tuple(`Call_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Call_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.discard!(WS), Accessor), "XCBASIC.Call_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.discard!(WS), Accessor), "XCBASIC.Call_stmt"), "Call_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Call_stmt(GetName g)
+    {
+        return "XCBASIC.Call_stmt";
+    }
+
+    static TParseTree Return_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("return"), "XCBASIC.Return_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Return_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("return"), "XCBASIC.Return_stmt"), "Return_stmt")(p);
+                memo[tuple(`Return_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Return_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("return"), "XCBASIC.Return_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("return"), "XCBASIC.Return_stmt"), "Return_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Return_stmt(GetName g)
+    {
+        return "XCBASIC.Return_stmt";
+    }
+
+    static TParseTree Return_fn_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.discard!(WS), Expression), "XCBASIC.Return_fn_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Return_fn_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.discard!(WS), Expression), "XCBASIC.Return_fn_stmt"), "Return_fn_stmt")(p);
+                memo[tuple(`Return_fn_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Return_fn_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.discard!(WS), Expression), "XCBASIC.Return_fn_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.discard!(WS), Expression), "XCBASIC.Return_fn_stmt"), "Return_fn_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Return_fn_stmt(GetName g)
+    {
+        return "XCBASIC.Return_fn_stmt";
+    }
+
+    static TParseTree Poke_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke")), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Poke_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Poke_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke")), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Poke_stmt"), "Poke_stmt")(p);
+                memo[tuple(`Poke_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Poke_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke")), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Poke_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke")), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Poke_stmt"), "Poke_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Poke_stmt(GetName g)
+    {
+        return "XCBASIC.Poke_stmt";
+    }
+
+    static TParseTree Do_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Do_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Do_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Do_stmt"), "Do_stmt")(p);
+                memo[tuple(`Do_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Do_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Do_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Do_stmt"), "Do_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Do_stmt(GetName g)
+    {
+        return "XCBASIC.Do_stmt";
+    }
+
+    static TParseTree Loop_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Loop_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Loop_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Loop_stmt"), "Loop_stmt")(p);
+                memo[tuple(`Loop_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Loop_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Loop_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("until")), pegged.peg.discard!(WS), Expression))), "XCBASIC.Loop_stmt"), "Loop_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Loop_stmt(GetName g)
+    {
+        return "XCBASIC.Loop_stmt";
+    }
+
+    static TParseTree Cont_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("do")))), "XCBASIC.Cont_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Cont_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("do")))), "XCBASIC.Cont_stmt"), "Cont_stmt")(p);
+                memo[tuple(`Cont_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Cont_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("do")))), "XCBASIC.Cont_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.discard!(WS), pegged.peg.option!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("do")))), "XCBASIC.Cont_stmt"), "Cont_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Cont_stmt(GetName g)
+    {
+        return "XCBASIC.Cont_stmt";
+    }
+
+    static TParseTree Exit_do_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit do"), "XCBASIC.Exit_do_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Exit_do_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit do"), "XCBASIC.Exit_do_stmt"), "Exit_do_stmt")(p);
+                memo[tuple(`Exit_do_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Exit_do_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit do"), "XCBASIC.Exit_do_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit do"), "XCBASIC.Exit_do_stmt"), "Exit_do_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Exit_do_stmt(GetName g)
+    {
+        return "XCBASIC.Exit_do_stmt";
+    }
+
+    static TParseTree Rem_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))), "XCBASIC.Rem_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Rem_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))), "XCBASIC.Rem_stmt"), "Rem_stmt")(p);
+                memo[tuple(`Rem_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Rem_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))), "XCBASIC.Rem_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))), "XCBASIC.Rem_stmt"), "Rem_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Rem_stmt(GetName g)
+    {
+        return "XCBASIC.Rem_stmt";
+    }
+
+    static TParseTree For_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.For_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`For_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.For_stmt"), "For_stmt")(p);
+                memo[tuple(`For_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree For_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.For_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.For_stmt"), "For_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string For_stmt(GetName g)
+    {
+        return "XCBASIC.For_stmt";
+    }
+
+    static TParseTree Next_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Varname))), "XCBASIC.Next_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Next_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Varname))), "XCBASIC.Next_stmt"), "Next_stmt")(p);
+                memo[tuple(`Next_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Next_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Varname))), "XCBASIC.Next_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Varname))), "XCBASIC.Next_stmt"), "Next_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Next_stmt(GetName g)
+    {
+        return "XCBASIC.Next_stmt";
+    }
+
+    static TParseTree Exit_for_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit for"), "XCBASIC.Exit_for_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Exit_for_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit for"), "XCBASIC.Exit_for_stmt"), "Exit_for_stmt")(p);
+                memo[tuple(`Exit_for_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Exit_for_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit for"), "XCBASIC.Exit_for_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("exit for"), "XCBASIC.Exit_for_stmt"), "Exit_for_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Exit_for_stmt(GetName g)
+    {
+        return "XCBASIC.Exit_for_stmt";
+    }
+
+    static TParseTree Dim_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("static")), pegged.peg.discard!(WS), pegged.peg.zeroOrMore!(pegged.peg.and!(Varattrib, pegged.peg.discard!(WS))), Vardef, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Vardef)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Dim_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Dim_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("static")), pegged.peg.discard!(WS), pegged.peg.zeroOrMore!(pegged.peg.and!(Varattrib, pegged.peg.discard!(WS))), Vardef, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Vardef)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Dim_stmt"), "Dim_stmt")(p);
+                memo[tuple(`Dim_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Dim_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("static")), pegged.peg.discard!(WS), pegged.peg.zeroOrMore!(pegged.peg.and!(Varattrib, pegged.peg.discard!(WS))), Vardef, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Vardef)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Dim_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("static")), pegged.peg.discard!(WS), pegged.peg.zeroOrMore!(pegged.peg.and!(Varattrib, pegged.peg.discard!(WS))), Vardef, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Vardef)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Dim_stmt"), "Dim_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Dim_stmt(GetName g)
+    {
+        return "XCBASIC.Dim_stmt";
+    }
+
+    static TParseTree Varattrib(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("shared")), "XCBASIC.Varattrib")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Varattrib`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("shared")), "XCBASIC.Varattrib"), "Varattrib")(p);
+                memo[tuple(`Varattrib`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Varattrib(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("shared")), "XCBASIC.Varattrib")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("shared")), "XCBASIC.Varattrib"), "Varattrib")(TParseTree("", false,[], s));
+        }
+    }
+    static string Varattrib(GetName g)
+    {
+        return "XCBASIC.Varattrib";
+    }
+
+    static TParseTree Vardef(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("@")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)))), "XCBASIC.Vardef")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Vardef`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("@")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)))), "XCBASIC.Vardef"), "Vardef")(p);
+                memo[tuple(`Vardef`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Vardef(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("@")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)))), "XCBASIC.Vardef")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("@")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)))), "XCBASIC.Vardef"), "Vardef")(TParseTree("", false,[], s));
+        }
+    }
+    static string Vardef(GetName g)
+    {
+        return "XCBASIC.Vardef";
+    }
+
+    static TParseTree Data_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("data"), Vartype, pegged.peg.discard!(WS), Datalist), "XCBASIC.Data_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Data_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("data"), Vartype, pegged.peg.discard!(WS), Datalist), "XCBASIC.Data_stmt"), "Data_stmt")(p);
+                memo[tuple(`Data_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Data_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("data"), Vartype, pegged.peg.discard!(WS), Datalist), "XCBASIC.Data_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("data"), Vartype, pegged.peg.discard!(WS), Datalist), "XCBASIC.Data_stmt"), "Data_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Data_stmt(GetName g)
+    {
+        return "XCBASIC.Data_stmt";
+    }
+
+    static TParseTree Charat_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Charat_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Charat_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Charat_stmt"), "Charat_stmt")(p);
+                memo[tuple(`Charat_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Charat_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Charat_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Charat_stmt"), "Charat_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Charat_stmt(GetName g)
+    {
+        return "XCBASIC.Charat_stmt";
+    }
+
+    static TParseTree Textat_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Textat_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Textat_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Textat_stmt"), "Textat_stmt")(p);
+                memo[tuple(`Textat_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Textat_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Textat_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Textat_stmt"), "Textat_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Textat_stmt(GetName g)
+    {
+        return "XCBASIC.Textat_stmt";
+    }
+
+    static TParseTree Screen_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.discard!(WS), Expression), "XCBASIC.Screen_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Screen_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.discard!(WS), Expression), "XCBASIC.Screen_stmt"), "Screen_stmt")(p);
+                memo[tuple(`Screen_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Screen_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.discard!(WS), Expression), "XCBASIC.Screen_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.discard!(WS), Expression), "XCBASIC.Screen_stmt"), "Screen_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Screen_stmt(GetName g)
+    {
+        return "XCBASIC.Screen_stmt";
+    }
+
+    static TParseTree Asm_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("asm"), "XCBASIC.Asm_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Asm_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("asm"), "XCBASIC.Asm_stmt"), "Asm_stmt")(p);
+                memo[tuple(`Asm_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Asm_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("asm"), "XCBASIC.Asm_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("asm"), "XCBASIC.Asm_stmt"), "Asm_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Asm_stmt(GetName g)
+    {
+        return "XCBASIC.Asm_stmt";
+    }
+
+    static TParseTree Endasm_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end asm"), "XCBASIC.Endasm_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endasm_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end asm"), "XCBASIC.Endasm_stmt"), "Endasm_stmt")(p);
+                memo[tuple(`Endasm_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endasm_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end asm"), "XCBASIC.Endasm_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end asm"), "XCBASIC.Endasm_stmt"), "Endasm_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endasm_stmt(GetName g)
+    {
+        return "XCBASIC.Endasm_stmt";
+    }
+
+    static TParseTree Incbin_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Incbin_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(p);
+                memo[tuple(`Incbin_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Incbin_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Incbin_stmt(GetName g)
+    {
+        return "XCBASIC.Incbin_stmt";
+    }
+
+    static TParseTree Include_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.discard!(WS), String), "XCBASIC.Include_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Include_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.discard!(WS), String), "XCBASIC.Include_stmt"), "Include_stmt")(p);
+                memo[tuple(`Include_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Include_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.discard!(WS), String), "XCBASIC.Include_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.discard!(WS), String), "XCBASIC.Include_stmt"), "Include_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Include_stmt(GetName g)
+    {
+        return "XCBASIC.Include_stmt";
+    }
+
+    static TParseTree Exitfun_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("exit function"), pegged.peg.caseInsensitiveLiteral!("exit sub")), "XCBASIC.Exitfun_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Exitfun_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("exit function"), pegged.peg.caseInsensitiveLiteral!("exit sub")), "XCBASIC.Exitfun_stmt"), "Exitfun_stmt")(p);
+                memo[tuple(`Exitfun_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Exitfun_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("exit function"), pegged.peg.caseInsensitiveLiteral!("exit sub")), "XCBASIC.Exitfun_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("exit function"), pegged.peg.caseInsensitiveLiteral!("exit sub")), "XCBASIC.Exitfun_stmt"), "Exitfun_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Exitfun_stmt(GetName g)
+    {
+        return "XCBASIC.Exitfun_stmt";
+    }
+
+    static TParseTree Endfun_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("end function"), pegged.peg.caseInsensitiveLiteral!("end sub")), "XCBASIC.Endfun_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endfun_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("end function"), pegged.peg.caseInsensitiveLiteral!("end sub")), "XCBASIC.Endfun_stmt"), "Endfun_stmt")(p);
+                memo[tuple(`Endfun_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endfun_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("end function"), pegged.peg.caseInsensitiveLiteral!("end sub")), "XCBASIC.Endfun_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("end function"), pegged.peg.caseInsensitiveLiteral!("end sub")), "XCBASIC.Endfun_stmt"), "Endfun_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endfun_stmt(GetName g)
+    {
+        return "XCBASIC.Endfun_stmt";
+    }
+
+    static TParseTree Fun_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Fun_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(p);
+                memo[tuple(`Fun_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Fun_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Fun_stmt(GetName g)
+    {
+        return "XCBASIC.Fun_stmt";
+    }
+
+    static TParseTree Funcattrib(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Funcattrib`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib"), "Funcattrib")(p);
+                memo[tuple(`Funcattrib`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Funcattrib(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib"), "Funcattrib")(TParseTree("", false,[], s));
+        }
+    }
+    static string Funcattrib(GetName g)
+    {
+        return "XCBASIC.Funcattrib";
+    }
+
+    static TParseTree Sys_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.discard!(WS), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("fast")))), "XCBASIC.Sys_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sys_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.discard!(WS), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("fast")))), "XCBASIC.Sys_stmt"), "Sys_stmt")(p);
+                memo[tuple(`Sys_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sys_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.discard!(WS), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("fast")))), "XCBASIC.Sys_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.discard!(WS), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.caseInsensitiveLiteral!("fast")))), "XCBASIC.Sys_stmt"), "Sys_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sys_stmt(GetName g)
+    {
+        return "XCBASIC.Sys_stmt";
+    }
+
+    static TParseTree Load_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Load_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Load_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Load_stmt"), "Load_stmt")(p);
+                memo[tuple(`Load_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Load_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Load_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Load_stmt"), "Load_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Load_stmt(GetName g)
+    {
+        return "XCBASIC.Load_stmt";
+    }
+
+    static TParseTree Save_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Save_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Save_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Save_stmt"), "Save_stmt")(p);
+                memo[tuple(`Save_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Save_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Save_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Save_stmt"), "Save_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Save_stmt(GetName g)
+    {
+        return "XCBASIC.Save_stmt";
+    }
+
+    static TParseTree Origin_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.discard!(WS), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Origin_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Origin_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.discard!(WS), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Origin_stmt"), "Origin_stmt")(p);
+                memo[tuple(`Origin_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Origin_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.discard!(WS), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Origin_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.discard!(WS), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Origin_stmt"), "Origin_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Origin_stmt(GetName g)
+    {
+        return "XCBASIC.Origin_stmt";
+    }
+
+    static TParseTree Locate_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Locate_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Locate_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Locate_stmt"), "Locate_stmt")(p);
+                memo[tuple(`Locate_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Locate_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Locate_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Locate_stmt"), "Locate_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Locate_stmt(GetName g)
+    {
+        return "XCBASIC.Locate_stmt";
+    }
+
+    static TParseTree On_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.discard!(WS), pegged.peg.or!(Expression, pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("raster")), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Expression)), pegged.peg.discard!(WS), Branch_type, pegged.peg.discard!(WS), Label_ref, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Label_ref))), "XCBASIC.On_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`On_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.discard!(WS), pegged.peg.or!(Expression, pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("raster")), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Expression)), pegged.peg.discard!(WS), Branch_type, pegged.peg.discard!(WS), Label_ref, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Label_ref))), "XCBASIC.On_stmt"), "On_stmt")(p);
+                memo[tuple(`On_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree On_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.discard!(WS), pegged.peg.or!(Expression, pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("raster")), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Expression)), pegged.peg.discard!(WS), Branch_type, pegged.peg.discard!(WS), Label_ref, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Label_ref))), "XCBASIC.On_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.discard!(WS), pegged.peg.or!(Expression, pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("raster")), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(WS), Expression)), pegged.peg.discard!(WS), Branch_type, pegged.peg.discard!(WS), Label_ref, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Label_ref))), "XCBASIC.On_stmt"), "On_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string On_stmt(GetName g)
+    {
+        return "XCBASIC.On_stmt";
+    }
+
+    static TParseTree Branch_type(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("gosub")), "XCBASIC.Branch_type")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Branch_type`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("gosub")), "XCBASIC.Branch_type"), "Branch_type")(p);
+                memo[tuple(`Branch_type`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Branch_type(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("gosub")), "XCBASIC.Branch_type")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("gosub")), "XCBASIC.Branch_type"), "Branch_type")(TParseTree("", false,[], s));
+        }
+    }
+    static string Branch_type(GetName g)
+    {
+        return "XCBASIC.Branch_type";
+    }
+
+    static TParseTree Wait_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wait"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Wait_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Wait_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wait"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Wait_stmt"), "Wait_stmt")(p);
+                memo[tuple(`Wait_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Wait_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wait"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Wait_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wait"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Wait_stmt"), "Wait_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Wait_stmt(GetName g)
+    {
+        return "XCBASIC.Wait_stmt";
+    }
+
+    static TParseTree Memset_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memset_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Memset_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memset_stmt"), "Memset_stmt")(p);
+                memo[tuple(`Memset_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Memset_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memset_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memset_stmt"), "Memset_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Memset_stmt(GetName g)
+    {
+        return "XCBASIC.Memset_stmt";
+    }
+
+    static TParseTree Memcpy_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memcpy_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Memcpy_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memcpy_stmt"), "Memcpy_stmt")(p);
+                memo[tuple(`Memcpy_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Memcpy_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memcpy_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memcpy_stmt"), "Memcpy_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Memcpy_stmt(GetName g)
+    {
+        return "XCBASIC.Memcpy_stmt";
+    }
+
+    static TParseTree Memshift_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memshift_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Memshift_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memshift_stmt"), "Memshift_stmt")(p);
+                memo[tuple(`Memshift_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Memshift_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memshift_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList), "XCBASIC.Memshift_stmt"), "Memshift_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Memshift_stmt(GetName g)
+    {
+        return "XCBASIC.Memshift_stmt";
+    }
+
+    static TParseTree Randomize_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.discard!(WS), Expression), "XCBASIC.Randomize_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Randomize_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.discard!(WS), Expression), "XCBASIC.Randomize_stmt"), "Randomize_stmt")(p);
+                memo[tuple(`Randomize_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Randomize_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.discard!(WS), Expression), "XCBASIC.Randomize_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.discard!(WS), Expression), "XCBASIC.Randomize_stmt"), "Randomize_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Randomize_stmt(GetName g)
+    {
+        return "XCBASIC.Randomize_stmt";
+    }
+
+    static TParseTree Open_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Open_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Open_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Open_stmt"), "Open_stmt")(p);
+                memo[tuple(`Open_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Open_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Open_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Open_stmt"), "Open_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Open_stmt(GetName g)
+    {
+        return "XCBASIC.Open_stmt";
+    }
+
+    static TParseTree Get_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","))), pegged.peg.discard!(pegged.peg.option!(WS)), Var), "XCBASIC.Get_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Get_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","))), pegged.peg.discard!(pegged.peg.option!(WS)), Var), "XCBASIC.Get_stmt"), "Get_stmt")(p);
+                memo[tuple(`Get_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Get_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","))), pegged.peg.discard!(pegged.peg.option!(WS)), Var), "XCBASIC.Get_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","))), pegged.peg.discard!(pegged.peg.option!(WS)), Var), "XCBASIC.Get_stmt"), "Get_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Get_stmt(GetName g)
+    {
+        return "XCBASIC.Get_stmt";
+    }
+
+    static TParseTree Close_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.discard!(WS), Expression), "XCBASIC.Close_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Close_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.discard!(WS), Expression), "XCBASIC.Close_stmt"), "Close_stmt")(p);
+                memo[tuple(`Close_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Close_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.discard!(WS), Expression), "XCBASIC.Close_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.discard!(WS), Expression), "XCBASIC.Close_stmt"), "Close_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Close_stmt(GetName g)
+    {
+        return "XCBASIC.Close_stmt";
+    }
+
+    static TParseTree Type_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.discard!(WS), Id), "XCBASIC.Type_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Type_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.discard!(WS), Id), "XCBASIC.Type_stmt"), "Type_stmt")(p);
+                memo[tuple(`Type_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Type_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.discard!(WS), Id), "XCBASIC.Type_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.discard!(WS), Id), "XCBASIC.Type_stmt"), "Type_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Type_stmt(GetName g)
+    {
+        return "XCBASIC.Type_stmt";
+    }
+
+    static TParseTree Field_def(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(Var, "XCBASIC.Field_def")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Field_def`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(Var, "XCBASIC.Field_def"), "Field_def")(p);
+                memo[tuple(`Field_def`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Field_def(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(Var, "XCBASIC.Field_def")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(Var, "XCBASIC.Field_def"), "Field_def")(TParseTree("", false,[], s));
+        }
+    }
+    static string Field_def(GetName g)
+    {
+        return "XCBASIC.Field_def";
+    }
+
+    static TParseTree Endtype_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end type"), "XCBASIC.Endtype_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endtype_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end type"), "XCBASIC.Endtype_stmt"), "Endtype_stmt")(p);
+                memo[tuple(`Endtype_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endtype_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end type"), "XCBASIC.Endtype_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end type"), "XCBASIC.Endtype_stmt"), "Endtype_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endtype_stmt(GetName g)
+    {
+        return "XCBASIC.Endtype_stmt";
+    }
+
+    static TParseTree End_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end"), "XCBASIC.End_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`End_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end"), "XCBASIC.End_stmt"), "End_stmt")(p);
+                memo[tuple(`End_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree End_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end"), "XCBASIC.End_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end"), "XCBASIC.End_stmt"), "End_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string End_stmt(GetName g)
+    {
+        return "XCBASIC.End_stmt";
+    }
+
+    static TParseTree Option_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String)))), "XCBASIC.Option_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Option_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String)))), "XCBASIC.Option_stmt"), "Option_stmt")(p);
+                memo[tuple(`Option_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Option_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String)))), "XCBASIC.Option_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String)))), "XCBASIC.Option_stmt"), "Option_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Option_stmt(GetName g)
+    {
+        return "XCBASIC.Option_stmt";
+    }
+
+    static TParseTree Select_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("select case"), pegged.peg.discard!(WS), Expression), "XCBASIC.Select_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Select_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("select case"), pegged.peg.discard!(WS), Expression), "XCBASIC.Select_stmt"), "Select_stmt")(p);
+                memo[tuple(`Select_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Select_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("select case"), pegged.peg.discard!(WS), Expression), "XCBASIC.Select_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("select case"), pegged.peg.discard!(WS), Expression), "XCBASIC.Select_stmt"), "Select_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Select_stmt(GetName g)
+    {
+        return "XCBASIC.Select_stmt";
+    }
+
+    static TParseTree Case_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Case_else_stmt, Case_is_stmt, Case_range_stmt, Case_set_stmt), "XCBASIC.Case_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(Case_else_stmt, Case_is_stmt, Case_range_stmt, Case_set_stmt), "XCBASIC.Case_stmt"), "Case_stmt")(p);
+                memo[tuple(`Case_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Case_else_stmt, Case_is_stmt, Case_range_stmt, Case_set_stmt), "XCBASIC.Case_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(Case_else_stmt, Case_is_stmt, Case_range_stmt, Case_set_stmt), "XCBASIC.Case_stmt"), "Case_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_stmt(GetName g)
+    {
+        return "XCBASIC.Case_stmt";
+    }
+
+    static TParseTree Case_is_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case is"), pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Case_is_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_is_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case is"), pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Case_is_stmt"), "Case_is_stmt")(p);
+                memo[tuple(`Case_is_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_is_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case is"), pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Case_is_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case is"), pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Case_is_stmt"), "Case_is_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_is_stmt(GetName g)
+    {
+        return "XCBASIC.Case_is_stmt";
+    }
+
+    static TParseTree Case_range_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(WS), Expression), "XCBASIC.Case_range_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_range_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(WS), Expression), "XCBASIC.Case_range_stmt"), "Case_range_stmt")(p);
+                memo[tuple(`Case_range_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_range_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(WS), Expression), "XCBASIC.Case_range_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), Expression, pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.discard!(WS), Expression), "XCBASIC.Case_range_stmt"), "Case_range_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_range_stmt(GetName g)
+    {
+        return "XCBASIC.Case_range_stmt";
+    }
+
+    static TParseTree Case_set_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Case_set_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_set_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Case_set_stmt"), "Case_set_stmt")(p);
+                memo[tuple(`Case_set_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_set_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Case_set_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Case_set_stmt"), "Case_set_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_set_stmt(GetName g)
+    {
+        return "XCBASIC.Case_set_stmt";
+    }
+
+    static TParseTree Case_else_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("case else"), "XCBASIC.Case_else_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Case_else_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("case else"), "XCBASIC.Case_else_stmt"), "Case_else_stmt")(p);
+                memo[tuple(`Case_else_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Case_else_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("case else"), "XCBASIC.Case_else_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("case else"), "XCBASIC.Case_else_stmt"), "Case_else_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Case_else_stmt(GetName g)
+    {
+        return "XCBASIC.Case_else_stmt";
+    }
+
+    static TParseTree Endselect_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end select"), "XCBASIC.Endselect_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Endselect_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end select"), "XCBASIC.Endselect_stmt"), "Endselect_stmt")(p);
+                memo[tuple(`Endselect_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Endselect_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end select"), "XCBASIC.Endselect_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.caseInsensitiveLiteral!("end select"), "XCBASIC.Endselect_stmt"), "Endselect_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Endselect_stmt(GetName g)
+    {
+        return "XCBASIC.Endselect_stmt";
+    }
+
+    static TParseTree Irq_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("system")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.Irq_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Irq_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("system")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.Irq_stmt"), "Irq_stmt")(p);
+                memo[tuple(`Irq_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Irq_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("system")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.Irq_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("system")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.Irq_stmt"), "Irq_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Irq_stmt(GetName g)
+    {
+        return "XCBASIC.Irq_stmt";
+    }
+
+    static TParseTree Sprite_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), SprSubCmd))), "XCBASIC.Sprite_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sprite_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), SprSubCmd))), "XCBASIC.Sprite_stmt"), "Sprite_stmt")(p);
+                memo[tuple(`Sprite_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sprite_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), SprSubCmd))), "XCBASIC.Sprite_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), SprSubCmd))), "XCBASIC.Sprite_stmt"), "Sprite_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sprite_stmt(GetName g)
+    {
+        return "XCBASIC.Sprite_stmt";
+    }
+
+    static TParseTree SprSubCmd(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmd`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(p);
+                memo[tuple(`SprSubCmd`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmd(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(SprSubCmdOnUnderBg, SprSubCmdOnOff, SprSubCmdAt, SprSubCmdColor, SprSubCmdHiresMulti, SprSubCmdShape, SprSubCmdXYSize), "XCBASIC.SprSubCmd"), "SprSubCmd")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmd(GetName g)
+    {
+        return "XCBASIC.SprSubCmd";
+    }
+
+    static TParseTree SprSubCmdOnOff(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.SprSubCmdOnOff")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdOnOff`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.SprSubCmdOnOff"), "SprSubCmdOnOff")(p);
+                memo[tuple(`SprSubCmdOnOff`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdOnOff(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.SprSubCmdOnOff")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.SprSubCmdOnOff"), "SprSubCmdOnOff")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdOnOff(GetName g)
+    {
+        return "XCBASIC.SprSubCmdOnOff";
+    }
+
+    static TParseTree SprSubCmdAt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("at"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdAt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdAt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("at"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdAt"), "SprSubCmdAt")(p);
+                memo[tuple(`SprSubCmdAt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdAt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("at"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdAt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("at"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdAt"), "SprSubCmdAt")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdAt(GetName g)
+    {
+        return "XCBASIC.SprSubCmdAt";
+    }
+
+    static TParseTree SprSubCmdColor(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("color"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdColor")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdColor`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("color"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdColor"), "SprSubCmdColor")(p);
+                memo[tuple(`SprSubCmdColor`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdColor(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("color"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdColor")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("color"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdColor"), "SprSubCmdColor")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdColor(GetName g)
+    {
+        return "XCBASIC.SprSubCmdColor";
+    }
+
+    static TParseTree SprSubCmdHiresMulti(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdHiresMulti`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(p);
+                memo[tuple(`SprSubCmdHiresMulti`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdHiresMulti(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.SprSubCmdHiresMulti"), "SprSubCmdHiresMulti")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdHiresMulti(GetName g)
+    {
+        return "XCBASIC.SprSubCmdHiresMulti";
+    }
+
+    static TParseTree SprSubCmdOnUnderBg(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.longest_match!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("under")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("background")), "XCBASIC.SprSubCmdOnUnderBg")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdOnUnderBg`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.longest_match!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("under")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("background")), "XCBASIC.SprSubCmdOnUnderBg"), "SprSubCmdOnUnderBg")(p);
+                memo[tuple(`SprSubCmdOnUnderBg`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdOnUnderBg(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.longest_match!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("under")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("background")), "XCBASIC.SprSubCmdOnUnderBg")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.longest_match!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("under")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("background")), "XCBASIC.SprSubCmdOnUnderBg"), "SprSubCmdOnUnderBg")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdOnUnderBg(GetName g)
+    {
+        return "XCBASIC.SprSubCmdOnUnderBg";
+    }
+
+    static TParseTree SprSubCmdShape(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shape"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdShape")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdShape`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shape"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdShape"), "SprSubCmdShape")(p);
+                memo[tuple(`SprSubCmdShape`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdShape(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shape"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdShape")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shape"), pegged.peg.discard!(WS), Expression), "XCBASIC.SprSubCmdShape"), "SprSubCmdShape")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdShape(GetName g)
+    {
+        return "XCBASIC.SprSubCmdShape";
+    }
+
+    static TParseTree SprSubCmdXYSize(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("xysize"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdXYSize")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`SprSubCmdXYSize`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("xysize"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdXYSize"), "SprSubCmdXYSize")(p);
+                memo[tuple(`SprSubCmdXYSize`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree SprSubCmdXYSize(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("xysize"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdXYSize")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("xysize"), pegged.peg.discard!(WS), ExprList), "XCBASIC.SprSubCmdXYSize"), "SprSubCmdXYSize")(TParseTree("", false,[], s));
+        }
+    }
+    static string SprSubCmdXYSize(GetName g)
+    {
+        return "XCBASIC.SprSubCmdXYSize";
+    }
+
+    static TParseTree Sprite_clearhit_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("hit")), "XCBASIC.Sprite_clearhit_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sprite_clearhit_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("hit")), "XCBASIC.Sprite_clearhit_stmt"), "Sprite_clearhit_stmt")(p);
+                memo[tuple(`Sprite_clearhit_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sprite_clearhit_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("hit")), "XCBASIC.Sprite_clearhit_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("hit")), "XCBASIC.Sprite_clearhit_stmt"), "Sprite_clearhit_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sprite_clearhit_stmt(GetName g)
+    {
+        return "XCBASIC.Sprite_clearhit_stmt";
+    }
+
+    static TParseTree Sprite_multicolor_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("multicolor"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Sprite_multicolor_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sprite_multicolor_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("multicolor"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Sprite_multicolor_stmt"), "Sprite_multicolor_stmt")(p);
+                memo[tuple(`Sprite_multicolor_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sprite_multicolor_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("multicolor"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Sprite_multicolor_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("multicolor"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Sprite_multicolor_stmt"), "Sprite_multicolor_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sprite_multicolor_stmt(GetName g)
+    {
+        return "XCBASIC.Sprite_multicolor_stmt";
+    }
+
+    static TParseTree Border_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Border_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Border_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Border_stmt"), "Border_stmt")(p);
+                memo[tuple(`Border_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Border_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Border_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Border_stmt"), "Border_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Border_stmt(GetName g)
+    {
+        return "XCBASIC.Border_stmt";
+    }
+
+    static TParseTree Background_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Background_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Background_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Background_stmt"), "Background_stmt")(p);
+                memo[tuple(`Background_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Background_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Background_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.discard!(WS), ExprList), "XCBASIC.Background_stmt"), "Background_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Background_stmt(GetName g)
+    {
+        return "XCBASIC.Background_stmt";
+    }
+
+    static TParseTree Sound_clear_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sound_clear_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Sound_clear_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sound_clear_stmt"), "Sound_clear_stmt")(p);
+                memo[tuple(`Sound_clear_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Sound_clear_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sound_clear_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("clear")), "XCBASIC.Sound_clear_stmt"), "Sound_clear_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Sound_clear_stmt(GetName g)
+    {
+        return "XCBASIC.Sound_clear_stmt";
+    }
+
+    static TParseTree Volume_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.Volume_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Volume_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.Volume_stmt"), "Volume_stmt")(p);
+                memo[tuple(`Volume_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Volume_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.Volume_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.discard!(WS), Expression), "XCBASIC.Volume_stmt"), "Volume_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Volume_stmt(GetName g)
+    {
+        return "XCBASIC.Volume_stmt";
+    }
+
+    static TParseTree Voice_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Voice_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
+                memo[tuple(`Voice_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Voice_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Voice_stmt(GetName g)
+    {
+        return "XCBASIC.Voice_stmt";
+    }
+
+    static TParseTree VoiceSubCmd(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmd`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
+                memo[tuple(`VoiceSubCmd`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmd(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmd(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmd";
+    }
+
+    static TParseTree VoiceSubCmdOnOff(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdOnOff`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(p);
+                memo[tuple(`VoiceSubCmdOnOff`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdOnOff(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off")), "XCBASIC.VoiceSubCmdOnOff"), "VoiceSubCmdOnOff")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdOnOff(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdOnOff";
+    }
+
+    static TParseTree VoiceSubCmdADSR(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdADSR`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(p);
+                memo[tuple(`VoiceSubCmdADSR`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdADSR(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdADSR(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdADSR";
+    }
+
+    static TParseTree VoiceSubCmdTone(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("tone"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdTone")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdTone`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("tone"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdTone"), "VoiceSubCmdTone")(p);
+                memo[tuple(`VoiceSubCmdTone`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdTone(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("tone"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdTone")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("tone"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdTone"), "VoiceSubCmdTone")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdTone(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdTone";
+    }
+
+    static TParseTree VoiceSubCmdWave(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wave"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("saw"), pegged.peg.caseInsensitiveLiteral!("tri"), pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.caseInsensitiveLiteral!("noise"))), "XCBASIC.VoiceSubCmdWave")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdWave`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wave"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("saw"), pegged.peg.caseInsensitiveLiteral!("tri"), pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.caseInsensitiveLiteral!("noise"))), "XCBASIC.VoiceSubCmdWave"), "VoiceSubCmdWave")(p);
+                memo[tuple(`VoiceSubCmdWave`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdWave(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wave"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("saw"), pegged.peg.caseInsensitiveLiteral!("tri"), pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.caseInsensitiveLiteral!("noise"))), "XCBASIC.VoiceSubCmdWave")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("wave"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("saw"), pegged.peg.caseInsensitiveLiteral!("tri"), pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.caseInsensitiveLiteral!("noise"))), "XCBASIC.VoiceSubCmdWave"), "VoiceSubCmdWave")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdWave(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdWave";
+    }
+
+    static TParseTree VoiceSubCmdPulse(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdPulse")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdPulse`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdPulse"), "VoiceSubCmdPulse")(p);
+                memo[tuple(`VoiceSubCmdPulse`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdPulse(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdPulse")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("pulse"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdPulse"), "VoiceSubCmdPulse")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdPulse(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdPulse";
+    }
+
+    static TParseTree VoiceSubCmdFilterOnOff(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.VoiceSubCmdFilterOnOff")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VoiceSubCmdFilterOnOff`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.VoiceSubCmdFilterOnOff"), "VoiceSubCmdFilterOnOff")(p);
+                memo[tuple(`VoiceSubCmdFilterOnOff`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VoiceSubCmdFilterOnOff(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.VoiceSubCmdFilterOnOff")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.discard!(WS), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("off"))), "XCBASIC.VoiceSubCmdFilterOnOff"), "VoiceSubCmdFilterOnOff")(TParseTree("", false,[], s));
+        }
+    }
+    static string VoiceSubCmdFilterOnOff(GetName g)
+    {
+        return "XCBASIC.VoiceSubCmdFilterOnOff";
+    }
+
+    static TParseTree Filter_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), FilterSubCmd))), "XCBASIC.Filter_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Filter_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), FilterSubCmd))), "XCBASIC.Filter_stmt"), "Filter_stmt")(p);
+                memo[tuple(`Filter_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Filter_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), FilterSubCmd))), "XCBASIC.Filter_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), FilterSubCmd))), "XCBASIC.Filter_stmt"), "Filter_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Filter_stmt(GetName g)
+    {
+        return "XCBASIC.Filter_stmt";
+    }
+
+    static TParseTree FilterSubCmd(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(FilterSubCmdCutoff, FilterSubCmdResonance, FilterSubCmdPass), "XCBASIC.FilterSubCmd")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`FilterSubCmd`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(FilterSubCmdCutoff, FilterSubCmdResonance, FilterSubCmdPass), "XCBASIC.FilterSubCmd"), "FilterSubCmd")(p);
+                memo[tuple(`FilterSubCmd`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree FilterSubCmd(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(FilterSubCmdCutoff, FilterSubCmdResonance, FilterSubCmdPass), "XCBASIC.FilterSubCmd")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(FilterSubCmdCutoff, FilterSubCmdResonance, FilterSubCmdPass), "XCBASIC.FilterSubCmd"), "FilterSubCmd")(TParseTree("", false,[], s));
+        }
+    }
+    static string FilterSubCmd(GetName g)
+    {
+        return "XCBASIC.FilterSubCmd";
+    }
+
+    static TParseTree FilterSubCmdCutoff(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cutoff"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdCutoff")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`FilterSubCmdCutoff`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cutoff"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdCutoff"), "FilterSubCmdCutoff")(p);
+                memo[tuple(`FilterSubCmdCutoff`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree FilterSubCmdCutoff(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cutoff"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdCutoff")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cutoff"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdCutoff"), "FilterSubCmdCutoff")(TParseTree("", false,[], s));
+        }
+    }
+    static string FilterSubCmdCutoff(GetName g)
+    {
+        return "XCBASIC.FilterSubCmdCutoff";
+    }
+
+    static TParseTree FilterSubCmdResonance(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("resonance"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdResonance")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`FilterSubCmdResonance`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("resonance"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdResonance"), "FilterSubCmdResonance")(p);
+                memo[tuple(`FilterSubCmdResonance`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree FilterSubCmdResonance(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("resonance"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdResonance")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("resonance"), pegged.peg.discard!(WS), Expression), "XCBASIC.FilterSubCmdResonance"), "FilterSubCmdResonance")(TParseTree("", false,[], s));
+        }
+    }
+    static string FilterSubCmdResonance(GetName g)
+    {
+        return "XCBASIC.FilterSubCmdResonance";
+    }
+
+    static TParseTree FilterSubCmdPass(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("low"), pegged.peg.caseInsensitiveLiteral!("band"), pegged.peg.caseInsensitiveLiteral!("high")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("pass")), "XCBASIC.FilterSubCmdPass")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`FilterSubCmdPass`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("low"), pegged.peg.caseInsensitiveLiteral!("band"), pegged.peg.caseInsensitiveLiteral!("high")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("pass")), "XCBASIC.FilterSubCmdPass"), "FilterSubCmdPass")(p);
+                memo[tuple(`FilterSubCmdPass`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree FilterSubCmdPass(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("low"), pegged.peg.caseInsensitiveLiteral!("band"), pegged.peg.caseInsensitiveLiteral!("high")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("pass")), "XCBASIC.FilterSubCmdPass")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("low"), pegged.peg.caseInsensitiveLiteral!("band"), pegged.peg.caseInsensitiveLiteral!("high")), pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("pass")), "XCBASIC.FilterSubCmdPass"), "FilterSubCmdPass")(TParseTree("", false,[], s));
+        }
+    }
+    static string FilterSubCmdPass(GetName g)
+    {
+        return "XCBASIC.FilterSubCmdPass";
+    }
+
+    static TParseTree Charset_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("rom")), pegged.peg.caseInsensitiveLiteral!("ram"))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Charset_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("rom")), pegged.peg.caseInsensitiveLiteral!("ram"))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(p);
+                memo[tuple(`Charset_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Charset_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("rom")), pegged.peg.caseInsensitiveLiteral!("ram"))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("charset"), pegged.peg.option!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.caseInsensitiveLiteral!("rom")), pegged.peg.caseInsensitiveLiteral!("ram"))), pegged.peg.discard!(WS), Expression), "XCBASIC.Charset_stmt"), "Charset_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Charset_stmt(GetName g)
+    {
+        return "XCBASIC.Charset_stmt";
+    }
+
+    static TParseTree Scroll_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Scroll_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(p);
+                memo[tuple(`Scroll_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Scroll_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("h"), pegged.peg.caseInsensitiveLiteral!("v")), pegged.peg.caseInsensitiveLiteral!("scroll"), pegged.peg.discard!(WS), Expression), "XCBASIC.Scroll_stmt"), "Scroll_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string Scroll_stmt(GetName g)
+    {
+        return "XCBASIC.Scroll_stmt";
+    }
+
+    static TParseTree VMode_stmt(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VModeSubCmd))), "XCBASIC.VMode_stmt")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VMode_stmt`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VModeSubCmd))), "XCBASIC.VMode_stmt"), "VMode_stmt")(p);
+                memo[tuple(`VMode_stmt`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VMode_stmt(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VModeSubCmd))), "XCBASIC.VMode_stmt")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VModeSubCmd))), "XCBASIC.VMode_stmt"), "VMode_stmt")(TParseTree("", false,[], s));
+        }
+    }
+    static string VMode_stmt(GetName g)
+    {
+        return "XCBASIC.VMode_stmt";
+    }
+
+    static TParseTree VModeSubCmd(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmd`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(p);
+                memo[tuple(`VModeSubCmd`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmd(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VModeSubCmdTextBitmap, VModeSubCmdColor, VModeSubCmdRsel, VModeSubCmdCsel), "XCBASIC.VModeSubCmd"), "VModeSubCmd")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmd(GetName g)
+    {
+        return "XCBASIC.VModeSubCmd";
+    }
+
+    static TParseTree VModeSubCmdTextBitmap(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("text"), pegged.peg.caseInsensitiveLiteral!("bitmap"), pegged.peg.caseInsensitiveLiteral!("ext")), "XCBASIC.VModeSubCmdTextBitmap")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmdTextBitmap`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("text"), pegged.peg.caseInsensitiveLiteral!("bitmap"), pegged.peg.caseInsensitiveLiteral!("ext")), "XCBASIC.VModeSubCmdTextBitmap"), "VModeSubCmdTextBitmap")(p);
+                memo[tuple(`VModeSubCmdTextBitmap`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmdTextBitmap(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("text"), pegged.peg.caseInsensitiveLiteral!("bitmap"), pegged.peg.caseInsensitiveLiteral!("ext")), "XCBASIC.VModeSubCmdTextBitmap")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("text"), pegged.peg.caseInsensitiveLiteral!("bitmap"), pegged.peg.caseInsensitiveLiteral!("ext")), "XCBASIC.VModeSubCmdTextBitmap"), "VModeSubCmdTextBitmap")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmdTextBitmap(GetName g)
+    {
+        return "XCBASIC.VModeSubCmdTextBitmap";
+    }
+
+    static TParseTree VModeSubCmdColor(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.VModeSubCmdColor")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmdColor`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.VModeSubCmdColor"), "VModeSubCmdColor")(p);
+                memo[tuple(`VModeSubCmdColor`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmdColor(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.VModeSubCmdColor")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("hires"), pegged.peg.caseInsensitiveLiteral!("multi")), "XCBASIC.VModeSubCmdColor"), "VModeSubCmdColor")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmdColor(GetName g)
+    {
+        return "XCBASIC.VModeSubCmdColor";
+    }
+
+    static TParseTree VModeSubCmdRsel(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rows"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdRsel")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmdRsel`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rows"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdRsel"), "VModeSubCmdRsel")(p);
+                memo[tuple(`VModeSubCmdRsel`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmdRsel(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rows"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdRsel")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("rows"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdRsel"), "VModeSubCmdRsel")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmdRsel(GetName g)
+    {
+        return "XCBASIC.VModeSubCmdRsel";
+    }
+
+    static TParseTree VModeSubCmdCsel(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cols"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdCsel")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VModeSubCmdCsel`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cols"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdCsel"), "VModeSubCmdCsel")(p);
+                memo[tuple(`VModeSubCmdCsel`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VModeSubCmdCsel(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cols"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdCsel")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("cols"), pegged.peg.discard!(WS), Expression), "XCBASIC.VModeSubCmdCsel"), "VModeSubCmdCsel")(TParseTree("", false,[], s));
+        }
+    }
+    static string VModeSubCmdCsel(GetName g)
+    {
+        return "XCBASIC.VModeSubCmdCsel";
+    }
+
+    static TParseTree ExprList(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`ExprList`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(p);
+                memo[tuple(`ExprList`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree ExprList(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.ExprList"), "ExprList")(TParseTree("", false,[], s));
+        }
+    }
+    static string ExprList(GetName g)
+    {
+        return "XCBASIC.ExprList";
+    }
+
+    static TParseTree AccessorList(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`AccessorList`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(p);
+                memo[tuple(`AccessorList`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree AccessorList(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Accessor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor))), "XCBASIC.AccessorList"), "AccessorList")(TParseTree("", false,[], s));
+        }
+    }
+    static string AccessorList(GetName g)
+    {
+        return "XCBASIC.AccessorList";
+    }
+
+    static TParseTree PrintableList(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(TabSep, NlSupp), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.option!(NlSupp)), "XCBASIC.PrintableList")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`PrintableList`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(TabSep, NlSupp), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.option!(NlSupp)), "XCBASIC.PrintableList"), "PrintableList")(p);
+                memo[tuple(`PrintableList`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree PrintableList(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(TabSep, NlSupp), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.option!(NlSupp)), "XCBASIC.PrintableList")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(TabSep, NlSupp), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.option!(NlSupp)), "XCBASIC.PrintableList"), "PrintableList")(TParseTree("", false,[], s));
+        }
+    }
+    static string PrintableList(GetName g)
+    {
+        return "XCBASIC.PrintableList";
+    }
+
+    static TParseTree TabSep(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.literal!(","), "XCBASIC.TabSep")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`TabSep`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.literal!(","), "XCBASIC.TabSep"), "TabSep")(p);
+                memo[tuple(`TabSep`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree TabSep(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.literal!(","), "XCBASIC.TabSep")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.literal!(","), "XCBASIC.TabSep"), "TabSep")(TParseTree("", false,[], s));
+        }
+    }
+    static string TabSep(GetName g)
+    {
+        return "XCBASIC.TabSep";
+    }
+
+    static TParseTree NlSupp(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.literal!(";"), "XCBASIC.NlSupp")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`NlSupp`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.literal!(";"), "XCBASIC.NlSupp"), "NlSupp")(p);
+                memo[tuple(`NlSupp`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree NlSupp(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.literal!(";"), "XCBASIC.NlSupp")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.literal!(";"), "XCBASIC.NlSupp"), "NlSupp")(TParseTree("", false,[], s));
+        }
+    }
+    static string NlSupp(GetName g)
+    {
+        return "XCBASIC.NlSupp";
+    }
+
+    static TParseTree VarList(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Var))), "XCBASIC.VarList")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`VarList`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Var))), "XCBASIC.VarList"), "VarList")(p);
+                memo[tuple(`VarList`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree VarList(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Var))), "XCBASIC.VarList")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Var, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Var))), "XCBASIC.VarList"), "VarList")(TParseTree("", false,[], s));
+        }
+    }
+    static string VarList(GetName g)
+    {
+        return "XCBASIC.VarList";
+    }
+
+    static TParseTree Datalist(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Datalist`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(p);
+                memo[tuple(`Datalist`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Datalist(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(TParseTree("", false,[], s));
+        }
+    }
+    static string Datalist(GetName g)
+    {
+        return "XCBASIC.Datalist";
+    }
+
+    static TParseTree Expression(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Relation, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), BW_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Relation))), "XCBASIC.Expression")(p);
+        }
+        else
+        {
+            if (blockMemoAtPos.canFind(p.end))
+                return hooked!(pegged.peg.defined!(pegged.peg.and!(Relation, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), BW_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Relation))), "XCBASIC.Expression"), "Expression")(p);
+            if (auto m = tuple(`Expression`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Relation, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), BW_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Relation))), "XCBASIC.Expression"), "Expression")(p);
+                memo[tuple(`Expression`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Expression(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Relation, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), BW_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Relation))), "XCBASIC.Expression")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Relation, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), BW_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Relation))), "XCBASIC.Expression"), "Expression")(TParseTree("", false,[], s));
+        }
+    }
+    static string Expression(GetName g)
+    {
+        return "XCBASIC.Expression";
+    }
+
+    static TParseTree Relation(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Simplexp, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Simplexp))), "XCBASIC.Relation")(p);
+        }
+        else
+        {
+            if (blockMemoAtPos.canFind(p.end))
+                return hooked!(pegged.peg.defined!(pegged.peg.and!(Simplexp, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Simplexp))), "XCBASIC.Relation"), "Relation")(p);
+            if (auto m = tuple(`Relation`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Simplexp, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Simplexp))), "XCBASIC.Relation"), "Relation")(p);
+                memo[tuple(`Relation`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Relation(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Simplexp, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Simplexp))), "XCBASIC.Relation")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Simplexp, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), REL_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Simplexp))), "XCBASIC.Relation"), "Relation")(TParseTree("", false,[], s));
+        }
+    }
+    static string Relation(GetName g)
+    {
+        return "XCBASIC.Relation";
+    }
+
+    static TParseTree Simplexp(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            assert(false, "Simplexp is left-recursive, which is not supported at compile-time. Consider using asModule().");
+        }
+        else
+        {
+            static TParseTree[size_t /*position*/] seed;
+            if (auto s = p.end in seed)
+                return *s;
+            if (!blockMemoAtPos.canFind(p.end))
+                if (auto m = tuple(`Simplexp`, p.end) in memo)
+                    return *m;
+            auto current = fail(p);
+            seed[p.end] = current;
+            blockMemoAtPos ~= p.end;
+            while (true)
+            {
+                auto result = hooked!(pegged.peg.defined!(pegged.peg.and!(Term, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), E_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Term))), "XCBASIC.Simplexp"), "Simplexp")(p);
+                if (result.end > current.end ||
+                    (!current.successful && result.successful) /* null-match */)
+                {
+                    current = result;
+                    seed[p.end] = current;
+                } else {
+                    seed.remove(p.end);
+                    assert(blockMemoAtPos.canFind(p.end));
+                    blockMemoAtPos = blockMemoAtPos.remove(countUntil(blockMemoAtPos, p.end));
+                    memo[tuple(`Simplexp`, p.end)] = current;
+                    return current;
+                }
+            }
+        }
+    }
+
+    static TParseTree Simplexp(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Term, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), E_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Term))), "XCBASIC.Simplexp")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Term, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), E_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Term))), "XCBASIC.Simplexp"), "Simplexp")(TParseTree("", false,[], s));
+        }
+    }
+    static string Simplexp(GetName g)
+    {
+        return "XCBASIC.Simplexp";
+    }
+
+    static TParseTree Term(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Factor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), T_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Factor))), "XCBASIC.Term")(p);
+        }
+        else
+        {
+            if (blockMemoAtPos.canFind(p.end))
+                return hooked!(pegged.peg.defined!(pegged.peg.and!(Factor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), T_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Factor))), "XCBASIC.Term"), "Term")(p);
+            if (auto m = tuple(`Term`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Factor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), T_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Factor))), "XCBASIC.Term"), "Term")(p);
+                memo[tuple(`Term`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Term(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Factor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), T_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Factor))), "XCBASIC.Term")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Factor, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), T_OP, pegged.peg.discard!(pegged.peg.option!(WS)), Factor))), "XCBASIC.Term"), "Term")(TParseTree("", false,[], s));
+        }
+    }
+    static string Term(GetName g)
+    {
+        return "XCBASIC.Term";
+    }
+
+    static TParseTree Factor(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), Number, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Parenthesis), String, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Address)), "XCBASIC.Factor")(p);
+        }
+        else
+        {
+            if (blockMemoAtPos.canFind(p.end))
+                return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), Number, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Parenthesis), String, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Address)), "XCBASIC.Factor"), "Factor")(p);
+            if (auto m = tuple(`Factor`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), Number, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Parenthesis), String, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Address)), "XCBASIC.Factor"), "Factor")(p);
+                memo[tuple(`Factor`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Factor(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), Number, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Parenthesis), String, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Address)), "XCBASIC.Factor")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor), Number, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Parenthesis), String, pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), pegged.peg.and!(pegged.peg.option!(UN_OP), pegged.peg.discard!(pegged.peg.option!(WS)), Address)), "XCBASIC.Factor"), "Factor")(TParseTree("", false,[], s));
+        }
+    }
+    static string Factor(GetName g)
+    {
+        return "XCBASIC.Factor";
+    }
+
+    static TParseTree UN_OP(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("-"), pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.discard!(WS))), "XCBASIC.UN_OP")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`UN_OP`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("-"), pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.discard!(WS))), "XCBASIC.UN_OP"), "UN_OP")(p);
+                memo[tuple(`UN_OP`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree UN_OP(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("-"), pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.discard!(WS))), "XCBASIC.UN_OP")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("-"), pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.discard!(WS))), "XCBASIC.UN_OP"), "UN_OP")(TParseTree("", false,[], s));
+        }
+    }
+    static string UN_OP(GetName g)
+    {
+        return "XCBASIC.UN_OP";
+    }
+
+    static TParseTree T_OP(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("*"), pegged.peg.literal!("/"), pegged.peg.caseInsensitiveLiteral!("mod")), "XCBASIC.T_OP")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`T_OP`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("*"), pegged.peg.literal!("/"), pegged.peg.caseInsensitiveLiteral!("mod")), "XCBASIC.T_OP"), "T_OP")(p);
+                memo[tuple(`T_OP`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree T_OP(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("*"), pegged.peg.literal!("/"), pegged.peg.caseInsensitiveLiteral!("mod")), "XCBASIC.T_OP")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.literal!("*"), pegged.peg.literal!("/"), pegged.peg.caseInsensitiveLiteral!("mod")), "XCBASIC.T_OP"), "T_OP")(TParseTree("", false,[], s));
+        }
+    }
+    static string T_OP(GetName g)
+    {
+        return "XCBASIC.T_OP";
+    }
+
+    static TParseTree E_OP(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.keywords!("+", "-"), "XCBASIC.E_OP")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`E_OP`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.keywords!("+", "-"), "XCBASIC.E_OP"), "E_OP")(p);
+                memo[tuple(`E_OP`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree E_OP(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.keywords!("+", "-"), "XCBASIC.E_OP")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.keywords!("+", "-"), "XCBASIC.E_OP"), "E_OP")(TParseTree("", false,[], s));
+        }
+    }
+    static string E_OP(GetName g)
+    {
+        return "XCBASIC.E_OP";
+    }
+
+    static TParseTree BW_OP(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("xor")), "XCBASIC.BW_OP")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`BW_OP`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("xor")), "XCBASIC.BW_OP"), "BW_OP")(p);
+                memo[tuple(`BW_OP`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree BW_OP(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("xor")), "XCBASIC.BW_OP")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("xor")), "XCBASIC.BW_OP"), "BW_OP")(TParseTree("", false,[], s));
+        }
+    }
+    static string BW_OP(GetName g)
+    {
+        return "XCBASIC.BW_OP";
+    }
+
+    static TParseTree REL_OP(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.keywords!("<=", "<>", "<", "=", ">=", ">"), "XCBASIC.REL_OP")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`REL_OP`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.keywords!("<=", "<>", "<", "=", ">=", ">"), "XCBASIC.REL_OP"), "REL_OP")(p);
+                memo[tuple(`REL_OP`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree REL_OP(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.keywords!("<=", "<>", "<", "=", ">=", ">"), "XCBASIC.REL_OP")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.keywords!("<=", "<>", "<", "=", ">=", ">"), "XCBASIC.REL_OP"), "REL_OP")(TParseTree("", false,[], s));
+        }
+    }
+    static string REL_OP(GetName g)
+    {
+        return "XCBASIC.REL_OP";
+    }
+
+    static TParseTree Parenthesis(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")"))), "XCBASIC.Parenthesis")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Parenthesis`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")"))), "XCBASIC.Parenthesis"), "Parenthesis")(p);
+                memo[tuple(`Parenthesis`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Parenthesis(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")"))), "XCBASIC.Parenthesis")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")"))), "XCBASIC.Parenthesis"), "Parenthesis")(TParseTree("", false,[], s));
+        }
+    }
+    static string Parenthesis(GetName g)
+    {
+        return "XCBASIC.Parenthesis";
+    }
+
+    static TParseTree Varnosubscript(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype)), "XCBASIC.Varnosubscript")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Varnosubscript`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype)), "XCBASIC.Varnosubscript"), "Varnosubscript")(p);
+                memo[tuple(`Varnosubscript`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Varnosubscript(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype)), "XCBASIC.Varnosubscript")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype)), "XCBASIC.Varnosubscript"), "Varnosubscript")(TParseTree("", false,[], s));
+        }
+    }
+    static string Varnosubscript(GetName g)
+    {
+        return "XCBASIC.Varnosubscript";
+    }
+
+    static TParseTree Var(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.option!(Vartype)), "XCBASIC.Var")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Var`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.option!(Vartype)), "XCBASIC.Var"), "Var")(p);
+                memo[tuple(`Var`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Var(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.option!(Vartype)), "XCBASIC.Var")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.option!(Vartype)), "XCBASIC.Var"), "Var")(TParseTree("", false,[], s));
+        }
+    }
+    static string Var(GetName g)
+    {
+        return "XCBASIC.Var";
+    }
+
+    static TParseTree IdentifierStart(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"))), "XCBASIC.IdentifierStart")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`IdentifierStart`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"))), "XCBASIC.IdentifierStart"), "IdentifierStart")(p);
+                memo[tuple(`IdentifierStart`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree IdentifierStart(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"))), "XCBASIC.IdentifierStart")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"))), "XCBASIC.IdentifierStart"), "IdentifierStart")(TParseTree("", false,[], s));
+        }
+    }
+    static string IdentifierStart(GetName g)
+    {
+        return "XCBASIC.IdentifierStart";
+    }
+
+    static TParseTree IdentifierCont(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.charRange!('0', '9'), pegged.peg.literal!("_")))), "XCBASIC.IdentifierCont")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`IdentifierCont`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.charRange!('0', '9'), pegged.peg.literal!("_")))), "XCBASIC.IdentifierCont"), "IdentifierCont")(p);
+                memo[tuple(`IdentifierCont`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree IdentifierCont(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.charRange!('0', '9'), pegged.peg.literal!("_")))), "XCBASIC.IdentifierCont")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.charRange!('0', '9'), pegged.peg.literal!("_")))), "XCBASIC.IdentifierCont"), "IdentifierCont")(TParseTree("", false,[], s));
+        }
+    }
+    static string IdentifierCont(GetName g)
+    {
+        return "XCBASIC.IdentifierCont";
+    }
+
+    static TParseTree Varname(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.and!(Reserved, pegged.peg.negLookahead!(IdentifierCont))), IdentifierStart, pegged.peg.option!(IdentifierCont), pegged.peg.option!(pegged.peg.literal!("$")))), "XCBASIC.Varname")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Varname`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.and!(Reserved, pegged.peg.negLookahead!(IdentifierCont))), IdentifierStart, pegged.peg.option!(IdentifierCont), pegged.peg.option!(pegged.peg.literal!("$")))), "XCBASIC.Varname"), "Varname")(p);
+                memo[tuple(`Varname`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Varname(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.and!(Reserved, pegged.peg.negLookahead!(IdentifierCont))), IdentifierStart, pegged.peg.option!(IdentifierCont), pegged.peg.option!(pegged.peg.literal!("$")))), "XCBASIC.Varname")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.fuse!(pegged.peg.and!(pegged.peg.negLookahead!(pegged.peg.and!(Reserved, pegged.peg.negLookahead!(IdentifierCont))), IdentifierStart, pegged.peg.option!(IdentifierCont), pegged.peg.option!(pegged.peg.literal!("$")))), "XCBASIC.Varname"), "Varname")(TParseTree("", false,[], s));
+        }
+    }
+    static string Varname(GetName g)
+    {
+        return "XCBASIC.Varname";
+    }
+
+    static TParseTree Address(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Accessor), "XCBASIC.Address")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Address`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Accessor), "XCBASIC.Address"), "Address")(p);
+                memo[tuple(`Address`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Address(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Accessor), "XCBASIC.Address")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Accessor), "XCBASIC.Address"), "Address")(TParseTree("", false,[], s));
+        }
+    }
+    static string Address(GetName g)
+    {
+        return "XCBASIC.Address";
+    }
+
+    static TParseTree Accessor(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!(".")), Varname)), pegged.peg.option!(Subscript)), "XCBASIC.Accessor")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Accessor`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!(".")), Varname)), pegged.peg.option!(Subscript)), "XCBASIC.Accessor"), "Accessor")(p);
+                memo[tuple(`Accessor`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Accessor(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!(".")), Varname)), pegged.peg.option!(Subscript)), "XCBASIC.Accessor")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Subscript), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.literal!(".")), Varname)), pegged.peg.option!(Subscript)), "XCBASIC.Accessor"), "Accessor")(TParseTree("", false,[], s));
+        }
+    }
+    static string Accessor(GetName g)
+    {
+        return "XCBASIC.Accessor";
+    }
+
+    static TParseTree Id(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Id")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Id`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Id"), "Id")(p);
+                memo[tuple(`Id`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Id(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Id")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Id"), "Id")(TParseTree("", false,[], s));
+        }
+    }
+    static string Id(GetName g)
+    {
+        return "XCBASIC.Id";
+    }
+
+    static TParseTree Str_typeLen(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("*"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Str_typeLen")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Str_typeLen`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("*"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Str_typeLen"), "Str_typeLen")(p);
+                memo[tuple(`Str_typeLen`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Str_typeLen(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("*"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Str_typeLen")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("*"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, Label_ref)), "XCBASIC.Str_typeLen"), "Str_typeLen")(TParseTree("", false,[], s));
+        }
+    }
+    static string Str_typeLen(GetName g)
+    {
+        return "XCBASIC.Str_typeLen";
+    }
+
+    static TParseTree Vartype(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.discard!(pegged.peg.caseInsensitiveLiteral!("as")), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Str_typeLen))), eps), "XCBASIC.Vartype")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Vartype`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.discard!(pegged.peg.caseInsensitiveLiteral!("as")), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Str_typeLen))), eps), "XCBASIC.Vartype"), "Vartype")(p);
+                memo[tuple(`Vartype`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Vartype(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.discard!(pegged.peg.caseInsensitiveLiteral!("as")), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Str_typeLen))), eps), "XCBASIC.Vartype")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.discard!(WS), pegged.peg.discard!(pegged.peg.caseInsensitiveLiteral!("as")), pegged.peg.discard!(WS), Id, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Str_typeLen))), eps), "XCBASIC.Vartype"), "Vartype")(TParseTree("", false,[], s));
+        }
+    }
+    static string Vartype(GetName g)
+    {
+        return "XCBASIC.Vartype";
+    }
+
+    static TParseTree Subscript(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("("), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Expression), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(")")), "XCBASIC.Subscript")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Subscript`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("("), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Expression), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(")")), "XCBASIC.Subscript"), "Subscript")(p);
+                memo[tuple(`Subscript`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Subscript(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("("), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Expression), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(")")), "XCBASIC.Subscript")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("("), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(Expression), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression)), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(")")), "XCBASIC.Subscript"), "Subscript")(TParseTree("", false,[], s));
+        }
+    }
+    static string Subscript(GetName g)
+    {
+        return "XCBASIC.Subscript";
+    }
+
+    static TParseTree String(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(doublequote, pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.and!(pegged.peg.negLookahead!(doublequote), pegged.peg.any), pegged.peg.keep!(pegged.peg.literal!(" ")))), doublequote), "XCBASIC.String")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`String`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(doublequote, pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.and!(pegged.peg.negLookahead!(doublequote), pegged.peg.any), pegged.peg.keep!(pegged.peg.literal!(" ")))), doublequote), "XCBASIC.String"), "String")(p);
+                memo[tuple(`String`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree String(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(doublequote, pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.and!(pegged.peg.negLookahead!(doublequote), pegged.peg.any), pegged.peg.keep!(pegged.peg.literal!(" ")))), doublequote), "XCBASIC.String")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(doublequote, pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.and!(pegged.peg.negLookahead!(doublequote), pegged.peg.any), pegged.peg.keep!(pegged.peg.literal!(" ")))), doublequote), "XCBASIC.String"), "String")(TParseTree("", false,[], s));
+        }
+    }
+    static string String(GetName g)
+    {
+        return "XCBASIC.String";
+    }
+
+    static TParseTree Unsigned(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.charRange!('0', '9')), "XCBASIC.Unsigned")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Unsigned`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.charRange!('0', '9')), "XCBASIC.Unsigned"), "Unsigned")(p);
+                memo[tuple(`Unsigned`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Unsigned(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.charRange!('0', '9')), "XCBASIC.Unsigned")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.charRange!('0', '9')), "XCBASIC.Unsigned"), "Unsigned")(TParseTree("", false,[], s));
+        }
+    }
+    static string Unsigned(GetName g)
+    {
+        return "XCBASIC.Unsigned";
+    }
+
+    static TParseTree Decimal(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Unsigned, pegged.peg.literal!("d")), "XCBASIC.Decimal")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Decimal`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Unsigned, pegged.peg.literal!("d")), "XCBASIC.Decimal"), "Decimal")(p);
+                memo[tuple(`Decimal`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Decimal(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Unsigned, pegged.peg.literal!("d")), "XCBASIC.Decimal")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Unsigned, pegged.peg.literal!("d")), "XCBASIC.Decimal"), "Decimal")(TParseTree("", false,[], s));
+        }
+    }
+    static string Decimal(GetName g)
+    {
+        return "XCBASIC.Decimal";
+    }
+
+    static TParseTree Integer(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned), "XCBASIC.Integer")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Integer`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned), "XCBASIC.Integer"), "Integer")(p);
+                memo[tuple(`Integer`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Integer(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned), "XCBASIC.Integer")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned), "XCBASIC.Integer"), "Integer")(TParseTree("", false,[], s));
+        }
+    }
+    static string Integer(GetName g)
+    {
+        return "XCBASIC.Integer";
+    }
+
+    static TParseTree Hexa(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("$"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('0', '9'), pegged.peg.charRange!('a', 'f'), pegged.peg.charRange!('A', 'F')))), "XCBASIC.Hexa")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Hexa`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("$"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('0', '9'), pegged.peg.charRange!('a', 'f'), pegged.peg.charRange!('A', 'F')))), "XCBASIC.Hexa"), "Hexa")(p);
+                memo[tuple(`Hexa`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Hexa(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("$"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('0', '9'), pegged.peg.charRange!('a', 'f'), pegged.peg.charRange!('A', 'F')))), "XCBASIC.Hexa")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("$"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('0', '9'), pegged.peg.charRange!('a', 'f'), pegged.peg.charRange!('A', 'F')))), "XCBASIC.Hexa"), "Hexa")(TParseTree("", false,[], s));
+        }
+    }
+    static string Hexa(GetName g)
+    {
+        return "XCBASIC.Hexa";
+    }
+
+    static TParseTree Binary(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("%"), pegged.peg.oneOrMore!(pegged.peg.keywords!("0", "1"))), "XCBASIC.Binary")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Binary`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("%"), pegged.peg.oneOrMore!(pegged.peg.keywords!("0", "1"))), "XCBASIC.Binary"), "Binary")(p);
+                memo[tuple(`Binary`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Binary(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("%"), pegged.peg.oneOrMore!(pegged.peg.keywords!("0", "1"))), "XCBASIC.Binary")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("%"), pegged.peg.oneOrMore!(pegged.peg.keywords!("0", "1"))), "XCBASIC.Binary"), "Binary")(TParseTree("", false,[], s));
+        }
+    }
+    static string Binary(GetName g)
+    {
+        return "XCBASIC.Binary";
+    }
+
+    static TParseTree Scientific(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Floating, pegged.peg.keywords!("e", "E"), Integer), "XCBASIC.Scientific")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Scientific`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Floating, pegged.peg.keywords!("e", "E"), Integer), "XCBASIC.Scientific"), "Scientific")(p);
+                memo[tuple(`Scientific`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Scientific(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Floating, pegged.peg.keywords!("e", "E"), Integer), "XCBASIC.Scientific")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Floating, pegged.peg.keywords!("e", "E"), Integer), "XCBASIC.Scientific"), "Scientific")(TParseTree("", false,[], s));
+        }
+    }
+    static string Scientific(GetName g)
+    {
+        return "XCBASIC.Scientific";
+    }
+
+    static TParseTree Floating(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned, pegged.peg.literal!("."), Unsigned), "XCBASIC.Floating")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Floating`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned, pegged.peg.literal!("."), Unsigned), "XCBASIC.Floating"), "Floating")(p);
+                memo[tuple(`Floating`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Floating(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned, pegged.peg.literal!("."), Unsigned), "XCBASIC.Floating")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.literal!("-")), Unsigned, pegged.peg.literal!("."), Unsigned), "XCBASIC.Floating"), "Floating")(TParseTree("", false,[], s));
+        }
+    }
+    static string Floating(GetName g)
+    {
+        return "XCBASIC.Floating";
+    }
+
+    static TParseTree Charlit(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("'{"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!("}'")), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.any, pegged.peg.literal!("'"))), "XCBASIC.Charlit")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Charlit`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("'{"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!("}'")), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.any, pegged.peg.literal!("'"))), "XCBASIC.Charlit"), "Charlit")(p);
+                memo[tuple(`Charlit`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Charlit(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("'{"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!("}'")), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.any, pegged.peg.literal!("'"))), "XCBASIC.Charlit")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.and!(pegged.peg.literal!("'{"), pegged.peg.oneOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!("}'")), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.any, pegged.peg.literal!("'"))), "XCBASIC.Charlit"), "Charlit")(TParseTree("", false,[], s));
+        }
+    }
+    static string Charlit(GetName g)
+    {
+        return "XCBASIC.Charlit";
+    }
+
+    static TParseTree Number(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Decimal, Scientific, Floating, Integer, Hexa, Binary, Charlit), "XCBASIC.Number")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Number`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(Decimal, Scientific, Floating, Integer, Hexa, Binary, Charlit), "XCBASIC.Number"), "Number")(p);
+                memo[tuple(`Number`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Number(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Decimal, Scientific, Floating, Integer, Hexa, Binary, Charlit), "XCBASIC.Number")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(Decimal, Scientific, Floating, Integer, Hexa, Binary, Charlit), "XCBASIC.Number"), "Number")(TParseTree("", false,[], s));
+        }
+    }
+    static string Number(GetName g)
+    {
+        return "XCBASIC.Number";
+    }
+
+    static TParseTree Label(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!(":")), "XCBASIC.Label")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Label`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!(":")), "XCBASIC.Label"), "Label")(p);
+                memo[tuple(`Label`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Label(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!(":")), "XCBASIC.Label")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9'))), pegged.peg.literal!(":")), "XCBASIC.Label"), "Label")(TParseTree("", false,[], s));
+        }
+    }
+    static string Label(GetName g)
+    {
+        return "XCBASIC.Label";
+    }
+
+    static TParseTree Label_ref(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Label_ref")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Label_ref`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Label_ref"), "Label_ref")(p);
+                memo[tuple(`Label_ref`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Label_ref(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Label_ref")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_")), pegged.peg.zeroOrMore!(pegged.peg.or!(pegged.peg.charRange!('a', 'z'), pegged.peg.charRange!('A', 'Z'), pegged.peg.literal!("_"), pegged.peg.charRange!('0', '9')))), "XCBASIC.Label_ref"), "Label_ref")(TParseTree("", false,[], s));
+        }
+    }
+    static string Label_ref(GetName g)
+    {
+        return "XCBASIC.Label_ref";
+    }
+
+    static TParseTree Line_id(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Label, Unsigned, eps), "XCBASIC.Line_id")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Line_id`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(Label, Unsigned, eps), "XCBASIC.Line_id"), "Line_id")(p);
+                memo[tuple(`Line_id`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Line_id(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(Label, Unsigned, eps), "XCBASIC.Line_id")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(Label, Unsigned, eps), "XCBASIC.Line_id"), "Line_id")(TParseTree("", false,[], s));
+        }
+    }
+    static string Line_id(GetName g)
+    {
+        return "XCBASIC.Line_id";
+    }
+
+    static TParseTree Reserved(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("as"), pegged.peg.caseInsensitiveLiteral!("asm"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.caseInsensitiveLiteral!("byte"), pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.caseInsensitiveLiteral!("data"), pegged.peg.caseInsensitiveLiteral!("decimal"), pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.caseInsensitiveLiteral!("end"), pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("exit"), pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.caseInsensitiveLiteral!("float"), pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("hscroll"), pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.caseInsensitiveLiteral!("int"), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.caseInsensitiveLiteral!("long"), pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.caseInsensitiveLiteral!("mod"), pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke"), pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.caseInsensitiveLiteral!("select"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.caseInsensitiveLiteral!("string"), pegged.peg.caseInsensitiveLiteral!("sub"), pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.caseInsensitiveLiteral!("system"), pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.caseInsensitiveLiteral!("until"), pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.caseInsensitiveLiteral!("vscroll"), pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("word"), pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.literal!("xor")), "XCBASIC.Reserved")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Reserved`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("as"), pegged.peg.caseInsensitiveLiteral!("asm"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.caseInsensitiveLiteral!("byte"), pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.caseInsensitiveLiteral!("data"), pegged.peg.caseInsensitiveLiteral!("decimal"), pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.caseInsensitiveLiteral!("end"), pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("exit"), pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.caseInsensitiveLiteral!("float"), pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("hscroll"), pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.caseInsensitiveLiteral!("int"), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.caseInsensitiveLiteral!("long"), pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.caseInsensitiveLiteral!("mod"), pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke"), pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.caseInsensitiveLiteral!("select"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.caseInsensitiveLiteral!("string"), pegged.peg.caseInsensitiveLiteral!("sub"), pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.caseInsensitiveLiteral!("system"), pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.caseInsensitiveLiteral!("until"), pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.caseInsensitiveLiteral!("vscroll"), pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("word"), pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.literal!("xor")), "XCBASIC.Reserved"), "Reserved")(p);
+                memo[tuple(`Reserved`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Reserved(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("as"), pegged.peg.caseInsensitiveLiteral!("asm"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.caseInsensitiveLiteral!("byte"), pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.caseInsensitiveLiteral!("data"), pegged.peg.caseInsensitiveLiteral!("decimal"), pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.caseInsensitiveLiteral!("end"), pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("exit"), pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.caseInsensitiveLiteral!("float"), pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("hscroll"), pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.caseInsensitiveLiteral!("int"), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.caseInsensitiveLiteral!("long"), pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.caseInsensitiveLiteral!("mod"), pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke"), pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.caseInsensitiveLiteral!("select"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.caseInsensitiveLiteral!("string"), pegged.peg.caseInsensitiveLiteral!("sub"), pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.caseInsensitiveLiteral!("system"), pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.caseInsensitiveLiteral!("until"), pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.caseInsensitiveLiteral!("vscroll"), pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("word"), pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.literal!("xor")), "XCBASIC.Reserved")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("and"), pegged.peg.caseInsensitiveLiteral!("as"), pegged.peg.caseInsensitiveLiteral!("asm"), pegged.peg.caseInsensitiveLiteral!("background"), pegged.peg.caseInsensitiveLiteral!("border"), pegged.peg.caseInsensitiveLiteral!("byte"), pegged.peg.caseInsensitiveLiteral!("call"), pegged.peg.caseInsensitiveLiteral!("case"), pegged.peg.caseInsensitiveLiteral!("charat"), pegged.peg.caseInsensitiveLiteral!("close"), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.caseInsensitiveLiteral!("continue"), pegged.peg.caseInsensitiveLiteral!("data"), pegged.peg.caseInsensitiveLiteral!("decimal"), pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.caseInsensitiveLiteral!("dim"), pegged.peg.caseInsensitiveLiteral!("do"), pegged.peg.caseInsensitiveLiteral!("else"), pegged.peg.caseInsensitiveLiteral!("end"), pegged.peg.caseInsensitiveLiteral!("error"), pegged.peg.caseInsensitiveLiteral!("exit"), pegged.peg.caseInsensitiveLiteral!("fast"), pegged.peg.caseInsensitiveLiteral!("filter"), pegged.peg.caseInsensitiveLiteral!("float"), pegged.peg.caseInsensitiveLiteral!("for"), pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("get"), pegged.peg.caseInsensitiveLiteral!("gosub"), pegged.peg.caseInsensitiveLiteral!("goto"), pegged.peg.caseInsensitiveLiteral!("hscroll"), pegged.peg.caseInsensitiveLiteral!("if"), pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.caseInsensitiveLiteral!("include"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("input"), pegged.peg.caseInsensitiveLiteral!("int"), pegged.peg.caseInsensitiveLiteral!("interrupt"), pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.caseInsensitiveLiteral!("load"), pegged.peg.caseInsensitiveLiteral!("locate"), pegged.peg.caseInsensitiveLiteral!("long"), pegged.peg.caseInsensitiveLiteral!("loop"), pegged.peg.caseInsensitiveLiteral!("memcpy"), pegged.peg.caseInsensitiveLiteral!("memset"), pegged.peg.caseInsensitiveLiteral!("memshift"), pegged.peg.caseInsensitiveLiteral!("mod"), pegged.peg.caseInsensitiveLiteral!("next"), pegged.peg.caseInsensitiveLiteral!("not"), pegged.peg.caseInsensitiveLiteral!("off"), pegged.peg.caseInsensitiveLiteral!("on"), pegged.peg.caseInsensitiveLiteral!("open"), pegged.peg.caseInsensitiveLiteral!("option"), pegged.peg.caseInsensitiveLiteral!("or"), pegged.peg.caseInsensitiveLiteral!("origin"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("poke"), pegged.peg.caseInsensitiveLiteral!("doke"), pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("randomize"), pegged.peg.caseInsensitiveLiteral!("raster"), pegged.peg.caseInsensitiveLiteral!("read"), pegged.peg.caseInsensitiveLiteral!("rem"), pegged.peg.caseInsensitiveLiteral!("return"), pegged.peg.caseInsensitiveLiteral!("save"), pegged.peg.caseInsensitiveLiteral!("screen"), pegged.peg.caseInsensitiveLiteral!("select"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("sound"), pegged.peg.caseInsensitiveLiteral!("sprite"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("step"), pegged.peg.caseInsensitiveLiteral!("string"), pegged.peg.caseInsensitiveLiteral!("sub"), pegged.peg.caseInsensitiveLiteral!("swap"), pegged.peg.caseInsensitiveLiteral!("sys"), pegged.peg.caseInsensitiveLiteral!("system"), pegged.peg.caseInsensitiveLiteral!("textat"), pegged.peg.caseInsensitiveLiteral!("then"), pegged.peg.caseInsensitiveLiteral!("timer"), pegged.peg.caseInsensitiveLiteral!("to"), pegged.peg.caseInsensitiveLiteral!("type"), pegged.peg.caseInsensitiveLiteral!("until"), pegged.peg.caseInsensitiveLiteral!("vmode"), pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.caseInsensitiveLiteral!("volume"), pegged.peg.caseInsensitiveLiteral!("vscroll"), pegged.peg.caseInsensitiveLiteral!("while"), pegged.peg.caseInsensitiveLiteral!("word"), pegged.peg.caseInsensitiveLiteral!("write"), pegged.peg.literal!("xor")), "XCBASIC.Reserved"), "Reserved")(TParseTree("", false,[], s));
+        }
+    }
+    static string Reserved(GetName g)
+    {
+        return "XCBASIC.Reserved";
+    }
+
+    static TParseTree WS(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.or!(space, pegged.peg.and!(pegged.peg.literal!("_"), pegged.peg.oneOrMore!(endOfLine)), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))))), "XCBASIC.WS")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`WS`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.or!(space, pegged.peg.and!(pegged.peg.literal!("_"), pegged.peg.oneOrMore!(endOfLine)), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))))), "XCBASIC.WS"), "WS")(p);
+                memo[tuple(`WS`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree WS(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.or!(space, pegged.peg.and!(pegged.peg.literal!("_"), pegged.peg.oneOrMore!(endOfLine)), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))))), "XCBASIC.WS")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.oneOrMore!(pegged.peg.or!(space, pegged.peg.and!(pegged.peg.literal!("_"), pegged.peg.oneOrMore!(endOfLine)), pegged.peg.and!(pegged.peg.literal!("'"), pegged.peg.fuse!(pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.negLookahead!(eol), pegged.peg.any)))))), "XCBASIC.WS"), "WS")(TParseTree("", false,[], s));
+        }
+    }
+    static string WS(GetName g)
+    {
+        return "XCBASIC.WS";
+    }
+
+    static TParseTree EOI(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), "XCBASIC.EOI")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`EOI`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), "XCBASIC.EOI"), "EOI")(p);
+                memo[tuple(`EOI`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree EOI(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), "XCBASIC.EOI")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.negLookahead!(pegged.peg.wrapAround!(Spacing, pegged.peg.any, Spacing)), "XCBASIC.EOI"), "EOI")(TParseTree("", false,[], s));
+        }
+    }
+    static string EOI(GetName g)
+    {
+        return "XCBASIC.EOI";
+    }
+
+    static TParseTree Spacing(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.discard!(pegged.peg.zeroOrMore!(pegged.peg.literal!("\t"))), "XCBASIC.Spacing")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Spacing`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.discard!(pegged.peg.zeroOrMore!(pegged.peg.literal!("\t"))), "XCBASIC.Spacing"), "Spacing")(p);
+                memo[tuple(`Spacing`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Spacing(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.discard!(pegged.peg.zeroOrMore!(pegged.peg.literal!("\t"))), "XCBASIC.Spacing")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.discard!(pegged.peg.zeroOrMore!(pegged.peg.literal!("\t"))), "XCBASIC.Spacing"), "Spacing")(TParseTree("", false,[], s));
+        }
+    }
+    static string Spacing(GetName g)
+    {
+        return "XCBASIC.Spacing";
+    }
+
+    static TParseTree opCall(TParseTree p)
+    {
+        TParseTree result = decimateTree(Program(p));
+        result.children = [result];
+        result.name = "XCBASIC";
+        return result;
+    }
+
+    static TParseTree opCall(string input)
+    {
+        if(__ctfe)
+        {
+            return XCBASIC(TParseTree(``, false, [], input, 0, 0));
+        }
+        else
+        {
+            forgetMemo();
+            return XCBASIC(TParseTree(``, false, [], input, 0, 0));
+        }
+    }
+    static string opCall(GetName g)
+    {
+        return "XCBASIC";
+    }
+
+
+    static void forgetMemo()
+    {
+        memo = null;
+    }
+    }
+}
+
+alias GenericXCBASIC!(ParseTree).XCBASIC XCBASIC;
+
+

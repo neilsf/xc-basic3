@@ -58,7 +58,7 @@ IRQ_SYSTEM EQU 16
 	IF {1} < IRQ_TIMER
 	sta VICII_IRQCTR
 	ELSE
-	and %00011000
+	and #%00011000
 	bne .q
       IF {1} == IRQ_TIMER
 	  lda #%00000010
@@ -172,6 +172,9 @@ IRQ_SPRITE_V
 	; is it a timer interrupt
     lda CIA1_IRQCTR
     and #%00000010
+    asl
+    asl
+    and IRQFLAGS
 	beq .4
 	phsr
 IRQ_TIMER_V	

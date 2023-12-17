@@ -408,9 +408,12 @@ NUCLEUS_DIV24	SUBROUTINE
 	lda R7 + 2				
 	bpl .skip2
 	twoscpllong R7
+    inx
 .skip2
+    txa
+    pha
 	jsr NUCLEUS_DIVU24
-	txa
+	pla
 	and #$01
 	beq .q
 	twoscpllong R4

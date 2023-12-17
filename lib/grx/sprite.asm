@@ -168,24 +168,24 @@ sprcollr  DC.B 0
 	ENDIF
 	pla ; Y-expansion
 	beq .clear
-	lda SPRXEXP
+	lda SPRYEXP
 	ora bittab_t,x
 	bne .1 
 .clear
-    lda SPRXEXP
+    lda SPRYEXP
 	and bittab_f,x
 .1
-	sta SPRXEXP
+	sta SPRYEXP
     pla ; X-expansion
     beq .clear2
-    lda SPRYEXP
+    lda SPRXEXP
 	ora bittab_t,x
 	bne .2
 .clear2
-	lda SPRYEXP
+	lda SPRXEXP
 	and bittab_f,x
 .2
-	sta SPRYEXP
+	sta SPRXEXP
 	ENDM
 	
 	MAC sprite_multicolor ; @pull

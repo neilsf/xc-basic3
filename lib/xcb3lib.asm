@@ -39,8 +39,6 @@
 	  INCLUDE "sfx/sfx.asm"
 	ENDIF
     ; Sprites
-	IF USESPR
-	  INCLUDE "grx/sprite.asm"
-    ENDIF
+    INCLUDE "grx/sprite.asm"
     ; Optimizer
 	INCLUDE "opt/opt.asm"

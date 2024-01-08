@@ -13,13 +13,15 @@ SPRMCLR1  EQU $D025
 SPRMCLR2  EQU $D026
 SPRCOLOR  EQU $D027
 
+    IF USESPR
 bittab_t  HEX 01 02 04 08 10 20 40 80
 bittab_f  HEX FE FD FB F7 EF DF BF 7F
 spritehit DC.B 0
 sprbghit  DC.B 0
 ; Sprite collision refresh flag: 0 = Must reread collision 
 sprcollr  DC.B 0
-	
+    ENDIF   
+    
     ; After this macro call
     ; pseudo-register SN holds the sprite number (0 to 7)
     ; for all subcommands
@@ -226,7 +228,7 @@ sprcollr  DC.B 0
 	ENDM
 	
 	; DECLARE FUNCTION SPRITEHITBG AS BYTE (sprno AS BYTE) SHARED STATIC INLINE
-	MAC F_spritehitbg_byte ; @pull @push
+	MAC F_spritebghit_byte ; @pull
 	IF !FPULL
 	pla
 	ENDIF

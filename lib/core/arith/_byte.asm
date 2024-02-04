@@ -137,6 +137,8 @@
 	REPEND
 	IF !FPUSH
 	pha
+    ELSE
+    tax     ; Just to make sure zero flag is set based on value of A
 	ENDIF
 	ENDM
 	
@@ -150,6 +152,8 @@
 	REPEND
 	IF !FPUSH
 	pha
+    ELSE
+    tax     ; Just to make sure zero flag is set based on value of A
 	ENDIF
 	ENDM
 	
@@ -170,6 +174,8 @@
 .endloop
 	IF !FPUSH
 	pha
+    ELSE
+    tax     ; Just to make sure zero flag is set based on value of A
 	ENDIF
 	ENDM
 	
@@ -190,7 +196,9 @@
 .endloop
 	IF !FPUSH
 	pha
-	ENDIF
+	ELSE
+    tax     ; Just to make sure zero flag is set based on value of A
+    ENDIF
 	ENDM
 	
 ; Multiply bytes

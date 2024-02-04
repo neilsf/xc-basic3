@@ -389,7 +389,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(p);
         }
         else
         {
@@ -397,7 +397,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(p);
                 memo[tuple(`Const_stmt`, p.end)] = result;
                 return result;
             }
@@ -408,12 +408,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(pegged.peg.option!(WS)), Var, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Const_stmt(GetName g)
@@ -425,7 +425,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.discard!(WS)), eps), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(p);
         }
         else
         {
@@ -433,7 +433,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.discard!(WS)), eps), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(p);
                 memo[tuple(`Let_stmt`, p.end)] = result;
                 return result;
             }
@@ -444,12 +444,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.discard!(WS)), eps), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("let"), eps), pegged.peg.discard!(pegged.peg.option!(WS)), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("let"), pegged.peg.discard!(WS)), eps), Accessor, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Let_stmt"), "Let_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Let_stmt(GetName g)

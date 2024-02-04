@@ -133,6 +133,12 @@ abstract class AbstractExpression : ExpressionInterface
     {
         return asmCode;
     }
+
+    /** Cast the expression to another type */
+    public void castTo(Type targetType)
+    {
+        this.asmCode ~= this.type.getCastCode(targetType);
+    }
 }
 
 /** Compiles an expression */

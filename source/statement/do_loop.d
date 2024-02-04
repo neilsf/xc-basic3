@@ -24,6 +24,7 @@ class Do_stmt : Statement
             immutable bool isWhile = (toLower(node.children[0].matches[1]) == "while");
             Expression condition = new Expression(node.children[0].children[0], compiler);
             condition.eval();
+            condition.castTo(compiler.getTypes().get(Type.UINT8));
             appendCode(to!string(condition));
             appendCode("    " ~ (isWhile ? "cond_stmt" : "neg_cond_stmt") ~ " _ED_"
                 ~ to!string(block.getId()) ~ ", $10000\n");
@@ -62,6 +63,7 @@ class Loop_stmt : Statement
             immutable bool isWhile = (toLower(node.children[0].matches[1]) == "while");
             Expression condition = new Expression(node.children[0].children[0], compiler);
             condition.eval();
+            condition.castTo(compiler.getTypes().get(Type.UINT8));
             appendCode(to!string(condition));
             appendCode("    " ~ (isWhile ? "cond_stmt" : "neg_cond_stmt") ~ " _ED_" ~ to!string(counter) ~ ", $10000\n");
         }

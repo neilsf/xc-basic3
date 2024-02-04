@@ -75,7 +75,7 @@ class Relation : AbstractExpression
                 (left.getType().name == Type.STRING && right.getType().name != Type.STRING) || 
                 (left.getType().name != Type.STRING && right.getType().name == Type.STRING)
                 ) {
-                compiler.displayError("Strings can't be compared to other types");
+                compiler.displayError("Strings can't be compared to other types (trying to compare '" ~ left.getType().name ~ "' to '" ~ right.getType().name ~ "')");
             }
             // Only primitive types can be compared
             else if(!left.getType().isPrimitive || !right.getType().isPrimitive) {

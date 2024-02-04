@@ -76,7 +76,7 @@ class Sprite_stmt : Statement
                     break;
 
                 case "XCBASIC.SprSubCmdOnUnderBg":
-                    immutable string mnemonic = toLower(node.matches[0]) == "o" ? "on" : "under";
+                    immutable string mnemonic = toLower(node.matches[0]) == "on" ? "on" : "under";
                     appendCode("    sprite_" ~ mnemonic ~ "_bg " ~ sprNoStr ~ "\n"); 
                     break;
 

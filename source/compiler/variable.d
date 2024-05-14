@@ -731,9 +731,9 @@ class VariableAccess : AccessorInterface
         }
 
         // optimize if variable length is power of two
-        if(ceil(log2(varLen)) == floor(log2(varLen))) {
+        if(ceil(log2(to!float(varLen))) == floor(log2(to!float(varLen)))) {
             if(varLen > 1) { // No need to do anything if it's 1
-                asmCode ~= "    lshift" ~ indexTypeName ~ "wconst "  ~ to!string(log2(varLen)) ~ "\n";
+                asmCode ~= "    lshift" ~ indexTypeName ~ "wconst "  ~ to!string(log2(to!float(varLen))) ~ "\n";
             }
         }
         else {

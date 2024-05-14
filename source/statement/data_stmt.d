@@ -46,72 +46,90 @@ class Data_stmt : Statement
         string[] listItems;
         bool truncated;
         ulong finalLength;
-        float floatVal;
-        int intVal;
+
         foreach (datum; dataListNode.children) {
-            if(type.name == Type.STRING) {
-                if(datum.name != "XCBASIC.String") {
-                    compiler.displayError("Type mismatch: expected string, got number");
-                }
-                compiler.getImCode().appendSegment(
-                    inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
-                    "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated, finalLength) ~ "\n"
-                );
-                if(truncated) {
-                    compiler.displayWarning("String truncated to " ~ to!string(strLen) ~ " characters");
-                }
-            }
-            else {
-                if(datum.name == "XCBASIC.String") {
-                    compiler.displayError("Type mismatch: expected number, got string");
-                }
-                if(datum.name == "XCBASIC.Number") {
+            switch (datum.name) {
+                case "XCBASIC.String":
+                    if (type.name != Type.STRING) {
+                        compiler.displayError("Type mismatch: expected number, label reference or constant, got string");
+                    }
+                    compiler.getImCode().appendSegment(
+                        inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
+                        "    "  ~ asciiToPetsciiHex(join(datum.matches[1..$-1]), strLen, truncated, finalLength) ~ "\n"
+                    );
+                    if(truncated) {
+                        compiler.displayWarning("String truncated to " ~ to!string(strLen) ~ " characters");
+                    }
+                break;
+
+                case "XCBASIC.Number":
+                    if (type.name == Type.STRING) {
+                        compiler.displayError("Type mismatch: expected string, got number");
+                    }
                     Number num = new Number(datum, compiler, type.name == Type.FLOAT);
-                    floatVal = num.floatVal;
-                    intVal = num.intVal;
-                } else {
-                    // A constant
+                    listItems ~= getNumberAsString(num.intVal, num.floatVal, type);
+                break;
+
+                case "XCBASIC.Varname":
+                    if (type.name == Type.STRING) {
+                        compiler.displayError("Type mismatch: expected string, got constant");
+                    }
                     Variable var = compiler.getVars().findVisible(datum.matches.join);
-                    if(var !is null) {
-                        if(!var.isConst) {
+                    if (var !is null) {
+                        if (!var.isConst) {
                             compiler.displayError("DATA must be constant");
                         }
-                        // a constant
-                        floatVal = var.constVal;
-                        intVal = to!int(var.constVal);
+                        listItems ~= getNumberAsString(to!int(var.constVal), var.constVal, type);
                     }
                     else {
                         compiler.displayError("Unknown constant \"" ~ datum.matches.join ~ "\"");
                     }
-                }
-                try {
-                    switch(type.name) {
-                        case Type.FLOAT:
-                            listItems ~= Number.floatToHex(floatVal, "$");
-                        break;
+                break;
 
-                        case Type.DEC:
-                            listItems ~= Number.getDecimalAsHex(intVal, "$");
-                        break;
-
-                        default:
-                            listItems ~= Number.integralToHex(intVal, type, true, "$");
-                        break;
+                case "XCBASIC.Label_deref":
+                    if (type.name == Type.STRING) {
+                        compiler.displayError("Type mismatch: expected string, got label reference");
                     }
-                }
-                catch(Exception e) {
-                    compiler.displayError(e.msg);
-                }
-                
+                    if (type.name != Type.UINT16 && type.name != Type.INT16) {
+                        compiler.displayError("Type mismatch: a label reference can only be part of INT or WORD data");
+                    }
+                    immutable string identifier = join(datum.children[0].matches);
+                    if (compiler.getLabels().exists(identifier, false)) {
+                        immutable string localLabel = compiler.getLabels().toAsmLabel(identifier);
+                        listItems ~= "<" ~ localLabel;
+                        listItems ~= ">" ~ localLabel;
+                    } else {
+                        compiler.displayError("Unknown label \"" ~ identifier ~ "\"");
+                    }
+                break;
+
+                default:
+                    assert(0);
             }
         }
-        if(listItems.length > 0) {
+            
+        if (listItems.length > 0) {
             foreach(chunk; chunks(listItems, 8)) {
-                 compiler.getImCode().appendSegment(
+                compiler.getImCode().appendSegment(
                     inlineData ? IntermediateCode.PROGRAM_SEGMENT : IntermediateCode.DATA_SEGMENT,
                     "    DC.B " ~ chunk.join(",") ~ "\n"
                 );
             }
+        }
+    }
+
+    // Translates a numeric value to its string representation
+    private string getNumberAsString(int intVal, float floatVal, Type type)
+    {
+        switch(type.name) {
+            case Type.FLOAT:
+                return Number.floatToHex(floatVal, "$");
+
+            case Type.DEC:
+                return Number.getDecimalAsHex(intVal, "$");
+
+            default:
+                return Number.integralToHex(intVal, type, true, "$");
         }
     }
 

@@ -178,6 +178,7 @@ struct GenericXCBASIC(TParseTree)
         rules["Number"] = toDelegate(&Number);
         rules["Label"] = toDelegate(&Label);
         rules["Label_ref"] = toDelegate(&Label_ref);
+        rules["Label_deref"] = toDelegate(&Label_deref);
         rules["Line_id"] = toDelegate(&Line_id);
         rules["Reserved"] = toDelegate(&Reserved);
         rules["WS"] = toDelegate(&WS);
@@ -4385,7 +4386,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(p);
         }
         else
         {
@@ -4393,7 +4394,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(p);
                 memo[tuple(`Datalist`, p.end)] = result;
                 return result;
             }
@@ -4404,12 +4405,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_ref), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_ref), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.or!(Number, String, Label_deref, Varname), pegged.peg.discard!(pegged.peg.option!(WS))))), "XCBASIC.Datalist"), "Datalist")(TParseTree("", false,[], s));
         }
     }
     static string Datalist(GetName g)
@@ -5664,6 +5665,42 @@ struct GenericXCBASIC(TParseTree)
     static string Label_ref(GetName g)
     {
         return "XCBASIC.Label_ref";
+    }
+
+    static TParseTree Label_deref(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Label_ref), "XCBASIC.Label_deref")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Label_deref`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Label_ref), "XCBASIC.Label_deref"), "Label_deref")(p);
+                memo[tuple(`Label_deref`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Label_deref(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Label_ref), "XCBASIC.Label_deref")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.literal!("@"), Label_ref), "XCBASIC.Label_deref"), "Label_deref")(TParseTree("", false,[], s));
+        }
+    }
+    static string Label_deref(GetName g)
+    {
+        return "XCBASIC.Label_deref";
     }
 
     static TParseTree Line_id(TParseTree p)

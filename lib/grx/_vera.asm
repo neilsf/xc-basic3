@@ -184,7 +184,7 @@ CURR_SPR  EQU R8
     ; Sets VERA address register to Sprite data
     ; With increment value 1
     ; A = Sprite No
-    IF I_VERA_CALC_SPRBASE_IMPORTED
+    IFCONST I_VERA_CALC_SPRBASE_IMPORTED
 VERA_CALC_SPRBASE SUBROUTINE
     pha
     lda VERA_CTRL

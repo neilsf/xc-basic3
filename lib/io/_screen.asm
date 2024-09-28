@@ -1,4 +1,4 @@
-atus    IF TARGET == c64
+	IF TARGET == c64
 KERNAL_SCREEN_ADDR  EQU $0288
 KERNAL_HOME         EQU $E566
 SRVEC               EQU $D9

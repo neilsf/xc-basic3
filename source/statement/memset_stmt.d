@@ -5,6 +5,8 @@ import pegged.grammar;
 import compiler.compiler, compiler.type;
 import language.statement, language.expression;
 
+import globals;
+
 class Memset_stmt : Statement
 {
     /** Class constructor */
@@ -19,9 +21,11 @@ class Memset_stmt : Statement
         ParseTree argList = this.node.children[0].children[0];
         Expression[3] e;
         Type[3] expectedTypes;
-        expectedTypes[0] = compiler.getTypes().get(Type.UINT16);
-        expectedTypes[1] = compiler.getTypes().get(Type.UINT16);
-        expectedTypes[2] = compiler.getTypes().get(Type.UINT8);
+        expectedTypes[0] = compiler.getTypes().get(
+                target == "mega65" ? Type.INT24 : Type.UINT16
+            ); // address
+        expectedTypes[1] = compiler.getTypes().get(Type.UINT16); // length
+        expectedTypes[2] = compiler.getTypes().get(Type.UINT8);  // value
         const ulong argsCount = argList.children.length;
         if(argsCount != 3) {
             compiler.displayError("Wrong number of arguments (expected 3)");

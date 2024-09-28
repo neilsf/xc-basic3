@@ -3,7 +3,7 @@
 	MAC F_joy_byte ; @pull @push
 	ldy #$FA
 	IF !FPULL
-	pla
+	  pla
 	ENDIF
 	cmp #1
 	beq .1
@@ -21,12 +21,12 @@
 	cli
 	eor #$FF
 	IF !FPUSH
-	pha
+	  pha
 	ENDIF
 	ENDM
 	ENDIF
 
-	IF TARGET == c64
+	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
 	MAC F_joy_byte ; @pull @push
 JOYPORT2 EQU $DC00
 JOYPORT1 EQU $DC01
@@ -73,3 +73,24 @@ OUTPUTB EQU $9120
 	ENDM
 	ENDIF
 	
+	IF TARGET == x16
+	MAC F_joy_byte ; @pull @push
+	IF !FPULL
+	  pla
+	ENDIF
+	jsr $FF56
+	eor #%11111111
+	IF !FPUSH
+	  pha
+	  txa
+	  eor #%11111111
+	  pha
+	ELSE
+	  sta R0
+	  txa
+	  eor #%11111111
+	  tay
+	  lda R0
+	ENDIF
+	ENDM
+	ENDIF

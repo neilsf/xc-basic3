@@ -1,6 +1,6 @@
 module statement.on_stmt;
 
-import std.string, std.conv;
+import std.string, std.conv, std.algorithm.searching;
 import pegged.grammar;
 
 import compiler.compiler, compiler.type;
@@ -56,8 +56,9 @@ class On_stmt : Statement
             case "background":
             case "timer":
             case "raster":
+            case "vblank":
                 int nodeIndex = 0;
-                if(toLower(m1) == "sprite" || toLower(m1) == "background") {
+                if(!canFind(["sprite", "background", "vblank"], toLower(m1))) {
                     if(args[nodeIndex].name == "XCBASIC.Expression") {
                         compiler.displayError("Expected GOTO or GOSUB, got expression");
                     }

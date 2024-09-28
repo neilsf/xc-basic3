@@ -156,11 +156,11 @@ class VariableCollection
     private Compiler compiler;
 
     /** Lower bound of free ZP area */
-    static const ubyte zpLow  = 0x3B;
+    static ubyte zpLow;
     /** Upper bound of free ZP area */
-    static const ubyte zpHigh = 0x69;
+    static ubyte zpHigh;
     /** Points to the next free addr in ZP area */
-    static ubyte zpPtr = zpLow;
+    static ubyte zpPtr;
 
     private Variable[] variables;
 
@@ -168,6 +168,8 @@ class VariableCollection
     this(Compiler compiler)
     {
         this.compiler = compiler;
+        zpLow = zpPtr = (target == "x16" ? 0x35 : 0x3B);
+        zpHigh = (target == "x16" ? 0x7F : 0x69);
     }
 
     /** Add variable to the Collection */

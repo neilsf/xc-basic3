@@ -417,15 +417,17 @@ class RoutineCall : AccessorInterface
                 score[j] = int.max;
                 continue;
             }
+            writeln(candidate.getArgsHash());
             if(candidate.getArgsHash() == callerArgHash) {
                 // perfect match
                 routine = candidate;
                 return;
             }
             score[j] = 0;
+            i = -1;
             foreach (ref calleeType; candidate.argTypes) {
+                i++;
                 Type callerType = callerArgTypes[i];
-                //writeln("testing " ~ callerType.name ~ " against " ~ calleeType.name);
                 if(!callerType.isConvertable(calleeType)) {
                    score[j] = int.max;
                    break;

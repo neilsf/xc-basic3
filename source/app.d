@@ -18,7 +18,7 @@ import compiler.compiler, compiler.library, compiler.sourcefile;
 import globals, optimizer;
 
 // Program version
-const string APP_VERSION = "v3.2.1";
+const string APP_VERSION = "v3.2.0";
 
 /** Possible target options */
 const string[] targetOpts = [

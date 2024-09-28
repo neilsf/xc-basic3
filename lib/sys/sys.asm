@@ -27,6 +27,8 @@ JIFFY EQU $A3
 JIFFY EQU $8D
 	ENDIF
 
+KERNAL_RDTIM EQU $FFDE
+
 	; Initial code that runs when the program is started
 	MAC xbegin
 	spreset
@@ -137,23 +139,41 @@ JIFFY EQU $8D
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	IF !USEIRQ
-    sei
-    ENDIF
-	lda JIFFY + 2
-	IF !FPUSH
-	pha
-	lda JIFFY + 1
-	pha
-	lda JIFFY
-	pha
-	ELSE
-	ldy JIFFY + 1
-	ldx JIFFY
+	IF (TARGET & pet) == 0	; Use KERNAL RDTIM if not PET
+		jsr KERNAL_RDTIM
+		IF !FPUSH
+			sta R0
+			tya
+			pha
+			txa
+			pha
+			lda R0
+			pha
+		ELSE
+			sty R0
+			stx R1
+			ldx R0
+			ldy R1 
+		ENDIF
+	ELSE					; Read Jiffy on PET
+		IF !USEIRQ
+			sei
+		ENDIF
+		lda JIFFY + 2
+		IF !FPUSH
+			pha
+			lda JIFFY + 1
+			pha
+			lda JIFFY
+			pha
+		ELSE
+			ldy JIFFY + 1
+			ldx JIFFY
+		ENDIF
+		IF !USEIRQ
+			cli
+    	ENDIF
 	ENDIF
-	IF !USEIRQ
-    cli
-    ENDIF
 	ENDM
 	
 	; SYS Command

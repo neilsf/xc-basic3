@@ -54,11 +54,12 @@ class IntermediateCode
 
     private string getStartUp()
     {
+        const string processorType = target == "x16" ? "65c02" : "6502";
         // Target machine bits meaning
         // Bits 15-8: base machine
         // Bits 7-0: machine config 
         string startUpCode =
-`    PROCESSOR 6502
+`    PROCESSOR ` ~ processorType ~ `
 c64      EQU %0000000100000000
 vic20    EQU %0000001000000000
 vic20_3k EQU %0000001000000001

@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Compare two bytes on stack for less than
 	MAC cmpbytelt ; @pull @push

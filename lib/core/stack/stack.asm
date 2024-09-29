@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 stack EQU $0100
 

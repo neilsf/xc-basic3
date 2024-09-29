@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Push true onto stack
 	MAC ptrue ; @push

@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 ; VIC-II registers
 SPRPOS    EQU $D000

@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Convert byte on stack to word on stack
 	MAC F_cword_byte

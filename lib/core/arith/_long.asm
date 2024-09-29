@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Perform OR on top 2 long ints of stack
 	MAC orlong

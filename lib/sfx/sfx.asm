@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
 	INCLUDE "sfx/_sid.asm"

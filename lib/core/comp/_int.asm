@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Compare top 2 ints on stack for equality
 	MAC cmpinteq ; @pull @push

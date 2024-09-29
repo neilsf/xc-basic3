@@ -199,6 +199,7 @@ class VariableCollection
         }
 
         this.variables ~= variable;
+        const bool isLocal = (variable.visibility == Compiler.VIS_LOCAL);
 
         // Add the variable to the intermediate code
         if(!variable.isConst && !variable.isDynamic) {
@@ -207,7 +208,7 @@ class VariableCollection
                 // Need one more byte for strings
                 length += (variable.dimensions[0] * variable.dimensions[1] * variable.dimensions[2]);
             }
-            string code;
+            string code = "";
             if(variable.isExplicitAddr || variable.isFast) {
                 if(variable.addressLabel != "") {
                     code = variable.getAsmLabel() ~ " EQU " ~ variable.addressLabel ~ "\n";
@@ -217,8 +218,15 @@ class VariableCollection
                 }
             }
             else {
-                code = variable.getAsmLabel() ~ " DS.B " ~ to!string(length) ~ "\n";
+                if (isLocal) {
+                    code ~= "\t IFCONST I_" ~ compiler.currentProc.getLabel() ~ "_IMPORTED\n";
+                }
+                code ~= variable.getAsmLabel() ~ " DS.B " ~ to!string(length) ~ "\n";
+                if (isLocal) {
+                    code ~= "\tENDIF\n";
+                }
             }
+            
             this.compiler.getImCode().appendSegment(IntermediateCode.VAR_SEGMENT, code);
         }
     }

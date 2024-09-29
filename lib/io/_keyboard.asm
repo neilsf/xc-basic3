@@ -60,27 +60,35 @@ IO_INPUT SUBROUTINE
 	; HB: Keyboard write mask
 	; LB: Keyboard read mask
 	MAC F_key_word ; @push @pull
-	IF TARGET == c64 || TARGET = c128
-	ldx #%11111111 
- 	stx IO_DDRA             
-	ldx #%00000000
-	stx IO_DDRB      
+	IF TARGET & pet
+    	IF !FPULL
+    		pla
+      		sta IO_KEYW
+    	ELSE
+      		sty IO_KEYW
+    	ENDIF
+	ELSE
+		IF TARGET == c64 || TARGET = c128
+			ldx #%11111111 
+ 			stx IO_DDRA             
+			ldx #%00000000
+			stx IO_DDRB      
+		ENDIF
+	 	IF !FPULL
+	  		pla
+	  		sta IO_KEYW
+			IF TARGET & c264
+				sta IO_KEYR
+	    	ENDIF
+	  	ELSE
+			sty IO_KEYW
+			IF TARGET & c264
+				sta IO_KEYR
+	    	ENDIF
+	  	ENDIF
 	ENDIF
-	  If !FPULL
-	  pla
-	  sta IO_KEYW
-		IF TARGET & c264
-		sta IO_KEYR
-	    ENDIF
-	  ELSE
-		sty IO_KEYW
-		IF TARGET & c264
-		sta IO_KEYR
-	    ENDIF
-	  ENDIF
-	ENDIF
-	If !FPULL
-	pla
+	IF !FPULL
+		pla
 	ENDIF
 	and IO_KEYR
 	bne .f

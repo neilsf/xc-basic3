@@ -338,7 +338,7 @@ private void displayHelp(int exitCode, string errorMsg = "")
     stdout.writeln(errorMsg ~
 `
 XC=BASIC compiler version ` ~ APP_VERSION ~ " (" ~ __DATE__ ~ ")" ~ `
-Copyright (c) 2019-2022 by Csaba Fekete (see LICENSE)
+Copyright (c) 2019-` ~ __DATE__[7..11] ~ ` by Csaba Fekete (see LICENSE)
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t
@@ -402,7 +402,7 @@ private void checkLibrary()
  */
 private int[string] getSymbols(string tmpSymbolfile)
 {
-    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
+    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end", "STACKFRAME_TOP"];
     int[string] symbols;
     auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
     foreach (key, value; lines) {
@@ -433,7 +433,7 @@ private void displayInformation(string tmpSymbolfile)
     }
     stdout.writeln("|Program code   | $" ~ asHex(symbols["prg_start"]) ~ " | $" ~ asHex(symbols["library_start"] - 1) ~ " |");
     if(symbols["data_start"] > symbols["library_start"]) {
-        stdout.writeln("|Library        | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
+        stdout.writeln("|Runtime lib.   | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
     }
     if(symbols["vars_start"] > symbols["data_start"]) {
         stdout.writeln("|Data & Strings | $" ~ asHex(symbols["data_start"]) ~ " | $" ~ asHex(symbols["vars_start"] - 1) ~ " |");
@@ -442,6 +442,10 @@ private void displayInformation(string tmpSymbolfile)
         stdout.writeln("|Variables*     | $" ~ asHex(symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
         hasVars = true;
     }
+    uint stack_top = symbols["STACKFRAME_TOP"] - 1;
+    uint str_workarea =  stack_top + 256;
+    stdout.writeln("|Function stack*| ????? | $" ~ asHex(stack_top) ~ " | ");
+    stdout.writeln("|String stack*  | $" ~ asHex(str_workarea - 255) ~ " | $" ~ asHex(str_workarea) ~ " | ");
     stdout.writeln(separator);
     if(hasVars) {
         stdout.writeln("(*) Uninitialized segment.");

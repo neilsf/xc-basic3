@@ -1,13 +1,13 @@
 module statement.rem_stmt;
 
-import std.regex, std.conv;
+import std.regex, std.conv, std.array, std.ascii;
 import pegged.grammar;
 import language.statement, compiler.compiler, compiler.variable;
 
 class Rem_stmt : Statement
 {
-    /** Class constructor */
     this(ParseTree node, Compiler compiler)
+    /** Class constructor */
     {
         super(node, compiler);
     }
@@ -32,6 +32,8 @@ class Rem_stmt : Statement
                 appendCode(line ~ "\n");
             }
         }
+
+        appendCode("; " ~ node.children[0].matches.join() ~ std.ascii.newline);
     }
 
     // Leave labels in accu

@@ -20,7 +20,11 @@ MAX_EXPON	 EQU 10
 APPLE_BAD_BYTE EQU 0
 		
 		SEG.U ZP
-		ORG $16
+                IF TARGET == x16
+		ORG $A9
+                ELSE
+                ORG SN + 1
+                ENDIF
 CHARAC:
 		DS.B 1
 INDEX:
@@ -1690,10 +1694,16 @@ L3D77:
 FOUT4:
         sta     stack,y
 L3D8F:
-        ;lda     #$00
-        ;sta     stack,y
-        sty		stack
+        lda     stack + 1
+        cmp     #$2D
+        beq     L3D94 
+        dey
+        sty		stack + 1
+        lda     #<[stack + 1]
+        ldy     #>[stack + 1]
+        rts
 L3D94:
+        sty		stack
         lda     #<stack
         ldy     #>stack
         rts

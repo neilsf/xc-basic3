@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Compare two long ints on stack for equality
 	MAC cmplongeq ; @push

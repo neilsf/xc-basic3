@@ -18,7 +18,7 @@ import compiler.compiler, compiler.library, compiler.sourcefile;
 import globals, optimizer;
 
 // Program version
-const string APP_VERSION = "v3.1.12";
+const string APP_VERSION = "v3.2.0";
 
 /** Possible target options */
 const string[] targetOpts = [
@@ -35,7 +35,9 @@ const string[] targetOpts = [
     "pet3032",  // Commodore PET3000 series (32k RAM)
     "pet4016",  // Commodore PET4000 series (16k RAM)
     "pet4032",  // Commodore PET4000 series (32k RAM)
-    "pet8032"   // Commodore PET8000 series
+    "pet8032",  // Commodore PET8000 series
+    "x16",      // Commander X16
+    "mega65"    // MEGA65
 ];
 
 // Command line options
@@ -47,8 +49,8 @@ version(Windows) {
 else {
 	private string dasm = "dasm";
 }
-private string symbolfile="";
-private string listfile="";
+private string symbolfile = "";
+private string listfile = "";
 private int verbosity = VERBOSITY_INFO;
 
 private GetoptResult helpInformation;
@@ -106,6 +108,12 @@ void main(string[] args)
     const string stdHeadersName = getLibraryDir() ~ "/headers.bas";
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
+    // Compile any machine specific headers
+    const string targetHeadersName = getLibraryDir() ~ "/headers_" ~ getTargetFamily(target) ~ ".bas";
+    if (exists(targetHeadersName)) {
+        source = SourceFile.get(targetHeadersName);
+        compiler.compileSourceFile(source);
+    }
     // Compile the program
     compiler.compilingUserCode = true;
     immutable string currentDir = getcwd();
@@ -223,6 +231,7 @@ public void setStartAddress()
                 break;
             
             case "c64":
+            case "x16":
                 startAddress = 0x0801;
                 break;
 
@@ -244,6 +253,10 @@ public void setStartAddress()
             case "pet4032":
             case "pet8032":
                 startAddress = 0x0401;
+                break;
+
+            case "mega65":
+                startAddress = 0x2001;
                 break;
 
             case "vic20_8k":
@@ -279,6 +292,7 @@ private void setEndAddress()
                 break;
 
             case "c128":
+            case "mega65":
                 topAddress = 0xc000;
                 break;
 
@@ -300,6 +314,10 @@ private void setEndAddress()
             case "pet4016":
                 topAddress = 0x4000;
                 break;
+
+            case "x16":
+                topAddress = 0x9EFF;
+                break;
                 
             default:
                 topAddress = 0x10000;
@@ -320,7 +338,7 @@ private void displayHelp(int exitCode, string errorMsg = "")
     stdout.writeln(errorMsg ~
 `
 XC=BASIC compiler version ` ~ APP_VERSION ~ " (" ~ __DATE__ ~ ")" ~ `
-Copyright (c) 2019-2022 by Csaba Fekete (see LICENSE)
+Copyright (c) 2019-` ~ __DATE__[7..11] ~ ` by Csaba Fekete (see LICENSE)
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t
@@ -384,7 +402,7 @@ private void checkLibrary()
  */
 private int[string] getSymbols(string tmpSymbolfile)
 {
-    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
+    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end", "STACKFRAME_TOP"];
     int[string] symbols;
     auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
     foreach (key, value; lines) {
@@ -415,7 +433,7 @@ private void displayInformation(string tmpSymbolfile)
     }
     stdout.writeln("|Program code   | $" ~ asHex(symbols["prg_start"]) ~ " | $" ~ asHex(symbols["library_start"] - 1) ~ " |");
     if(symbols["data_start"] > symbols["library_start"]) {
-        stdout.writeln("|Library        | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
+        stdout.writeln("|Runtime lib.   | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
     }
     if(symbols["vars_start"] > symbols["data_start"]) {
         stdout.writeln("|Data & Strings | $" ~ asHex(symbols["data_start"]) ~ " | $" ~ asHex(symbols["vars_start"] - 1) ~ " |");
@@ -424,6 +442,10 @@ private void displayInformation(string tmpSymbolfile)
         stdout.writeln("|Variables*     | $" ~ asHex(symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
         hasVars = true;
     }
+    uint stack_top = symbols["STACKFRAME_TOP"] - 1;
+    uint str_workarea =  stack_top + 256;
+    stdout.writeln("|Function stack*| ????? | $" ~ asHex(stack_top) ~ " | ");
+    stdout.writeln("|String stack*  | $" ~ asHex(str_workarea - 255) ~ " | $" ~ asHex(str_workarea) ~ " | ");
     stdout.writeln(separator);
     if(hasVars) {
         stdout.writeln("(*) Uninitialized segment.");
@@ -432,5 +454,21 @@ private void displayInformation(string tmpSymbolfile)
         stdout.writeln(
             "WARNING: The program has been successfully compiled, but it can't fit between $" 
             ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
+    }
+}
+
+/**
+ * Returns the family of computers the target belongs to
+ */
+private string getTargetFamily(string target)
+{
+    if (target[0..3] == "pet") {
+        return "pet";
+    } else if (target[0..3] == "vic") {
+        return "vic20";
+    } else if (target == "c16" || target == "cplus4") {
+        return "c264";
+    } else {
+        return target;
     }
 }

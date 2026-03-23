@@ -2,7 +2,7 @@ name: Build project
 
 on:
   push:
-    branches: [ main, feature/x16-support, feature/mega65-support ]
+    branches: [ main, release/v3.2.0-beta ]
 
 jobs:
     build:

@@ -1,10 +1,16 @@
-	PROCESSOR 6502
+	
 	
 V1FREQ	EQU $900A
 V2FREQ  EQU $900B
 V3FREQ  EQU $900C
 V4FREQ  EQU $900D
 MASTVOL EQU $900E
+
+	MAC loadvoice
+	ENDM
+
+	MAC savevoice
+	ENDM
 
 	MAC voice_on
 	lda V{1}FREQ	
@@ -55,7 +61,19 @@ MASTVOL EQU $900E
 	
 	; Unsupported on VIC-20
 	
-	MAC voice_wave ; @pull
+	MAC voice_right
+	ENDM
+
+	MAC voice_left
+	ENDM
+
+	MAC voice_volume ; @pull
+	IF !FPULL
+        pla
+    ENDIF
+	ENDM
+
+	MAC voice_wave
 	ENDM
 	
 	MAC voice_pulse ; @pull

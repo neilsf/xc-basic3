@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Push variable of user defined type onto stack
 	; Variable label in {1}

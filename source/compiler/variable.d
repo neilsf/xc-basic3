@@ -156,11 +156,11 @@ class VariableCollection
     private Compiler compiler;
 
     /** Lower bound of free ZP area */
-    static const ubyte zpLow  = 0x3B;
+    static ubyte zpLow;
     /** Upper bound of free ZP area */
-    static const ubyte zpHigh = 0x69;
+    static ubyte zpHigh;
     /** Points to the next free addr in ZP area */
-    static ubyte zpPtr = zpLow;
+    static ubyte zpPtr;
 
     private Variable[] variables;
 
@@ -168,6 +168,8 @@ class VariableCollection
     this(Compiler compiler)
     {
         this.compiler = compiler;
+        zpLow = zpPtr = (target == "x16" ? 0x35 : 0x3B);
+        zpHigh = (target == "x16" ? 0x7F : 0x69);
     }
 
     /** Add variable to the Collection */
@@ -199,6 +201,7 @@ class VariableCollection
         }
 
         this.variables ~= variable;
+        const bool isLocal = (variable.visibility == Compiler.VIS_LOCAL);
 
         // Add the variable to the intermediate code
         if(!variable.isConst && !variable.isDynamic) {
@@ -207,7 +210,7 @@ class VariableCollection
                 // Need one more byte for strings
                 length += (variable.dimensions[0] * variable.dimensions[1] * variable.dimensions[2]);
             }
-            string code;
+            string code = "";
             if(variable.isExplicitAddr || variable.isFast) {
                 if(variable.addressLabel != "") {
                     code = variable.getAsmLabel() ~ " EQU " ~ variable.addressLabel ~ "\n";
@@ -217,8 +220,15 @@ class VariableCollection
                 }
             }
             else {
-                code = variable.getAsmLabel() ~ " DS.B " ~ to!string(length) ~ "\n";
+                if (isLocal) {
+                    code ~= "\t IFCONST I_" ~ compiler.currentProc.getLabel() ~ "_IMPORTED\n";
+                }
+                code ~= variable.getAsmLabel() ~ " DS.B " ~ to!string(length) ~ "\n";
+                if (isLocal) {
+                    code ~= "\tENDIF\n";
+                }
             }
+            
             this.compiler.getImCode().appendSegment(IntermediateCode.VAR_SEGMENT, code);
         }
     }

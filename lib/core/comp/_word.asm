@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	; Compare two words on stack for equality
 	MAC cmpwordeq ; @pull @push

@@ -1,4 +1,4 @@
-	PROCESSOR 6502
+	
 	
 	MAC cmpfloateq ; @pull @push
 	plfloattofac

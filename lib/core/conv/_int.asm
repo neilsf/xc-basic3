@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Convert int on stack to byte
 	MAC F_cbyte_int

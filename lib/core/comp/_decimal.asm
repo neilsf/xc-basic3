@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Compare two decimals on stack for equality
 	MAC cmpdecimaleq ; @pull @push

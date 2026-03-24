@@ -11,7 +11,9 @@ CONST MIN_X = 24.0
 CONST MAX_X = 318.0
 CONST MAX_Y = 228.0
 
-TYPE MOB
+DIM key AS BYTE
+
+TYPE SPRITE
   x AS FLOAT
   y AS FLOAT
   vx AS FLOAT
@@ -22,14 +24,14 @@ TYPE MOB
     THIS.y = THIS.y + THIS.vy
     THIS.vy = THIS.vy + GRAVITY
 
-    ' Hit the wall
+    REM -- Hit the wall
     IF (THIS.x >= MAX_X AND THIS.vx > 0) OR (THIS.x <= MIN_X AND THIS.vx < 0) THEN THIS.vx = THIS.vx * HBOUNCE
-    ' Hit the ground
+    REM -- Hit the ground
     IF THIS.y >= MAX_Y AND THIS.vy > 0.0 THEN
       IF ABS(THIS.vx) < 0.2 THEN END
       THIS.vy = THIS.vy * VBOUNCE
       
-      IF THIS.vx > 0.0 THEN
+      if THIS.vx > 0.0 THEN
         THIS.vx = THIS.vx - FRICTION
       ELSE
         THIS.vx = THIS.vx + FRICTION
@@ -43,8 +45,9 @@ TYPE MOB
     STATIC screen_y AS BYTE
     screen_x = CINT(THIS.x)
     screen_y = CBYTE(THIS.y)
-    lab_h:
-    SPRITE 1 AT screen_x, screen_y
+    POKE $D000, screen_x : REM sprite X coord
+    IF screen_x > 255 THEN POKE $D010, 1 ELSE POKE $D010, 0
+    POKE $D001, screen_y : REM sprite y coord
   END SUB
   
   SUB init () STATIC
@@ -52,20 +55,20 @@ TYPE MOB
     THIS.y = 48.0
     THIS.vy = 0.0
     THIS.vx = 5.5
+    POKE $D015, 1 : REM enable sprite
     MEMCPY @ball_shape, 960, 63
-    SPRITE 1 SHAPE 15 COLOR 13 ON
+    POKE $07F8, 15 : REM sprite pointer
   END SUB
 END TYPE
 
-DIM ball AS MOB
+DIM ball AS SPRITE
 CALL ball.init()
 
-DO
+loop:
   CALL ball.update()
-  ' wait one frame
-  WAIT 53265, 128
+  WAIT 53265, 128 : REM wait one frame
   CALL ball.draw()
-LOOP WHILE 1
+  GOTO loop
 
 ball_shape:
 DATA AS BYTE 0,126,0,3,255,192,7,255,224,31,255,248

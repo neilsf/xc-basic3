@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Add top 2 floats on stack
 	MAC addfloat ; @push

@@ -1,4 +1,4 @@
-	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
+	IF TARGET == c64 || TARGET == c128
 HSCR EQU $D016	
 VSCR EQU $D011	
 RAST EQU $D012
@@ -14,90 +14,41 @@ RAST8 EQU $FF0A
 RAST EQU $9004
 RAST8 EQU $9003
 	ENDIF
-
-	IF TARGET == x16
-RAST EQU $9F28
-RAST8 EQU $9F26
-	ENDIF
-
-    IF TARGET == mega65
-VIC4_CHARPTR EQU $0FFD3068
-    ENDIF
 	
 VMODE_TEXT EQU 1	
 VMODE_BITMAP EQU 2	
 VMODE_EXT EQU 3	
 VMODE_HIRES EQU 0
 VMODE_MULTI EQU 1
-
-VICII_BORDER	 EQU $D020
-VICII_BACKGROUND EQU $D021
-TED_BORDER	 	 EQU $FF19
-TED_BACKGROUND   EQU $FF15
-VICI_BORDER_BG	 EQU $900F
-VERA_BORDER		 EQU $9F2C
-VERA_L0_HSCROLL_L EQU $9F30
-VERA_L0_HSCROLL_H EQU $9F31
-VERA_L0_VSCROLL_L EQU $9F32
-VERA_L0_VSCROLL_H EQU $9F33
-VERA_L1_HSCROLL_L EQU $9F37
-VERA_L1_HSCROLL_H EQU $9F38
-VERA_L1_VSCROLL_L EQU $9F39
-VERA_L1_VSCROLL_H EQU $9F3A
-
+	
 	MAC hscroll ; @pull
-
-	IF TARGET == c64 || TARGET == c128 || TARGET & c264 || TARGET == mega65
-	  IF !FPULL
-	    pla
-	  ENDIF
-	  and #%00000111
-	  sta R0
-	  lda HSCR
-	  and #%11111000
-	  ora R0
-	  sta HSCR
+	IF !FPULL
+	pla
 	ENDIF
-
-	IF TARGET == x16
-	  IF !FPULL
-	    pla
-		sta VERA_L{1}_HSCROLL_H
-		pla
-		sta VERA_L{1}_HSCROLL_L
-	  ELSE
-	  	sta VERA_L{1}_HSCROLL_L
-		sty VERA_L{1}_HSCROLL_H
-	  ENDIF
+	IF TARGET & vic20 || TARGET & pet
+	ELSE
+	and #%00000111
+	sta R0
+	lda HSCR
+	and #%11111000
+	ora R0
+	sta HSCR
 	ENDIF
-
 	ENDM
 	
 	MAC vscroll ; @pull
-
-	IF TARGET == c64 || TARGET == c128 || TARGET & c264 || TARGET == mega65
-	  IF !FPULL
-	    pla
-	  ENDIF
-	  and #%00000111
-	  sta R0
-	  lda VSCR
-	  and #%11111000
-	  ora R0
-	  sta VSCR
+	IF !FPULL
+	pla
 	ENDIF
-
-	IF TARGET == x16
-	  IF !FPULL
-	    pla
-		sta VERA_L{1}_VSCROLL_H
-		pla
-		sta VERA_L{1}_VSCROLL_L
-	  ELSE
-	  	sta VERA_L{1}_VSCROLL_L
-		sty VERA_L{1}_VSCROLL_H
-	  ENDIF
-
+	IF TARGET & vic20 || TARGET & pet
+	ELSE
+	and #%00000111
+	sta R0
+	lda VSCR
+	and #%11111000
+	ora R0
+	sta VSCR
+	ENDIF
 	ENDM
 	
 	; 1 = text
@@ -108,7 +59,7 @@ VERA_L1_VSCROLL_H EQU $9F3A
 	ELSE
 	lda VSCR
 	IF {1} == 1
-	and #%01011111
+	and #%11011111
 	ENDIF
 	IF {1} == 2
 	ora #%00100000
@@ -160,74 +111,37 @@ VERA_L1_VSCROLL_H EQU $9F3A
     sta HSCR
 	ENDIF
 	ENDM
-
-	; Sets screen mode for X16
-	MAC vmode_x16 ; @pull
-	IF !FPULL
-	pla
-	ENDIF
-	clc
-	jsr $FF5F ; screen_mode
-	ENDM
-
-CHARSETSEL SET 0    
-
+    
 	MAC charsetram
-	IF TARGET & c264
-	lda $FF12
-	and #%11111011
-	sta $FF12
-	ENDIF
-	IF TARGET & vic20
-	lda $9005
-	ora #%00001000
-	sta $9005
-	ENDIF
-	IF TARGET == x16
-CHARSETSEL SET 1
-	ENDIF
+    IF TARGET & c264
+    lda $FF12
+    and #%11111011
+    sta $FF12
+    ENDIF
+    IF TARGET & vic20
+    lda $9005
+    ora #%00001000
+    sta $9005
+    ENDIF
 	ENDM
-	
+    
 	MAC charsetrom
-	IF TARGET & c264
+    IF TARGET & c264
 	lda $FF12
-	ora #%00000100
-	sta $FF12
-	ENDIF
+    ora #%00000100
+    sta $FF12
+    ENDIF
 	IF TARGET & vic20
-	lda $9005
-	and #%11110111
-	sta $9005
-	ENDIF
-	IF TARGET == x16
-CHARSETSEL SET 0
-	ENDIF
+    lda $9005
+    and #%11110111
+    sta $9005
+    ENDIF
 	ENDM
     
 	MAC charset ; @pull
-	IF TARGET == x16
-	  IF CHARSETSEL == 0
-	    IF !FPULL
-		  pla ; drop HB
-		  pla ; keep LB
-	    ENDIF	
-		and #%00000011
-		jsr X16_screen_set_charset
-	  ELSE
-		IF !FPULL
-		  HEX 7A; ply
-		  HEX FA; plx
-		ELSE
-		  tax
-	    ENDIF
-		lda #0
-		jsr X16_screen_set_charset
-	  ENDIF
-	ELSE
-	IF !FPULL
-      pla
+    IF !FPULL
+    pla
     ENDIF
-	ENDIF
     IF (TARGET == c64) || (TARGET == c128)
     asl
     and #%00001110
@@ -254,35 +168,6 @@ CHARSETSEL SET 0
     ora R0
     sta $9005
     ENDIF
-    IF TARGET == mega65
-      ldx #<VIC4_CHARPTR
-      stx R0
-      ldx #>VIC4_CHARPTR
-      stx R0 + 1
-      ldx #<[VIC4_CHARPTR >> 16]
-      stx R0 + 2
-      ldx #>[VIC4_CHARPTR >> 16]
-      stx R0 + 3
-      IF !FPULL
-        ldz_imm #2
-        sta_indz R0
-        pla
-        dez
-        sta_indz R0
-        pla
-        dez
-        sta_indz R0
-      ELSE
-        ldz_imm #0
-        sta_indz R0
-        tya
-        inz
-        sta_indz R0
-        txa
-        inz
-        sta_indz R0
-      ENDIF
-    ENDIF
 	ENDM
 
 	MAC F_scan
@@ -300,7 +185,7 @@ CHARSETSEL SET 0
 	  lda RAST
 	  pha
 	  lda RAST8
-	  IF (TARGET == c64) || (TARGET == c128) || (TARGET == x16) || (TARGET == mega65)
+	  IF (TARGET == c64) || (TARGET == c128) 
 	  asl
 	  lda #0
 	  rol

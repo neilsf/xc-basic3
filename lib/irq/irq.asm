@@ -1,4 +1,4 @@
-	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
+	IF TARGET == c64 || TARGET == c128
 	INCLUDE "irq/_c64.asm"
 	ENDIF
 	
@@ -12,8 +12,4 @@
     
 	IF TARGET & pet
     INCLUDE "irq/_pet.asm"
-	ENDIF
-    
-	IF TARGET == x16
-	INCLUDE "irq/_x16.asm"
 	ENDIF

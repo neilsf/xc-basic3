@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Add top 2 decimals on stack
 	MAC adddecimal

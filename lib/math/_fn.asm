@@ -528,7 +528,7 @@ MATH_RND HEX 00 00 00
 	; DECLARE FUNCTION RND AS FLOAT () SHARED STATIC INLINE
 	MAC F_rnd ; @push
 	import I_RND
-	jsr RND
+	jsr I_RND
 	pfloatvar MATH_RND_EXP
 	ENDM
 	
@@ -536,7 +536,7 @@ MATH_RND HEX 00 00 00
 	MAC F_rndl
 	import I_RNDL
 	REPEAT 3
-	jsr RNDL
+	jsr I_RNDL
 	lda MATH_RND
 	pha
 	REPEND
@@ -546,7 +546,7 @@ MATH_RND HEX 00 00 00
 	MAC F_rndi
 	import I_RNDL
 	REPEAT 2
-	jsr RNDL
+	jsr I_RNDL
 	lda MATH_RND
 	pha
 	REPEND
@@ -560,7 +560,7 @@ MATH_RND HEX 00 00 00
 	; DECLARE FUNCTION RNDB AS BYTE () SHARED STATIC INLINE
 	MAC F_rndb ; @ push
 	import I_RNDL
-	jsr RNDL
+	jsr I_RNDL
 	lda MATH_RND
 	IF !FPUSH
 	pha
@@ -571,7 +571,7 @@ MATH_RND HEX 00 00 00
 	; Brad Smith, 2019
 	; http://rainwarrior.ca
 	IFCONST I_RNDL_IMPORTED
-RNDL SUBROUTINE
+I_RNDL SUBROUTINE
 	; rotate the middle byte left
 	ldy MATH_RND + 1 ; will move to seed + 2 at the end
 	; compute seed + 1 ($1B>>1 = %1101)
@@ -603,7 +603,7 @@ RNDL SUBROUTINE
 	ENDIF
 	
 	IFCONST I_RND_IMPORTED
-RND SUBROUTINE
+I_RND SUBROUTINE
 	import I_FPLIB
 	lda #<MATH_RND_EXP
 	ldy #>MATH_RND_EXP

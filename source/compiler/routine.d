@@ -417,7 +417,6 @@ class RoutineCall : AccessorInterface
                 score[j] = int.max;
                 continue;
             }
-            writeln(candidate.getArgsHash());
             if(candidate.getArgsHash() == callerArgHash) {
                 // perfect match
                 routine = candidate;

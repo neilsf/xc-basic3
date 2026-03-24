@@ -1,5 +1,5 @@
 	; XC=BASIC system functions
-	IF TARGET == c64 || TARGET & vic20 || TARGET == mega65
+	IF TARGET == c64 || TARGET & vic20
 SAREG EQU $030C
 SXREG EQU $030D 
 SYREG EQU $030E 
@@ -17,34 +17,26 @@ MMU EQU $FF00
 INIT_STATUS EQU $0A04
 	ENDIF
 	
-	IF TARGET == c64 || TARGET & vic20 || TARGET == c128 || TARGET == mega65
+	IF TARGET == c64 || TARGET & vic20 || TARGET == c128
 JIFFY EQU $A0
 	ENDIF
 	IF TARGET & c264
 JIFFY EQU $A3
 	ENDIF
-	IF TARGET >= pet && TARGET < mega65
+	IF TARGET >= pet
 JIFFY EQU $8D
 	ENDIF
-
-KERNAL_RDTIM EQU $FFDE
 
 	; Initial code that runs when the program is started
 	MAC xbegin
 	spreset
 	framereset
-	
 	IF TARGET == c64
 		; Bank out BASIC ROM
 		lda $01
 		and #%11111110
 		sta $01
 	ENDIF
-    IF TARGET == mega65
-        IF USESPR
-          jsr sprinit_m65
-        ENDIF
-    ENDIF
 	IF TARGET == c128
 		; Set up MMU
 		lda #%001110
@@ -57,17 +49,9 @@ KERNAL_RDTIM EQU $FFDE
 		and #%11111110
 		sta INIT_STATUS
 	ENDIF
-  
-	IF TARGET == x16
-	; Bank KERNAL in
-	lda #$00
-	sta $01
-	ENDIF
-	
     IF USEIRQ == 1
 		jsr IRQSETUP
 	ENDIF
-	
 	; Init FP workspace
 	ldx #[TEMP3 - CHARAC + 1]
 	lda #0
@@ -75,7 +59,6 @@ KERNAL_RDTIM EQU $FFDE
 	sta CHARAC,x
 	dex
 	bne .1
-
 	ENDM
 	
 	; Final code that runs when the program is terminated
@@ -83,16 +66,11 @@ KERNAL_RDTIM EQU $FFDE
 	IF USEIRQ == 1
 	jsr IRQRESET
 	ENDIF
-	IF TARGET == x16
-	; Bank BASIC in
-	lda #$04
-	sta $01
-	ENDIF
 	IF TARGET == c64
-        ; Bank in BASIC ROM
-        lda $01
-        ora #%00000001         
-        sta $01
+	; Bank in BASIC ROM
+	lda $01
+	ora #%00000001         
+	sta $01
 	ENDIF
 	IF TARGET == c128
 	; Reset MMU
@@ -125,55 +103,27 @@ KERNAL_RDTIM EQU $FFDE
 	IF TARGET & pet && TARGET >= pet4
 	jmp $B3FF
 	ENDIF
-
-	IF TARGET == x16
-	clc ; Warm start
-	jmp $FF47
-	ENDIF
-
-    IF TARGET == mega65
-    rts
-    ENDIF
-
 	ENDM
 	
 	; DECLARE FUNCTION TI AS LONG () SHARED STATIC INLINE
 	MAC F_ti ; @push
-	IF (TARGET & pet) == 0	; Use KERNAL RDTIM if not PET
-		jsr KERNAL_RDTIM
-		IF !FPUSH
-			sta R0
-			tya
-			pha
-			txa
-			pha
-			lda R0
-			pha
-		ELSE
-			sty R0
-			stx R1
-			ldx R0
-			ldy R1 
-		ENDIF
-	ELSE					; Read Jiffy on PET
-		IF !USEIRQ
-			sei
-		ENDIF
-		lda JIFFY + 2
-		IF !FPUSH
-			pha
-			lda JIFFY + 1
-			pha
-			lda JIFFY
-			pha
-		ELSE
-			ldy JIFFY + 1
-			ldx JIFFY
-		ENDIF
-		IF !USEIRQ
-			cli
-    	ENDIF
+	IF !USEIRQ
+    sei
+    ENDIF
+	lda JIFFY + 2
+	IF !FPUSH
+	pha
+	lda JIFFY + 1
+	pha
+	lda JIFFY
+	pha
+	ELSE
+	ldy JIFFY + 1
+	ldx JIFFY
 	ENDIF
+	IF !USEIRQ
+    cli
+    ENDIF
 	ENDM
 	
 	; SYS Command

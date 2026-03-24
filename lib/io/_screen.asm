@@ -1,4 +1,4 @@
-	IF TARGET == c64
+    IF TARGET == c64
 KERNAL_SCREEN_ADDR  EQU $0288
 KERNAL_HOME         EQU $E566
 SRVEC               EQU $D9
@@ -19,21 +19,24 @@ COLOR_RAM           EQU $0800
 	
     IF TARGET & vic20
 KERNAL_SCREEN_ADDR  EQU $0288
+COLOR_RAM EQU $9600
       IF TARGET == vic20_8k
 COLOR_RAM EQU $9400
-      ELSE
-COLOR_RAM EQU $9600
       ENDIF
 	ENDIF
 
 ; Various C-64 registers
 VICII_MEMCONTROL EQU $D018
 CIA_DIRECTIONALR EQU $DD00
-
+VICII_BORDER	 EQU $D020
+VICII_BACKGROUND EQU $D021
 ; Various C264 registers
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
-
+TED_BORDER	 	 EQU $FF19
+TED_BACKGROUND   EQU $FF15
+; Various VIC-20 registers
+VICI_BORDER_BG	 EQU $900F
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -274,65 +277,28 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
-	; Commander X16
-	IF TARGET == x16
-	  tay
+	import I_CALC_SCRROWPTR
+	jsr CALC_SCRROWPTR
+	pla
+	tay
+	pla
+	sta (R0),y
+	IF {1} == 1 ; Color was provided
 	  pla
-	  tax
-	  clc
-	  import I_VERA_SETADDR
-	  jsr VERA_SETADDR
-	  pla
-	  sta VERA_DATA0
-	  IF {1} == 1 ; Color was provided
-	    pla
-	    sta VERA_DATA0
-	  ENDIF
-	; All other targets
-	ELSE  
-	  import I_CALC_SCRROWPTR
-	  jsr CALC_SCRROWPTR
-	  pla
-	  tay
-	  pla
-	  sta (R0),y
-	  IF {1} == 1 ; Color was provided
-		pla
-        ; Not MEGA65 and not PET
-		IF TARGET != mega65 && ((TARGET & pet) == 0)
-		  tax
-		  lda R0 + 1
-		  sec
-		  IF TARGET & c264
-			sbc #$0C
-		  ELSE
-			sbc KERNAL_SCREEN_ADDR
-		  ENDIF
-		  clc
-		  adc #>COLOR_RAM
-		  sta R0 + 1
-		  txa
-		  sta (R0),y
-	    ENDIF
-        ; MEGA65
-	    IF TARGET == mega65
-          tax
-          ; Store color ram base addr ($0001F800) + relative from screen
-          lda R0
-          sta R4
-          lda R0 + 1
-          clc
-          adc #$F0
-          sta R4 + 1
-          lda #$01
-          sta R4 + 2
-          lda #0
-          sta R4 + 3
-          tya
-          taz
-          txa
-          sta_indz R4
+      IF (TARGET & pet) == 0
+	    tax
+	    lda R0 + 1
+	    sec
+	    IF TARGET & c264
+        sbc #$0C
+	    ELSE
+        sbc KERNAL_SCREEN_ADDR
         ENDIF
+	    clc
+	    adc #>COLOR_RAM
+	    sta R0 + 1
+	    txa
+	    sta (R0),y
       ENDIF
 	ENDIF
 	ENDM
@@ -343,38 +309,6 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	IF !FPULL
 	pla
 	ENDIF
-	; Commander X16
-	IF TARGET == x16
-	  tay
-	  pla
-	  tax
-	  clc
-	  import I_VERA_SETADDR
-	  import I_VERA_MOV_STRING  
-	  jsr VERA_SETADDR
-	  ; override increment value to 2
-	  lda #%00100001
-	  sta VERA_ADDR + 2
-	  jsr VERA_MOV_STRING
-	  IF {1} == 1; Color was provided
-	    pla
-	    ; Decrement VERA addr by 1 ...
-	    ldy #%00011001
-	    sty VERA_ADDR + 2
-	    ldy VERA_DATA0
-	    ; .. Then by 2 at each subsequent write
-	    ldy #%00101001
-	    sty VERA_ADDR + 2
-	    ldx R0
-.loop
-	    beq .q
-	    sta VERA_DATA0
-	    dex
-	    jmp .loop
-.q
-	  ENDIF
-    ; All other targets
-	ELSE
 	import I_CALC_SCRROWPTR
 	jsr CALC_SCRROWPTR
 	pla
@@ -389,27 +323,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	jsr STRREMOV_SC
 	IF {1} == 1; Color was provided
       pla
-      IF TARGET == mega65
-        tax
-        ; Store color ram base addr ($0001F800) + relative from screen
-        lda R0
-        sta R4
-        lda R0 + 1
-        clc
-        adc #$F0
-        sta R4 + 1
-        lda #$01
-        sta R4 + 2
-        lda #0
-        sta R4 + 3
-        txa
-        DC.B $AB, R3, $00 ; ldz R3
-.loop2:
-        sta_indz R4  ; sta [R4],z
-        dez          ; dez
-        bpl .loop2
-      ENDIF
-      IF TARGET != mega65 && ((TARGET & pet) == 0)
+      IF (TARGET & pet) == 0
         tax
         lda R0 + 1
         sec
@@ -431,7 +345,6 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
         bpl .loop
       ENDIF
 	ENDIF
-    ENDIF
 	ENDM
 	
 	; Calculates a pointer to screen row
@@ -486,7 +399,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8032 || TARGET = mega65 || TARGET == x16; 80-column machines
+		IF TARGET == pet8032 ; 80-column PET
 		sta R0 + 1
 		asl R0
 		rol R0 + 1
@@ -499,25 +412,19 @@ CALC_SCRROWPTR SUBROUTINE
 	IF TARGET & c264 
 	adc #$0c ; high byte is always 0C on plus4
 	ENDIF
-    IF TARGET == mega65 
-	adc #$08 ; // TODO implement relocatable screen
-	ENDIF
 	IF (TARGET == c64) || (TARGET == c128) || (TARGET & vic20)
 	adc KERNAL_SCREEN_ADDR
 	ENDIF
 	sta R0 + 1
 	rts
 	ENDIF
-			
+		
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
 	IF !FPULL
 	pla
 	ENDIF
-    IF TARGET == x16
-    clc
-    jsr KERNAL_SCREENMODE
-    ENDIF
+    ; This command has only effect on the C64/C128
     IF TARGET == c64 || TARGET == c128
 	asl
 	asl
@@ -599,14 +506,6 @@ RESET_SCRVECTORS SUBROUTINE
 	ora R0
 	sta TED_BORDER
 	ENDIF
-    
-	IF TARGET == mega65
-    sta_far $0FFD3020
-	ENDIF
-    
-	IF TARGET == x16
-	sta VERA_BORDER
-	ENDIF
 	
 	ENDM
 	
@@ -641,14 +540,6 @@ RESET_SCRVECTORS SUBROUTINE
     asl
     ora R0
     sta TED_BACKGROUND
-    ENDIF
-    
-    IF TARGET == mega65
-    sta_far $0FFD3021
-	ENDIF
-    
-	IF TARGET == x16 
-    ;
     ENDIF
 	
 	ENDM

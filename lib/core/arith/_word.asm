@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Add top 2 words on stack
 	; 32 cycles - could it be less?

@@ -33,7 +33,10 @@ class Option_stmt: Statement
         }
         switch(optionName) {
             case "TARGET":
-                compiler.displayError("OPTION TARGET is no longer supported. Use the --target command line option instead.");
+                if(!canFind(targetOpts, optionValueString)) {
+                    compiler.displayError(optionValueString ~ " is not a valid target");
+                }
+                target = optionValueString;
                 break;
             case "NOBASICLOADER":
                 basicLoader = false;

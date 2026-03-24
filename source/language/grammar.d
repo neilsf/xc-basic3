@@ -35,7 +35,6 @@ struct GenericXCBASIC(TParseTree)
         rules["Const_stmt"] = toDelegate(&Const_stmt);
         rules["Let_stmt"] = toDelegate(&Let_stmt);
         rules["Print_stmt"] = toDelegate(&Print_stmt);
-        rules["Print_hash_stmt"] = toDelegate(&Print_hash_stmt);
         rules["Write_stmt"] = toDelegate(&Write_stmt);
         rules["Read_stmt"] = toDelegate(&Read_stmt);
         rules["If_stmt"] = toDelegate(&If_stmt);
@@ -355,7 +354,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Print_hash_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(p);
+            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(p);
         }
         else
         {
@@ -363,7 +362,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Print_hash_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(p);
                 memo[tuple(`Statement`, p.end)] = result;
                 return result;
             }
@@ -374,12 +373,12 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Print_hash_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Print_hash_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.longest_match!(Const_stmt, Let_stmt, Print_stmt, If_stmt, Goto_stmt, Input_stmt, Gosub_stmt, Call_stmt, Rem_stmt, Poke_stmt, For_stmt, Next_stmt, Dim_stmt, Charat_stmt, Data_stmt, Textat_stmt, Incbin_stmt, Include_stmt, Load_stmt, Save_stmt, Randomize_stmt, Origin_stmt, Swap_stmt, Locate_stmt, On_stmt, Error_stmt, Wait_stmt, Memset_stmt, Memcpy_stmt, Memshift_stmt, Open_stmt, Close_stmt, Get_stmt, If_sa_stmt, Else_stmt, Endif_stmt, Fun_stmt, Endfun_stmt, Return_fn_stmt, Return_stmt, Exitfun_stmt, Do_stmt, Loop_stmt, Asm_stmt, Endasm_stmt, Write_stmt, Read_stmt, Cont_stmt, Exit_do_stmt, Exit_for_stmt, Type_stmt, Endtype_stmt, Endselect_stmt, End_stmt, Screen_stmt, Option_stmt, Sprite_clearhit_stmt, Sprite_multicolor_stmt, Sprite_stmt, Sound_clear_stmt, Volume_stmt, Voice_stmt, Filter_stmt, Irq_stmt, Border_stmt, Background_stmt, Sys_stmt, Charset_stmt, Scroll_stmt, VMode_stmt, Field_def, Select_stmt, Case_stmt), "XCBASIC.Statement"), "Statement")(TParseTree("", false,[], s));
         }
     }
     static string Statement(GetName g)
@@ -463,7 +462,7 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(p);
         }
         else
         {
@@ -471,7 +470,7 @@ struct GenericXCBASIC(TParseTree)
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(p);
                 memo[tuple(`Print_stmt`, p.end)] = result;
                 return result;
             }
@@ -482,53 +481,17 @@ struct GenericXCBASIC(TParseTree)
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.and!(pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), Expression, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)))), PrintableList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_stmt"), "Print_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Print_stmt(GetName g)
     {
         return "XCBASIC.Print_stmt";
-    }
-
-    static TParseTree Print_hash_stmt(TParseTree p)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_hash_stmt")(p);
-        }
-        else
-        {
-            if (auto m = tuple(`Print_hash_stmt`, p.end) in memo)
-                return *m;
-            else
-            {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_hash_stmt"), "Print_hash_stmt")(p);
-                memo[tuple(`Print_hash_stmt`, p.end)] = result;
-                return result;
-            }
-        }
-    }
-
-    static TParseTree Print_hash_stmt(string s)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_hash_stmt")(TParseTree("", false,[], s));
-        }
-        else
-        {
-            forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("print"), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("#"), pegged.peg.discard!(pegged.peg.option!(WS)), ExprList, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(pegged.peg.literal!(";"))), "XCBASIC.Print_hash_stmt"), "Print_hash_stmt")(TParseTree("", false,[], s));
-        }
-    }
-    static string Print_hash_stmt(GetName g)
-    {
-        return "XCBASIC.Print_hash_stmt";
     }
 
     static TParseTree Write_stmt(TParseTree p)

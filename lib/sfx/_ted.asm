@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 SNDCTRL EQU $FF11
 V1FREQL EQU $FF0E
@@ -11,12 +11,6 @@ WAVENOISE EQU %01000000
 
 ; Voice 2 wave setting
 V2WAVE DC.B WAVEPULSE
-
-	MAC loadvoice
-	ENDM
-
-	MAC savevoice
-	ENDM
 
 	MAC voice_on
 	lda SNDCTRL
@@ -109,18 +103,6 @@ V2WAVE DC.B WAVEPULSE
 	MAC voice_filteroff
 	ENDM
 	
-	MAC voice_right
-	ENDM
-
-	MAC voice_left
-	ENDM
-
-	MAC voice_volume ; @pull
-	IF !FPULL
-        pla
-    ENDIF
-	ENDM
-
 	MAC filter
 	ENDM
 	

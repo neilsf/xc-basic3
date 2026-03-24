@@ -4,36 +4,31 @@
 ;
 ; ZP locations reserved
 ; ------------------------------------------
-	IF TARGET == x16
-R0 EQU $22
-	ELSE
-R0 EQU $02
-	ENDIF
-
 ; Arithmetic registers
-R1	EQU R0 + 1
-R2	EQU R0 + 2
-R3	EQU R0 + 3
-R4	EQU R0 + 4
-R5	EQU R0 + 5
-R6	EQU R0 + 6
-R7	EQU R0 + 7
-R8	EQU R0 + 8
-R9	EQU R0 + 9
-RA	EQU R0 + 10
-RB	EQU R0 + 11
+R0	EQU $02
+R1	EQU $03
+R2	EQU $04
+R3	EQU $05
+R4	EQU $06
+R5	EQU $07
+R6	EQU $08
+R7	EQU $09
+R8	EQU $0A
+R9	EQU $0B
+RA	EQU $0C
+RB	EQU $0D
 ; Pointer to current string in work area
-SP	EQU R0 + 12
+SP	EQU $0E
 ; Pointer to current stack frame
-RC  EQU R0 + 13
-RD  EQU R0 + 14
+RC  EQU $0F
+RD  EQU $10
 ; Tmp Pointer to next stack frame
-RE	EQU R0 + 15
-RF	EQU R0 + 16
+RE	EQU $11
+RF	EQU $12
 ; Pointer to "this"
-TH  EQU R0 + 17
+TH  EQU $13
 ; Current sprite number
-SN  EQU R0 + 18
+SN  EQU $15
 
 	; Push pseudo-registers onto stack
 	MAC phsr

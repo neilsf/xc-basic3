@@ -1,4 +1,4 @@
-	
+	PROCESSOR 6502
 	
 	; Convert float on stack to byte
 	MAC F_cbyte_float ; @pull @push

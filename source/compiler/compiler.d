@@ -100,9 +100,13 @@ final class Compiler
     /** Whether the compiler is currently compiling user code, i.e not standard header files */
     public bool compilingUserCode = false;
 
+    private bool debugEnabled;
+
     /** Class constructor */
-    this()
+    this(bool debugEnabled = false)
     {
+        this.debugEnabled = debugEnabled;
+        
         // Initialize code
         this.imCode = new IntermediateCode(this);
 
@@ -141,14 +145,18 @@ final class Compiler
     // TODO: provide column number
     public void displayError(string msg, bool isRecoverable = false, string msgType = "ERROR")
     {
-        size_t charPos = this.currentNode.begin;
-        SourceFile file = SourceFile.findInContainer(this.currentFileName);
-        immutable ulong lineNo = count(file.getSourceCode()[0..charPos], '\n') + 1;
+        immutable ulong lineNo = getLineNumber(this.currentNode);
         stderr.writeln(this.currentFileName ~ ":" ~ to!string(lineNo) ~ ".0: " ~ msgType ~ ": " ~ msg
         );
         if(!isRecoverable) {
             exit(1);
         }
+    }
+
+    private ulong getLineNumber(ParseTree node)
+    {
+        SourceFile file = SourceFile.findInContainer(this.currentFileName);
+        return count(file.getSourceCode()[0..node.begin], '\n') + 1;
     }
 
     /** Outputs warning level message and continues compilation */
@@ -231,6 +239,7 @@ final class Compiler
                 // line has statement(s) excluding an INCLUDE directive
                 if(hasStatement) {
                     // process all statements in line
+                    bool lineNumberEmitted = false;
                     foreach(ref child; statements.children) {
                         if(child.children[0].name == "XCBASIC.Include_stmt") {
                             if(this.inProcedure) {
@@ -257,7 +266,25 @@ final class Compiler
                                 && stmt.classinfo.name != "statement.type_stmt.Endtype_stmt") {
                                 this.displayError("TYPE blocks can only contain field or method definitions");
                             }
+                            if (!lineNumberEmitted && compilingUserCode && debugEnabled
+                                    && stmt.classinfo.name != "statement.fun_stmt.Fun_stmt") {
+                                    this.imCode.appendProgramSegment(
+                                        "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
+                                    );
+                                    lineNumberEmitted = true;
+                                }
+                            }
                             stmt.process();
+                            if (!lineNumberEmitted && compilingUserCode && debugEnabled
+                                    && stmt.classinfo.name == "statement.fun_stmt.Fun_stmt") {
+                                    // For function and sub declarations, emit line number after processing the statement
+                                    // because that's where the actual routine begins.    
+                                    this.imCode.appendProgramSegment(
+                                        "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
+                                    );
+                                    lineNumberEmitted = true;
+                                }
+                            }
                         }
                         
                         if(compilingUserCode && !canFind(["XCBASIC.Rem_stmt", "XCBASIC.Option_stmt"], child.children[0].name)) {

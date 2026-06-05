@@ -35,7 +35,13 @@ class Fun_stmt : Statement
     this(ParseTree node, Compiler compiler)
 	{
 		super(node, compiler);
+        parseAttributes();
 	}
+
+    override public bool preventLineNumber()
+    {
+        return this.isDeclaration;
+    }
 
     private void verifyContext()
     {
@@ -135,8 +141,7 @@ class Fun_stmt : Statement
         }
     }
 
-    /** Parse and compile */
-    public void process()
+    private void parseAttributes()
     {
         // What keyword is used, SUB or FUNCTION
         int pos = 0;
@@ -145,10 +150,6 @@ class Fun_stmt : Statement
             pos++;
         }
         this.keyword = (toUpper(this.node.matches[pos]) == "SUB") ? "SUB" : "FUNCTION";
-        
-        verifyContext();
-
-        // Get attributes first
         foreach (ref child; this.node.children[0].children) {
             if(child.name == "XCBASIC.Funcattrib") {
                 final switch(toUpper(child.matches[0])) {
@@ -174,6 +175,12 @@ class Fun_stmt : Statement
                 }
             }
         }
+    }
+
+    /** Parse and compile */
+    public void process()
+    {        
+        verifyContext();
 
         // Get name and type
         ParseTree procNameAndType = this.node.children[0].children[0]; // XCBASIC.Var

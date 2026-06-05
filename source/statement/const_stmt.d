@@ -14,6 +14,11 @@ class Const_stmt : Statement
 		super(node, compiler);
 	}
 
+    override public bool preventLineNumber()
+    {
+        return true;
+    }
+
     /** Compiles the statement */
     void process()
     {

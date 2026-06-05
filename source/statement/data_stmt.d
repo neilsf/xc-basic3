@@ -18,6 +18,11 @@ class Data_stmt : Statement
     {
         super(node, compiler);
     }
+    
+    override public bool preventLineNumber()
+    {
+        return true;
+    }
 
     public void process()
     {

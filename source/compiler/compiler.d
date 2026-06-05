@@ -266,34 +266,21 @@ final class Compiler
                                 && stmt.classinfo.name != "statement.type_stmt.Endtype_stmt") {
                                 this.displayError("TYPE blocks can only contain field or method definitions");
                             }
-                            if (!lineNumberEmitted && compilingUserCode && debugEnabled
-                                    && stmt.classinfo.name != "statement.fun_stmt.Fun_stmt") {
-                                    this.imCode.appendProgramSegment(
-                                        "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
-                                    );
-                                    lineNumberEmitted = true;
-                                }
+                            if (!lineNumberEmitted && compilingUserCode && debugEnabled && !stmt.preventLineNumber()) {
+                                this.imCode.appendProgramSegment(
+                                    "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
+                                );
+                                lineNumberEmitted = true;
                             }
                             stmt.process();
-                            if (!lineNumberEmitted && compilingUserCode && debugEnabled
-                                    && stmt.classinfo.name == "statement.fun_stmt.Fun_stmt") {
-                                    // For function and sub declarations, emit line number after processing the statement
-                                    // because that's where the actual routine begins.    
-                                    this.imCode.appendProgramSegment(
-                                        "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
-                                    );
-                                    lineNumberEmitted = true;
-                                }
-                            }
                         }
                         
                         if(compilingUserCode && !canFind(["XCBASIC.Rem_stmt", "XCBASIC.Option_stmt"], child.children[0].name)) {
                             statementsBegan = true;
                         }
                     }
-                   
                 }
-                break;
+            break;
             
             default:
                 assert(0);

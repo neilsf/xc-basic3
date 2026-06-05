@@ -36,6 +36,12 @@ interface StatementInterface
 {
     /** Compiles given AST to intermediate code */
 	public void process();
+
+    /**
+    If set to true, the debug line number will not be generated for this statement.
+    This is useful for statements that don't generate executable code, like labels or data statements.
+     */
+    public bool preventLineNumber();
 }
 
 abstract class Statement : StatementInterface
@@ -46,9 +52,9 @@ abstract class Statement : StatementInterface
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
     {
-	this.node = node;
-	this.compiler = compiler;
-	this.dumpLabels();
+        this.node = node;
+        this.compiler = compiler;
+        this.dumpLabels();
     }
 
     protected void appendCode(string code)
@@ -61,5 +67,10 @@ abstract class Statement : StatementInterface
     protected void dumpLabels()
     {
         this.compiler.dumpLabels();
+    }
+
+    public bool preventLineNumber()
+    {
+        return false;
     }
 }

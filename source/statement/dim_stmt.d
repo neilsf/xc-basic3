@@ -18,6 +18,11 @@ class Dim_stmt : Statement
 		super(node, compiler);
 	}
 
+    override public bool preventLineNumber()
+    {
+        return true;
+    }
+
     private const string ATTR_COMMON = "shared";
     private const string ATTR_FAST   = "fast";
 

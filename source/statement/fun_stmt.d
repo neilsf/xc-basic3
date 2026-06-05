@@ -38,11 +38,6 @@ class Fun_stmt : Statement
         parseAttributes();
 	}
 
-    override public bool preventLineNumber()
-    {
-        return this.isDeclaration;
-    }
-
     private void verifyContext()
     {
         if(compiler.inProcedure) {
@@ -178,8 +173,8 @@ class Fun_stmt : Statement
     }
 
     /** Parse and compile */
-    public void process()
-    {        
+    public void process(bool emitLineNumber)
+    {
         verifyContext();
 
         // Get name and type
@@ -268,6 +263,9 @@ class Fun_stmt : Statement
             compiler.setProc(fixSymbol(name) ~ "_" ~ this.getArgsHash());
             compiler.currentProc = this.routine;
             appendCode("    IFCONST I_" ~ this.routine.getLabel() ~ "_IMPORTED\n");
+            if (emitLineNumber) {
+                this.emitLineNumber();
+            }
             appendCode(this.routine.getLabel() ~ " SUBROUTINE\n");
         }
         // Routine declaration

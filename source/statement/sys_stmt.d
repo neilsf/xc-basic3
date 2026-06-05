@@ -17,8 +17,11 @@ class Sys_stmt : Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         const bool isFast = toLower(this.node.children[0].matches[$-1]) == "fast";
         ParseTree addrNode = this.node.children[0].children[0];
         Expression e1 = new Expression(addrNode, compiler);

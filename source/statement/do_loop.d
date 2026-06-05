@@ -14,8 +14,11 @@ class Do_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = new CodeBlock(CodeBlock.TYPE_DO);
         compiler.blockStack.push(block);
         appendCode("_DO_" ~ to!string(block.getId()) ~ ":\n");
@@ -39,8 +42,12 @@ class Loop_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+
         int counter;
         CodeBlock block;
 
@@ -81,8 +88,12 @@ class Cont_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+    
         int[] types;
         if(toLower(join(node.matches)[$-2..$]) == "do") {
             types = [CodeBlock.TYPE_DO];
@@ -95,7 +106,7 @@ class Cont_stmt : Statement
         if(block is null) {
             compiler.displayError("CONTINUE without DO or FOR");
         }
-        
+    
         appendCode("    jmp _CO_" ~ to!string(block.getId()) ~ "\n");
     }
 }
@@ -107,8 +118,12 @@ class Exit_do_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+        
         CodeBlock block = compiler.blockStack.closest([CodeBlock.TYPE_DO]);
         if(block is null) {
             compiler.displayError("EXIT DO without DO");

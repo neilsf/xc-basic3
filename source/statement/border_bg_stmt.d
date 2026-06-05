@@ -20,8 +20,11 @@ abstract class Border_bg_stmt : Statement
 	}
 
     /** Compile */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree argList = this.node.children[0].children[0];
         Expression[2] e;
         const ulong reqArgs = (target == "cplus4" || target == "c16") ? 2 : 1;

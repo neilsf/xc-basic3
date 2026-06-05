@@ -16,8 +16,11 @@ class Select_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = new CodeBlock(CodeBlock.TYPE_SELECT);
         compiler.blockStack.push(block);
         int counter = block.getId();
@@ -90,8 +93,11 @@ class Case_stmt : Statement
     }
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if (compiler.blockStack.isEmpty() || compiler.blockStack.top().getType() != CodeBlock.TYPE_SELECT) {
             compiler.displayError("Not in a SELECT CASE block");
         }
@@ -191,8 +197,11 @@ class Endselect_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if (compiler.blockStack.isEmpty() || compiler.blockStack.top().getType() != CodeBlock.TYPE_SELECT) {
             compiler.displayError("Not in a SELECT CASE block");
         }

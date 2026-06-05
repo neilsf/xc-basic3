@@ -17,8 +17,11 @@ class Gosub_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         string lbl = join(this.node.children[0].children[0].matches);
         if(!compiler.getLabels().exists(lbl)) {
             compiler.displayError("Label \"" ~ lbl ~ "\" unknown in this scope");

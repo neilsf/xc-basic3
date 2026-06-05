@@ -18,8 +18,12 @@ class Call_stmt : Statement
 	}
 
     /** Compiles the statement */
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+        
         try {
             AccessorFactory factory = new AccessorFactory(node.children[0].children[0], compiler, false);
             AccessorInterface call = factory.getAccessor();

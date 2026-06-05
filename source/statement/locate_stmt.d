@@ -14,8 +14,11 @@ class Locate_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         Expression e;
         for(int i = 0; i <= 1; i++) {
             e = new Expression(this.node.children[0].children[i], compiler);

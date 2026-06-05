@@ -16,8 +16,11 @@ class Read_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree fileNoNode = this.node.children[0].children[0];
         Expression fileNoExp = new Expression(fileNoNode, compiler);
         fileNoExp.setExpectedType(compiler.getTypes().get(Type.UINT8));

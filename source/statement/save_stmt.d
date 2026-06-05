@@ -14,8 +14,11 @@ class Save_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree argList = this.node.children[0].children[0];
         Expression[4] e;
         Type[4] expectedTypes;

@@ -14,8 +14,11 @@ class Get_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree args = this.node.children[0];
         //import std.stdio; writeln(args);
         bool hashStatement;

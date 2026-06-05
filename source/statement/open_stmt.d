@@ -14,8 +14,11 @@ class Open_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree list = this.node.children[0].children[0];
         if(list.children.length < 1) {
             compiler.displayError("At least one parameter must be specified for OPEN");

@@ -19,8 +19,11 @@ class Print_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         int ix = 0;
         bool hasHash = false;
         ParseTree stmt = this.node.children[0];

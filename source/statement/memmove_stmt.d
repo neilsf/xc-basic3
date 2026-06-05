@@ -16,8 +16,11 @@ abstract class Memmove_stmt : Statement
     abstract protected string getMacroName();
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree argList = this.node.children[0].children[0];
         Expression[3] e;
         Type[3] expectedTypes;

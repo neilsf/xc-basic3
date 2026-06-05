@@ -17,8 +17,11 @@ class Let_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree varNode = this.node.children[0].children[0];
         ParseTree expNode = this.node.children[0].children[1];
 

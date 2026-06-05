@@ -13,8 +13,11 @@ class Error_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree[] args = this.node.children[0].children;
         Expression e = new Expression(args[0], compiler);
         e.setExpectedType(compiler.getTypes().get(Type.UINT8));

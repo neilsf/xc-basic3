@@ -15,8 +15,11 @@ class Return_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         appendCode("    rts\n");
     }
 }

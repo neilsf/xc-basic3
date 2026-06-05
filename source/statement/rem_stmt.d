@@ -12,7 +12,7 @@ class Rem_stmt : Statement
         super(node, compiler);
     }
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
         if(compiler.inlineAssembly) {
             if(node.children[0].matches.length > 1) {
@@ -29,11 +29,14 @@ class Rem_stmt : Statement
                 string line = node.children[0].matches[1][1..$];
                 auto r = regex(r"\{[a-zA-Z_0-9]+\}");
                 line = replaceAll!(replaceVariable)(line, r);
+                if (emitLineNumber) {
+                    this.emitLineNumber();
+                }
                 appendCode(line ~ "\n");
             }
+        } else {
+            appendCode("; " ~ node.children[0].matches.join() ~ std.ascii.newline);
         }
-
-        appendCode("; " ~ node.children[0].matches.join() ~ std.ascii.newline);
     }
 
     // Leave labels in accu

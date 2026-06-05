@@ -14,8 +14,11 @@ class Exitfun_stmt : Statement
 	}
 
     /** Process the AST of the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if(!compiler.inProcedure) {
             compiler.displayError("Not in function");
         }

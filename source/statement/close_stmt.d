@@ -15,8 +15,11 @@ class Close_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         Expression e = new Expression(this.node.children[0].children[0], compiler);
         e.setExpectedType(compiler.getTypes().get(Type.UINT8));
         e.eval();

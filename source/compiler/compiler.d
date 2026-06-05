@@ -153,7 +153,13 @@ final class Compiler
         }
     }
 
-    private ulong getLineNumber(ParseTree node)
+    public string getCurrentLineNumberLabel()
+    {
+        return "LN_" ~ this.currentFileId  ~ "_" ~ to!string(this.getLineNumber(this.currentNode));
+    }
+
+    /** Get line number of a node in the current file */
+    public ulong getLineNumber(ParseTree node)
     {
         SourceFile file = SourceFile.findInContainer(this.currentFileName);
         return count(file.getSourceCode()[0..node.begin], '\n') + 1;
@@ -266,13 +272,8 @@ final class Compiler
                                 && stmt.classinfo.name != "statement.type_stmt.Endtype_stmt") {
                                 this.displayError("TYPE blocks can only contain field or method definitions");
                             }
-                            if (!lineNumberEmitted && compilingUserCode && debugEnabled && !stmt.preventLineNumber()) {
-                                this.imCode.appendProgramSegment(
-                                    "LN_" ~ this.currentFileId  ~ "_" ~ to!string(getLineNumber(line)) ~ ":\n"
-                                );
-                                lineNumberEmitted = true;
-                            }
-                            stmt.process();
+                            stmt.process(!lineNumberEmitted && compilingUserCode && debugEnabled);
+                            lineNumberEmitted = stmt.isLineNumberEmitted();
                         }
                         
                         if(compilingUserCode && !canFind(["XCBASIC.Rem_stmt", "XCBASIC.Option_stmt"], child.children[0].name)) {

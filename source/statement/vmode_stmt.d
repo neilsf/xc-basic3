@@ -15,8 +15,11 @@ class VMode_stmt : Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree stmtNode = node.children[0];
         foreach(ref subCmd; stmtNode.children) {
             ParseTree node = subCmd.children[0];

@@ -35,19 +35,17 @@ Statement stmtFactory(ParseTree node, Compiler compiler) {
 interface StatementInterface
 {
     /** Compiles given AST to intermediate code */
-	public void process();
+	public void process(bool emitLineNumber);
 
-    /**
-    If set to true, the debug line number will not be generated for this statement.
-    This is useful for statements that don't generate executable code, like labels or data statements.
-     */
-    public bool preventLineNumber();
+    /** Returns true if the statement has emitted a line number label during processing */
+    public bool isLineNumberEmitted();
 }
 
 abstract class Statement : StatementInterface
 {
     protected ParseTree node;
     protected Compiler compiler;
+    protected bool lineNumberEmitted = false;
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
@@ -62,6 +60,13 @@ abstract class Statement : StatementInterface
         this.compiler.getImCode().appendProgramSegment(code);
     }
 
+    protected void emitLineNumber()
+    {
+        const string lineNumberLabel = this.compiler.getCurrentLineNumberLabel();
+        this.compiler.getImCode().appendProgramSegment(lineNumberLabel ~ ":\n");
+        this.lineNumberEmitted = true;
+    }
+
     // In normal case the last labels are dumped before each statement
     // but this can be overridden if necessary
     protected void dumpLabels()
@@ -69,8 +74,8 @@ abstract class Statement : StatementInterface
         this.compiler.dumpLabels();
     }
 
-    public bool preventLineNumber()
+    public bool isLineNumberEmitted()
     {
-        return false;
+        return this.lineNumberEmitted;
     }
 }

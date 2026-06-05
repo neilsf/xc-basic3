@@ -33,8 +33,11 @@ class For_stmt : Statement
         return stepVariables[blockId];
     }
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = new CodeBlock(CodeBlock.TYPE_FOR);
         compiler.blockStack.push(block);
 
@@ -140,8 +143,11 @@ class Next_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = compiler.blockStack.pull();
         if(block.getType() != CodeBlock.TYPE_FOR) {
             compiler.displayError("Unclosed " ~ block.getTypeString() ~ " block before NEXT");
@@ -176,8 +182,11 @@ class Exit_for_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = compiler.blockStack.closest([CodeBlock.TYPE_FOR]);
         if(block is null) {
             compiler.displayError("Not in a FOR block");

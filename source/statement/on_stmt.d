@@ -21,8 +21,11 @@ class On_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree[] args = this.node.children[0].children;
         string branchType;
         const string m1 = node.children[0].matches[1];

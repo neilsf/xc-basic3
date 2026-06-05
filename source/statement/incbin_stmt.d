@@ -16,8 +16,11 @@ class Incbin_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         const string fileName = getcwd() ~ dirSeparator ~ join(this.node.children[0].children[0].matches[1..$-1]);
         if(!exists(fileName)) {
             compiler.displayError("File cannot be read: " ~ fileName);

@@ -16,8 +16,11 @@ class Poke_stmt : Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         const string opCode = toLower(this.node.children[0].matches[0]);
         const bool isDoke = opCode == "doke";
         ParseTree addrNode = this.node.children[0].children[0];

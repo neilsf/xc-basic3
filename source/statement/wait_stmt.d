@@ -13,8 +13,11 @@ class Wait_stmt: Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree[] args = this.node.children[0].children;
         Expression address = new Expression(args[0], compiler);
         address.setExpectedType(compiler.getTypes().get(Type.UINT16));

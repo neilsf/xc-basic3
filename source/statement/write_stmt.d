@@ -18,8 +18,11 @@ class Write_stmt : Statement
 		super(node, compiler);
 	}
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree exprList = this.node.children[0].children[0];
         const ulong exprCount = exprList.children.length;
         if(exprCount < 2) {

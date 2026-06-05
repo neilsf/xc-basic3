@@ -13,8 +13,11 @@ class Randomize_stmt : Statement
         super(node, compiler);
     }
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree expNode = this.node.children[0].children[0];
         Expression exp = new Expression(expNode, compiler);
         exp.setExpectedType(compiler.getTypes().get(Type.INT24));

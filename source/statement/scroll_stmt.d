@@ -17,8 +17,11 @@ class Scroll_stmt : Statement
 	}
 
     /** Compile */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree arg = node.children[0].children[0];
         Expression e = new Expression(arg, compiler);
         e.setExpectedType(compiler.getTypes().get(Type.UINT8));

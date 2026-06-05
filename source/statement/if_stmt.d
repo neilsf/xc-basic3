@@ -19,19 +19,22 @@ class If_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
         ParseTree ifStatement = this.node.children[0];
         const bool hasElse = ifStatement.children.length > 2;
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         appendCode(to!string(condition));
         appendCode("    cond_stmt _EI_" ~ to!string(counter)
                 ~ (hasElse ? ", _EL_" ~ to!string(counter) : ", 0") ~ "\n");
         ParseTree thenBody = ifStatement.children[1];
         foreach (ref child; thenBody) {
             Statement stmt = stmtFactory(child, compiler);
-            stmt.process();
+            stmt.process(false);
         }
         if(hasElse) {
             ParseTree elseBody = ifStatement.children[2];
@@ -39,7 +42,7 @@ class If_stmt : Statement
             appendCode("_EL_" ~ to!string(counter) ~ ":\n");
             foreach (ref child; elseBody) {
                 Statement stmt = stmtFactory(child, compiler);
-                stmt.process();
+                stmt.process(false);
             }
         }
         appendCode("_EI_" ~ to!string(counter) ~ ":\n");
@@ -57,8 +60,11 @@ class If_sa_stmt : Statement
 	}
 
     /** Compiles the statement */
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         CodeBlock block = new CodeBlock(CodeBlock.TYPE_IF);
         compiler.blockStack.push(block);
         ParseTree ifStatement = this.node.children[0];
@@ -79,8 +85,12 @@ class Else_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+
         string label;
         try {
             CodeBlock block = compiler.blockStack.top();
@@ -108,8 +118,12 @@ class Endif_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
+        
         try {
             CodeBlock block = compiler.blockStack.pull();
             if(block.getType() != CodeBlock.TYPE_IF) {

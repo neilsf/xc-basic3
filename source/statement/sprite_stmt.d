@@ -22,8 +22,11 @@ class Sprite_stmt : Statement
 {
     mixin Sprite_stmtCtor;
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree stmtNode = node.children[0];
         ParseTree sprNoNode = stmtNode.children[0];
         ParseTree[] sprSubCmdNodes = stmtNode.children[1..$];
@@ -113,8 +116,11 @@ class Sprite_multicolor_stmt : Statement
 {
     mixin Sprite_stmtCtor;
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree stmtNode = node.children[0];
         ParseTree xprListNode = stmtNode.children[0];
         if(xprListNode.children.length != 2) {
@@ -137,8 +143,11 @@ class Sprite_clearhit_stmt : Statement
 {
     mixin Sprite_stmtCtor;
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         this.appendCode("    sprite_clear_hit\n");
     }
 }

@@ -14,8 +14,11 @@ class Asm_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         compiler.startInlineAssembly();
         appendCode("    ; !!opt_end!!\n");
     }
@@ -31,8 +34,11 @@ class Endasm_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         appendCode("    ; !!opt_start!!\n");
         compiler.endInlineAssembly();
     }

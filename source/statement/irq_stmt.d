@@ -17,8 +17,11 @@ class Irq_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         useIrqs = true;
         const string irqType = toUpper(node.matches[0]);
         bool enable = toUpper(node.matches[2]) == "ON";

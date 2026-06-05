@@ -14,8 +14,11 @@ class End_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         appendCode("    xend\n");
     }
 }

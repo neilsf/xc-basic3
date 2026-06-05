@@ -16,8 +16,11 @@ class Input_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree args = this.node.children[0];
         bool hashStatement;
         int varIndex;

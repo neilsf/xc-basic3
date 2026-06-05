@@ -50,6 +50,7 @@ else {
 private string symbolfile="";
 private string listfile="";
 private int verbosity = VERBOSITY_INFO;
+private bool debugEnabled = false;
 
 private GetoptResult helpInformation;
 
@@ -73,7 +74,8 @@ void main(string[] args)
             "optimize|p", &optimize,
             "keep-imcode|k", &keepImCode,
             "verbosity|v", &verbosity,
-            "inline-data|i", &inlineData
+            "inline-data|i", &inlineData,
+            "debug|g", &debugEnabled,
         );
     }
 	catch(Exception e) {
@@ -101,7 +103,7 @@ void main(string[] args)
         }
     }
 
-    Compiler compiler = new Compiler();
+    Compiler compiler = new Compiler(debugEnabled);
     // Compile standard headers
     const string stdHeadersName = getLibraryDir() ~ "/headers.bas";
     SourceFile source = SourceFile.get(stdHeadersName);
@@ -119,12 +121,7 @@ void main(string[] args)
     auto rnd = Random(unpredictableSeed);
     auto u = uniform!uint(rnd);
 
-    version(Windows) {
-        const string tmpdir = tempDir();
-    }
-    else {
-        const string tmpdir = tempDir() ~ dirSeparator;
-    }
+    const string tmpdir = tempDir();
 
     string asmFilename = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".asm";
     string tmpSymbolfile = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".sym";
@@ -349,6 +346,7 @@ Options:
 
    -s
   --symbol=         Symbol dump file name. Provide a file name if you want to generate a symbol dump.
+                    Forced ON when debug mode is enabled.
 
    -l
   --list=           List file name. This is passed to DASM as it is.
@@ -362,6 +360,9 @@ Options:
    -i
   --inline-data=    If set to true, DATA statements are compiled at the current origin.
                     Otherwise, they get compiled after code. Defaults to false.
+
+   -g
+  --debug           Enable debug mode. Defaults to false.
 `
     );
     exit(exitCode);

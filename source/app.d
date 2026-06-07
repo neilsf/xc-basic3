@@ -7,7 +7,7 @@
  */
 
 import std.stdio, std.string, std.getopt, std.file, std.path,
-        std.conv, std.random, std.process, std.algorithm;
+        std.conv, std.random, std.process, std.algorithm, std.json, std.array;
 import core.stdc.stdlib;
 
 import pegged.grammar;
@@ -176,15 +176,22 @@ void main(string[] args)
         exit(1);
     }
     else {
+        int[string] symbols = getSymbols(tmpSymbolfile);
         if(verbosity == VERBOSITY_INFO) {
-            displayInformation(tmpSymbolfile);
+            displayInformation(symbols);
         }
         if(symbolfile != "") {
             copy(tmpSymbolfile, symbolfile);
         }
         remove(tmpSymbolfile);
+        if (debugEnabled) {
+            JSONValue mapping = getSymbolMapping(compiler, symbols);
+            string mapFileName = to!string(fileName.withExtension("map.json"));
+            std.file.write(mapFileName, mapping.toString());
+        }
         exit(0);
     }
+    assert(0);
 }
 
 /**
@@ -385,13 +392,13 @@ private void checkLibrary()
  */
 private int[string] getSymbols(string tmpSymbolfile)
 {
-    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end"];
     int[string] symbols;
     auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
     foreach (key, value; lines) {
-        if(canFind(symbolNames, value[0])) {
-            symbols[value[0]] = to!int(value[1], 16);
+        if (value[0] == "---") {
+            continue;
         }
+        symbols[value[0]] = to!int(value[1], 16);
     }
     return symbols;
 }
@@ -399,15 +406,13 @@ private int[string] getSymbols(string tmpSymbolfile)
 /**
  * Display information about the compiled program
  */
-private void displayInformation(string tmpSymbolfile)
+private void displayInformation(int[string] symbols)
 {
     bool hasVars = false;
     string asHex(int number) {
         return to!string(rightJustifier(to!string(number, 16), 4, '0'));
     }    
 
-    int[string] symbols = getSymbols(tmpSymbolfile);
-    
     const string separator = "+---------------+-------+-------+"; 
     stdout.writeln("Complete. (0)");
     stdout.writeln(separator ~ "\n|    Segment    | Start |  End  |\n" ~ separator);
@@ -434,4 +439,59 @@ private void displayInformation(string tmpSymbolfile)
             "WARNING: The program has been successfully compiled, but it can't fit between $" 
             ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
     }
+}
+
+JSONValue getSymbolMapping(Compiler compiler, int[string] symbols)
+{
+    JSONValue mapping = JSONValue();
+    mapping["modules"] = JSONValue();
+    mapping["routines"] = JSONValue();
+    mapping["variables"] = JSONValue();
+    mapping["registers"] = JSONValue();
+    mapping["lines"] = JSONValue();
+
+    foreach (ref sourceFile; SourceFile.getContainer().filter!(sf => sf.getFileId() != "src1")) {
+        mapping["modules"][sourceFile.getFileId()] = sourceFile.getFileName;
+    }
+    foreach (ref routine; compiler.getRoutines().getAll().filter!(r => r.getFileId() != "src1")) {
+        mapping["routines"][routine.getLabel()] = [
+            "name": routine.getNameWithArgTypes(),
+            "type": routine.getKeyword(),
+            "module": routine.getFileId(),
+            "address": "0x" ~ to!string(symbols.get(routine.getLabel(), 0), 16)
+        ];
+    }
+    foreach (ref variable; compiler.getVars().getAll().filter!(
+            v => v.fileId != "src1" && !v.isConst && !v.isPrivate && !v.isFnRetVal
+        )
+    ) {
+        JSONValue var = variable.toJSON();
+        var["address"] = "0x" ~ to!string(symbols.get(variable.getAsmLabel(), 0), 16);
+        mapping["variables"][variable.getAsmLabel()] = var;
+    }
+    mapping["registers"]["RC"] = "0x" ~ to!string(symbols.get("RC", 0), 16);
+    mapping["registers"]["RE"] = "0x" ~ to!string(symbols.get("RE", 0), 16);
+    mapping["registers"]["TH"] = "0x" ~ to!string(symbols.get("TH", 0), 16);
+
+    JSONValue[string] lineMappings;
+    foreach (k; symbols.keys) {
+        if(k.startsWith("LN_")) {
+            auto parts = k.split("_");
+            if(parts.length == 3) {
+                string fileId = parts[1];
+                int lineNum = to!int(parts[2]);
+                JSONValue lineInfo = JSONValue();
+                lineInfo["line_no"] = lineNum;
+                lineInfo["address"] = "0x" ~ to!string(symbols[k], 16);
+                if (auto existing = fileId in lineMappings) {
+                    (*existing).array ~= lineInfo;
+                } else {
+                    lineMappings[fileId] = [lineInfo];
+                }
+            }
+        }
+    }
+    mapping["lines"] = lineMappings;
+
+    return mapping;
 }

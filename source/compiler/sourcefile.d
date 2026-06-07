@@ -36,6 +36,11 @@ class SourceFile
         container ~= this;
     }
 
+    public static SourceFile[] getContainer()
+    {
+        return container;
+    }
+
     /** Factory method to find existing instance or create new one */
     public static SourceFile get(string fileName)
     {

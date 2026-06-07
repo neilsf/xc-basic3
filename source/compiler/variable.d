@@ -1,6 +1,6 @@
 module compiler.variable;
 
-import std.algorithm, std.conv, std.array, std.string, std.math;
+import std.algorithm, std.conv, std.array, std.string, std.math, std.json;
 
 import language.expression;
 import compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode,
@@ -131,6 +131,37 @@ class Variable
             }
         }
         return var;
+    }
+
+    private string getVisibilityStr()
+    {
+        switch(this.visibility) {
+            case Compiler.VIS_GLOBAL:
+                return "global";
+            case Compiler.VIS_COMMON:
+                return "shared";
+            case Compiler.VIS_LOCAL:
+                return "local";
+            default:
+                assert(0);
+        }
+    }
+
+    public JSONValue toJSON()
+    {
+        JSONValue json = JSONValue();
+        json["name"] = this.name;
+        json["type"] = this.type.name;
+        json["visibility"] = this.getVisibilityStr();
+        json["array_size"] = JSONValue(this.dimensions);
+        json["dimensions"] = this.dimCount;
+        json["routine"] = this.procName;
+        json["file_id"] = this.fileId;
+        json["string_length"] = this.strLen;
+        //json["offsetWithinType"] = this.offsetWithinType;
+        json["is_dynamic"] = this.isDynamic;
+        json["frame_offset"] = this.offsetWithinFrame;
+        return json;
     }
 }
 

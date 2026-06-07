@@ -169,6 +169,11 @@ class Routine
         return keyword;
     }
 
+    public string getFileId()
+    {
+        return fileId;
+    }
+
     /** Getter for arguments */
     public Variable[] getArguments()
     {
@@ -211,6 +216,11 @@ class RoutineCollection
                 routine.name == toLower(name)
                 && (routine.isShared || routine.fileId == compiler.currentFileId)
         ).array;
+    }
+
+    public Routine[] getAll()
+    {
+        return this.routines;
     }
 
     /** Check if routine exists by name */

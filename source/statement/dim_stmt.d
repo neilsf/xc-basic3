@@ -110,8 +110,11 @@ class Dim_stmt : Statement
     }
 
     /** Process AST */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ParseTree statement = this.node.children[0];
         this.isStatic = (
             toLower(statement.matches[0]) == "static"

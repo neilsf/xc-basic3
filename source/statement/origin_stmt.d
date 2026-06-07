@@ -16,8 +16,11 @@ class Origin_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         ushort address;
         const ParseTree addrNode = this.node.children[0].children[0];
         if(addrNode.name == "XCBASIC.Number") {

@@ -14,8 +14,11 @@ class Option_stmt: Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if(compiler.getStatementsBegan()) {
            compiler.displayError("You must place the OPTION directive before any other statements."); 
         }

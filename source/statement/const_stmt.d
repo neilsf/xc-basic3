@@ -15,8 +15,11 @@ class Const_stmt : Statement
 	}
 
     /** Compiles the statement */
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         immutable bool isShared = (toLower(node.matches[0]) == "shared");
         Number num = new Number(node.children[0].children[1], compiler);
         VariableReader reader = new VariableReader(node.children[0].children[0], compiler);

@@ -19,8 +19,11 @@ class Data_stmt : Statement
         super(node, compiler);
     }
 
-    public void process()
+    public void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         const ParseTree varTypeNode = node.children[0].children[0];
         string typeName = varTypeNode.children[0].matches.join("");
         if(!compiler.getTypes().defined(typeName)) {

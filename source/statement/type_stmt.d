@@ -15,8 +15,11 @@ class Type_stmt : Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if(compiler.inTypeDef) {
             compiler.displayError("Type definition already started");
         }
@@ -44,8 +47,11 @@ class Field_def : Statement
 
     private Variable variable;
     
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if(!compiler.inTypeDef) {
             compiler.displayError("Syntax error");
         }
@@ -78,8 +84,11 @@ class Endtype_stmt : Statement
 		super(node, compiler);
 	}
 
-    void process()
+    void process(bool emitLineNumber)
     {
+        if (emitLineNumber) {
+            this.emitLineNumber();
+        }
         if(!compiler.inTypeDef) {
             compiler.displayError("Not in Type definition");
         }

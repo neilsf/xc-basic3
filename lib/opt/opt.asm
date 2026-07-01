@@ -727,7 +727,7 @@
 .end
 	ENDM
 	
-	MAC pbyte_pbyte_cmpytebneq ; @push
+	MAC pbyte_pbyte_cmpbyteneq ; @push
 	lda #{1}
 	cmp #{2}
 	bne .true
@@ -738,7 +738,7 @@
 .end
 	ENDM
 	
-	MAC pbytevar_pbyte_cmpytebneq ; @push
+	MAC pbytevar_pbyte_cmpbyteneq ; @push
 	lda {1}
 	cmp #{2}
 	bne .true
@@ -749,7 +749,7 @@
 .end
 	ENDM
 	
-	MAC pbyte_pbytevar_cmpytebneq ; @push
+	MAC pbyte_pbytevar_cmpbyteneq ; @push
 	lda #{1}
 	cmp {2}
 	bne .true
@@ -760,7 +760,7 @@
 .end
 	ENDM
 	
-	MAC pbytevar_pbytevar_cmpytebneq ; @push
+	MAC pbytevar_pbytevar_cmpbyteneq ; @push
 	lda {1}
 	cmp {2}
 	bne .true
@@ -859,7 +859,7 @@
 .end
 	ENDM
 	
-	MAC pbyte_pbyte_cmpbbytegte ; @push
+	MAC pbyte_pbyte_cmpbytegte ; @push
 	lda #{1}
 	cmp #{2}
 	bcs .true
@@ -870,7 +870,7 @@
 .end
 	ENDM
 	
-	MAC pbytevar_pbyte_cmpbbytegte ; @push
+	MAC pbytevar_pbyte_cmpbytegte ; @push
 	lda {1}
 	cmp #{2}
 	bcs .true
@@ -881,7 +881,7 @@
 .end
 	ENDM
 	
-	MAC pbyte_pbytevar_cmpbbytegte ; @push
+	MAC pbyte_pbytevar_cmpbytegte ; @push
 	lda #{1}
 	cmp {2}
 	bcs .true
@@ -997,7 +997,7 @@
 .true:
 	ENDM
 	
-	MAC pbyte_pbyte_cmpytebneq_cond_stmt
+	MAC pbyte_pbyte_cmpbyteneq_cond_stmt
 	lda #{1}
 	cmp #{2}
 	bne .true
@@ -1009,7 +1009,7 @@
 .true
 	ENDM
 	
-	MAC pbytevar_pbyte_cmpytebneq_cond_stmt
+	MAC pbytevar_pbyte_cmpbyteneq_cond_stmt
 	lda {1}
 	cmp #{2}
 	bne .true
@@ -1021,7 +1021,7 @@
 .true
 	ENDM
 	
-	MAC pbyte_pbytevar_cmpytebneq_cond_stmt
+	MAC pbyte_pbytevar_cmpbyteneq_cond_stmt
 	lda #{1}
 	cmp {2}
 	bne .true
@@ -1033,7 +1033,7 @@
 .true
 	ENDM
 	
-	MAC pbytevar_pbytevar_cmpytebneq_cond_stmt
+	MAC pbytevar_pbytevar_cmpbyteneq_cond_stmt
 	lda {1}
 	cmp {2}
 	bne .true
@@ -1141,7 +1141,7 @@
 .true
 	ENDM
 	
-	MAC pbyte_pbyte_cmpbbytegte_cond_stmt
+	MAC pbyte_pbyte_cmpbytegte_cond_stmt
 	lda #{1}
 	cmp #{2}
 	bcs .true
@@ -1153,7 +1153,7 @@
 .true
 	ENDM
 	
-	MAC pbytevar_pbyte_cmpbbytegte_cond_stmt
+	MAC pbytevar_pbyte_cmpbytegte_cond_stmt
 	lda {1}
 	cmp #{2}
 	bcs .true
@@ -1165,7 +1165,7 @@
 .true
 	ENDM
 	
-	MAC pbyte_pbytevar_cmpbbytegte_cond_stmt
+	MAC pbyte_pbytevar_cmpbytegte_cond_stmt
 	lda #{1}
 	cmp {2}
 	bcs .true

@@ -111,20 +111,15 @@ class ReplaceSequences: OptimizerPass
         string[] lines = splitLines(this.inCode);
         opCode[] accumulatedSequence;
         string[] accumulatedCode;
+        
+        bool fullMatchFound = false;
+        bool doFlushAccumulator = false;
 
         this.outCode = "";
         for(int i = 0; i < lines.length; i++) {
             string line = lines[i];
             if(line == "    ; !!opt_start!!") {
                 optEnabled = true;
-                this.outCode ~= line ~ "\n";
-                continue;
-            }
-            else if(line == "    ; !!opt_end!!") {
-                optEnabled = false;
-                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
-                accumulatedSequence = [];
-                accumulatedCode = [];
                 this.outCode ~= line ~ "\n";
                 continue;
             }
@@ -136,7 +131,8 @@ class ReplaceSequences: OptimizerPass
 
             auto expr = regex(r"\s+([a-zA-Z0-9_@]+)(\s.+)?");
             auto match = matchFirst(line, expr);
-            if(match && !this.fullMatch(match[1])) {
+            
+            if(match) {
                 accumulatedCode ~= line;
                 string opcodeStr = match[1];
                 string arg = "";
@@ -148,28 +144,56 @@ class ReplaceSequences: OptimizerPass
                 accumulatedSequence ~= op;
                 string seqString = this.stringifySequence(accumulatedSequence);
 
-                if(this.matchSequences(seqString)) {
+                if(!this.fullMatch(opcodeStr) && this.matchSequences(seqString)) {
                     //stderr.writeln("match: " ~ seqString);
                     if(this.fullMatch(seqString)) {
-                        //stderr.writeln("replace: " ~ seqString);
-                        this.outCode ~= "    " ~ seqString ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n";
-                        accumulatedSequence = [];
-                        accumulatedCode = [];
-                        replacementsMade++;
+                        fullMatchFound = true;
                     }
                 }
                 else {
-                    //stderr.writeln("no match: " ~ seqString);
-                    this.outCode ~= accumulatedCode[0] ~ "\n";
-                    accumulatedSequence = accumulatedSequence.remove(0);
-                    accumulatedCode = accumulatedCode.remove(0);
+                    doFlushAccumulator = true;
                 }
             }
             else {
-                //stderr.writeln("break: " ~ line);
-                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
-                accumulatedSequence = [];
-                accumulatedCode = [];
+                doFlushAccumulator = true;
+            }
+            
+            /**
+                IMPORTANT: the following assumes that any extension to an existing macro name is done by _exactly one Opcode_!
+                If, by any chance, opt.asm ends up having new extensions that go beyond a single Opcode, this **explodes**!
+            **/
+            if(doFlushAccumulator) {
+                if(fullMatchFound) {
+                    if(match) {
+                        this.outCode ~= "    " ~ this.stringifySequence(accumulatedSequence[0 .. $-1]) ~ " " ~ this.stringifyArgs(accumulatedSequence[0 .. $-1]) ~ "\n";
+                        accumulatedSequence = accumulatedSequence[$-1 .. $];
+                        accumulatedCode = accumulatedCode[$-1 .. $];
+                    }
+                    else {
+                        this.outCode ~= "    " ~ this.stringifySequence(accumulatedSequence) ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n" ~ line ~ "\n";
+                        accumulatedSequence = [];
+                        accumulatedCode = [];
+                    }
+                    replacementsMade++;
+                    fullMatchFound = false;
+                }
+                else {
+                    if(match) {
+                        this.outCode ~= accumulatedCode[0] ~ "\n";
+                        accumulatedSequence = accumulatedSequence.remove(0);
+                        accumulatedCode = accumulatedCode.remove(0);
+                    }
+                    else {
+                        this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
+                        accumulatedSequence = [];
+                        accumulatedCode = [];
+                    }
+                }
+                doFlushAccumulator = false;
+            }
+            
+            if(line == "    ; !!opt_end!!") {
+                optEnabled = false;
             }
         }
 

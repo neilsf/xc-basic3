@@ -112,7 +112,7 @@ class ReplaceSequences: OptimizerPass
         opCode[] accumulatedSequence;
         string[] accumulatedCode;
         
-        bool fullMatchFound = false;
+        size_t fullMatchLength = 0;
         bool doFlushAccumulator = false;
 
         this.outCode = "";
@@ -129,7 +129,7 @@ class ReplaceSequences: OptimizerPass
                 continue;
             }
 
-            auto expr = regex(r"\s+([a-zA-Z0-9_@]+)(\s.+)?");
+            auto expr = regex(r"\s+([a-zA-Z0-9_@]+)\s*(.+)?");
             auto match = matchFirst(line, expr);
             
             if(match) {
@@ -144,10 +144,10 @@ class ReplaceSequences: OptimizerPass
                 accumulatedSequence ~= op;
                 string seqString = this.stringifySequence(accumulatedSequence);
 
-                if(!this.fullMatch(opcodeStr) && this.matchSequences(seqString)) {
+                if(this.matchSequences(seqString)) {
                     //stderr.writeln("match: " ~ seqString);
                     if(this.fullMatch(seqString)) {
-                        fullMatchFound = true;
+                        fullMatchLength = accumulatedSequence.length;
                     }
                 }
                 else {
@@ -157,25 +157,21 @@ class ReplaceSequences: OptimizerPass
             else {
                 doFlushAccumulator = true;
             }
-            
-            /**
-                IMPORTANT: the following assumes that any extension to an existing macro name is done by _exactly one Opcode_!
-                If, by any chance, opt.asm ends up having new extensions that go beyond a single Opcode, this **explodes**!
-            **/
+
             if(doFlushAccumulator) {
-                if(fullMatchFound) {
+                if(fullMatchLength > 0) {
                     if(match) {
-                        this.outCode ~= "    " ~ this.stringifySequence(accumulatedSequence[0 .. $-1]) ~ " " ~ this.stringifyArgs(accumulatedSequence[0 .. $-1]) ~ "\n";
-                        accumulatedSequence = accumulatedSequence[$-1 .. $];
-                        accumulatedCode = accumulatedCode[$-1 .. $];
+                        this.outCode ~= "    " ~ this.stringifySequence(accumulatedSequence[0 .. fullMatchLength]) ~ " " ~ this.stringifyArgs(accumulatedSequence[0 .. fullMatchLength ]) ~ "\n";
+                        accumulatedSequence = accumulatedSequence[fullMatchLength .. $];
+                        accumulatedCode = accumulatedCode[fullMatchLength .. $];
                     }
                     else {
                         this.outCode ~= "    " ~ this.stringifySequence(accumulatedSequence) ~ " " ~ this.stringifyArgs(accumulatedSequence) ~ "\n" ~ line ~ "\n";
                         accumulatedSequence = [];
                         accumulatedCode = [];
                     }
-                    replacementsMade++;
-                    fullMatchFound = false;
+                    if (fullMatchLength > 1) {replacementsMade++;}
+                    fullMatchLength = 0;
                 }
                 else {
                     if(match) {
@@ -184,7 +180,7 @@ class ReplaceSequences: OptimizerPass
                         accumulatedCode = accumulatedCode.remove(0);
                     }
                     else {
-                        this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
+                        this.outCode ~= join(accumulatedCode, "\n") ~ (accumulatedCode.length ? "\n" : "") ~ line ~ "\n";
                         accumulatedSequence = [];
                         accumulatedCode = [];
                     }

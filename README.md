@@ -26,13 +26,11 @@ XC=BASIC was written in the [D programming language](https://dlang.org/). To com
 
 If you install DUB using a package manager, it will most likely install DMD as a dependency. When you have both installed, just `cd` to the XC=BASIC directory and issue the command:
 
-    dub build
+    make
 
-Then move the generated executable to any subfolder in the `bin/` dir, for example:
+This Makefile-based build first checks that `dub` is available in `PATH`, then does the full project build (including grammar generation) and places the executable at:
 
-    mkdir bin/myOS
-    mv xcbasic3 bin/myOS/
+    bin/$OSTYPE/xcbasic3
 
-(This last step is important because XC=BASIC can only find the library files if they're located in `../../lib` relative to the executable.)
 
 That's it, you can now run XC=BASIC.

@@ -18,3 +18,4 @@ xc-basic3-test-*
 /build.sh
 /deploy.sh
 /xc-basic3.geany
+/bin/

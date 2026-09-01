@@ -2,37 +2,121 @@ name: Build project
 
 on:
   push:
-    branches: [ main, release/v3.2.0-beta ]
+    tags:
+      - "*"
+
+permissions:
+  contents: write
 
 jobs:
-    build:
-        name: DUB Build
-        strategy:
-            matrix:
-                os: [ubuntu-latest, windows-latest, macos-13]
-                dc: [dmd-latest]
-        runs-on: ${{ matrix.os }}
-        steps:
-            - uses: actions/checkout@v2
+  build:
+    name: Build binaries
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13]
+        dc: [dmd-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Install D compiler
-              uses: dlang-community/setup-dlang@v1
-              with:
-                  compiler: ${{ matrix.dc }}
+      - name: Install D compiler
+        uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: ${{ matrix.dc }}
 
-            - name: Build
-              run: dub build --force -v --build=release
+      - name: Build
+        run: dub build --force -v --build=release
 
-            - name: Create bin dir
-              run: mkdir -p bin/${{runner.os}}
-              shell: bash
+      - name: Collect binary
+        shell: bash
+        run: |
+          mkdir -p out
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            bin_file="xcbasic3.exe"
+          else
+            bin_file="xcbasic3"
+          fi
 
-            - name: Move executable
-              run: mv xcbasic3* bin/${{runner.os}}/
-              shell: bash
+          if [[ ! -f "$bin_file" ]]; then
+            detected="$(ls -1 xcbasic3* 2>/dev/null | head -n 1 || true)"
+            if [[ -z "$detected" ]]; then
+              echo "Could not find built executable"
+              exit 1
+            fi
+            bin_file="$detected"
+          fi
 
-            - name: Commit changes
-              uses: EndBug/add-and-commit@v7.4.0
-              with:
-                default_author: github_actions
-                pull: '--ff'
+          cp "$bin_file" out/
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ runner.os }}
+          path: out/xcbasic3*
+          if-no-files-found: error
+
+  release:
+    name: Create release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          path: binaries
+
+      - name: Build release zips
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME}"
+          mkdir -p release
+
+          for OS in Linux Windows macOS; do
+            PKG_NAME="xcbasic3-${VERSION}-${OS}"
+            PKG_DIR="release/${PKG_NAME}"
+
+            mkdir -p "${PKG_DIR}/bin/${OS}"
+            cp -r examples "${PKG_DIR}/examples"
+            cp -r lib "${PKG_DIR}/lib"
+            cp README.md LICENSE RELNOTES.md "${PKG_DIR}/"
+
+            BIN_SRC="$(find "binaries/binary-${OS}" -maxdepth 1 -type f -name "xcbasic3*" | head -n 1 || true)"
+            if [[ -z "${BIN_SRC}" ]]; then
+              echo "Missing binary for ${OS}"
+              exit 1
+            fi
+            cp "${BIN_SRC}" "${PKG_DIR}/bin/${OS}/"
+
+            (cd release && zip -r "${PKG_NAME}.zip" "${PKG_NAME}")
+          done
+
+      - name: Generate release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT_TAG="${GITHUB_REF_NAME}"
+          PREV_TAG="$(git tag --sort=-creatordate | grep -Fxv "${CURRENT_TAG}" | head -n 1 || true)"
+
+          {
+            echo "## ${CURRENT_TAG}"
+            echo
+            if [[ -n "${PREV_TAG}" ]]; then
+              echo "Changes since ${PREV_TAG}:"
+              git log --pretty='- %s' "${PREV_TAG}..${CURRENT_TAG}"
+            else
+              echo "Changes:"
+              git log --pretty='- %s' "${CURRENT_TAG}"
+            fi
+          } > release-notes.md
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-notes.md
+          files: release/*.zip

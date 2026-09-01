@@ -14,9 +14,9 @@ class Print_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -24,7 +24,8 @@ class Print_stmt : Statement
         int ix = 0;
         bool hasHash = false;
         ParseTree stmt = this.node.children[0];
-        if(stmt.children[0].name == "XCBASIC.Expression") {
+        if (stmt.children[0].name == "XCBASIC.Expression")
+        {
             ParseTree fileNoNode = this.node.children[0].children[ix];
             Expression fileNoExp = new Expression(fileNoNode, compiler);
             fileNoExp.setExpectedType(compiler.getTypes().get(Type.UINT8));
@@ -37,55 +38,72 @@ class Print_stmt : Statement
         }
         bool nlSuppAtEnd = false;
         ParseTree list = stmt.children[ix];
-        for(ix = 0; ix < list.children.length; ix++) {
+        for (ix = 0; ix < list.children.length; ix++)
+        {
             ParseTree child = list.children[ix];
-            final switch(child.name) {
-                case "XCBASIC.Expression":
-                    Expression e = new Expression(child, compiler);
-                    if(!hasHash) {
-                        e.eval();
-                        immutable string asmCode = to!string(e);
-                        this.appendCode(asmCode);
-                        this.appendCode("    print" ~ to!string(e.getType()) ~ "\n");
-                    } else {
-                        if(!e.getType().isPrimitive) {
-                            compiler.displayError("User-defined types not supported in PRINT# statement");
-                        }
-                        e.eval();
-                        appendCode(e.toString());
-                        if(e.getType().name != Type.STRING) {
-                            appendCode("    F_str@_" ~ e.getType().name ~ "\n");
-                        }
-                        appendCode("    printstring\n");
+            final switch (child.name)
+            {
+            case "XCBASIC.Expression":
+                Expression e = new Expression(child, compiler);
+                if (!hasHash)
+                {
+                    e.eval();
+                    immutable string asmCode = to!string(e);
+                    this.appendCode(asmCode);
+                    this.appendCode("    print" ~ to!string(e.getType()) ~ "\n");
+                }
+                else
+                {
+                    if (!e.getType().isPrimitive)
+                    {
+                        compiler.displayError(
+                                "User-defined types not supported in PRINT# statement");
                     }
-                    
-                    break;
+                    e.eval();
+                    appendCode(e.toString());
+                    if (e.getType().name != Type.STRING)
+                    {
+                        appendCode("    F_str@_" ~ e.getType().name ~ "\n");
+                    }
+                    appendCode("    printstring\n");
+                }
 
-                case "XCBASIC.TabSep":
-                    if(!hasHash) {
-                        this.appendCode("    printtab\n");
-                    } else {
-                        this.appendCode("    chrout $2c\n");
-                    }
-                    break;
+                break;
 
-                case "XCBASIC.NlSupp":
-                    if(ix + 1 == list.children.length) {
-                        nlSuppAtEnd = true;
-                    }
-                    break;
+            case "XCBASIC.TabSep":
+                if (!hasHash)
+                {
+                    this.appendCode("    printtab\n");
+                }
+                else
+                {
+                    this.appendCode("    chrout $2c\n");
+                }
+                break;
+
+            case "XCBASIC.NlSupp":
+                if (ix + 1 == list.children.length)
+                {
+                    nlSuppAtEnd = true;
+                }
+                break;
             }
         }
 
-        if(!nlSuppAtEnd) {
-            if(!hasHash) {
+        if (!nlSuppAtEnd)
+        {
+            if (!hasHash)
+            {
                 this.appendCode("    printnl\n");
-            } else {
+            }
+            else
+            {
                 this.appendCode("    chrout $0d\n");
             }
         }
 
-        if(hasHash) {
+        if (hasHash)
+        {
             appendCode("    clrchn\n");
         }
     }

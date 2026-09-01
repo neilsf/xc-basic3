@@ -31,52 +31,62 @@ class Simplexp : AbstractExpression
         bool hasStringMember = false;
         bool hasNumericMember = false;
         bool hasSubtraction = false;
-        
+
         this.asmCode = "";
-        
+
         int count = 0;
-        foreach (ref child; this.node.children) {
-            if(child.name == "XCBASIC.Term") {
+        foreach (ref child; this.node.children)
+        {
+            if (child.name == "XCBASIC.Term")
+            {
                 ExpressionInterface t = this.makeChild(child);
                 t.setExpectedType(this.type);
                 t.eval();
-                if(!t.getType().isPrimitive && count > 0) {
+                if (!t.getType().isPrimitive && count > 0)
+                {
                     typeError();
                 }
-                if(t.getType().name == Type.STRING) {
+                if (t.getType().name == Type.STRING)
+                {
                     hasStringMember = true;
                 }
-                else {
+                else
+                {
                     hasNumericMember = true;
                 }
                 this.asmCode ~= to!string(t);
             }
-            else if(child.name == "XCBASIC.E_OP") {
+            else if (child.name == "XCBASIC.E_OP")
+            {
                 const string op = child.matches[0];
-                final switch(op) {
-                    case "+":
-                        this.asmCode ~= "    add" ~ to!string(this.type) ~ "\n";
+                final switch (op)
+                {
+                case "+":
+                    this.asmCode ~= "    add" ~ to!string(this.type) ~ "\n";
                     break;
 
-                    case "-":
-                        this.asmCode ~= "    sub" ~ to!string(this.type) ~ "\n";
-                        hasSubtraction = true;
+                case "-":
+                    this.asmCode ~= "    sub" ~ to!string(this.type) ~ "\n";
+                    hasSubtraction = true;
                     break;
                 }
             }
             count++;
         }
 
-        if(hasStringMember && hasNumericMember) {
+        if (hasStringMember && hasNumericMember)
+        {
             compiler.displayError("Mixed types (string and numeric) are not allowed in expression");
         }
 
-        if(hasStringMember && hasSubtraction) {
+        if (hasStringMember && hasSubtraction)
+        {
             compiler.displayError("Strings cannot be subtracted");
         }
 
         // Typecast if required
-        if(!(this.expectedType is null)) {
+        if (!(this.expectedType is null))
+        {
             this.asmCode ~= this.type.getCastCode(this.expectedType);
         }
     }

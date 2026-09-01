@@ -10,9 +10,9 @@ class Screen_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compile */
     void process()

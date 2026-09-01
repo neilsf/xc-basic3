@@ -11,9 +11,9 @@ class IntermediateCode
     enum PROGRAM_SEGMENT = 0;
     enum ROUTINE_SEGMENT = 1;
     enum LIBRARY_SEGMENT = 2;
-    enum DATA_SEGMENT    = 3;
-    enum VAR_SEGMENT     = 4;
-    
+    enum DATA_SEGMENT = 3;
+    enum VAR_SEGMENT = 4;
+
     /** Code segments as strings */
     private string[int] segments;
 
@@ -24,12 +24,12 @@ class IntermediateCode
     this(Compiler compiler)
     {
         this.compiler = compiler;
-        this.segments =  [
-            PROGRAM_SEGMENT : "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
-            ROUTINE_SEGMENT : "\nroutines_start:\n",
-            LIBRARY_SEGMENT : "\n    ; !!opt_end!!\nlibrary_start:\n    SEG \"LIBRARY\"\n    ORG library_start\n" ~ getIncludes() ~ "\n",
-            DATA_SEGMENT    : "\ndata_start:\n",
-            VAR_SEGMENT     : "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
+        this.segments = [
+            PROGRAM_SEGMENT: "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
+            ROUTINE_SEGMENT: "\nroutines_start:\n",
+            LIBRARY_SEGMENT: "\n    ; !!opt_end!!\nlibrary_start:\n    SEG \"LIBRARY\"\n    ORG library_start\n" ~ getIncludes() ~ "\n",
+            DATA_SEGMENT: "\ndata_start:\n",
+            VAR_SEGMENT: "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
         ];
     }
 
@@ -58,8 +58,7 @@ class IntermediateCode
         // Target machine bits meaning
         // Bits 15-8: base machine
         // Bits 7-0: machine config 
-        string startUpCode =
-`    PROCESSOR ` ~ processorType ~ `
+        string startUpCode = `    PROCESSOR ` ~ processorType ~ `
 c64      EQU %0000000100000000
 vic20    EQU %0000001000000000
 vic20_3k EQU %0000001000000001
@@ -93,14 +92,15 @@ USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
 
     private string getBasicStub()
     {
-        if (basicLoader) {
-                return `
+        if (basicLoader)
+        {
+            return `
     DC.W next_line, 2021
-` ~ ( target == "mega65" ? "    DC.B $fe,$02,$30,$3a" : "") ~ `    
+` ~ (target == "mega65" ? "    DC.B $fe,$02,$30,$3a" : "") ~ `    
     DC.B $9e, [prg_start]d, 0
 next_line:
     DC.W 0
-`;   
+`;
         }
         return "";
     }
@@ -116,12 +116,8 @@ next_line:
 
     public string getCode()
     {
-        return  getStartUp() ~
-                getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~
-                getSegment(ROUTINE_SEGMENT) ~
-                getSegment(LIBRARY_SEGMENT) ~
-                getSegment(DATA_SEGMENT) ~
-                getSegment(VAR_SEGMENT) ~
-                "vars_end:\n";
+        return getStartUp() ~ getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~ getSegment(ROUTINE_SEGMENT) ~ getSegment(
+                LIBRARY_SEGMENT) ~ getSegment(DATA_SEGMENT) ~ getSegment(VAR_SEGMENT)
+            ~ "vars_end:\n";
     }
 }

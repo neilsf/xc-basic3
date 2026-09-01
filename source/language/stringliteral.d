@@ -28,9 +28,7 @@ class StringLiteral
     {
         bool truncated;
         immutable data = asciiToPetsciiHex(this.str, 0UL, truncated, this.finalLength);
-        compiler.getImCode().appendSegment(
-            IntermediateCode.DATA_SEGMENT,
-            "_S" ~ to!string(id) ~ " " ~ data ~ "\n"
-        );
+        compiler.getImCode().appendSegment(IntermediateCode.DATA_SEGMENT,
+                "_S" ~ to!string(id) ~ " " ~ data ~ "\n");
     }
 }

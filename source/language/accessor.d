@@ -11,7 +11,8 @@ class AccessorException : Exception
     public bool isFatal = false;
 
     /** Class constructor */
-    @nogc @safe pure nothrow this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable nextInChain = null)
+    @nogc @safe pure nothrow this(string msg, string file = __FILE__,
+            size_t line = __LINE__, Throwable nextInChain = null)
     {
         super(msg, file, line, nextInChain);
     }
@@ -25,14 +26,14 @@ class AccessorFactory
     private bool tryVariableAccess;
 
     /** Can't be interpreted */
-    enum TYPE_INVALID    = 0;
+    enum TYPE_INVALID = 0;
     /** Access to a variable */
-    enum TYPE_VARACCESS  = 1;
+    enum TYPE_VARACCESS = 1;
     /** Function call */
-    enum TYPE_FNCALL     = 2;
+    enum TYPE_FNCALL = 2;
     /** Method call */
     enum TYPE_METHODCALL = 3;
-    
+
     /** Class constructor */
     this(ParseTree node, Compiler compiler, bool tryVariableAccess = true)
     {
@@ -45,40 +46,53 @@ class AccessorFactory
     {
         // Last node is not ()
         ParseTree last;
-        try {
+        try
+        {
             last = node.children[$ - 1];
-        } catch (Error e) {
-            import std.stdio; writeln(node);
         }
-        
-        if(last.name == "XCBASIC.Varname") {
+        catch (Error e)
+        {
+            import std.stdio;
+
+            writeln(node);
+        }
+
+        if (last.name == "XCBASIC.Varname")
+        {
             return new VariableAccess(node, compiler);
         }
-        
+
         // TODO To make errors more descriptive, introduce 2 levels
         // of exceptions
         // E. g. Function was not found -> go check if it's a variable access
         //       Function was found but not callable with arguments > stop with error
 
-        try {
+        try
+        {
             return new MethodCall(node, compiler);
         }
-        catch(AccessorException e) {
-            if(e.isFatal) {
+        catch (AccessorException e)
+        {
+            if (e.isFatal)
+            {
                 throw e;
             }
         }
 
-        try {
+        try
+        {
             return new RoutineCall(node, compiler);
         }
-        catch(AccessorException e) {
-             if(e.isFatal) {
+        catch (AccessorException e)
+        {
+            if (e.isFatal)
+            {
                 throw e;
             }
         }
 
-        if(this.tryVariableAccess) {
+        if (this.tryVariableAccess)
+        {
             return new VariableAccess(node, compiler);
         }
 

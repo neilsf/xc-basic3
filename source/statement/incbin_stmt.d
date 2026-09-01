@@ -9,17 +9,19 @@ import language.statement, language.expression;
 
 class Incbin_stmt : Statement
 {
-     /** Class constructor */
+    /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
     {
-        const string fileName = getcwd() ~ dirSeparator ~ join(this.node.children[0].children[0].matches[1..$-1]);
-        if(!exists(fileName)) {
+        const string fileName = getcwd() ~ dirSeparator ~ join(
+                this.node.children[0].children[0].matches[1 .. $ - 1]);
+        if (!exists(fileName))
+        {
             compiler.displayError("File cannot be read: " ~ fileName);
         }
         appendCode("    INCBIN \"" ~ fileName ~ "\"\n");

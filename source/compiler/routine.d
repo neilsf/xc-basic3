@@ -3,7 +3,7 @@ module compiler.routine;
 import pegged.grammar;
 
 import std.conv, std.algorithm.searching, std.algorithm.iteration,
-       std.algorithm.mutation, std.array, std.uni;
+    std.algorithm.mutation, std.array, std.uni;
 import compiler.compiler, compiler.variable, compiler.type, compiler.helper;
 import language.expression, language.accessor;
 
@@ -15,7 +15,7 @@ class Routine
     /** Identifier */
     protected string name;
     /** Arguments */
-	protected Variable[] arguments;
+    protected Variable[] arguments;
     /** Argument types */
     protected Type[] argTypes;
     /** variable holding the return value of the function */
@@ -47,9 +47,10 @@ class Routine
     /** Inline function */
     protected bool isInline = false;
 
-     /** Class constructor */
+    /** Class constructor */
     this(string name, bool isShared, string fileId, Compiler compiler, string keyword,
-         bool isStatic = false, bool isMethod = false, bool isPrivate = false, bool isInline = false)
+            bool isStatic = false, bool isMethod = false, bool isPrivate = false,
+            bool isInline = false)
     {
         this.name = toLower(name);
         this.isShared = isMethod || isShared;
@@ -58,7 +59,8 @@ class Routine
         this.compiler = compiler;
         this.keyword = keyword;
         this.isMethod = isMethod;
-        if(isMethod) {
+        if (isMethod)
+        {
             this.parentType = compiler.currentTypeDef;
         }
         this.isPrivate = isPrivate;
@@ -68,15 +70,16 @@ class Routine
     /** The assembly label of the entry point of this routine */
     public string getLabel()
     {
-        return "F_" ~ (this.isShared ? "" : (compiler.currentFileId ~ "."))
-                ~ fixSymbol(this.name) ~ (this.argTypes.length > 0 ? "_" ~ getArgsHash() : "");
+        return "F_" ~ (this.isShared
+                ? "" : (compiler.currentFileId ~ ".")) ~ fixSymbol(this.name) ~ (
+                this.argTypes.length > 0 ? "_" ~ getArgsHash() : "");
     }
 
     /** Add an argument to the routine's argument list */
     public void addArgument(Variable var)
-	{
-		this.arguments ~= var;
-	}
+    {
+        this.arguments ~= var;
+    }
 
     /** Add an argument type to the routine's argument type list */
     public void addArgType(Type type)
@@ -88,7 +91,8 @@ class Routine
     public void addDynamicVariable(Variable var)
     {
         var.offsetWithinFrame = this.stackFrameSize;
-        this.compiler.getImCode().appendProgramSegment(var.getAsmLabel() ~ " EQU " ~ to!string(var.offsetWithinFrame) ~ "\n");
+        this.compiler.getImCode().appendProgramSegment(
+                var.getAsmLabel() ~ " EQU " ~ to!string(var.offsetWithinFrame) ~ "\n");
         this.increaseStackFrameSize(var.getLength());
     }
 
@@ -101,7 +105,8 @@ class Routine
     protected void increaseStackFrameSize(int incSize)
     {
         this.stackFrameSize += incSize;
-        if(this.stackFrameSize > 128) {
+        if (this.stackFrameSize > 128)
+        {
             compiler.displayError("Maximum stack frame size of function exceeded");
         }
     }
@@ -121,19 +126,13 @@ class Routine
     public string getFunctionHash()
     {
         return [
-            fileId,
-            keyword,
-            name,
-            type.name,
-            (isMethod ? parentType.name : "."),
-            (isStatic ? "S" : "."),
-            (isPrivate ? "P" : "."),
-            (isShared ? "H" : "."),
-            (isMethod ? "M" : ".")
+            fileId, keyword, name, type.name, (isMethod ? parentType.name : "."),
+            (isStatic ? "S" : "."), (isPrivate ? "P" : "."), (isShared
+                    ? "H" : "."), (isMethod ? "M" : ".")
         ].join("|");
     }
 
-    /** Returns a unique hash that identifies this routine */ 
+    /** Returns a unique hash that identifies this routine */
     public string getHash()
     {
         return getFunctionHash() ~ "|" ~ getArgsHash();
@@ -162,7 +161,7 @@ class Routine
     {
         return name;
     }
-    
+
     /** Getter for keyword */
     public string getKeyword()
     {
@@ -191,13 +190,11 @@ class RoutineCollection
     /** Find a routine by name and arg hash */
     public Routine get(string name, string argHash)
     {
-        Routine[] r = find!(
-            routine =>
-                routine.name == toLower(name)
-                && (routine.isShared || routine.fileId == compiler.currentFileId)
-                && routine.getArgsHash() == argHash
-        )(routines);
-        if(r.length > 0) {
+        Routine[] r = find!(routine => routine.name == toLower(name) && (routine.isShared
+                || routine.fileId == compiler.currentFileId) && routine.getArgsHash() == argHash)(
+                routines);
+        if (r.length > 0)
+        {
             return r[0];
         }
         return null;
@@ -206,11 +203,8 @@ class RoutineCollection
     /** Find all variants of a routine by name */
     public Routine[] getVariants(string name)
     {
-        return routines.filter!(
-            routine =>
-                routine.name == toLower(name)
-                && (routine.isShared || routine.fileId == compiler.currentFileId)
-        ).array;
+        return routines.filter!(routine => routine.name == toLower(name)
+                && (routine.isShared || routine.fileId == compiler.currentFileId)).array;
     }
 
     /** Check if routine exists by name */
@@ -227,9 +221,12 @@ class RoutineCollection
 
     public void postCheck()
     {
-        foreach (Routine key; routines) {
-            if(!key.isInline && !key.isDefined) {
-                compiler.displayError(key.keyword ~ " " ~ key.getNameWithArgTypes() ~ " declared but never defined");
+        foreach (Routine key; routines)
+        {
+            if (!key.isInline && !key.isDefined)
+            {
+                compiler.displayError(key.keyword ~ " " ~ key.getNameWithArgTypes()
+                        ~ " declared but never defined");
             }
         }
     }
@@ -252,21 +249,25 @@ class RoutineCall : AccessorInterface
         this.node = node;
         this.compiler = compiler;
         this.findCandidates();
-        if(failIfNotFound && (candidates.length == 0)) {
-            AccessorException e = new AccessorException("SUB or FUNCTION \"" ~ routineName ~ "\" not found");
+        if (failIfNotFound && (candidates.length == 0))
+        {
+            AccessorException e = new AccessorException(
+                    "SUB or FUNCTION \"" ~ routineName ~ "\" not found");
             e.isFatal = false;
             throw e;
         }
         this.findRoutine();
-        if(failIfNotFound && (routine is null)) {
+        if (failIfNotFound && (routine is null))
+        {
             string[] typeNames;
-            foreach (ref t; getCallerArgTypes()) {
+            foreach (ref t; getCallerArgTypes())
+            {
                 typeNames ~= t.name;
             }
             string argTypesEnum = typeNames.join(", ");
-            AccessorException e = new AccessorException("SUB or FUNCTION \"" ~ routineName
-                                ~ "\" not callable using argument(s) ("
-                                ~ argTypesEnum ~ ")");
+            AccessorException e = new AccessorException(
+                    "SUB or FUNCTION \"" ~ routineName
+                    ~ "\" not callable using argument(s) (" ~ argTypesEnum ~ ")");
             e.isFatal = true;
             throw e;
         }
@@ -283,7 +284,7 @@ class RoutineCall : AccessorInterface
     {
         return 0.0;
     }
-    
+
     /** Get the type of the expression */
     public Type getType()
     {
@@ -314,26 +315,31 @@ class RoutineCall : AccessorInterface
     {
         string asmCode = "";
         ParseTree exprList = getExprList();
-        if(exprList.children.length != routine.argTypes.length) {
+        if (exprList.children.length != routine.argTypes.length)
+        {
             compiler.displayError("Wrong number of arguments");
         }
         int argNo = 0;
         Variable arg;
         Type argType;
-        foreach (ref expr; exprList.children) {
+        foreach (ref expr; exprList.children)
+        {
             Expression e = new Expression(expr, compiler);
             argType = routine.argTypes[argNo];
             e.setExpectedType(argType);
             e.eval();
             asmCode ~= to!string(e);
-            if(routine.isStatic && !routine.isInline) {
+            if (routine.isStatic && !routine.isInline)
+            {
                 arg = routine.arguments[argNo];
                 const string argTypeName = arg.type.isPrimitive ? arg.type.name : "udt";
                 asmCode ~= "    pl" ~ argTypeName ~ "var " ~ arg.getAsmLabel();
-                if(arg.type.name == Type.STRING) {
+                if (arg.type.name == Type.STRING)
+                {
                     asmCode ~= ", " ~ to!string(arg.strLen);
                 }
-                else if(!arg.type.isPrimitive) {
+                else if (!arg.type.isPrimitive)
+                {
                     asmCode ~= ", " ~ to!string(arg.type.length);
                 }
                 asmCode ~= "\n";
@@ -341,16 +347,20 @@ class RoutineCall : AccessorInterface
             argNo++;
         }
 
-        if(!routine.isStatic && !routine.isInline) {
+        if (!routine.isStatic && !routine.isInline)
+        {
             asmCode ~= "    framealloc " ~ to!string(routine.getStackFrameSize()) ~ "\n";
-            for(argNo -= 1; argNo >= 0; argNo--) {
+            for (argNo -= 1; argNo >= 0; argNo--)
+            {
                 arg = routine.arguments[argNo];
                 const string argTypeName = arg.type.isPrimitive ? arg.type.name : "udt";
                 asmCode ~= "    pldyn" ~ argTypeName ~ "var " ~ arg.getAsmLabel();
-                if(arg.type.name == Type.STRING) {
+                if (arg.type.name == Type.STRING)
+                {
                     asmCode ~= ", " ~ to!string(arg.strLen);
                 }
-                 else if(!arg.type.isPrimitive) {
+                else if (!arg.type.isPrimitive)
+                {
                     asmCode ~= ", " ~ to!string(arg.type.length);
                 }
                 asmCode ~= "\n";
@@ -362,14 +372,17 @@ class RoutineCall : AccessorInterface
     protected string getExecCode()
     {
         string asmCode;
-        if(!routine.isInline) {
+        if (!routine.isInline)
+        {
             asmCode = "    import I_" ~ routine.getLabel() ~ "\n";
             asmCode ~= "    jsr " ~ routine.getLabel() ~ "\n";
-            if(!routine.isStatic) {
+            if (!routine.isStatic)
+            {
                 asmCode ~= "    framefree " ~ to!string(routine.getStackFrameSize()) ~ "\n";
             }
         }
-        else {
+        else
+        {
             asmCode ~= "    " ~ routine.getLabel() ~ "\n";
         }
         return asmCode;
@@ -377,10 +390,13 @@ class RoutineCall : AccessorInterface
 
     protected string getPullCode()
     {
-        if(routine.type.name != Type.VOID && !routine.isInline) {
+        if (routine.type.name != Type.VOID && !routine.isInline)
+        {
             const string returnTypeName = routine.type.isPrimitive ? routine.type.name : "udt";
-            const string length = routine.type.isPrimitive ? "" : (", " ~ to!string(routine.type.length));
-            return "    p" ~ returnTypeName ~ "var " ~ routine.returnValue.getAsmLabel() ~ length ~ "\n";
+            const string length = routine.type.isPrimitive
+                ? "" : (", " ~ to!string(routine.type.length));
+            return "    p" ~ returnTypeName ~ "var " ~ routine.returnValue.getAsmLabel()
+                ~ length ~ "\n";
         }
         return "";
     }
@@ -393,8 +409,8 @@ class RoutineCall : AccessorInterface
 
     public string getPushAddressCode()
     {
-        return  "    import I_" ~ routine.getLabel() ~ "\n"
-                ~ "    pword " ~ routine.getLabel() ~ "\n";
+        return "    import I_" ~ routine.getLabel() ~ "\n" ~ "    pword " ~ routine.getLabel()
+            ~ "\n";
     }
 
     protected void findCandidates()
@@ -406,45 +422,56 @@ class RoutineCall : AccessorInterface
     protected void findRoutine()
     {
         import std.stdio;
+
         immutable string callerArgHash = getCallerArgHash();
         Type[] callerArgTypes = getCallerArgTypes();
         int i, j;
         int[int] score;
         j = 0;
         // Best case: find exact match
-        foreach (ref candidate; candidates) {
-            if(candidate.argTypes.length != callerArgTypes.length) {
+        foreach (ref candidate; candidates)
+        {
+            if (candidate.argTypes.length != callerArgTypes.length)
+            {
                 score[j] = int.max;
                 continue;
             }
-            if(candidate.getArgsHash() == callerArgHash) {
+            if (candidate.getArgsHash() == callerArgHash)
+            {
                 // perfect match
                 routine = candidate;
                 return;
             }
             score[j] = 0;
             i = -1;
-            foreach (ref calleeType; candidate.argTypes) {
+            foreach (ref calleeType; candidate.argTypes)
+            {
                 i++;
                 Type callerType = callerArgTypes[i];
-                if(!callerType.isConvertable(calleeType)) {
-                   score[j] = int.max;
-                   break;
+                if (!callerType.isConvertable(calleeType))
+                {
+                    score[j] = int.max;
+                    break;
                 }
-                else {
-                    score[j] += callerType.getConversionPenalty(calleeType);    
+                else
+                {
+                    score[j] += callerType.getConversionPenalty(calleeType);
                 }
             }
             j++;
         }
-        int minIx = -1; int minVal = int.max;
-        for(i = 0; i < j; i++) {
-            if(score[i] < minVal) {
+        int minIx = -1;
+        int minVal = int.max;
+        for (i = 0; i < j; i++)
+        {
+            if (score[i] < minVal)
+            {
                 minVal = score[i];
                 minIx = i;
             }
         }
-        if(minVal < int.max) {
+        if (minVal < int.max)
+        {
             routine = candidates[minIx];
         }
     }
@@ -478,7 +505,8 @@ class MethodCall : RoutineCall
     override protected void findCandidates()
     {
         // Not a method call if less than 2 members in dot notation
-        if(count!((child) => child.name == "XCBASIC.Varname")(node.children) < 2) {
+        if (count!((child) => child.name == "XCBASIC.Varname")(node.children) < 2)
+        {
             return;
         }
         Type t;
@@ -487,29 +515,34 @@ class MethodCall : RoutineCall
         // Get variable name
         immutable string varName = node.children[0].matches.join("");
         // Get type in which the method is called
-        if(toLower(varName) == "this" && node.children.length == 2 /* && compiler.inTypeDef */) {
+        if (toLower(varName) == "this" && node.children.length == 2 /* && compiler.inTypeDef */ )
+        {
             // THIS.method()
             t = compiler.currentTypeDef;
             callWithinSameType = true;
         }
-        else if(toLower(varName) == "this") {
+        else if (toLower(varName) == "this")
+        {
             // THIS.member...method()
             t = compiler.currentTypeDef;
-            if(t is null) {
+            if (t is null)
+            {
                 compiler.displayError("The THIS keyword may only be used in a TYPE block");
             }
             callToOtherType = true;
         }
-        else {
+        else
+        {
             thisVar = compiler.getVars().findVisible(varName);
-            if(thisVar is null) {
+            if (thisVar is null)
+            {
                 return;
             }
             t = thisVar.type;
         }
-        
+
         string dotNotation = getDotNotation();
-        
+
         this.thisOffset = t.getMemberOffset(dotNotation);
         immutable string methodFullName = t.getMemberType(dotNotation).name ~ "." ~ methodName;
         candidates = compiler.getRoutines().getVariants(methodFullName);
@@ -520,15 +553,15 @@ class MethodCall : RoutineCall
         ParseTree varNode = node;
         varNode.children = varNode.children[0 .. $ - 2];
         VariableAccess access = new VariableAccess(varNode, compiler);
-        return access.getPushAddressCode()
-               ~ "    plwordvar TH\n";
+        return access.getPushAddressCode() ~ "    plwordvar TH\n";
     }
 
     private string getDotNotation()
     {
         string[] parts;
         node.children[1 .. $ - 2].each!((child) {
-            if(child.name == "XCBASIC.Varname") {
+            if (child.name == "XCBASIC.Varname")
+            {
                 parts ~= child.matches.join("");
             }
         });
@@ -538,22 +571,24 @@ class MethodCall : RoutineCall
     override protected void findRoutine()
     {
         super.findRoutine();
-        if(this.routine !is null) {
-            if(this.routine.isPrivate && compiler.currentTypeDef != this.routine.parentType) {
+        if (this.routine !is null)
+        {
+            if (this.routine.isPrivate && compiler.currentTypeDef != this.routine.parentType)
+            {
                 immutable string methodName = node.children[$ - 2].matches.join("");
-                compiler.displayError("PRIVATE method \"" ~ methodName ~ "\" not visible in this scope");
+                compiler.displayError(
+                        "PRIVATE method \"" ~ methodName ~ "\" not visible in this scope");
             }
         }
-                
+
     }
 
     private string getSetThis()
     {
         assert(thisVar !is null, "Bad things going on here");
-        string th = thisOffset > 0 ? "(" ~ thisVar.getAsmLabel() ~ " + " ~ to!string(thisOffset) ~ ")" : thisVar.getAsmLabel();
-        return 
-            (compiler.inTypeDef ? "    pthis\n" : "") ~
-            calculateThisAddress();
+        string th = thisOffset > 0 ? "(" ~ thisVar.getAsmLabel() ~ " + " ~ to!string(
+                thisOffset) ~ ")" : thisVar.getAsmLabel();
+        return (compiler.inTypeDef ? "    pthis\n" : "") ~ calculateThisAddress();
     }
 
     private string getOffsetThis()
@@ -569,10 +604,8 @@ class MethodCall : RoutineCall
     /** Returns intermediate code to call the routine and push its return value onto stack */
     override public string getPushCode()
     {
-        return getPushArgs() 
-                ~ (callWithinSameType ? "" : (callToOtherType ? getOffsetThis() : getSetThis()))
-                ~ getExecCode()
-                ~ (callWithinSameType ? "" : getRestoreThis()) 
-                ~ getPullCode();
+        return getPushArgs() ~ (callWithinSameType ? "" : (callToOtherType
+                ? getOffsetThis() : getSetThis())) ~ getExecCode() ~ (callWithinSameType
+                ? "" : getRestoreThis()) ~ getPullCode();
     }
 }

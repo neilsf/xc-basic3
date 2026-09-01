@@ -21,7 +21,7 @@ class SourceFile
     private string fileId = "";
     /** A container holding cached instances of this class */
     private static SourceFile[] container;
-   
+
     /** Class constructor (not available for public) */
     protected this(string fileName)
     {
@@ -39,15 +39,17 @@ class SourceFile
     /** Factory method to find existing instance or create new one */
     public static SourceFile get(string fileName)
     {
-        return SourceFile.existsInContainer(fileName) ? 
-            SourceFile.findInContainer(fileName) : new SourceFile(fileName);
+        return SourceFile.existsInContainer(fileName)
+            ? SourceFile.findInContainer(fileName) : new SourceFile(fileName);
     }
 
     /** Checks if instance exists in container */
     private static bool existsInContainer(string fileName)
     {
-        foreach (ref SourceFile file; container) {
-            if(file.getFileName == fileName) {
+        foreach (ref SourceFile file; container)
+        {
+            if (file.getFileName == fileName)
+            {
                 return true;
             }
         }
@@ -57,8 +59,10 @@ class SourceFile
     /** Get an instance by fileName from container */
     public static SourceFile findInContainer(string fileName)
     {
-        foreach (ref SourceFile file; container) {
-            if(file.getFileName == fileName) {
+        foreach (ref SourceFile file; container)
+        {
+            if (file.getFileName == fileName)
+            {
                 return file;
             }
         }
@@ -71,16 +75,19 @@ class SourceFile
         immutable string dir = dirName(this.fileName);
         immutable string file = baseName(this.fileName);
 
-        try {
+        try
+        {
             chdir(dir);
-            if(!exists(file)) {
+            if (!exists(file))
+            {
                 // try in library dir
                 chdir(getLibraryDir());
             }
 
             this.sourceCode = to!string(read(file));
         }
-        catch(FileException e) {
+        catch (FileException e)
+        {
             stderr.writeln("** ERROR ** Failed to open source file - " ~ e.msg);
             exit(1);
         }
@@ -91,23 +98,29 @@ class SourceFile
     private void commentInlineAsm()
     {
         import std.stdio;
+
         bool inAsmBlock = false;
         bool hasAsmBlock = false;
         string[] lines = splitLines(this.sourceCode);
-        for(int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.length; i++)
+        {
             string line = lines[i];
-            if(toLower(strip(line)) == "asm") {
+            if (toLower(strip(line)) == "asm")
+            {
                 inAsmBlock = true;
                 hasAsmBlock = true;
             }
-            else if(toLower(strip(line)) == "end asm") {
+            else if (toLower(strip(line)) == "end asm")
+            {
                 inAsmBlock = false;
             }
-            else if(inAsmBlock) {
+            else if (inAsmBlock)
+            {
                 lines[i] = "REM " ~ line;
             }
         }
-        if(hasAsmBlock) {
+        if (hasAsmBlock)
+        {
             this.sourceCode = lines.join("\n");
         }
     }
@@ -116,15 +129,15 @@ class SourceFile
     {
         this.ast = XCBASIC(this.sourceCode);
         // Parser error, display error msg and exit
-        if(!this.ast.successful) {
+        if (!this.ast.successful)
+        {
             auto errorFormatter = delegate(Position pos, string left, string right, const ParseTree p) {
                 string[] r_lines = right.splitLines();
                 string[] l_lines = left.splitLines();
                 string errorLine = r_lines.length > 0 ? r_lines[0] : l_lines[0];
-                return this.fileName ~ ":" ~ to!string(pos.line + 1) ~ "." ~ to!string(pos.col) 
-                ~ ": syntax error near '" ~ errorLine
-                ~ "' in file " ~ this.fileName ~ " in line "
-                ~ to!string(pos.line + 1);
+                return this.fileName ~ ":" ~ to!string(pos.line + 1) ~ "." ~ to!string(
+                        pos.col) ~ ": syntax error near '" ~ errorLine ~ "' in file "
+                    ~ this.fileName ~ " in line " ~ to!string(pos.line + 1);
             };
             string msg = this.ast.failMsg(errorFormatter);
             stderr.writeln(msg);

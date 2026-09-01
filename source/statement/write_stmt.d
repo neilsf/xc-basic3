@@ -14,16 +14,18 @@ class Write_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     public void process()
     {
         ParseTree exprList = this.node.children[0].children[0];
         const ulong exprCount = exprList.children.length;
-        if(exprCount < 2) {
-            compiler.displayError("WRITE# expects at least 2 parameters, " ~ to!string(exprCount) ~ " provided");
+        if (exprCount < 2)
+        {
+            compiler.displayError("WRITE# expects at least 2 parameters, " ~ to!string(
+                    exprCount) ~ " provided");
         }
         ParseTree fileNoNode = exprList.children[0];
         Expression fileNoExp = new Expression(fileNoNode, compiler);
@@ -33,7 +35,8 @@ class Write_stmt : Statement
         appendCode("    plbytevar R9\n");
         appendCode("    chkout R9\n");
         Expression e;
-        for (int i = 1; i < exprCount; i++) {
+        for (int i = 1; i < exprCount; i++)
+        {
             e = new Expression(exprList.children[i], compiler);
             e.eval();
             appendCode(e.toString());

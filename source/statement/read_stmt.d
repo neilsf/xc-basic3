@@ -11,9 +11,9 @@ class Read_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -28,13 +28,16 @@ class Read_stmt : Statement
         ParseTree accessorList = this.node.children[0].children[1];
         const ulong count = accessorList.children.length;
         VariableAccess v;
-        for (int i = 0; i < count; i++) {
-            try {
+        for (int i = 0; i < count; i++)
+        {
+            try
+            {
                 v = new VariableAccess(accessorList[i], compiler);
                 appendCode(v.getPushAddressCode());
                 appendCode("    read " ~ to!string(v.getVariable().type.length) ~ "\n");
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 compiler.displayError(e.msg);
             }
         }

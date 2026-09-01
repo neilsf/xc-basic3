@@ -49,14 +49,17 @@ class Type
      */
     public bool comparePrecedence(Type that)
     {
-        if(this.name == INT16 && that.name == UINT16) {
+        if (this.name == INT16 && that.name == UINT16)
+        {
             return true;
         }
         // Force strings to be higher precedence
-        if(this.name == STRING) {
+        if (this.name == STRING)
+        {
             return true;
         }
-        else if(that.name == STRING) {
+        else if (that.name == STRING)
+        {
             return false;
         }
         // Let the length decide
@@ -70,13 +73,16 @@ class Type
      */
     public int getConversionPenalty(Type that)
     {
-        if(this.name == INT16 && that.name == UINT16) {
+        if (this.name == INT16 && that.name == UINT16)
+        {
             return 0;
         }
-        if(this.length == that.length) {
+        if (this.length == that.length)
+        {
             return 0;
         }
-        if(this.length < that.length) {
+        if (this.length < that.length)
+        {
             return that.length - this.length;
         }
         return (this.length - that.length) * 4;
@@ -90,7 +96,8 @@ class Type
         field.offsetWithinType = this.length;
         this.fields ~= field;
         this.length += field.getLength();
-        if(this.length > 64) {
+        if (this.length > 64)
+        {
             throw new Exception("Type too wide (max: 64 bytes)");
         }
     }
@@ -110,8 +117,10 @@ class Type
      */
     public Variable getField(string name)
     {
-        foreach (ref var; fields) {
-            if(var.name == name) {
+        foreach (ref var; fields)
+        {
+            if (var.name == name)
+            {
                 return var;
             }
         }
@@ -130,20 +139,23 @@ class Type
         string[] chain = dotNotation.split(".");
         Variable field;
         Type t = this;
-        for(int i = 0; i < chain.length; i++) {
+        for (int i = 0; i < chain.length; i++)
+        {
             string key = toLower(chain[i]);
-            if(t.hasField(key)) {
+            if (t.hasField(key))
+            {
                 field = t.getField(key);
                 len += field.offsetWithinType;
                 t = field.type;
             }
-            else {
+            else
+            {
                 throw new Exception("Unknown field " ~ key ~ " in type " ~ this.name);
             }
         }
         return len;
     }
-    
+
     /**
      * Takes a dot accessor notation (e.g x.y.z)
      * and returns the type of the last member
@@ -152,12 +164,15 @@ class Type
     {
         string[] chain = dotNotation.split(".");
         Type t = this;
-        for(int i = 0; i < chain.length; i++) {
+        for (int i = 0; i < chain.length; i++)
+        {
             string key = toLower(chain[i]);
-            if(t.hasField(key)) {
+            if (t.hasField(key))
+            {
                 t = t.getField(key).type;
             }
-            else {
+            else
+            {
                 throw new Exception("Unknown field " ~ key ~ " in type " ~ this.name);
             }
         }
@@ -168,22 +183,26 @@ class Type
     public bool isConvertable(Type target)
     {
         // Same types - sure
-        if(this.name == target.name) {
+        if (this.name == target.name)
+        {
             return true;
         }
 
         // Not internal types - no way
-        if(!this.isPrimitive || !target.isPrimitive) {
+        if (!this.isPrimitive || !target.isPrimitive)
+        {
             return false;
         }
 
         // Numeric/string mismatch
-        if(this.isNumeric() ^ target.isNumeric()) {
+        if (this.isNumeric() ^ target.isNumeric())
+        {
             return false;
         }
 
         // Cannot cast from/to decimal
-        if(this.name == DEC || target.name == DEC) {
+        if (this.name == DEC || target.name == DEC)
+        {
             return false;
         }
 
@@ -193,12 +212,14 @@ class Type
     /** Returns assembly code that casts number on stack to another type */
     public string getCastCode(Type target)
     {
-        if(!isConvertable(target)) {
+        if (!isConvertable(target))
+        {
             throw new Exception("Type " ~ this.name ~ " cannot be casted to type " ~ target.name);
         }
 
         // Same types - do nothing
-        if(this.name == target.name) {
+        if (this.name == target.name)
+        {
             return "";
         }
 
@@ -254,8 +275,10 @@ final class TypeCollection
     /** Retrieve a type by name */
     public Type get(string typeName)
     {
-        foreach (Type t; this.types) {
-            if(toLower(t.name) == toLower(typeName)) {
+        foreach (Type t; this.types)
+        {
+            if (toLower(t.name) == toLower(typeName))
+            {
                 return t;
             }
         }

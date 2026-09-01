@@ -23,9 +23,12 @@ class LabelCollection
     {
         bool canFindLocal = canFind(this.labels, this.getLocalName(label));
         bool canFindGlobal = canFind(this.labels, this.getGlobalName(label));
-        if(localOnly) {
+        if (localOnly)
+        {
             return canFindLocal;
-        } else {
+        }
+        else
+        {
             return canFindLocal || canFindGlobal;
         }
     }
@@ -35,7 +38,8 @@ class LabelCollection
     {
         label = toLower(label);
         string localLabel = this.getLocalName(label);
-        if(this.exists(label)) {
+        if (this.exists(label))
+        {
             this.compiler.displayError("Label '" ~ label ~ "' already exists in this scope");
         }
         this.labels ~= localLabel;
@@ -44,10 +48,12 @@ class LabelCollection
     /** Translates label to its counterpart in the assembly source */
     public string getReferenceToLabel(string label)
     {
-        if(canFind(this.labels, this.getLocalName(label))) {
+        if (canFind(this.labels, this.getLocalName(label)))
+        {
             return "L_" ~ this.getLocalName(label);
         }
-        if(canFind(this.labels, this.getGlobalName(label))) {
+        if (canFind(this.labels, this.getGlobalName(label)))
+        {
             return "L_" ~ this.getGlobalName(label);
         }
 
@@ -70,14 +76,14 @@ class LabelCollection
     private string getGlobalName(string label)
     {
         label = toLower(label);
-        return this.compiler.currentFileId ~ "." ~  label;
+        return this.compiler.currentFileId ~ "." ~ label;
     }
 
     /** Translates label to local, ie. src1.proc_name.label */
     private string getLocalName(string label)
     {
         label = toLower(label);
-        return this.compiler.currentFileId ~ "."
-                ~ (this.compiler.inProcedure ? (this.compiler.currentProcName ~ "." ~ label) : label);
+        return this.compiler.currentFileId ~ "." ~ (this.compiler.inProcedure
+                ? (this.compiler.currentProcName ~ "." ~ label) : label);
     }
 }

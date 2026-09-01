@@ -3,20 +3,22 @@ module compiler.variable;
 import std.algorithm, std.conv, std.array, std.string, std.math;
 
 import language.expression;
-import compiler.compiler, compiler.type, compiler.number, compiler.intermediatecode,
-        compiler.routine, compiler.helper;
+import compiler.compiler, compiler.type, compiler.number,
+    compiler.intermediatecode, compiler.routine, compiler.helper;
 
 import globals;
 
 import pegged.grammar;
 
-private string getLabelInCurrentScope(string variableName, Compiler compiler) {
-    return compiler.currentFileId ~ "."
-            ~ (compiler.inProcedure ? (compiler.currentProcName ~ compiler.currentProc.getArgsHash()
-            ~ "." ~ fixSymbol(variableName)) : fixSymbol(variableName));
+private string getLabelInCurrentScope(string variableName, Compiler compiler)
+{
+    return compiler.currentFileId ~ "." ~ (compiler.inProcedure
+            ? (compiler.currentProcName ~ compiler.currentProc.getArgsHash() ~ "." ~ fixSymbol(
+                variableName)) : fixSymbol(variableName));
 }
 
-private string getLabelInGlobalScope(string variableName, Compiler compiler) {
+private string getLabelInGlobalScope(string variableName, Compiler compiler)
+{
     return compiler.currentFileId ~ "." ~ fixSymbol(variableName);
 }
 
@@ -24,21 +26,21 @@ private string getLabelInGlobalScope(string variableName, Compiler compiler) {
 class Variable
 {
     /** Variable name */
-	string name;
-	/** Variable type */
+    string name;
+    /** Variable type */
     Type type;
     /** Variable visibility */
     int visibility = Compiler.VIS_GLOBAL;
     /** Array dimensions */
-	ushort[3] dimensions = [1, 1, 1];
+    ushort[3] dimensions = [1, 1, 1];
     /** How many dimensions (0=scalar, 1=linear, 2=flat, 3=cubic) */
     ubyte dimCount = 0;
     /** Is it a constant */
-    bool isConst        = false;
+    bool isConst = false;
     /** Was it defined in a data statement */
-	bool isData         = false;
+    bool isData = false;
     /** Is it stored on ZP */
-    bool isFast         = false;
+    bool isFast = false;
     /** Is forced address */
     bool isExplicitAddr = false;
     /** Address, if forced */
@@ -46,15 +48,15 @@ class Variable
     /** Address, if forced and equals to a label, not a number */
     string addressLabel;
     /** Private variables are added by the compiler */
-    bool isPrivate      = false;
+    bool isPrivate = false;
     /** Is it the return value of a function */
-    bool isFnRetVal     = false;
+    bool isFnRetVal = false;
     /** Procedure name if local variable */
-	string procName;
+    string procName;
     /** In what source file the variable was defined in */
     string fileId;
     /** Value if constant */
-	float constVal = 0;
+    float constVal = 0;
     /** For strings, the string length */
     ushort strLen = 0;
     /** If this is a field, the byte offset from the start of its type */
@@ -68,23 +70,26 @@ class Variable
     protected string getLabel()
     {
         immutable string name = fixSymbol(this.name);
-        if(this.visibility == Compiler.VIS_COMMON) {
+        if (this.visibility == Compiler.VIS_COMMON)
+        {
             return name;
         }
-        else if(this.visibility == Compiler.VIS_GLOBAL) {
+        else if (this.visibility == Compiler.VIS_GLOBAL)
+        {
             return this.fileId ~ "." ~ name;
         }
-        else {
-            return this.fileId ~ "." ~this.procName ~ "." ~ name;
+        else
+        {
+            return this.fileId ~ "." ~ this.procName ~ "." ~ name;
         }
     }
 
     /** Label used to identify variable in the assembly listing */
-	public string getAsmLabel()
-	{
+    public string getAsmLabel()
+    {
         string prefix = (this.isPrivate && this.visibility > Compiler.VIS_LOCAL) ? "X_" : "V_";
         return prefix ~ this.getLabel();
-	}
+    }
 
     /** How many bytes in memory a single array member reserves */
     public int getSingleLength()
@@ -105,15 +110,10 @@ class Variable
     }
 
     /** Creates a variable by name and type */
-    public static Variable create(
-        string name,
-        Type type,
-        Compiler compiler,
-        bool forceStatic = false,
-        ushort[3] dimensions = [1, 1, 1],
-        ubyte dimCount = 0,
-        ushort strLen = 0
-    ) {
+    public static Variable create(string name, Type type, Compiler compiler,
+            bool forceStatic = false, ushort[3] dimensions = [1, 1, 1],
+            ubyte dimCount = 0, ushort strLen = 0)
+    {
         Variable var = new Variable();
         var.name = toLower(name);
         var.type = type;
@@ -121,10 +121,12 @@ class Variable
         var.dimCount = dimCount;
         var.strLen = strLen;
         var.fileId = compiler.currentFileId;
-        if(compiler.inProcedure) {
+        if (compiler.inProcedure)
+        {
             var.visibility = compiler.VIS_LOCAL;
             var.procName = compiler.currentProcName;
-            if(!forceStatic && !compiler.currentProc.getIsStatic()) {
+            if (!forceStatic && !compiler.currentProc.getIsStatic())
+            {
                 // TODO: This shouldn't be here, refactor
                 var.isDynamic = true;
                 compiler.currentProc.addDynamicVariable(var);
@@ -175,28 +177,30 @@ class VariableCollection
     /** Add variable to the Collection */
     public void add(Variable variable, bool isFast)
     {
-        if(existsInInnerScope(variable.name)) {
+        if (existsInInnerScope(variable.name))
+        {
             this.compiler.displayError(
-                "Duplicate definition: '" ~ variable.name ~ "' already exists in this scope"
-            );
+                    "Duplicate definition: '" ~ variable.name ~ "' already exists in this scope");
         }
 
-        if(existsInOuterScope(variable.name)) {
+        if (existsInOuterScope(variable.name))
+        {
             this.compiler.displayWarning(
-                "'" ~ variable.name ~ "' shadows GLOBAL or SHARED variable with the same name"
-            );
+                    "'" ~ variable.name ~ "' shadows GLOBAL or SHARED variable with the same name");
         }
 
-        if(isFast) {
-            if(zpPtr + variable.getLength() - 1 <= zpHigh) {
+        if (isFast)
+        {
+            if (zpPtr + variable.getLength() - 1 <= zpHigh)
+            {
                 variable.isFast = true;
                 variable.address = ushort(zpPtr);
                 zpPtr += variable.getLength();
             }
-            else {
+            else
+            {
                 this.compiler.displayWarning(
-                    "Out of zeropage space, ignoring FAST option for variable " ~ variable.name
-                );
+                        "Out of zeropage space, ignoring FAST option for variable " ~ variable.name);
             }
         }
 
@@ -204,31 +208,39 @@ class VariableCollection
         const bool isLocal = (variable.visibility == Compiler.VIS_LOCAL);
 
         // Add the variable to the intermediate code
-        if(!variable.isConst && !variable.isDynamic) {
+        if (!variable.isConst && !variable.isDynamic)
+        {
             int length = variable.getLength();
-            if(variable.type.name == Type.STRING) {
+            if (variable.type.name == Type.STRING)
+            {
                 // Need one more byte for strings
                 length += (variable.dimensions[0] * variable.dimensions[1] * variable.dimensions[2]);
             }
             string code = "";
-            if(variable.isExplicitAddr || variable.isFast) {
-                if(variable.addressLabel != "") {
+            if (variable.isExplicitAddr || variable.isFast)
+            {
+                if (variable.addressLabel != "")
+                {
                     code = variable.getAsmLabel() ~ " EQU " ~ variable.addressLabel ~ "\n";
                 }
-                else {
+                else
+                {
                     code = variable.getAsmLabel() ~ " EQU " ~ to!string(variable.address) ~ "\n";
                 }
             }
-            else {
-                if (isLocal) {
+            else
+            {
+                if (isLocal)
+                {
                     code ~= "\t IFCONST I_" ~ compiler.currentProc.getLabel() ~ "_IMPORTED\n";
                 }
                 code ~= variable.getAsmLabel() ~ " DS.B " ~ to!string(length) ~ "\n";
-                if (isLocal) {
+                if (isLocal)
+                {
                     code ~= "\tENDIF\n";
                 }
             }
-            
+
             this.compiler.getImCode().appendSegment(IntermediateCode.VAR_SEGMENT, code);
         }
     }
@@ -245,49 +257,62 @@ class VariableCollection
     {
         string label;
         // Search for variable in global scope
-        if(this.compiler.inProcedure) {
+        if (this.compiler.inProcedure)
+        {
             label = getLabelInGlobalScope(toLower(variableName), compiler);
         }
         // Search for shared variable with same name
-        else {
+        else
+        {
             label = toLower(variableName);
         }
         return any!(v => v.getLabel() == label)(variables);
     }
-    
+
     /** Returns a variable that is visible in the current scope or NULL if none found */
     public Variable findVisible(string name)
     {
         name = toLower(name);
         Variable[] candidates;
-        foreach (Variable var; variables) {
-            if(var.name != name) {
+        foreach (Variable var; variables)
+        {
+            if (var.name != name)
+            {
                 continue;
             }
-           
+
             bool visible = false;
 
             // Function return value within function
-            if(compiler.inProcedure && compiler.currentProc.returnValue == var) {
+            if (compiler.inProcedure && compiler.currentProc.returnValue == var)
+            {
                 visible = true;
             }
-            else if(!var.isFnRetVal) {
+            else if (!var.isFnRetVal)
+            {
                 // Same name in same scope
-                if(compiler.inProcedure && var.visibility != Compiler.VIS_GLOBAL && compiler.currentProcName == var.procName) {
+                if (compiler.inProcedure && var.visibility != Compiler.VIS_GLOBAL
+                        && compiler.currentProcName == var.procName)
+                {
                     visible = true;
                 }
                 // Shared or global var
-                if(var.visibility == Compiler.VIS_COMMON || (var.visibility == Compiler.VIS_GLOBAL && var.fileId == compiler.currentFileId)) {
+                if (var.visibility == Compiler.VIS_COMMON
+                        || (var.visibility == Compiler.VIS_GLOBAL
+                            && var.fileId == compiler.currentFileId))
+                {
                     visible = true;
                 }
             }
 
-            if(visible) {
+            if (visible)
+            {
                 candidates ~= var;
             }
         }
 
-        if(candidates.length == 0) {
+        if (candidates.length == 0)
+        {
             return null;
         }
 
@@ -307,7 +332,7 @@ class VariableReader
 {
     private Compiler compiler;
     private ParseTree node;
-    private bool fallbackType = false; 
+    private bool fallbackType = false;
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
@@ -315,15 +340,16 @@ class VariableReader
         this.node = node;
         this.compiler = compiler;
     }
-    
+
     /** True in case no explicit nor inferred ttype was provided */
     public bool isFallbackType()
     {
-		return this.fallbackType;
-	}
+        return this.fallbackType;
+    }
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
-    public Variable read(Type inferredType = null, bool forceStatic = false, bool stringLengthRequired = true)
+    public Variable read(Type inferredType = null, bool forceStatic = false,
+            bool stringLengthRequired = true)
     {
         ushort[3] dimensions = [1, 1, 1];
         string name;
@@ -331,137 +357,168 @@ class VariableReader
         ushort strLen;
         Type type;
 
-        for(int i = 0; i < node.children.length; i++) {
+        for (int i = 0; i < node.children.length; i++)
+        {
             const ParseTree child = node.children[i];
-            switch(child.name) {
-                case "XCBASIC.Varname":
-                    name = join(child.matches);
-                    break;
+            switch (child.name)
+            {
+            case "XCBASIC.Varname":
+                name = join(child.matches);
+                break;
 
-                case "XCBASIC.Subscript":
-                    ubyte ix = 0;
-                    foreach(ref x; child.children) {
+            case "XCBASIC.Subscript":
+                ubyte ix = 0;
+                foreach (ref x; child.children)
+                {
 
-                        ParseTree expr = cast(ParseTree)x;
+                    ParseTree expr = cast(ParseTree) x;
 
-                        if(!((new Expression(expr, this.compiler)).isConstant())) {
+                    if (!((new Expression(expr, this.compiler)).isConstant()))
+                    {
+                        compiler.displayError("Array dimensions must be constant");
+                    }
+
+                    string dim = join(expr.matches);
+                    int dimLength = 0;
+
+                    // Case 1: test for a defined constant
+                    Variable constVar = compiler.getVars().findVisible(dim);
+                    if (constVar !is null)
+                    {
+                        if (!constVar.isConst)
+                        {
+                            compiler.displayError("Array dimension must be a constant");
+                        }
+                        if (!canFind([Type.UINT8, Type.INT16, Type.UINT16], constVar.type.name))
+                        {
+                            compiler.displayError(
+                                    "Array dimensions must be of type byte, int or word.");
+                        }
+
+                        dimLength = to!int(constVar.constVal);
+                    }
+                    // Case 2: test for numeric literal
+                    else
+                    {
+                        if (expr.children.length > 1)
+                        {
                             compiler.displayError("Array dimensions must be constant");
                         }
-
-                        string dim = join(expr.matches);
-                        int dimLength = 0;
-
-                        // Case 1: test for a defined constant
-                        Variable constVar = compiler.getVars().findVisible(dim);
-                        if(constVar !is null) {
-                            if(!constVar.isConst) {
-                                compiler.displayError("Array dimension must be a constant");
-                            }
-                            if(!canFind([Type.UINT8, Type.INT16, Type.UINT16], constVar.type.name)) {
-                                compiler.displayError("Array dimensions must be of type byte, int or word.");
-                            }
-
-                            dimLength = to!int(constVar.constVal);
+                        Number num = new Number(expr.children[0].children[0].children[0].children[0].children[0],
+                                this.compiler);
+                        if (num.type == compiler.getTypes.get(Type.FLOAT))
+                        {
+                            compiler.displayError("Array dimension must be integer");
                         }
-                        // Case 2: test for numeric literal
-                        else {
-                            if(expr.children.length > 1) {
-                                compiler.displayError("Array dimensions must be constant");
-                            }
-                            Number num = new Number(expr.children[0].children[0].children[0].children[0].children[0], this.compiler);
-                            if(num.type == compiler.getTypes.get(Type.FLOAT)) {
-                                compiler.displayError("Array dimension must be integer");
-                            }
-                            dimLength = num.intVal;
-                        }
-
-                        if(dimLength < 1) {
-                            compiler.displayError("Array dimension must be greater than zero");
-                        }
-
-                        dimensions[ix] = to!ushort(dimLength);
-                        ix++;
+                        dimLength = num.intVal;
                     }
-                    if(ix == 0) {
-                        compiler.displayError("Empty array subscript");
+
+                    if (dimLength < 1)
+                    {
+                        compiler.displayError("Array dimension must be greater than zero");
                     }
-                    dimensions = dimensions;
-                    dimCount = ix;
+
+                    dimensions[ix] = to!ushort(dimLength);
+                    ix++;
+                }
+                if (ix == 0)
+                {
+                    compiler.displayError("Empty array subscript");
+                }
+                dimensions = dimensions;
+                dimCount = ix;
+                break;
+
+            case "XCBASIC.Vartype":
+                string typeName;
+                if (join(child.matches) == "")
+                {
+                    typeName = "";
+                }
+                else
+                {
+                    typeName = toLower(join(child.children[0].matches));
+                }
+                if (typeName == "")
+                {
+                    if (inferredType !is null)
+                    {
+                        type = inferredType;
+                    }
+                    else
+                    {
+                        type = compiler.getTypes().get(Type.INT16);
+                        this.fallbackType = true;
+                    }
                     break;
-
-                case "XCBASIC.Vartype":
-                    string typeName;
-                    if(join(child.matches) == "") {
-                        typeName = "";
+                }
+                else if (typeName == Type.STRING && stringLengthRequired)
+                {
+                    if (child.children.length < 2)
+                    {
+                        compiler.displayError("String length is required");
                     }
-                    else {
-                        typeName = toLower(join(child.children[0].matches));
+                    int len;
+                    const ParseTree typeLen = child.children[1].children[0];
+                    const string lenStr = typeLen.matches.join;
+                    if (typeLen.name == "XCBASIC.Number")
+                    {
+                        Number num = new Number(typeLen, compiler);
+                        len = num.intVal;
                     }
-                    if(typeName == "") {
-						if(inferredType !is null) {
-							type = inferredType;
-						}
-						else {
-							type = compiler.getTypes().get(Type.INT16);
-							this.fallbackType = true;
-						}
-						break;
-                    }                    
-                    else if(typeName == Type.STRING && stringLengthRequired) {
-                        if(child.children.length < 2) {
-                            compiler.displayError("String length is required");
-                        }
-                        int len;
-                        const ParseTree typeLen = child.children[1].children[0];
-                        const string lenStr = typeLen.matches.join;
-                        if(typeLen.name == "XCBASIC.Number") {
-                            Number num = new Number(typeLen, compiler);
-                            len = num.intVal;
-                        } else {
-                            Variable var = compiler.getVars().findVisible(lenStr);
-                            if(var !is null) {
-                                if(!var.isConst) {
-                                    compiler.displayError("String length must be constant");
-                                }
-                                // a constant
-                                len = to!int(var.constVal);
+                    else
+                    {
+                        Variable var = compiler.getVars().findVisible(lenStr);
+                        if (var !is null)
+                        {
+                            if (!var.isConst)
+                            {
+                                compiler.displayError("String length must be constant");
                             }
-                            else {
-                                compiler.displayError("Unknown constant \"" ~ lenStr ~ "\"");
-                            }
+                            // a constant
+                            len = to!int(var.constVal);
                         }
-                        
-                        if(len < 1 || len > stringMaxLength) {
-                            compiler.displayError("String length must be between 1 and " ~ to!string(stringMaxLength));
+                        else
+                        {
+                            compiler.displayError("Unknown constant \"" ~ lenStr ~ "\"");
                         }
-                        strLen = to!ubyte(len);
-                    }
-                    if(!compiler.getTypes().defined(typeName)) {
-                        compiler.displayError("Undefined type: " ~ typeName);
                     }
 
-                    type = compiler.getTypes().get(typeName);
-                    break;
+                    if (len < 1 || len > stringMaxLength)
+                    {
+                        compiler.displayError(
+                                "String length must be between 1 and " ~ to!string(stringMaxLength));
+                    }
+                    strLen = to!ubyte(len);
+                }
+                if (!compiler.getTypes().defined(typeName))
+                {
+                    compiler.displayError("Undefined type: " ~ typeName);
+                }
 
-                default:
-                    assert(0);
+                type = compiler.getTypes().get(typeName);
+                break;
+
+            default:
+                assert(0);
             }
         }
 
-        if(type is null) {
-            if(inferredType !is null) {
+        if (type is null)
+        {
+            if (inferredType !is null)
+            {
                 type = inferredType;
             }
-            else {
+            else
+            {
                 type = compiler.getTypes().get(Type.INT16);
                 this.fallbackType = true;
             }
         }
-    
-        Variable v = Variable.create(
-            name, type, compiler, forceStatic,
-            dimensions, dimCount, strLen
-        );
+
+        Variable v = Variable.create(name, type, compiler, forceStatic,
+                dimensions, dimCount, strLen);
         return v;
     }
 }
@@ -486,23 +543,29 @@ class VariableAccess : AccessorInterface
     {
         this.node = node;
         this.compiler = compiler;
-        if(node.children.length > 0) {
+        if (node.children.length > 0)
+        {
             string varName = join(node.children[0].matches);
-            if(toLower(varName) == "this") {
-                if(!compiler.inProcedure || !compiler.currentProc.getIsMethod()) {
+            if (toLower(varName) == "this")
+            {
+                if (!compiler.inProcedure || !compiler.currentProc.getIsMethod())
+                {
                     compiler.displayError("Keyword THIS may only be used in a method");
                 }
                 variable = new ThisVariable(compiler);
             }
-            else {
+            else
+            {
                 variable = compiler.getVars().findVisible(varName);
             }
-            if(variable is null && failIfNotFound) {
-                throw new Exception("Variable \"" ~ varName ~ "\" does not exist or is unknown in this scope");
+            if (variable is null && failIfNotFound)
+            {
+                throw new Exception(
+                        "Variable \"" ~ varName ~ "\" does not exist or is unknown in this scope");
             }
         }
     }
-    
+
     /** Returns whether this is a sub, function or method call rather than a var access */
     public bool isFunctionCall() const
     {
@@ -543,23 +606,25 @@ class VariableAccess : AccessorInterface
     public string getPushCode()
     {
         string asmCode = "";
-        if(variable.isConst) {
+        if (variable.isConst)
+        {
             asmCode ~= "    p" ~ variable.type.name ~ " ";
-            final switch(variable.type.name) {
-                case Type.UINT8:
-                case Type.UINT16:
-                case Type.INT16:
-                case Type.INT24:
-                    asmCode ~= to!string(to!int(variable.constVal));
-                    break;
+            final switch (variable.type.name)
+            {
+            case Type.UINT8:
+            case Type.UINT16:
+            case Type.INT16:
+            case Type.INT24:
+                asmCode ~= to!string(to!int(variable.constVal));
+                break;
 
-                case Type.FLOAT:
-                    asmCode ~= Number.floatToHex(variable.constVal);
-                    break;
+            case Type.FLOAT:
+                asmCode ~= Number.floatToHex(variable.constVal);
+                break;
 
-                case Type.DEC:
-                    asmCode ~= Number.getDecimalAsHex(to!int(variable.constVal)); 
-                    break;
+            case Type.DEC:
+                asmCode ~= Number.getDecimalAsHex(to!int(variable.constVal));
+                break;
             }
             return asmCode ~ "\n";
         }
@@ -568,35 +633,44 @@ class VariableAccess : AccessorInterface
     }
 
     public string getPushAddressCode()
-    {      
-        if(hasSubscript()) {
+    {
+        if (hasSubscript())
+        {
             parseSubscript();
-            if(isConstantSubscript) {
+            if (isConstantSubscript)
+            {
                 ushort offset = cast(ushort)(getFieldOffset() + getAddressOffset());
                 return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(offset) ~ "]\n";
             }
-            else {
+            else
+            {
                 string asmCode;
                 asmCode ~= getArrayOffsetCode();
-                if(fastArrayAccess) {
+                if (fastArrayAccess)
+                {
                     asmCode ~= "    F_cword_byte\n";
                 }
-                asmCode ~= "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(getFieldOffset()) ~"]\n";
+                asmCode ~= "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(
+                        getFieldOffset()) ~ "]\n";
                 asmCode ~= "    addword\n";
                 return asmCode;
             }
         }
-        else {
+        else
+        {
             ushort fOffset = getFieldOffset();
-            if(cast(ThisVariable)variable) {
+            if (cast(ThisVariable) variable)
+            {
                 string asmCode = "    pthis\n";
-                if(fOffset > 0) {
+                if (fOffset > 0)
+                {
                     asmCode ~= "    pword " ~ to!string(fOffset) ~ "\n";
                     asmCode ~= "    addword\n";
                 }
                 return asmCode;
             }
-            else {
+            else
+            {
                 return "    pword [" ~ variable.getAsmLabel() ~ " + " ~ to!string(fOffset) ~ "]\n";
             }
         }
@@ -607,18 +681,23 @@ class VariableAccess : AccessorInterface
     {
         ushort addressOffset = 0;
         const int ix = findChild(node, "XCBASIC.Varname", 1);
-        if(ix != -1) {
+        if (ix != -1)
+        {
             string dotNotation = "";
-            for(int i = ix; i < node.children.length; i++) {
+            for (int i = ix; i < node.children.length; i++)
+            {
                 dotNotation ~= node.children[i].matches.join("");
-                if(i + 1 < node.children.length) {
+                if (i + 1 < node.children.length)
+                {
                     dotNotation ~= ".";
                 }
             }
-            try {
+            try
+            {
                 addressOffset += variable.type.getMemberOffset(dotNotation);
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 compiler.displayError(e.msg);
             }
         }
@@ -632,9 +711,9 @@ class VariableAccess : AccessorInterface
      */
     private ushort getAddressOffset()
     {
-        return  to!ushort(variable.getSingleLength() * (constSubscript[0] 
-                + variable.dimensions[0] * constSubscript[1]
-                + (variable.dimensions[0] * variable.dimensions[1]) * constSubscript[2]));
+        return to!ushort(variable.getSingleLength() * (
+                constSubscript[0] + variable.dimensions[0] * constSubscript[1] + (
+                variable.dimensions[0] * variable.dimensions[1]) * constSubscript[2]));
     }
 
     private bool hasSubscript()
@@ -645,28 +724,38 @@ class VariableAccess : AccessorInterface
     private void parseSubscript()
     {
         isConstantSubscript = true;
-        if(hasSubscript()) {
+        if (hasSubscript())
+        {
             ParseTree ptSubscript = node.children[1];
-            if(ptSubscript.children.length != variable.dimCount) {
+            if (ptSubscript.children.length != variable.dimCount)
+            {
                 compiler.displayError("Bad subscript");
             }
-            for(int i = 0; i < 3; i++) {
-                if(ptSubscript.children.length > i) {
+            for (int i = 0; i < 3; i++)
+            {
+                if (ptSubscript.children.length > i)
+                {
                     Expression e = new Expression(ptSubscript.children[i], compiler);
                     Type eType = e.getType();
-                    if(!eType.isIntegral()) {
-                        compiler.displayError("Array index must be an integral type, got " ~ eType.name);
+                    if (!eType.isIntegral())
+                    {
+                        compiler.displayError(
+                                "Array index must be an integral type, got " ~ eType.name);
                     }
-                    if(e.isConstant()) {
+                    if (e.isConstant())
+                    {
                         constSubscript[i] = to!int(e.getConstVal());
-                        if(constSubscript[i] < 0) {
+                        if (constSubscript[i] < 0)
+                        {
                             compiler.displayError("Array index must positive");
                         }
-                        if(constSubscript[i] >= variable.dimensions[i]) {
+                        if (constSubscript[i] >= variable.dimensions[i])
+                        {
                             compiler.displayError("Index out of bounds");
                         }
                     }
-                    else {
+                    else
+                    {
                         isConstantSubscript = false;
                     }
                     indices[i] = e;
@@ -678,11 +767,12 @@ class VariableAccess : AccessorInterface
     /** Creates runtime code to calculate offset */
     private string getArrayOffsetCode()
     {
-        if(!hasSubscript()) {
+        if (!hasSubscript())
+        {
             assert(0, "getArrayOffsetCode was called with no array subscript");
         }
         string asmCode = "";
-        
+
         int varLen = variable.getSingleLength();
         fastArrayAccess = variable.getLength() <= 256;
         string indexTypeName = fastArrayAccess ? Type.UINT8 : Type.UINT16;
@@ -691,16 +781,20 @@ class VariableAccess : AccessorInterface
 
         bool hasThird = false;
         // third dimension
-        if(ptSubscript.children.length > 2) {
+        if (ptSubscript.children.length > 2)
+        {
             hasThird = true;
-            if(constSubscript[2] > 0) {
-                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]
-                            * constSubscript[2]) ~ "\n";
+            if (constSubscript[2] > 0)
+            {
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(
+                        variable.dimensions[0] * variable.dimensions[1] * constSubscript[2]) ~ "\n";
             }
-            else {
+            else
+            {
                 indices[2].setExpectedType(indexType);
                 indices[2].eval();
-                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * variable.dimensions[1]) ~ "\n";
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(
+                        variable.dimensions[0] * variable.dimensions[1]) ~ "\n";
                 asmCode ~= to!string(indices[2]);
                 asmCode ~= "    mul" ~ indexTypeName ~ "\n";
             }
@@ -708,12 +802,16 @@ class VariableAccess : AccessorInterface
 
         bool hasSecond = false;
         // second dimension
-        if(ptSubscript.children.length > 1) {
+        if (ptSubscript.children.length > 1)
+        {
             hasSecond = true;
-            if(constSubscript[1] > 0) {
-                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0] * constSubscript[1]) ~ "\n";
+            if (constSubscript[1] > 0)
+            {
+                asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(
+                        variable.dimensions[0] * constSubscript[1]) ~ "\n";
             }
-            else {
+            else
+            {
                 indices[1].setExpectedType(indexType);
                 indices[1].eval();
                 asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(variable.dimensions[0]) ~ "\n";
@@ -722,98 +820,119 @@ class VariableAccess : AccessorInterface
             }
         }
 
-        if(hasThird && hasSecond) {
+        if (hasThird && hasSecond)
+        {
             asmCode ~= "    add" ~ indexTypeName ~ "\n";
         }
 
         // first dimension
-        if(constSubscript[0] > 0) {
+        if (constSubscript[0] > 0)
+        {
             asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(constSubscript[0]) ~ "\n";
         }
-        else {
+        else
+        {
             indices[0].setExpectedType(indexType);
             indices[0].eval();
             asmCode ~= to!string(indices[0]);
         }
 
-        if(hasSecond) {
+        if (hasSecond)
+        {
             asmCode ~= "    add" ~ indexTypeName ~ "\n";
         }
 
         // optimize if variable length is power of two
-        if(ceil(log2(to!float(varLen))) == floor(log2(to!float(varLen)))) {
-            if(varLen > 1) { // No need to do anything if it's 1
-                asmCode ~= "    lshift" ~ indexTypeName ~ "wconst "  ~ to!string(log2(to!float(varLen))) ~ "\n";
+        if (ceil(log2(to!float(varLen))) == floor(log2(to!float(varLen))))
+        {
+            if (varLen > 1)
+            { // No need to do anything if it's 1
+                asmCode ~= "    lshift" ~ indexTypeName ~ "wconst " ~ to!string(
+                        log2(to!float(varLen))) ~ "\n";
             }
         }
-        else {
+        else
+        {
             asmCode ~= "    p" ~ indexTypeName ~ " " ~ to!string(varLen) ~ "\n";
             asmCode ~= "    mul" ~ indexTypeName ~ "\n";
         }
-        
+
         return asmCode;
     }
 
     // direction: "p" means push, "pl" means pull
     private string getCode(string direction)
     {
-        string asmCode;        
+        string asmCode;
         ushort offset = this.getFieldOffset();
 
-        if(hasSubscript()) {
+        if (hasSubscript())
+        {
             parseSubscript();
-            if(isConstantSubscript) {
+            if (isConstantSubscript)
+            {
                 offset += getAddressOffset();
             }
-            else {
+            else
+            {
                 asmCode ~= getArrayOffsetCode();
             }
         }
-        
-        const bool isArray = variable.isArray && !isConstantSubscript;   
+
+        const bool isArray = variable.isArray && !isConstantSubscript;
         const string typeName = this.getType().isPrimitive ? this.getType().name : "udt";
-      
-        if(cast(ThisVariable)variable) {
+
+        if (cast(ThisVariable) variable)
+        {
             asmCode ~= "    " ~ direction ~ "relative" ~ typeName ~ "var " ~ to!string(offset);
         }
-        else {
-            asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName 
-                            ~ (isArray ? ("array" ~ (fastArrayAccess ? "fast" : "" )) : "var");
-        
-            if(offset > 0) {
+        else
+        {
+            asmCode ~= "    " ~ direction ~ (variable.isDynamic ? "dyn" : "") ~ typeName ~ (isArray
+                    ? ("array" ~ (fastArrayAccess ? "fast" : "")) : "var");
+
+            if (offset > 0)
+            {
                 asmCode ~= " [" ~ variable.getAsmLabel() ~ " + " ~ to!string(offset) ~ "]";
             }
-            else {
+            else
+            {
                 asmCode ~= " " ~ variable.getAsmLabel();
             }
         }
-        if(!this.getType().isPrimitive) {
+        if (!this.getType().isPrimitive)
+        {
             asmCode ~= ", " ~ to!string(this.getType().length);
         }
-        else if(direction == "pl" && this.getType().name == Type.STRING) {
+        else if (direction == "pl" && this.getType().name == Type.STRING)
+        {
             asmCode ~= ", " ~ to!string(this.variable.getSingleLength() - 1);
         }
 
-        return asmCode ~ "\n";   
+        return asmCode ~ "\n";
     }
-
 
     /** The final type of the expression */
     public Type getType()
     {
-        if(this.type is null) {
+        if (this.type is null)
+        {
             const int ix = findChild(node, "XCBASIC.Varname", 1);
-            if(ix != -1) {
+            if (ix != -1)
+            {
                 string dotNotation = "";
-                for(int i = ix; i < node.children.length; i++) {
+                for (int i = ix; i < node.children.length; i++)
+                {
                     dotNotation ~= node.children[i].matches.join("");
-                    if(i + 1 < node.children.length) {
+                    if (i + 1 < node.children.length)
+                    {
                         dotNotation ~= ".";
                     }
                 }
                 this.type = variable.type.getMemberType(dotNotation);
             }
-            else {
+            else
+            {
                 this.type = variable.type;
             }
         }

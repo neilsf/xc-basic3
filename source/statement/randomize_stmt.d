@@ -2,8 +2,7 @@ module statement.randomize_stmt;
 
 import pegged.grammar;
 
-import  language.statement, language.expression,
-        compiler.compiler, compiler.type;
+import language.statement, language.expression, compiler.compiler, compiler.type;
 
 class Randomize_stmt : Statement
 {

@@ -14,9 +14,9 @@ class If_stmt : Statement
 
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -26,18 +26,21 @@ class If_stmt : Statement
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
         appendCode(to!string(condition));
-        appendCode("    cond_stmt _EI_" ~ to!string(counter)
-                ~ (hasElse ? ", _EL_" ~ to!string(counter) : ", 0") ~ "\n");
+        appendCode("    cond_stmt _EI_" ~ to!string(counter) ~ (hasElse
+                ? ", _EL_" ~ to!string(counter) : ", 0") ~ "\n");
         ParseTree thenBody = ifStatement.children[1];
-        foreach (ref child; thenBody) {
+        foreach (ref child; thenBody)
+        {
             Statement stmt = stmtFactory(child, compiler);
             stmt.process();
         }
-        if(hasElse) {
+        if (hasElse)
+        {
             ParseTree elseBody = ifStatement.children[2];
-            appendCode("    jmp _EI_" ~ to!string(counter)  ~ "\n");
+            appendCode("    jmp _EI_" ~ to!string(counter) ~ "\n");
             appendCode("_EL_" ~ to!string(counter) ~ ":\n");
-            foreach (ref child; elseBody) {
+            foreach (ref child; elseBody)
+            {
                 Statement stmt = stmtFactory(child, compiler);
                 stmt.process();
             }
@@ -52,9 +55,9 @@ class If_sa_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     public void process()
@@ -65,7 +68,8 @@ class If_sa_stmt : Statement
         Expression condition = new Expression(ifStatement.children[0], compiler);
         condition.eval();
         appendCode(to!string(condition));
-        appendCode("    cond_stmt _EI_" ~ to!string(block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");        
+        appendCode("    cond_stmt _EI_" ~ to!string(
+                block.getId()) ~ ", _EL_" ~ to!string(block.getId()) ~ "\n");
     }
 }
 
@@ -74,23 +78,26 @@ class Else_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
     {
         string label;
-        try {
+        try
+        {
             CodeBlock block = compiler.blockStack.top();
-             if(block.getType() != CodeBlock.TYPE_IF) {
+            if (block.getType() != CodeBlock.TYPE_IF)
+            {
                 compiler.displayError("Unclosed " ~ block.getTypeString() ~ " block before ELSE");
             }
             block.hasElse = true;
             label = to!string(block.getId());
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             compiler.displayError("ELSE without IF");
         }
         appendCode("    jmp _EI_" ~ label ~ "\n");
@@ -103,27 +110,30 @@ class Endif_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
     {
-        try {
+        try
+        {
             CodeBlock block = compiler.blockStack.pull();
-            if(block.getType() != CodeBlock.TYPE_IF) {
+            if (block.getType() != CodeBlock.TYPE_IF)
+            {
                 compiler.displayError("Unclosed " ~ block.getTypeString() ~ " block before END IF");
             }
 
-            if(!block.hasElse) {
-                appendCode("_EL_" ~ to!string(block.getId()) ~ ":\n");        
+            if (!block.hasElse)
+            {
+                appendCode("_EL_" ~ to!string(block.getId()) ~ ":\n");
             }
-            appendCode("_EI_" ~ to!string(block.getId()) ~ ":\n");    
+            appendCode("_EI_" ~ to!string(block.getId()) ~ ":\n");
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             compiler.displayError("END IF without IF");
         }
     }
 }
-

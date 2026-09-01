@@ -12,9 +12,9 @@ class Swap_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -27,11 +27,14 @@ class Swap_stmt : Statement
         VariableAccess access2 = new VariableAccess(varNode2, compiler, true);
         Variable var2 = access2.getVariable();
 
-        if(var1.isConst || var2.isConst) {
+        if (var1.isConst || var2.isConst)
+        {
             compiler.displayError("Can't use constants in a SWAP statement");
         }
-        if(var1.type != var2.type) {
-            compiler.displayError("Type mismatch (" ~ var1.type.name ~ " and " ~ var2.type.name ~ ")");
+        if (var1.type != var2.type)
+        {
+            compiler.displayError("Type mismatch (" ~ var1.type.name ~ " and " ~ var2.type.name
+                    ~ ")");
         }
 
         // Push var1

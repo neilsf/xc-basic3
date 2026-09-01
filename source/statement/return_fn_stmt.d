@@ -12,20 +12,22 @@ class Return_fn_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Process the AST of the statement */
     void process()
     {
-        if(!compiler.inProcedure) {
+        if (!compiler.inProcedure)
+        {
             compiler.displayError("Not in function");
         }
 
         Type functionType = compiler.currentProc.type;
 
-        if(functionType.name == Type.VOID) {
+        if (functionType.name == Type.VOID)
+        {
             compiler.displayError("A SUB cannot return anything");
         }
 
@@ -35,7 +37,7 @@ class Return_fn_stmt : Statement
         Expression expr = new Expression(node.children[0].children[0], compiler);
         expr.setExpectedType(functionType);
         expr.eval();
-        
+
         this.appendCode(to!string(expr));
         this.appendCode(access.getPullCode());
         this.appendCode("    rts\n");

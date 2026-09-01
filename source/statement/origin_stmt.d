@@ -11,35 +11,41 @@ class Origin_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
     {
         ushort address;
         const ParseTree addrNode = this.node.children[0].children[0];
-        if(addrNode.name == "XCBASIC.Number") {
+        if (addrNode.name == "XCBASIC.Number")
+        {
             Number num = new Number(addrNode, this.compiler);
             address = to!ushort(num.intVal);
-        } else {
+        }
+        else
+        {
             Variable var = compiler.getVars().findVisible(addrNode.matches.join);
-            if(var !is null) {
-                if(!var.isConst) {
+            if (var !is null)
+            {
+                if (!var.isConst)
+                {
                     compiler.displayError("ORIGIN must be constant");
                 }
                 // a constant
                 address = to!ushort(var.constVal);
             }
-            else {
+            else
+            {
                 compiler.displayError("Unknown constant \"" ~ addrNode.matches.join ~ "\"");
             }
         }
-        if(address < 0 || address > 0xFFFF) {
+        if (address < 0 || address > 0xFFFF)
+        {
             this.compiler.displayError("Address out of range");
         }
-        appendCode("    org "
-            ~ to!string(address) ~ "\n");
+        appendCode("    org " ~ to!string(address) ~ "\n");
     }
 }

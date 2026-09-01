@@ -9,9 +9,9 @@ class Load_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -23,10 +23,12 @@ class Load_stmt : Statement
         expectedTypes[1] = compiler.getTypes().get(Type.UINT8);
         expectedTypes[2] = compiler.getTypes().get(Type.UINT16);
         const ulong argsCount = argList.children.length;
-        if(argsCount < 2 || argsCount > 3) {
+        if (argsCount < 2 || argsCount > 3)
+        {
             compiler.displayError("Wrong number of arguments (expected 2 or 3)");
         }
-        for(int i = 0; i < argsCount; i++) {
+        for (int i = 0; i < argsCount; i++)
+        {
             e[i] = new Expression(argList.children[i], compiler);
             e[i].setExpectedType(expectedTypes[i]);
             e[i].eval();
@@ -40,7 +42,8 @@ class Load_stmt : Statement
         appendCode(argsCount > 2 ? "    pbyte 0\n" : "    pbyte 1\n"); // secondary address, 0=specified, 1=unspecified
         appendCode("    setlfs\n");
         // Address
-        if(argsCount > 2) {
+        if (argsCount > 2)
+        {
             appendCode(e[2].toString());
         }
         // Load

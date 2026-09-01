@@ -9,9 +9,9 @@ class Save_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -24,10 +24,12 @@ class Save_stmt : Statement
         expectedTypes[2] = compiler.getTypes().get(Type.UINT16);
         expectedTypes[3] = compiler.getTypes().get(Type.UINT16);
         const ulong argsCount = argList.children.length;
-        if(argsCount != 4) {
+        if (argsCount != 4)
+        {
             compiler.displayError("Wrong number of arguments (expected 4)");
         }
-        for(int i = 0; i < argsCount; i++) {
+        for (int i = 0; i < argsCount; i++)
+        {
             e[i] = new Expression(argList.children[i], compiler);
             e[i].setExpectedType(expectedTypes[i]);
             e[i].eval();

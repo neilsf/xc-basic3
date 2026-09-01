@@ -11,9 +11,9 @@ class Input_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -21,7 +21,8 @@ class Input_stmt : Statement
         ParseTree args = this.node.children[0];
         bool hashStatement;
         int varIndex;
-        if(args.children[0].name == "XCBASIC.Expression") {
+        if (args.children[0].name == "XCBASIC.Expression")
+        {
             // INPUT# statement - input from file
             hashStatement = true;
             varIndex = 1;
@@ -32,57 +33,74 @@ class Input_stmt : Statement
             appendCode("    plbytevar R9\n");
             appendCode("    chkin R9\n");
         }
-        else {
+        else
+        {
             hashStatement = false;
             // INPUT statement - input from keyboard
-            if(args.children[0].name == "XCBASIC.String") {
+            if (args.children[0].name == "XCBASIC.String")
+            {
                 // Prompt provided
                 varIndex = 1;
-                StringLiteral str = new StringLiteral(args.children[0].matches[1 .. $-1].join(), compiler);
+                StringLiteral str = new StringLiteral(args.children[0].matches[1 .. $ - 1].join(),
+                        compiler);
                 str.register();
                 appendCode("    pword _S" ~ to!string(StringLiteral.id) ~ "\n");
                 appendCode("    printstaticstring\n");
             }
-            else {
+            else
+            {
                 // No prompt
                 varIndex = 0;
             }
         }
-        if(args.children.length < varIndex) {
+        if (args.children.length < varIndex)
+        {
             compiler.displayError("Syntax error");
         }
         ParseTree accessorList = args.children[varIndex];
-        if(!hashStatement && accessorList.children.length > 1) {
+        if (!hashStatement && accessorList.children.length > 1)
+        {
             compiler.displayError("INPUT currently only supports one variable");
         }
-        foreach (accessor; accessorList.children) {
-            try {
+        foreach (accessor; accessorList.children)
+        {
+            try
+            {
                 VariableAccess access = new VariableAccess(accessor, compiler);
-                if(access.isConstant()) {
+                if (access.isConstant())
+                {
                     compiler.displayError("Can't use a constant in an INPUT statement");
                 }
-                if(access.isFunctionCall()) {
+                if (access.isFunctionCall())
+                {
                     compiler.displayError("Not a variable");
                 }
-                if(access.getType().name != Type.STRING) {
-                    compiler.displayError("Only strings are allowed in INPUT statement, got " ~ access.getType().name);
+                if (access.getType().name != Type.STRING)
+                {
+                    compiler.displayError("Only strings are allowed in INPUT statement, got " ~ access.getType()
+                            .name);
                 }
-                if(hashStatement) {
+                if (hashStatement)
+                {
                     appendCode("    input_hash\n");
                 }
-                else {
+                else
+                {
                     appendCode("    input\n");
-                    if(args.matches[$-1] != ";") {
+                    if (args.matches[$ - 1] != ";")
+                    {
                         appendCode("    printnl\n");
                     }
                 }
                 appendCode(access.getPullCode());
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 compiler.displayError(e.msg);
-            }    
+            }
         }
-        if(hashStatement) {
+        if (hashStatement)
+        {
             appendCode("    clrchn\n");
         }
     }

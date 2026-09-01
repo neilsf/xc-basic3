@@ -9,14 +9,15 @@ class Exitfun_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Process the AST of the statement */
     void process()
     {
-        if(!compiler.inProcedure) {
+        if (!compiler.inProcedure)
+        {
             compiler.displayError("Not in function");
         }
 

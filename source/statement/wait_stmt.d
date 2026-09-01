@@ -5,13 +5,13 @@ import pegged.grammar;
 import language.statement, language.expression;
 import compiler.compiler, compiler.type;
 
-class Wait_stmt: Statement
+class Wait_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     void process()
     {
@@ -19,18 +19,20 @@ class Wait_stmt: Statement
         Expression address = new Expression(args[0], compiler);
         address.setExpectedType(compiler.getTypes().get(Type.UINT16));
         address.eval();
-        
+
         Expression mask = new Expression(args[1], compiler);
         mask.setExpectedType(compiler.getTypes().get(Type.UINT8));
         mask.eval();
 
-        if(args.length > 2) {
+        if (args.length > 2)
+        {
             Expression trig = new Expression(args[2], compiler);
             trig.setExpectedType(compiler.getTypes().get(Type.UINT8));
             trig.eval();
             appendCode(to!string(trig));
         }
-        else {
+        else
+        {
             appendCode("    pfalse\n");
         }
 

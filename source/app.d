@@ -6,8 +6,8 @@
  * Author: Csaba Fekete <feketecsaba@gmail.com>
  */
 
-import std.stdio, std.string, std.getopt, std.file, std.path,
-        std.conv, std.random, std.process, std.algorithm;
+import std.stdio, std.string, std.getopt, std.file, std.path, std.conv,
+    std.random, std.process, std.algorithm;
 import core.stdc.stdlib;
 
 import pegged.grammar;
@@ -22,32 +22,34 @@ const string APP_VERSION = "v3.2.0";
 
 /** Possible target options */
 const string[] targetOpts = [
-    "c64",      // Commodore-64
-    "vic20",    // Commodore VIC-20 (unexpanded)
+    "c64", // Commodore-64
+    "vic20", // Commodore VIC-20 (unexpanded)
     "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
-    "cplus4",   // Commodore Plus/4
-    "c16",      // Commodore-16,
-    "c128",     // Commodore-128
-    "pet2001",  // Commodore PET2001
-    "pet3008",  // Commodore PET3000 series (8k RAM)
-    "pet3016",  // Commodore PET3000 series (16k RAM)
-    "pet3032",  // Commodore PET3000 series (32k RAM)
-    "pet4016",  // Commodore PET4000 series (16k RAM)
-    "pet4032",  // Commodore PET4000 series (32k RAM)
-    "pet8032",  // Commodore PET8000 series
-    "x16",      // Commander X16
-    "mega65"    // MEGA65
+    "cplus4", // Commodore Plus/4
+    "c16", // Commodore-16,
+    "c128", // Commodore-128
+    "pet2001", // Commodore PET2001
+    "pet3008", // Commodore PET3000 series (8k RAM)
+    "pet3016", // Commodore PET3000 series (16k RAM)
+    "pet3032", // Commodore PET3000 series (32k RAM)
+    "pet4016", // Commodore PET4000 series (16k RAM)
+    "pet4032", // Commodore PET4000 series (32k RAM)
+    "pet8032", // Commodore PET8000 series
+    "x16", // Commander X16
+    "mega65" // MEGA65
 ];
 
 // Command line options
 private bool optimize = true;
 private bool keepImCode = false;
-version(Windows) {
-	private string dasm = "dasm.exe";
+version (Windows)
+{
+    private string dasm = "dasm.exe";
 }
-else {
-	private string dasm = "dasm";
+else
+{
+    private string dasm = "dasm";
 }
 private string symbolfile = "";
 private string listfile = "";
@@ -59,46 +61,45 @@ private GetoptResult helpInformation;
  * Application entry point
  */
 void main(string[] args)
-{ 
+{
     checkLibrary();
-    
+
     // Read and validate command line options
-    try {
-        helpInformation = getopt(args,
-            "target|t", &target,
-            "basic-loader|b", &basicLoader,
-            "start-address|o", &startAddress,
-            "max-address|m", &topAddress,
-            "dasm|d", &dasm,
-            "symbol|s", &symbolfile,
-            "list|l", &listfile,
-            "optimize|p", &optimize,
-            "keep-imcode|k", &keepImCode,
-            "verbosity|v", &verbosity,
-            "inline-data|i", &inlineData
-        );
+    try
+    {
+        helpInformation = getopt(args, "target|t", &target, "basic-loader|b",
+                &basicLoader, "start-address|o", &startAddress,
+                "max-address|m", &topAddress, "dasm|d", &dasm, "symbol|s",
+                &symbolfile, "list|l", &listfile, "optimize|p",
+                &optimize, "keep-imcode|k", &keepImCode, "verbosity|v",
+                &verbosity, "inline-data|i", &inlineData);
     }
-	catch(Exception e) {
+    catch (Exception e)
+    {
         stderr.writeln(e.msg);
         exit(1);
     }
 
-    if(helpInformation.helpWanted) {
+    if (helpInformation.helpWanted)
+    {
         displayHelp(0);
     }
 
-	validateOptions(args);
+    validateOptions(args);
     setStartAddress();
     setEndAddress();
-    
+
     const string fileName = args[1];
     string outName;
-    if(args.length >= 3) {
+    if (args.length >= 3)
+    {
         outName = args[2];
     }
-    else {
+    else
+    {
         outName = to!string(fileName.withExtension("prg"));
-        if(verbosity >= VERBOSITY_NOTICE) {
+        if (verbosity >= VERBOSITY_NOTICE)
+        {
             stdout.writeln("** NOTICE ** Output file not specified, defaulting to " ~ outName);
         }
     }
@@ -109,8 +110,10 @@ void main(string[] args)
     SourceFile source = SourceFile.get(stdHeadersName);
     compiler.compileSourceFile(source);
     // Compile any machine specific headers
-    const string targetHeadersName = getLibraryDir() ~ "/headers_" ~ getTargetFamily(target) ~ ".bas";
-    if (exists(targetHeadersName)) {
+    const string targetHeadersName = getLibraryDir() ~ "/headers_" ~ getTargetFamily(target)
+        ~ ".bas";
+    if (exists(targetHeadersName))
+    {
         source = SourceFile.get(targetHeadersName);
         compiler.compileSourceFile(source);
     }
@@ -122,15 +125,17 @@ void main(string[] args)
     compiler.compileSourceFile(source);
     compiler.doPostChecks();
     chdir(currentDir);
-        
-     // Write intermediate code to temp file
+
+    // Write intermediate code to temp file
     auto rnd = Random(unpredictableSeed);
     auto u = uniform!uint(rnd);
 
-    version(Windows) {
+    version (Windows)
+    {
         const string tmpdir = tempDir();
     }
-    else {
+    else
+    {
         const string tmpdir = tempDir() ~ dirSeparator;
     }
 
@@ -138,59 +143,75 @@ void main(string[] args)
     string tmpSymbolfile = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".sym";
 
     File outfile = File(asmFilename, "w");
-    if(optimize) {
+    if (optimize)
+    {
         OptimizerPass optimizer = new Optimizer();
         optimizer.setInCode(compiler.getImCode().getCode());
         optimizer.run();
         outfile.write(optimizer.getOutCode());
-    } else {
+    }
+    else
+    {
         outfile.write(compiler.getImCode().getCode());
     }
-    
+
     outfile.close();
 
     // Call DASM to compile intermediate code to exacutable
-    version(Windows) {
+    version (Windows)
+    {
         dasm = `"` ~ dasm ~ `"`;
         asmFilename = `"` ~ asmFilename ~ `"`;
         outName = `"` ~ outName ~ `"`;
-        if(listfile != "") {
+        if (listfile != "")
+        {
             listfile = `"` ~ listfile ~ `"`;
         }
     }
 
     string cmd = dasm ~ " " ~ asmFilename ~ " -o" ~ outName ~ " -s" ~ tmpSymbolfile;
 
-    if(listfile != "") {
+    if (listfile != "")
+    {
         cmd ~= " -l" ~ listfile;
     }
     auto dasm_cmd = executeShell(cmd);
-    
-    if(!keepImCode) {
-        try {
+
+    if (!keepImCode)
+    {
+        try
+        {
             remove(asmFilename);
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             // There has been an error while removing the file
             // it's okay, since it's in a temp dir, it'll be removed anyway
         }
-        
-    } else {
+
+    }
+    else
+    {
         stdout.writeln("File containing intermediate code kept in " ~ asmFilename);
     }
-    
-    if(dasm_cmd.status != 0) {
-        stderr.writeln("** ERROR ** There has been an error while trying to execute DASM, please see the bellow message.");
+
+    if (dasm_cmd.status != 0)
+    {
+        stderr.writeln(
+                "** ERROR ** There has been an error while trying to execute DASM, please see the bellow message.");
         stderr.writeln("Tried to execute: " ~ cmd);
         stderr.writeln(dasm_cmd.output);
         stderr.writeln("Please submit this bug to https://github.com/neilsf/xc-basic3/issues");
         exit(1);
     }
-    else {
-        if(verbosity == VERBOSITY_INFO) {
+    else
+    {
+        if (verbosity == VERBOSITY_INFO)
+        {
             displayInformation(tmpSymbolfile);
         }
-        if(symbolfile != "") {
+        if (symbolfile != "")
+        {
             copy(tmpSymbolfile, symbolfile);
         }
         remove(tmpSymbolfile);
@@ -203,17 +224,22 @@ void main(string[] args)
  */
 private void validateOptions(string[] args)
 {
-    if(args.length < 2) {
+    if (args.length < 2)
+    {
         stderr.writeln("Too few command line options. Use --help for more information.");
         exit(1);
     }
 
-    if(!canFind(targetOpts, target)) {
-        stderr.writeln("'" ~ target ~"' is not a valid target. Possible values are: " ~ targetOpts.join(", "));
+    if (!canFind(targetOpts, target))
+    {
+        stderr.writeln(
+                "'" ~ target ~ "' is not a valid target. Possible values are: " ~ targetOpts.join(
+                ", "));
         exit(1);
     }
 
-    if(topAddress < -1 || topAddress > 0xffff) {
+    if (topAddress < -1 || topAddress > 0xffff)
+    {
         stderr.writeln("Invalid max address: " ~ to!string(topAddress));
         exit(1);
     }
@@ -224,52 +250,56 @@ private void validateOptions(string[] args)
  */
 public void setStartAddress()
 {
-    if(basicLoader) {
-        switch(target) {
-            case "vic20_3k":
-                startAddress = 0x0401;
-                break;
-            
-            case "c64":
-            case "x16":
-                startAddress = 0x0801;
-                break;
+    if (basicLoader)
+    {
+        switch (target)
+        {
+        case "vic20_3k":
+            startAddress = 0x0401;
+            break;
 
-            case "c128":
-                startAddress = 0x1c01;
-                break;
+        case "c64":
+        case "x16":
+            startAddress = 0x0801;
+            break;
 
-            case "vic20":
-            case "cplus4":
-            case "c16":
-                startAddress = 0x1001;
-                break;
+        case "c128":
+            startAddress = 0x1c01;
+            break;
 
-            case "pet2001":
-            case "pet3008":
-            case "pet3016":
-            case "pet3032":
-            case "pet4016":
-            case "pet4032":
-            case "pet8032":
-                startAddress = 0x0401;
-                break;
+        case "vic20":
+        case "cplus4":
+        case "c16":
+            startAddress = 0x1001;
+            break;
 
-            case "mega65":
-                startAddress = 0x2001;
-                break;
+        case "pet2001":
+        case "pet3008":
+        case "pet3016":
+        case "pet3032":
+        case "pet4016":
+        case "pet4032":
+        case "pet8032":
+            startAddress = 0x0401;
+            break;
 
-            case "vic20_8k":
-            default:
-                startAddress = 0x1201;
-                break;
+        case "mega65":
+            startAddress = 0x2001;
+            break;
+
+        case "vic20_8k":
+        default:
+            startAddress = 0x1201;
+            break;
         }
     }
-    else if(startAddress == -1) {
+    else if (startAddress == -1)
+    {
         startAddress = 0x1000;
     }
 
-     if(startAddress < 0 || startAddress > 0xffff) {
+    if (startAddress < 0 || startAddress > 0xffff)
+    {
         stderr.writeln("Invalid start address: " ~ to!string(startAddress));
         exit(1);
     }
@@ -280,51 +310,54 @@ public void setStartAddress()
  */
 private void setEndAddress()
 {
-    if(topAddress == -1) {
-         switch(target) {
-            case "vic20_3k":
-            case "vic20":
-                topAddress = 0x1e00;
-                break;
-            
-            case "c64":
-                topAddress = 0xd000;
-                break;
+    if (topAddress == -1)
+    {
+        switch (target)
+        {
+        case "vic20_3k":
+        case "vic20":
+            topAddress = 0x1e00;
+            break;
 
-            case "c128":
-            case "mega65":
-                topAddress = 0xc000;
-                break;
+        case "c64":
+            topAddress = 0xd000;
+            break;
 
-            case "cplus4":
-            case "pet3032":
-            case "pet4032":
-            case "pet8032":
-                topAddress = 0x8000;
-                break;
+        case "c128":
+        case "mega65":
+            topAddress = 0xc000;
+            break;
 
-            case "pet2001":
-            case "pet3008":
-                topAddress = 0x2000;
-                break;
+        case "cplus4":
+        case "pet3032":
+        case "pet4032":
+        case "pet8032":
+            topAddress = 0x8000;
+            break;
 
-            case "vic20_8k":
-            case "c16":
-            case "pet3016":
-            case "pet4016":
-                topAddress = 0x4000;
-                break;
+        case "pet2001":
+        case "pet3008":
+            topAddress = 0x2000;
+            break;
 
-            case "x16":
-                topAddress = 0x9EFF;
-                break;
-                
-            default:
-                topAddress = 0x10000;
+        case "vic20_8k":
+        case "c16":
+        case "pet3016":
+        case "pet4016":
+            topAddress = 0x4000;
+            break;
+
+        case "x16":
+            topAddress = 0x9EFF;
+            break;
+
+        default:
+            topAddress = 0x10000;
         }
     }
-    
-    if(topAddress < 0 || topAddress > 0xffff) {
+
+    if (topAddress < 0 || topAddress > 0xffff)
+    {
         stderr.writeln("Invalid max address: " ~ to!string(topAddress));
         exit(1);
     }
@@ -335,10 +368,9 @@ private void setEndAddress()
  */
 private void displayHelp(int exitCode, string errorMsg = "")
 {
-    stdout.writeln(errorMsg ~
-`
+    stdout.writeln(errorMsg ~ `
 XC=BASIC compiler version ` ~ APP_VERSION ~ " (" ~ __DATE__ ~ ")" ~ `
-Copyright (c) 2019-` ~ __DATE__[7..11] ~ ` by Csaba Fekete (see LICENSE)
+Copyright (c) 2019-` ~ __DATE__[7 .. 11] ~ ` by Csaba Fekete (see LICENSE)
 Usage: xcbasic3 [options] <inputfile> <outputfile> [options]
 Options:
    -t
@@ -380,8 +412,7 @@ Options:
    -i
   --inline-data=    If set to true, DATA statements are compiled at the current origin.
                     Otherwise, they get compiled after code. Defaults to false.
-`
-    );
+`);
     exit(exitCode);
 }
 
@@ -389,9 +420,11 @@ Options:
  * Check if XC=BASIC library exists, display error message if it doesn't
  */
 private void checkLibrary()
-{   
-    if(!exists(getLibraryPath())) {
-        stderr.writeln("XC=BASIC library was not found in \"" ~ getLibraryDir() ~ "\". Please make sure the directory exists and contains the library files.");
+{
+    if (!exists(getLibraryPath()))
+    {
+        stderr.writeln("XC=BASIC library was not found in \"" ~ getLibraryDir()
+                ~ "\". Please make sure the directory exists and contains the library files.");
         exit(1);
     }
 }
@@ -402,11 +435,16 @@ private void checkLibrary()
  */
 private int[string] getSymbols(string tmpSymbolfile)
 {
-    const string[] symbolNames = ["prg_start", "library_start", "data_start", "vars_start", "vars_end", "STACKFRAME_TOP"];
+    const string[] symbolNames = [
+        "prg_start", "library_start", "data_start", "vars_start", "vars_end",
+        "STACKFRAME_TOP"
+    ];
     int[string] symbols;
     auto lines = slurp!(string, string, string)(tmpSymbolfile, "%s %s %s");
-    foreach (key, value; lines) {
-        if(canFind(symbolNames, value[0])) {
+    foreach (key, value; lines)
+    {
+        if (canFind(symbolNames, value[0]))
+        {
             symbols[value[0]] = to!int(value[1], 16);
         }
     }
@@ -419,41 +457,54 @@ private int[string] getSymbols(string tmpSymbolfile)
 private void displayInformation(string tmpSymbolfile)
 {
     bool hasVars = false;
-    string asHex(int number) {
+    string asHex(int number)
+    {
         return to!string(rightJustifier(to!string(number, 16), 4, '0'));
-    }    
+    }
 
     int[string] symbols = getSymbols(tmpSymbolfile);
-    
-    const string separator = "+---------------+-------+-------+"; 
+
+    const string separator = "+---------------+-------+-------+";
     stdout.writeln("Complete. (0)");
     stdout.writeln(separator ~ "\n|    Segment    | Start |  End  |\n" ~ separator);
-    if(basicLoader) {
-        stdout.writeln("|BASIC Loader   | $" ~ asHex(startAddress) ~ " | $" ~ asHex(symbols["prg_start"] - 1) ~ " |");
+    if (basicLoader)
+    {
+        stdout.writeln("|BASIC Loader   | $" ~ asHex(
+                startAddress) ~ " | $" ~ asHex(symbols["prg_start"] - 1) ~ " |");
     }
-    stdout.writeln("|Program code   | $" ~ asHex(symbols["prg_start"]) ~ " | $" ~ asHex(symbols["library_start"] - 1) ~ " |");
-    if(symbols["data_start"] > symbols["library_start"]) {
-        stdout.writeln("|Runtime lib.   | $" ~ asHex(symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
+    stdout.writeln("|Program code   | $" ~ asHex(
+            symbols["prg_start"]) ~ " | $" ~ asHex(symbols["library_start"] - 1) ~ " |");
+    if (symbols["data_start"] > symbols["library_start"])
+    {
+        stdout.writeln("|Runtime lib.   | $" ~ asHex(
+                symbols["library_start"]) ~ " | $" ~ asHex(symbols["data_start"] - 1) ~ " |");
     }
-    if(symbols["vars_start"] > symbols["data_start"]) {
-        stdout.writeln("|Data & Strings | $" ~ asHex(symbols["data_start"]) ~ " | $" ~ asHex(symbols["vars_start"] - 1) ~ " |");
+    if (symbols["vars_start"] > symbols["data_start"])
+    {
+        stdout.writeln("|Data & Strings | $" ~ asHex(
+                symbols["data_start"]) ~ " | $" ~ asHex(symbols["vars_start"] - 1) ~ " |");
     }
-    if(symbols["vars_end"] > symbols["vars_start"]) {
-        stdout.writeln("|Variables*     | $" ~ asHex(symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
+    if (symbols["vars_end"] > symbols["vars_start"])
+    {
+        stdout.writeln("|Variables*     | $" ~ asHex(
+                symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
         hasVars = true;
     }
     uint stack_top = symbols["STACKFRAME_TOP"] - 1;
-    uint str_workarea =  stack_top + 256;
+    uint str_workarea = stack_top + 256;
     stdout.writeln("|Function stack*| ????? | $" ~ asHex(stack_top) ~ " | ");
-    stdout.writeln("|String stack*  | $" ~ asHex(str_workarea - 255) ~ " | $" ~ asHex(str_workarea) ~ " | ");
+    stdout.writeln("|String stack*  | $" ~ asHex(
+            str_workarea - 255) ~ " | $" ~ asHex(str_workarea) ~ " | ");
     stdout.writeln(separator);
-    if(hasVars) {
+    if (hasVars)
+    {
         stdout.writeln("(*) Uninitialized segment.");
     }
-    if(symbols["vars_end"] >= topAddress) {
-        stdout.writeln(
-            "WARNING: The program has been successfully compiled, but it can't fit between $" 
-            ~ asHex(startAddress) ~ " and $" ~ asHex(topAddress) ~ ". Use the -m option to change the top address.");
+    if (symbols["vars_end"] >= topAddress)
+    {
+        stdout.writeln("WARNING: The program has been successfully compiled, but it can't fit between $" ~ asHex(
+                startAddress) ~ " and $" ~ asHex(
+                topAddress) ~ ". Use the -m option to change the top address.");
     }
 }
 
@@ -462,13 +513,20 @@ private void displayInformation(string tmpSymbolfile)
  */
 private string getTargetFamily(string target)
 {
-    if (target[0..3] == "pet") {
+    if (target[0 .. 3] == "pet")
+    {
         return "pet";
-    } else if (target[0..3] == "vic") {
+    }
+    else if (target[0 .. 3] == "vic")
+    {
         return "vic20";
-    } else if (target == "c16" || target == "cplus4") {
+    }
+    else if (target == "c16" || target == "cplus4")
+    {
         return "c264";
-    } else {
+    }
+    else
+    {
         return target;
     }
 }

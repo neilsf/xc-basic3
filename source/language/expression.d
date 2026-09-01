@@ -46,14 +46,17 @@ abstract class AbstractExpression : ExpressionInterface
     }
 
     abstract protected string getChildName();
-    
+
     abstract protected ExpressionInterface makeChild(ParseTree node);
 
     private bool hasSingleChild(ParseTree node)
     {
-        if(node.children.length == 0) {
+        if (node.children.length == 0)
+        {
             return true;
-        } else if(node.children.length > 1) {
+        }
+        else if (node.children.length > 1)
+        {
             return false;
         }
         return this.hasSingleChild(node.children[0]);
@@ -61,7 +64,8 @@ abstract class AbstractExpression : ExpressionInterface
 
     private ParseTree getSingleLeafNode(ParseTree node)
     {
-        if(node.children.length == 0) {
+        if (node.children.length == 0)
+        {
             return node;
         }
         return this.getSingleLeafNode(node.children[0]);
@@ -70,7 +74,8 @@ abstract class AbstractExpression : ExpressionInterface
     /** Whether the expression holds a single constant string */
     public bool isConstantString()
     {
-        if(this.type.name != Type.STRING || !this.hasSingleChild(this.node)) {
+        if (this.type.name != Type.STRING || !this.hasSingleChild(this.node))
+        {
             return false;
         }
         ParseTree leafNode = this.getSingleLeafNode(this.node);
@@ -80,8 +85,9 @@ abstract class AbstractExpression : ExpressionInterface
     public ulong getConstantStringLength()
     {
         ParseTree leaf = this.getSingleLeafNode(this.node);
-        immutable string str = join(leaf.matches[1..$-1]);
-        bool truncated; ulong finalLength;
+        immutable string str = join(leaf.matches[1 .. $ - 1]);
+        bool truncated;
+        ulong finalLength;
         asciiToPetsciiHex(str, 0UL, truncated, finalLength);
         return finalLength;
     }
@@ -89,7 +95,8 @@ abstract class AbstractExpression : ExpressionInterface
     /** Whether the expression holds a single numeric constant */
     public bool isConstant()
     {
-        if(this.node.children.length > 1) {
+        if (this.node.children.length > 1)
+        {
             return false;
         }
 
@@ -98,7 +105,8 @@ abstract class AbstractExpression : ExpressionInterface
 
     public float getConstVal()
     {
-        if(!this.isConstant()) {
+        if (!this.isConstant())
+        {
             compiler.displayError("Expression is not constant");
         }
         return this.makeChild(this.node.children[0]).getConstVal();
@@ -107,10 +115,13 @@ abstract class AbstractExpression : ExpressionInterface
     protected void detectType()
     {
         this.type = compiler.getTypes().get(Type.UINT8);
-        foreach (ref child; this.node.children) {
-            if(child.name == this.getChildName()) {
+        foreach (ref child; this.node.children)
+        {
+            if (child.name == this.getChildName())
+            {
                 Type fType = this.makeChild(child).getType();
-                if(!this.type.comparePrecedence(fType)) {
+                if (!this.type.comparePrecedence(fType))
+                {
                     this.type = fType;
                 }
             }
@@ -124,7 +135,8 @@ abstract class AbstractExpression : ExpressionInterface
 
     protected void reorderChildren()
     {
-        for(int i = 1; (i + 1) < this.node.children.length; i += 2) {
+        for (int i = 1; (i + 1) < this.node.children.length; i += 2)
+        {
             this.node.children.swapAt(i, i + 1);
         }
     }
@@ -164,16 +176,19 @@ class Expression : AbstractExpression
     public void eval()
     {
         this.asmCode = "";
-        
+
         int count = 0;
-        foreach (ref child; this.node.children) {
-            if(child.name == "XCBASIC.Relation") {
+        foreach (ref child; this.node.children)
+        {
+            if (child.name == "XCBASIC.Relation")
+            {
                 ExpressionInterface t = this.makeChild(child);
                 t.setExpectedType(this.type);
                 t.eval();
                 this.asmCode ~= to!string(t);
             }
-            else if(child.name == "XCBASIC.BW_OP") {
+            else if (child.name == "XCBASIC.BW_OP")
+            {
                 const string op = toLower(join(child.matches));
                 this.asmCode ~= "    " ~ op ~ to!string(this.type) ~ "\n";
             }
@@ -181,19 +196,26 @@ class Expression : AbstractExpression
         }
 
         // Check both types
-        if(!this.getType().isIntegral() && count > 1) {
+        if (!this.getType().isIntegral() && count > 1)
+        {
             compiler.displayError("Can't do bitwise operation on a(n) " ~ this.getType().name);
         }
 
         // Typecast if required
-        if(this.expectedType !is null) {
-            try {
-                if(this.expectedType.length < this.type.length) {
-                    compiler.displayWarning("Downcasting from " ~ this.type.name ~ " to " ~ this.expectedType.name ~ " truncates value");
+        if (this.expectedType !is null)
+        {
+            try
+            {
+                if (this.expectedType.length < this.type.length)
+                {
+                    compiler.displayWarning(
+                            "Downcasting from " ~ this.type.name ~ " to "
+                            ~ this.expectedType.name ~ " truncates value");
                 }
                 this.asmCode ~= this.type.getCastCode(this.expectedType);
             }
-            catch(Exception e) {
+            catch (Exception e)
+            {
                 compiler.displayError(e.msg);
             }
         }

@@ -11,9 +11,9 @@ class Memset_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -21,16 +21,16 @@ class Memset_stmt : Statement
         ParseTree argList = this.node.children[0].children[0];
         Expression[3] e;
         Type[3] expectedTypes;
-        expectedTypes[0] = compiler.getTypes().get(
-                target == "mega65" ? Type.INT24 : Type.UINT16
-            ); // address
+        expectedTypes[0] = compiler.getTypes().get(target == "mega65" ? Type.INT24 : Type.UINT16); // address
         expectedTypes[1] = compiler.getTypes().get(Type.UINT16); // length
-        expectedTypes[2] = compiler.getTypes().get(Type.UINT8);  // value
+        expectedTypes[2] = compiler.getTypes().get(Type.UINT8); // value
         const ulong argsCount = argList.children.length;
-        if(argsCount != 3) {
+        if (argsCount != 3)
+        {
             compiler.displayError("Wrong number of arguments (expected 3)");
         }
-        for(int i = 0; i < argsCount; i++) {
+        for (int i = 0; i < argsCount; i++)
+        {
             e[i] = new Expression(argList.children[i], compiler);
             e[i].setExpectedType(expectedTypes[i]);
             e[i].eval();

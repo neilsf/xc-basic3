@@ -30,43 +30,52 @@ class Term : AbstractExpression
     {
         this.asmCode = "";
         int count = 0;
-        foreach (ref child; this.node.children) {
-            if(child.name == this.getChildName()) {
+        foreach (ref child; this.node.children)
+        {
+            if (child.name == this.getChildName())
+            {
                 ExpressionInterface f = this.makeChild(child);
-                if(f.getType().name == Type.VOID) {
+                if (f.getType().name == Type.VOID)
+                {
                     compiler.displayError("Void function used in expression");
                 }
                 f.setExpectedType(this.type);
                 f.eval();
-                if(!f.getType().isNumeric() && this.node.children.length > 1) {
+                if (!f.getType().isNumeric() && this.node.children.length > 1)
+                {
                     typeError();
                 }
-                if(f.getType().name == Type.DEC && this.node.children.length > 1) {
-                    compiler.displayError("Multiplication or division of decimals is not supported");
+                if (f.getType().name == Type.DEC && this.node.children.length > 1)
+                {
+                    compiler.displayError(
+                            "Multiplication or division of decimals is not supported");
                 }
                 this.asmCode ~= to!string(f);
             }
-            else if(child.name == "XCBASIC.T_OP") {
+            else if (child.name == "XCBASIC.T_OP")
+            {
                 const string op = child.matches[0];
-                final switch(toLower(op)) {
-                    case "*":
-                        this.asmCode ~= "    mul" ~ to!string(this.type) ~ "\n";
+                final switch (toLower(op))
+                {
+                case "*":
+                    this.asmCode ~= "    mul" ~ to!string(this.type) ~ "\n";
                     break;
 
-                    case "/":
-                        this.asmCode ~= "    div" ~ to!string(this.type) ~ "\n";
+                case "/":
+                    this.asmCode ~= "    div" ~ to!string(this.type) ~ "\n";
                     break;
 
-                    case "mod":
-                        this.asmCode ~= "    mod" ~ to!string(this.type) ~ "\n";
+                case "mod":
+                    this.asmCode ~= "    mod" ~ to!string(this.type) ~ "\n";
                     break;
                 }
             }
             count++;
         }
 
-         // Typecast if required
-        if(this.expectedType !is null) {
+        // Typecast if required
+        if (this.expectedType !is null)
+        {
             this.asmCode ~= this.type.getCastCode(this.expectedType);
         }
     }

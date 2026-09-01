@@ -39,13 +39,20 @@ class CodeBlock
     /** Get type as string (for error messages) */
     public string getTypeString()
     {
-        switch(type) {
-            case TYPE_DO: return "DO";
-            case TYPE_FOR: return "FOR";
-            case TYPE_FUNCTION: return "FUNCTION";
-            case TYPE_IF: return "IF";
-            case TYPE_SELECT: return "SELECT";
-            default: return "";
+        switch (type)
+        {
+        case TYPE_DO:
+            return "DO";
+        case TYPE_FOR:
+            return "FOR";
+        case TYPE_FUNCTION:
+            return "FUNCTION";
+        case TYPE_IF:
+            return "IF";
+        case TYPE_SELECT:
+            return "SELECT";
+        default:
+            return "";
         }
     }
 }
@@ -67,10 +74,12 @@ struct Stack
     /** Pull value off of stack */
     CodeBlock pull()
     {
-        if(elements.length == 0) {
+        if (elements.length == 0)
+        {
             throw new Exception("Stack underflow");
         }
-        else {
+        else
+        {
             CodeBlock top = this.elements[elements.length - 1];
             this.elements = this.elements.remove(elements.length - 1);
             return top;
@@ -80,10 +89,12 @@ struct Stack
     /** Read top value of stack without pulling it off */
     CodeBlock top()
     {
-        if(elements.length == 0) {
+        if (elements.length == 0)
+        {
             throw new Exception("Stack empty");
         }
-        else {
+        else
+        {
             return this.elements[elements.length - 1];
         }
     }
@@ -91,8 +102,10 @@ struct Stack
     /** Returns the closest element that meets type criterion or null if none found */
     CodeBlock closest(int[] types)
     {
-        foreach (CodeBlock key; retro(elements)) {
-            if(any!(type => type == key.getType())(types)) {
+        foreach (CodeBlock key; retro(elements))
+        {
+            if (any!(type => type == key.getType())(types))
+            {
                 return key;
             }
         }

@@ -10,9 +10,9 @@ import language.statement, compiler.compiler, compiler.number, compiler.variable
 class Const_stmt : Statement
 {
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     /** Compiles the statement */
     void process()
@@ -22,25 +22,31 @@ class Const_stmt : Statement
         VariableReader reader = new VariableReader(node.children[0].children[0], compiler);
         Variable var = reader.read(num.type);
         // Sanity checks
-        if(!var.type.isNumeric()) {
+        if (!var.type.isNumeric())
+        {
             compiler.displayError("Constant can only be a numeric type");
         }
-        if(var.isArray()) {
+        if (var.isArray())
+        {
             compiler.displayError("Array cannot be constant");
         }
-        if(compiler.inProcedure && isShared) {
+        if (compiler.inProcedure && isShared)
+        {
             compiler.displayError("Local constant cannot be shared");
         }
-        if(num.type.isIntegral() ^ var.type.isIntegral()) {
+        if (num.type.isIntegral() ^ var.type.isIntegral())
+        {
             compiler.displayError("Type mismatch");
         }
         var.isConst = true;
         var.constVal = num.type.isIntegral() ? to!float(num.intVal) : num.floatVal;
-        if(compiler.inProcedure) {
+        if (compiler.inProcedure)
+        {
             var.visibility = compiler.VIS_LOCAL;
             var.procName = compiler.currentProcName;
         }
-        else {
+        else
+        {
             var.visibility = isShared ? compiler.VIS_COMMON : compiler.VIS_GLOBAL;
         }
         compiler.getVars().add(var, false);

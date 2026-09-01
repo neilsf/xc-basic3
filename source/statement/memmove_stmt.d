@@ -11,9 +11,9 @@ abstract class Memmove_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     abstract protected string getMacroName();
 
@@ -23,15 +23,16 @@ abstract class Memmove_stmt : Statement
         ParseTree argList = this.node.children[0].children[0];
         Expression[3] e;
         Type[3] expectedTypes;
-        expectedTypes[0] = expectedTypes[1] = compiler.getTypes().get(
-            target == "mega65" ? Type.INT24 : Type.UINT16
-        ); // addresses
+        expectedTypes[0] = expectedTypes[1] = compiler.getTypes()
+            .get(target == "mega65" ? Type.INT24 : Type.UINT16); // addresses
         expectedTypes[2] = compiler.getTypes().get(Type.UINT16); // length
         const ulong argsCount = argList.children.length;
-        if(argsCount != 3) {
+        if (argsCount != 3)
+        {
             compiler.displayError("Wrong number of arguments (expected 3)");
         }
-        for(int i = 0; i < argsCount; i++) {
+        for (int i = 0; i < argsCount; i++)
+        {
             e[i] = new Expression(argList.children[i], compiler);
             e[i].setExpectedType(expectedTypes[i]);
             e[i].eval();
@@ -51,9 +52,9 @@ final class Memcpy_stmt : Memmove_stmt
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     override protected string getMacroName()
     {
@@ -65,9 +66,9 @@ final class Memshift_stmt : Memmove_stmt
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     override protected string getMacroName()
     {

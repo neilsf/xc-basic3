@@ -13,21 +13,24 @@ class Sys_stmt : Statement
 {
     /** Class constructor */
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     void process()
     {
-        const bool isFast = toLower(this.node.children[0].matches[$-1]) == "fast";
+        const bool isFast = toLower(this.node.children[0].matches[$ - 1]) == "fast";
         ParseTree addrNode = this.node.children[0].children[0];
         Expression e1 = new Expression(addrNode, compiler);
         e1.setExpectedType(compiler.getTypes().get(Type.UINT16));
         e1.eval();
-        if(e1.isConstant) {
-            appendCode("    sys_constaddr $" ~ to!string(to!int(e1.getConstVal()), 16) ~ (isFast ? ", 1" : ", 0") ~ "\n");
+        if (e1.isConstant)
+        {
+            appendCode("    sys_constaddr $" ~ to!string(to!int(e1.getConstVal()),
+                    16) ~ (isFast ? ", 1" : ", 0") ~ "\n");
         }
-        else {
+        else
+        {
             appendCode(e1.toString());
             appendCode("    sys " ~ (isFast ? "1" : "0") ~ "\n");
         }

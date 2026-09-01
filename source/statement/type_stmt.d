@@ -11,18 +11,20 @@ import language.statement;
 class Type_stmt : Statement
 {
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     void process()
     {
-        if(compiler.inTypeDef) {
+        if (compiler.inTypeDef)
+        {
             compiler.displayError("Type definition already started");
         }
 
         string typeName = join(this.node.children[0].children[0].matches);
-        if(compiler.getTypes().defined(typeName)) {
+        if (compiler.getTypes().defined(typeName))
+        {
             compiler.displayError("Type " ~ typeName ~ " already exists");
         }
 
@@ -38,15 +40,16 @@ class Type_stmt : Statement
 class Field_def : Statement
 {
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     private Variable variable;
-    
+
     void process()
     {
-        if(!compiler.inTypeDef) {
+        if (!compiler.inTypeDef)
+        {
             compiler.displayError("Syntax error");
         }
 
@@ -54,17 +57,21 @@ class Field_def : Statement
         VariableReader reader = new VariableReader(var, compiler);
         this.variable = reader.read();
 
-        if(compiler.currentTypeDef.hasField(variable.name)) {
+        if (compiler.currentTypeDef.hasField(variable.name))
+        {
             compiler.displayError("Field " ~ variable.name ~ " is already defined in this Type");
         }
-        if(variable.isArray()) {
+        if (variable.isArray())
+        {
             compiler.displayError("Fields cannot be arrays");
         }
-        
-        try {
+
+        try
+        {
             compiler.currentTypeDef.addField(variable);
         }
-        catch(Exception e) {
+        catch (Exception e)
+        {
             compiler.displayError(e.msg);
         }
     }
@@ -74,13 +81,14 @@ class Field_def : Statement
 class Endtype_stmt : Statement
 {
     this(ParseTree node, Compiler compiler)
-	{
-		super(node, compiler);
-	}
+    {
+        super(node, compiler);
+    }
 
     void process()
     {
-        if(!compiler.inTypeDef) {
+        if (!compiler.inTypeDef)
+        {
             compiler.displayError("Not in Type definition");
         }
 

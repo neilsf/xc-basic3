@@ -11,7 +11,7 @@ Simplexp <- Term <- Factor <- Expression <- Relation
 Simplexp: Simplexp, Term, Factor, Expression, Relation
 */
 
-struct GenericXCBASIC(TParseTree)
+@safe struct GenericXCBASIC(TParseTree)
 {
     import std.functional : toDelegate;
     import pegged.dynamic.grammar;
@@ -19,14 +19,14 @@ struct GenericXCBASIC(TParseTree)
     struct XCBASIC
     {
     enum name = "XCBASIC";
-    static ParseTree delegate(ParseTree)[string] before;
-    static ParseTree delegate(ParseTree)[string] after;
-    static ParseTree delegate(ParseTree)[string] rules;
+    static ParseTree delegate(ParseTree) @safe [string] before;
+    static ParseTree delegate(ParseTree) @safe [string] after;
+    static ParseTree delegate(ParseTree) @safe [string] rules;
     import std.typecons:Tuple, tuple;
     static TParseTree[Tuple!(string, size_t)] memo;
     import std.algorithm: canFind, countUntil, remove;
     static size_t[] blockMemoAtPos;
-    static this()
+    static this() @trusted
     {
         rules["Program"] = toDelegate(&Program);
         rules["Line"] = toDelegate(&Line);
@@ -189,7 +189,7 @@ struct GenericXCBASIC(TParseTree)
 
     template hooked(alias r, string name)
     {
-        static ParseTree hooked(ParseTree p)
+        static ParseTree hooked(ParseTree p) @safe
         {
             ParseTree result;
 
@@ -208,13 +208,13 @@ struct GenericXCBASIC(TParseTree)
             return result;
         }
 
-        static ParseTree hooked(string input)
+        static ParseTree hooked(string input) @safe
         {
             return hooked!(r, name)(ParseTree("",false,[],input));
         }
     }
 
-    static void addRuleBefore(string parentRule, string ruleSyntax)
+    static void addRuleBefore(string parentRule, string ruleSyntax) @safe
     {
         // enum name is the current grammar name
         DynamicGrammar dg = pegged.dynamic.grammar.grammar(name ~ ": " ~ ruleSyntax, rules);
@@ -224,21 +224,21 @@ struct GenericXCBASIC(TParseTree)
         before[parentRule] = rules[dg.startingRule];
     }
 
-    static void addRuleAfter(string parentRule, string ruleSyntax)
+    static void addRuleAfter(string parentRule, string ruleSyntax) @safe
     {
         // enum name is the current grammar named
         DynamicGrammar dg = pegged.dynamic.grammar.grammar(name ~ ": " ~ ruleSyntax, rules);
-        foreach(name,rule; dg.rules)
+        foreach(ruleName,rule; dg.rules)
         {
-            if (name != "Spacing")
-                rules[name] = rule;
+            if (ruleName != "Spacing")
+                rules[ruleName] = rule;
         }
         after[parentRule] = rules[dg.startingRule];
     }
 
-    static bool isRule(string s)
+    static bool isRule(string s) pure nothrow @nogc
     {
-		import std.algorithm : startsWith;
+        import std.algorithm : startsWith;
         return s.startsWith("XCBASIC.");
     }
     mixin decimateTree;

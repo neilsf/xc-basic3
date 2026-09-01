@@ -1,0 +1,13 @@
+﻿{
+	"name": "xcb-module-grammar",
+	"authors": [
+		"Csaba Fekete"
+	],
+	"dependencies": {
+		"pegged": "~>0.4.9"
+	},
+	"description": "PEG generator XC-BASIC",
+	"copyright": "Copyright © 2020, Csaba Fekete",
+	"license": "MIT",
+	"dflags-dmd": []
+}

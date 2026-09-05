@@ -34,3 +34,16 @@ This Makefile-based build first checks that `dub` is available in `PATH`, then d
 
 
 That's it, you can now run XC=BASIC.
+
+## Testing
+
+The _tests/functional_ directory contains a test harness with a growing set of test suites as _.bas_ files. The harness compiles all suites, runs them in the Vice Emulator and compares memory dumps with the predefined golden data set.
+
+To run the entire harness, issue the command:
+
+    ./tests/functional/test.sh
+
+To run a specific suite only:
+
+    ./tests/functional/test.sh tests/functional/arith/bytes.bas
+

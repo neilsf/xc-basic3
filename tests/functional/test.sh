@@ -57,19 +57,44 @@ fi
 if [[ $# -gt 0 ]]; then
   requested="$1"
   # Allow the argument to be given as an absolute/relative path, a path
-  # relative to SCRIPT_DIR, with or without the .bas extension.
-  requested="${requested#"${SCRIPT_DIR}/"}"
-  requested="${requested%.bas}.bas"
+  # relative to SCRIPT_DIR, with or without the .bas extension. If a
+  # directory is given, run all tests under that directory.
+  requested="${requested%/}"
+  if [[ "${requested}" == "${SCRIPT_DIR}" ]]; then
+    requested="."
+  else
+    requested="${requested#"${SCRIPT_DIR}/"}"
+  fi
+  if [[ "${requested}" == "${REPO_ROOT}/tests/functional" ]]; then
+    requested="."
+  else
+    requested="${requested#"${REPO_ROOT}/tests/functional/"}"
+  fi
+  requested="${requested#tests/functional/}"
+  requested="${requested#./}"
 
   declare -a filtered=()
-  for bas in "${bas_files[@]}"; do
-    if [[ "${bas}" == "${requested}" || "$(basename "${bas}")" == "$(basename "${requested}")" ]]; then
-      filtered+=("${bas}")
+  if [[ "${requested}" == "." || -d "${SCRIPT_DIR}/${requested}" ]]; then
+    if [[ "${requested}" == "." ]]; then
+      filtered=("${bas_files[@]}")
+    else
+      for bas in "${bas_files[@]}"; do
+        if [[ "${bas}" == "${requested}/"* ]]; then
+          filtered+=("${bas}")
+        fi
+      done
     fi
-  done
+  else
+    requested="${requested%.bas}.bas"
+    for bas in "${bas_files[@]}"; do
+      if [[ "${bas}" == "${requested}" || "$(basename "${bas}")" == "$(basename "${requested}")" ]]; then
+        filtered+=("${bas}")
+      fi
+    done
+  fi
 
   if [[ ${#filtered[@]} -eq 0 ]]; then
-    echo "ERROR: no .bas file matching '$1' found under ${SCRIPT_DIR}" >&2
+    echo "ERROR: no .bas file or directory matching '$1' found under ${SCRIPT_DIR}" >&2
     exit 1
   fi
 

@@ -15,8 +15,6 @@
 CONST SC1 = $2800
 CONST SC2 = $2c00
 CONST CHARSET = $2000
-CONST BORDER = $d020
-CONST BACKGR = $d021
 CONST COLOR = $d800
 
 DIM sntable(256) AS BYTE @lab_sntable
@@ -101,8 +99,8 @@ SUB makecharset () STATIC
 
 END SUB
 
-POKE BORDER, 7 : poke BACKGR, 7
-CALL makecharset ()
+BORDER 7 : BACKGROUND 7
+CALL makecharset()
 MEMSET COLOR, 1000, 2
 l:
   CALL doplasma(SC1)

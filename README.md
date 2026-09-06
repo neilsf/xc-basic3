@@ -45,5 +45,8 @@ To run the entire harness, issue the command:
 
 To run a specific suite only:
 
-    ./tests/functional/test.sh tests/functional/arith/bytes.bas
+    ./tests/functional/test.sh arith/bytes.bas
 
+To run all suites in a directory:
+
+    ./tests/functional/test.sh strings

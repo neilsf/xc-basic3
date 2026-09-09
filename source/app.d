@@ -130,15 +130,7 @@ void main(string[] args)
     auto rnd = Random(unpredictableSeed);
     auto u = uniform!uint(rnd);
 
-    version (Windows)
-    {
-        const string tmpdir = tempDir();
-    }
-    else
-    {
-        const string tmpdir = tempDir() ~ dirSeparator;
-    }
-
+    const string tmpdir = tempDir();
     string asmFilename = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".asm";
     string tmpSymbolfile = tmpdir ~ "xcbtmp_" ~ to!string(u, 16) ~ ".sym";
 
@@ -157,25 +149,13 @@ void main(string[] args)
 
     outfile.close();
 
-    // Call DASM to compile intermediate code to executable
-    version (Windows)
-    {
-        enum string Q = `"`;
-    }
-    else
-    {
-        enum string Q = ``;
-    }
-
-    string cmd = Q ~ dasm ~ Q ~ " " ~ Q ~ asmFilename ~ Q ~ " -o" ~ Q ~ outName ~ Q
-        ~ " -s" ~ Q ~ tmpSymbolfile ~ Q;
-
+    string[] dasmArgs = [dasm, asmFilename, "-o" ~  escapeShellFileName(outName), "-s" ~ escapeShellFileName(tmpSymbolfile)];
     if (listfile != "")
     {
-        cmd ~= " -l" ~ Q ~ listfile ~ Q;
+        dasmArgs ~= ["-l", escapeShellFileName(listfile)];
     }
 
-    auto dasm_cmd = executeShell(cmd);
+    auto dasmCmd = execute(dasmArgs);
 
     if (!keepImCode)
     {
@@ -198,12 +178,12 @@ void main(string[] args)
                 fileName.withExtension("asm")));
     }
 
-    if (dasm_cmd.status != 0)
+    if (dasmCmd.status != 0)
     {
         stderr.writeln(
                 "** ERROR ** There has been an error while trying to execute DASM, please see the message below.");
-        stderr.writeln("Tried to execute: " ~ cmd);
-        stderr.writeln(dasm_cmd.output);
+        stderr.writeln("Tried to execute: " ~ dasmArgs.join(" "));
+        stderr.writeln(dasmCmd.output);
         stderr.writeln("Please submit this bug to https://github.com/neilsf/xc-basic3/issues");
         exit(1);
     }

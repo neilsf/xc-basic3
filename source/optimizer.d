@@ -108,30 +108,23 @@ class ReplaceSequences : OptimizerPass
             .join(", ");
     }
 
-    private int replaceSequences()
+    private void replaceSequences()
     {
         bool optEnabled = false;
-        int replacementsMade = false;
         string[] lines = splitLines(this.inCode);
         opCode[] accumulatedSequence;
         string[] accumulatedCode;
 
+        size_t fullMatchLength = 0;
+
         this.outCode = "";
+
         for (int i = 0; i < lines.length; i++)
         {
             string line = lines[i];
             if (line == "    ; !!opt_start!!")
             {
                 optEnabled = true;
-                this.outCode ~= line ~ "\n";
-                continue;
-            }
-            else if (line == "    ; !!opt_end!!")
-            {
-                optEnabled = false;
-                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
-                accumulatedSequence = [];
-                accumulatedCode = [];
                 this.outCode ~= line ~ "\n";
                 continue;
             }
@@ -142,73 +135,84 @@ class ReplaceSequences : OptimizerPass
                 continue;
             }
 
-            auto expr = regex(r"\s+([a-zA-Z0-9_@]+)(\s.+)?");
+            accumulatedCode ~= line;
+
+            auto expr = regex(r"^\s+([a-zA-Z0-9_@]+)\s*(.+)?");
             auto match = matchFirst(line, expr);
-            if (match && !this.fullMatch(match[1]))
+
+            string opcodeStr;
+            string arg = "";
+
+            if (match)
             {
-                accumulatedCode ~= line;
-                string opcodeStr = match[1];
-                string arg = "";
-                if (match.length > 2)
-                {
-                    arg = match[2];
-                }
+                opcodeStr = match[1];
+                arg = match[2];
+            }
+            else
+            {
+                opcodeStr = "$NOOPCODE$";
+            }
 
-                opCode op = {opcodeStr, arg};
-                accumulatedSequence ~= op;
-                string seqString = this.stringifySequence(accumulatedSequence);
+            opCode op = {opcodeStr, arg};
+            accumulatedSequence ~= op;
 
-                if (this.matchSequences(seqString))
+            string seqString = this.stringifySequence(accumulatedSequence);
+
+            if (this.matchSequences(seqString))
+            {
+                if (this.fullMatch(seqString))
                 {
-                    //stderr.writeln("match: " ~ seqString);
-                    if (this.fullMatch(seqString))
-                    {
-                        //stderr.writeln("replace: " ~ seqString);
-                        this.outCode ~= "    " ~ seqString ~ " " ~ this.stringifyArgs(
-                                accumulatedSequence) ~ "\n";
-                        accumulatedSequence = [];
-                        accumulatedCode = [];
-                        replacementsMade++;
-                    }
-                }
-                else
-                {
-                    //stderr.writeln("no match: " ~ seqString);
-                    this.outCode ~= accumulatedCode[0] ~ "\n";
-                    accumulatedSequence = accumulatedSequence.remove(0);
-                    accumulatedCode = accumulatedCode.remove(0);
+                    fullMatchLength = accumulatedSequence.length;
                 }
             }
             else
             {
-                //stderr.writeln("break: " ~ line);
-                this.outCode ~= join(accumulatedCode, "\n") ~ "\n" ~ line ~ "\n";
-                accumulatedSequence = [];
-                accumulatedCode = [];
-            }
-        }
+                // Flush the Accumulator
 
-        return replacementsMade;
+                if (fullMatchLength > 0)
+                {
+                    this.outCode ~= "    " ~ this.stringifySequence(
+                            accumulatedSequence[0 .. fullMatchLength]) ~ " " ~ this.stringifyArgs(
+                            accumulatedSequence[0 .. fullMatchLength]) ~ "\n";
+                    accumulatedSequence = accumulatedSequence[fullMatchLength .. $];
+                    accumulatedCode = accumulatedCode[fullMatchLength .. $];
+
+                    fullMatchLength = 0;
+                }
+                else
+                {
+                    if (accumulatedCode[0] == "    ; !!opt_end!!")
+                    {
+                        this.outCode ~= join(accumulatedCode, "\n") ~ "\n";
+                        accumulatedSequence = [];
+                        accumulatedCode = [];
+                        optEnabled = false;
+                    }
+                    else
+                    {
+                        this.outCode ~= accumulatedCode[0] ~ "\n";
+                        accumulatedSequence = accumulatedSequence.remove(0);
+                        accumulatedCode = accumulatedCode.remove(0);
+                    }
+                }
+
+                for (int j = 2; j <= accumulatedSequence.length; j++)
+                {
+                    seqString = this.stringifySequence(accumulatedSequence[0 .. j]);
+                    if (this.fullMatch(seqString))
+                    {
+                        fullMatchLength = j;
+                    }
+                }
+            }
+
+        }
     }
 
     override void run()
     {
         this.fetchSequences();
-        int replacementsMade;
-        int i = 0;
-        do
-        {
-            i++;
-            replacementsMade = this.replaceSequences();
-            import std.conv;
-
-            //stderr.writeln("Pass " ~ to!string(i) ~ ": " ~ to!string(replacementsMade));
-            if (replacementsMade)
-            {
-                this.inCode = this.outCode;
-            }
-        }
-        while (replacementsMade > 0);
+        this.replaceSequences();
     }
 }
 
@@ -294,7 +298,7 @@ class RemoveStackOps : OptimizerPass
                     next_opc = this.getOpcode(next_line);
                     j++;
                 }
-                while (next_line == "");
+                while (next_line == "" || next_line.startsWith(";"));
 
                 if (this.isPuller(opc) && pushf)
                 {

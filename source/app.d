@@ -158,12 +158,20 @@ void main(string[] args)
     outfile.close();
 
     // Call DASM to compile intermediate code to executable
-    version(Windows) { enum string Q = `"`; }
-    else             { enum string Q = ``;  }
+    version (Windows)
+    {
+        enum string Q = `"`;
+    }
+    else
+    {
+        enum string Q = ``;
+    }
 
-    string cmd = Q ~ dasm ~ Q ~ " " ~ Q ~ asmFilename ~ Q ~ " -o" ~ Q ~ outName ~ Q ~ " -s" ~ Q ~ tmpSymbolfile ~ Q;
+    string cmd = Q ~ dasm ~ Q ~ " " ~ Q ~ asmFilename ~ Q ~ " -o" ~ Q ~ outName ~ Q
+        ~ " -s" ~ Q ~ tmpSymbolfile ~ Q;
 
-    if(listfile != "") {
+    if (listfile != "")
+    {
         cmd ~= " -l" ~ Q ~ listfile ~ Q;
     }
 
@@ -186,7 +194,8 @@ void main(string[] args)
     {
         copy(asmFilename, to!string(fileName.withExtension("asm")));
         remove(asmFilename);
-        stdout.writeln("File containing intermediate code kept in " ~ to!string(fileName.withExtension("asm")));
+        stdout.writeln("File containing intermediate code kept in " ~ to!string(
+                fileName.withExtension("asm")));
     }
 
     if (dasm_cmd.status != 0)

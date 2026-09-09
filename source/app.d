@@ -157,24 +157,16 @@ void main(string[] args)
 
     outfile.close();
 
-    // Call DASM to compile intermediate code to exacutable
-    version (Windows)
-    {
-        dasm = `"` ~ dasm ~ `"`;
-        asmFilename = `"` ~ asmFilename ~ `"`;
-        outName = `"` ~ outName ~ `"`;
-        if (listfile != "")
-        {
-            listfile = `"` ~ listfile ~ `"`;
-        }
+    // Call DASM to compile intermediate code to executable
+    version(Windows) { enum string Q = `"`; }
+    else             { enum string Q = ``;  }
+
+    string cmd = Q ~ dasm ~ Q ~ " " ~ Q ~ asmFilename ~ Q ~ " -o" ~ Q ~ outName ~ Q ~ " -s" ~ Q ~ tmpSymbolfile ~ Q;
+
+    if(listfile != "") {
+        cmd ~= " -l" ~ Q ~ listfile ~ Q;
     }
 
-    string cmd = dasm ~ " " ~ asmFilename ~ " -o" ~ outName ~ " -s" ~ tmpSymbolfile;
-
-    if (listfile != "")
-    {
-        cmd ~= " -l" ~ listfile;
-    }
     auto dasm_cmd = executeShell(cmd);
 
     if (!keepImCode)
@@ -192,13 +184,15 @@ void main(string[] args)
     }
     else
     {
-        stdout.writeln("File containing intermediate code kept in " ~ asmFilename);
+        copy(asmFilename, to!string(fileName.withExtension("asm")));
+        remove(asmFilename);
+        stdout.writeln("File containing intermediate code kept in " ~ to!string(fileName.withExtension("asm")));
     }
 
     if (dasm_cmd.status != 0)
     {
         stderr.writeln(
-                "** ERROR ** There has been an error while trying to execute DASM, please see the bellow message.");
+                "** ERROR ** There has been an error while trying to execute DASM, please see the message below.");
         stderr.writeln("Tried to execute: " ~ cmd);
         stderr.writeln(dasm_cmd.output);
         stderr.writeln("Please submit this bug to https://github.com/neilsf/xc-basic3/issues");

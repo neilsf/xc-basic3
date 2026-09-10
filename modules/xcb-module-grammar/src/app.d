@@ -65,7 +65,7 @@ void main(string[] args)
             Screen_stmt <-   "screen"i :WS Expression
             Asm_stmt <-      "asm"i
             Endasm_stmt <-   "end asm"i
-            Incbin_stmt <-   "incbin"i :WS String
+            Incbin_stmt <-   "incbin"i :WS String (:WS? "," :WS? Expression)?
             Include_stmt <-  "include"i :WS String
             Exitfun_stmt <-  "exit function"i  / "exit sub"i
             Endfun_stmt <-   "end function"i / "end sub"i

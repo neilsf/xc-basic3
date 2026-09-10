@@ -1687,7 +1687,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Incbin_stmt")(p);
         }
         else
         {
@@ -1695,7 +1695,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(p);
                 memo[tuple(`Incbin_stmt`, p.end)] = result;
                 return result;
             }
@@ -1706,12 +1706,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Incbin_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("incbin"), pegged.peg.discard!(WS), String, pegged.peg.option!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Expression))), "XCBASIC.Incbin_stmt"), "Incbin_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Incbin_stmt(GetName g)

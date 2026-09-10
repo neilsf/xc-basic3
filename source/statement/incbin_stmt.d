@@ -1,6 +1,6 @@
 module statement.incbin_stmt;
 
-import std.file, std.path, std.string;
+import std.file, std.path, std.string, std.conv;
 
 import pegged.grammar;
 
@@ -18,12 +18,27 @@ class Incbin_stmt : Statement
     /** Compiles the statement */
     void process()
     {
-        const string fileName = getcwd() ~ dirSeparator ~ join(
-                this.node.children[0].children[0].matches[1 .. $ - 1]);
+        string asmCode = "    INCBIN ";
+        ParseTree incbinStatementNode = this.node.children[0];
+        ParseTree fileNameNode = incbinStatementNode.children[0];
+        const string fileName = getcwd() ~ dirSeparator ~ join(fileNameNode.matches[1 .. $ - 1]);
         if (!exists(fileName))
         {
-            compiler.displayError("File cannot be read: " ~ fileName);
+            compiler.displayError("INCBIN: error opening file " ~ fileName);
         }
-        appendCode("    INCBIN \"" ~ fileName ~ "\"\n");
+        asmCode ~= "\"" ~ fileName ~ "\"";
+        import std.stdio; writeln(this.node);
+        if (incbinStatementNode.children.length > 1)
+        {
+            ParseTree offsetNode = incbinStatementNode.children[1];
+            Expression offsetExpression = new Expression(offsetNode, compiler);
+            if (!offsetExpression.isConstant())
+            {
+                compiler.displayError("INCBIN: offset parameter must be constant");
+            }
+            auto offset = cast(int)offsetExpression.getConstVal();
+            asmCode ~= ", " ~ to!string(offset);
+        }
+        this.appendCode(asmCode ~ "\n");
     }
 }

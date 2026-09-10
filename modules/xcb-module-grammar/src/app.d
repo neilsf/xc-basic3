@@ -23,7 +23,7 @@ void main(string[] args)
                         Origin_stmt | Swap_stmt | Locate_stmt | On_stmt | Error_stmt | Wait_stmt |
                          Memset_stmt | Memcpy_stmt | Memshift_stmt | Open_stmt | Close_stmt | Get_stmt |
                         If_sa_stmt | Else_stmt | Endif_stmt | Fun_stmt | Endfun_stmt | Return_fn_stmt | Return_stmt | Exitfun_stmt | Do_stmt | Loop_stmt |
-                        Asm_stmt | Endasm_stmt | Print_hash_stmt | Write_stmt | Read_stmt |
+                        Asm_stmt | Endasm_stmt | Write_stmt | Read_stmt |
                         Cont_stmt |  Exit_do_stmt | Exit_for_stmt | Type_stmt | Endtype_stmt | Endselect_stmt | End_stmt |
                         Screen_stmt | Option_stmt | Sprite_clearhit_stmt | Sprite_multicolor_stmt | Sprite_stmt |
                         Sound_clear_stmt | Volume_stmt | Voice_stmt | Filter_stmt | Irq_stmt | Border_stmt | Background_stmt | Sys_stmt |
@@ -31,8 +31,7 @@ void main(string[] args)
                         Select_stmt | Case_stmt)
             Const_stmt <-    ("shared"i :WS)? "const"i :WS Varnosubscript :WS? "=" :WS? Number
             Let_stmt <-      (("let"i :WS) / eps) Accessor :WS? "=" :WS? Expression
-            Print_stmt <-    "print"i :WS? PrintableList :WS? ";"?
-            Print_hash_stmt <- "print"i :WS? "#" :WS? ExprList :WS? ";"?
+            Print_stmt <-    "print"i (:WS? "#" :WS? Expression :WS? ",")? :WS? PrintableList :WS? ";"?
             Write_stmt      <- "write"i :WS? "#" :WS? ExprList
             Read_stmt       <- "read"i :WS? "#" :WS? Expression  :WS? "," :WS? AccessorList
             If_stmt <-       "if"i :WS Expression :WS "then"i :WS Statements (:WS? "else"i :WS Statements)?

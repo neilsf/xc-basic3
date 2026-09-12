@@ -152,7 +152,7 @@ void main(string[] args)
     string[] dasmArgs = [dasm, asmFilename, "-o" ~  escapeShellFileName(outName), "-s" ~ escapeShellFileName(tmpSymbolfile)];
     if (listfile != "")
     {
-        dasmArgs ~= ["-l", escapeShellFileName(listfile)];
+        dasmArgs ~= "-l" ~ escapeShellFileName(listfile);
     }
 
     auto dasmCmd = execute(dasmArgs);

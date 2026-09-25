@@ -72,7 +72,7 @@ void main(string[] args)
                 "max-address|m", &topAddress, "dasm|d", &dasm, "symbol|s",
                 &symbolfile, "list|l", &listfile, "optimize|p",
                 &optimize, "keep-imcode|k", &keepImCode, "verbosity|v",
-                &verbosity, "inline-data|i", &inlineData);
+                &verbosity, "inline-data|i", &inlineData, "zerofill-vars|z", &zerofillVars);
     }
     catch (Exception e)
     {
@@ -389,12 +389,16 @@ Options:
    -p
   --optimize        Output optimized (faster and smaller) code. Turned on by default (true).
 
-   -h
-  --help            Show this help
-
    -i
   --inline-data=    If set to true, DATA statements are compiled at the current origin.
                     Otherwise, they get compiled after code. Defaults to false.
+
+   -z
+  --zerofill-vars=  If set to true, the space for variables will be initialized with zeroes.
+                    Makes the output larger. Defaults to false.
+
+   -h
+  --help            Show this help
 `);
     exit(exitCode);
 }
@@ -469,7 +473,7 @@ private void displayInformation(string tmpSymbolfile)
     }
     if (symbols["vars_end"] > symbols["vars_start"])
     {
-        stdout.writeln("|Variables*     | $" ~ asHex(
+        stdout.writeln("|Variables" ~ (zerofillVars ? " " : "*") ~ "     | $" ~ asHex(
                 symbols["vars_start"]) ~ " | $" ~ asHex(symbols["vars_end"] - 1) ~ " |");
         hasVars = true;
     }
@@ -479,10 +483,8 @@ private void displayInformation(string tmpSymbolfile)
     stdout.writeln("|String stack*  | $" ~ asHex(
             str_workarea - 255) ~ " | $" ~ asHex(str_workarea) ~ " | ");
     stdout.writeln(separator);
-    if (hasVars)
-    {
-        stdout.writeln("(*) Uninitialized segment.");
-    }
+    stdout.writeln("(*) Uninitialized segment.");
+
     if (symbols["vars_end"] >= topAddress)
     {
         stdout.writeln("WARNING: The program has been successfully compiled, but it can't fit between $" ~ asHex(

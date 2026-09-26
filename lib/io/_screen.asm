@@ -28,16 +28,6 @@ COLOR_RAM EQU $9600
 
 	IF TARGET & pet
 SCR_MEM_START  EQU $8000
-		IF TARGET == pet2001
-SCR_LN_PTR  EQU $E0
-CRS_COL		EQU $E2
-CRS_ROW		EQU $F5
-		ENDIF
-		IF TARGET > pet2001
-SCR_LN_PTR  EQU $C4
-CRS_COL		EQU $C6
-CRS_ROW		EQU $D8
-		ENDIF
 	ENDIF
 
 ; Various C-64 registers
@@ -257,21 +247,9 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	ENDIF
 	tax
 	pla
-	IF TARGET & pet
-		sta CRS_COL
-		stx CRS_ROW
-		txa
-		import I_CALC_SCRROWPTR
-		jsr CALC_SCRROWPTR
-		lda R0
-		sta SCR_LN_PTR
-		lda R0 + 1
-		sta SCR_LN_PTR + 1
-	ELSE
-		tay
-		clc
-		kerncall KERNAL_PLOT
-		ENDIF
+	tay
+	clc
+	kerncall KERNAL_PLOT
 	ENDM
 	
 	; DECLARE FUNCTION CSRLIN AS BYTE () SHARED STATIC INLINE
@@ -492,6 +470,15 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #0
 		adc R0 + 1
+	ENDIF
+	; PETs have a Screen line ptr table
+	IF TARGET & pet
+		txa
+		lda SCR_LIN_ADDR_LO,x
+		sta R0
+		lda SCR_LIN_ADDR_HI,x
+		sta R0 + 1
+	ENDIF
 	; 40 or 80-column screen
 	ELSE
 	  	REPEAT 3

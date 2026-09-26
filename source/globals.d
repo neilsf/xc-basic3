@@ -20,3 +20,5 @@ bool fastIrqs = false;
 bool useSprites = false;
 /** Whether the program uses sound routines */
 bool useSound = false;
+/** Whether to initialize the variable segment with zeroes */
+bool zerofillVars = false;

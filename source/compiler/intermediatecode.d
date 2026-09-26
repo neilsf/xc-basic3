@@ -24,12 +24,13 @@ class IntermediateCode
     this(Compiler compiler)
     {
         this.compiler = compiler;
+        const string varSegmentInit = zerofillVars ? "SEG" : "SEG.U";
         this.segments = [
             PROGRAM_SEGMENT: "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
             ROUTINE_SEGMENT: "\nroutines_start:\n",
             LIBRARY_SEGMENT: "\n    ; !!opt_end!!\nlibrary_start:\n    SEG \"LIBRARY\"\n    ORG library_start\n" ~ getIncludes() ~ "\n",
             DATA_SEGMENT: "\ndata_start:\n",
-            VAR_SEGMENT: "vars_start:\n    SEG.U \"VARIABLES\"\n    ORG vars_start\n"
+            VAR_SEGMENT: "vars_start:\n    " ~ varSegmentInit ~ " \"VARIABLES\"\n    ORG vars_start\n"
         ];
     }
 

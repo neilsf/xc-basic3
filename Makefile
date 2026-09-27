@@ -13,10 +13,13 @@ check-dub:
 build: check-dub
 	@set -e; \
 	cd modules/xcb-module-grammar; \
-	dub build; \
+	dub build -b "$${BUILD_TYPE:-debug}"; \
 	./xcb-module-grammar > ../../source/language/grammar.d; \
 	cd ../../; \
-	dub build; \
+	dub build -b "$${BUILD_TYPE:-debug}"; \
 	mkdir -p bin/$${OSTYPE:-linux-gnu}; \
 	mv xcbasic3 bin/$${OSTYPE:-linux-gnu}/xcbasic3; \
 	echo "Build completed successfully. Executable is located in bin/$${OSTYPE:-linux-gnu}/xcbasic3"
+
+test: check-dub
+	dub test -b "$${BUILD_TYPE:-release}"; rm xcbasic3-test-library;

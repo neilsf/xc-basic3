@@ -2,7 +2,7 @@ module language.expression;
 
 import std.algorithm.mutation, std.conv, std.string;
 import pegged.grammar;
-import compiler.type, compiler.compiler, compiler.petscii;
+import globals, compiler.type, compiler.compiler, compiler.petscii;
 import language.relation;
 
 /** Expression members (Expression, Relation, Simplexp, Term, Factor) must implement this */
@@ -88,7 +88,7 @@ abstract class AbstractExpression : ExpressionInterface
         immutable string str = join(leaf.matches[1 .. $ - 1]);
         bool truncated;
         ulong finalLength;
-        asciiToPetsciiHex(str, 0UL, truncated, finalLength);
+        asciiToHex(str, 0UL, truncated, finalLength, asciiMode);
         return finalLength;
     }
 

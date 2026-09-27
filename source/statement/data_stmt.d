@@ -63,9 +63,17 @@ class Data_stmt : Statement
                     compiler.displayError(
                             "Type mismatch: expected number, label reference or constant, got string");
                 }
-                compiler.getImCode().appendSegment(inlineData ? IntermediateCode.PROGRAM_SEGMENT
-                        : IntermediateCode.DATA_SEGMENT, "    " ~ asciiToPetsciiHex(join(datum.matches[1 .. $ - 1]),
-                            strLen, truncated, finalLength) ~ "\n");
+                compiler.getImCode().appendSegment(
+                        inlineData ? IntermediateCode.PROGRAM_SEGMENT: IntermediateCode.DATA_SEGMENT,
+                        "    " ~ asciiToHex(
+                            join(datum.matches[1 .. $ - 1]),
+                            strLen,
+                            truncated,
+                            finalLength,
+                            asciiMode
+                        ) ~ "\n"
+                    );
+                
                 if (truncated)
                 {
                     compiler.displayWarning(

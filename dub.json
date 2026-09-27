@@ -4,6 +4,7 @@
 	],
 	"copyright": "Copyright © 2020, Csaba Fekete",
 	"dependencies": {
+		"fluent-asserts": "~>2.0.5",
 		"pegged": "0.4.9"
 	},
 	"description": "XC=BASIC Compiler Version 3",

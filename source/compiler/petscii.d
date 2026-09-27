@@ -1,6 +1,7 @@
 module compiler.petscii;
 
-import std.string, std.conv, std.array, std.algorithm.searching, std.algorithm.comparison;
+import std.string, std.conv, std.array, std.algorithm.searching,
+        std.algorithm.comparison, std.algorithm.iteration;
 
 private ubyte[] petscii = [
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x14, 0x20, 0x0d, 0x11,
@@ -27,11 +28,12 @@ private ubyte[] petscii = [
     0xfc, 0xfd, 0xfe, 0xff
 ];
 
-private ubyte[string] escapeSequences;
+private ubyte[string] escapeSequencesPETSCII;
+private ubyte[string] escapeSequencesASCII;
 
 static this()
 {
-    escapeSequences = [
+    escapeSequencesPETSCII = [
         "CLR": 0x93,
         "CLEAR": 0x93,
         "HOME": 0x13,
@@ -91,19 +93,41 @@ static this()
         "ARROW_UP": 0x5e,
         "ARROW LEFT": 0x5f,
         "ARROW_LEFT": 0x5f,
-        "PI": 0xff
+        "PI": 0xff,
+        "QUOTE": 0x22
+    ];
+
+    escapeSequencesASCII = [
+        "QUOTE": 0x22,
+        "LCUB": 0x7b,
+        "RCUB": 0x7d,
+        "DEL": 0x7f
     ];
 }
 
-/** Translates ASCII string to PETSCII HEX expression */
-string asciiToPetsciiHex(string asciiString, ulong forcedLength,
-        out bool truncated, out ulong finalLength)
+/** Translates ASCII string to ASCII or PETSCII HEX expression */
+string asciiToHex(
+    string asciiString,
+    ulong forcedLength,
+    out bool truncated,
+    out ulong finalLength,
+    bool asciiMode = false
+)
 {
-    ubyte[] petsciiBytes = asciiToPetsciiBytes(asciiString);
+    ubyte[] bytes;
+    if (asciiMode)
+    {
+        bytes = cast(ubyte[])(unescapeString(asciiString, escapeSequencesASCII));
+    }
+    else
+    {
+        bytes = asciiToPetsciiBytes(unescapeString(asciiString, escapeSequencesPETSCII));
+    }
+    
 
     if (forcedLength > 0)
     {
-        if (petsciiBytes.length > forcedLength)
+        if (bytes.length > forcedLength)
         {
             finalLength = forcedLength;
             truncated = true;
@@ -116,18 +140,18 @@ string asciiToPetsciiHex(string asciiString, ulong forcedLength,
     }
     else
     {
-        finalLength = petsciiBytes.length;
+        finalLength = bytes.length;
         truncated = false;
     }
 
-    ulong length = forcedLength > 0 ? min(petsciiBytes.length, forcedLength) : petsciiBytes.length;
+    ulong length = forcedLength > 0 ? min(bytes.length, forcedLength) : bytes.length;
     string hex = "HEX " ~ rightJustify(to!string(length, 16), 2, '0') ~ " ";
 
     int counter = 0;
     ubyte value;
     for (ubyte i = 0; i < finalLength; i++)
     {
-        value = (i < petsciiBytes.length ? petsciiBytes[i] : 0);
+        value = (i < bytes.length ? bytes[i] : 0);
         hex ~= rightJustify(to!string(value, 16), 2, '0') ~ " ";
         counter++;
         if (counter == 16 && (i + 1 < finalLength))
@@ -139,43 +163,117 @@ string asciiToPetsciiHex(string asciiString, ulong forcedLength,
     return hex;
 }
 
-private ubyte[] asciiToPetsciiBytes(string asciiString)
+private string unescapeString(string str, ubyte[string] escapeSequences)
 {
-    ubyte[] pet;
-    bool escaped = false;
-    string accu;
-    for (int i = 0; i < asciiString.length; i++)
+    bool inEscapeSequence = false;
+    string unescapedStr = "";
+    string accu = "";
+    for (int i = 0; i < str.length; i++)
     {
-        char curChar = asciiString[i];
-        if (!escaped && curChar == '{')
+        char curChar = str[i];
+        if (inEscapeSequence)
         {
-            escaped = true;
-            accu = "";
-        }
-        else if (escaped && curChar == '}')
-        {
-            escaped = false;
-            if (isNumeric(accu))
+            if (curChar == '}')
             {
-                pet ~= to!ubyte(accu);
+                inEscapeSequence = false;
+                if (isNumeric(accu))
+                {
+                    accu = to!string(cast(char) to!ubyte(accu));
+                }
+                else
+                {
+                    ubyte* replaced = toUpper(accu) in escapeSequences;
+                    accu = (replaced !is null) ? to!string(cast(char)*replaced) : "";
+                }
+                unescapedStr ~= accu;
+                accu = "";
             }
             else
             {
-                ubyte replaced = escapeSequences.get(toUpper(accu), 0);
-                if (replaced > 0)
-                {
-                    pet ~= replaced;
-                }
+                accu ~= curChar;
             }
-        }
-        else if (!escaped)
-        {
-            pet ~= petscii[curChar];
         }
         else
         {
-            accu ~= curChar;
+            if (curChar == '{')
+            {
+                inEscapeSequence = true;
+                accu = "";
+            }
+            else
+            {
+                unescapedStr ~= curChar;
+            }
+            
         }
     }
-    return pet;
+    return unescapedStr;
+}
+
+private ubyte[] asciiToPetsciiBytes(string asciiString)
+{
+    return asciiString.map!(c => petscii[cast(ubyte) c]).array;
+}
+
+unittest
+{
+    import fluent.asserts;
+
+    // unescapeString: plain text is passed through unchanged
+    Assert.equal(unescapeString("HELLO", escapeSequencesPETSCII), "HELLO");
+
+    // unescapeString: named escape sequence is replaced with its byte value
+    Assert.equal(unescapeString("{CLR}", escapeSequencesPETSCII), "\x93");
+    Assert.equal(unescapeString("{HOME}", escapeSequencesPETSCII), "\x13");
+
+    // unescapeString: escape sequence lookup is case-insensitive
+    Assert.equal(unescapeString("{clr}", escapeSequencesPETSCII), "\x93");
+
+    // unescapeString: numeric escape sequence is converted to the raw byte
+    Assert.equal(unescapeString("{65}", escapeSequencesPETSCII), "A");
+    Assert.equal(unescapeString("{0}", escapeSequencesPETSCII), "\x00");
+
+    // unescapeString: unknown escape sequence is dropped, leaving an empty replacement
+    Assert.equal(unescapeString("{UNKNOWN}", escapeSequencesPETSCII), "");
+
+    // unescapeString: escape sequences mixed in with plain text
+    Assert.equal(unescapeString("A{CLR}B", escapeSequencesPETSCII), "A\x93B");
+
+    // unescapeString: ASCII escape sequence table is used when specified
+    Assert.equal(unescapeString("{QUOTE}", escapeSequencesASCII), "\"");
+    Assert.equal(unescapeString("{DEL}", escapeSequencesASCII), "\x7f");
+
+    // asciiToPetsciiBytes: uppercase ASCII letters map to PETSCII screen codes
+    Assert.equal(asciiToPetsciiBytes("A"), [0xc1]);
+    Assert.equal(asciiToPetsciiBytes("ABC"), [0xc1, 0xc2, 0xc3]);
+
+    // asciiToPetsciiBytes: digits and space map to themselves
+    Assert.equal(asciiToPetsciiBytes("0"), [0x30]);
+    Assert.equal(asciiToPetsciiBytes(" "), [0x20]);
+
+    // asciiToHex: simple string produces a HEX literal with a byte-count prefix
+    bool truncated;
+    ulong finalLength;
+    string hex = asciiToHex("AB", 0, truncated, finalLength);
+    Assert.equal(hex, "HEX 02 C1 C2 ");
+    Assert.isFalse(truncated);
+    Assert.equal(finalLength, 2);
+
+    // asciiToHex: forced length shorter than the string marks it as truncated
+    hex = asciiToHex("ABCD", 2, truncated, finalLength);
+    Assert.equal(hex, "HEX 02 C1 C2 ");
+    Assert.isTrue(truncated);
+    Assert.equal(finalLength, 2);
+
+    // asciiToHex: forced length longer than the string pads with zero bytes
+    hex = asciiToHex("A", 3, truncated, finalLength);
+    Assert.equal(hex, "HEX 03 C1 00 00 ");
+    Assert.equal(truncated, false);
+    Assert.equal(finalLength, 3);
+
+    // asciiToHex: escape sequences are resolved before conversion to PETSCII
+    hex = asciiToHex("{CLR}", 0, truncated, finalLength);
+    Assert.equal(hex, "HEX 01 93 ");
+    Assert.equal(truncated, true);
+    Assert.equal(finalLength, 1);
 }

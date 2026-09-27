@@ -1,6 +1,6 @@
 module language.stringliteral;
 
-import compiler.compiler, compiler.intermediatecode, compiler.petscii;
+import globals, compiler.compiler, compiler.intermediatecode, compiler.petscii;
 import std.conv;
 
 /** Compiles string literals to appropriate HEX data */
@@ -27,8 +27,10 @@ class StringLiteral
     void register()
     {
         bool truncated;
-        immutable data = asciiToPetsciiHex(this.str, 0UL, truncated, this.finalLength);
-        compiler.getImCode().appendSegment(IntermediateCode.DATA_SEGMENT,
-                "_S" ~ to!string(id) ~ " " ~ data ~ "\n");
+        immutable data = asciiToHex(this.str, 0UL, truncated, this.finalLength, asciiMode);
+        compiler.getImCode().appendSegment(
+            IntermediateCode.DATA_SEGMENT,
+            "_S" ~ to!string(id) ~ " " ~ data ~ "\n"
+        );
     }
 }

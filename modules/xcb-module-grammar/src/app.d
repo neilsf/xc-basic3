@@ -121,7 +121,7 @@ void main(string[] args)
 
             Sound_clear_stmt <- "sound"i :WS "clear"i
             Volume_stmt <- "volume"i :WS Expression
-            Voice_stmt <- "voice"i :WS Number (:WS VoiceSubCmd)+
+            Voice_stmt <- "voice"i :WS Expression (:WS VoiceSubCmd)+
                 VoiceSubCmd <- VoiceSubCmdOnOff / VoiceSubCmdADSR /
                               VoiceSubCmdTone / VoiceSubCmdWave / VoiceSubCmdPulse /
                               VoiceSubCmdFilterOnOff

@@ -3414,7 +3414,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
         }
         else
         {
@@ -3422,7 +3422,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
                 memo[tuple(`Voice_stmt`, p.end)] = result;
                 return result;
             }
@@ -3433,12 +3433,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Voice_stmt(GetName g)

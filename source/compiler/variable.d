@@ -341,21 +341,25 @@ class VariableReader
         this.compiler = compiler;
     }
 
-    /** True in case no explicit nor inferred ttype was provided */
+    /** True in case no explicit nor inferred type was provided */
     public bool isFallbackType()
     {
         return this.fallbackType;
     }
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
-    public Variable read(Type inferredType = null, bool forceStatic = false,
-            bool stringLengthRequired = true)
+    public Variable read(
+        Type inferredType = null,
+        bool forceStatic = false,
+        bool stringLengthRequired = true
+    )
     {
         ushort[3] dimensions = [1, 1, 1];
         string name;
         ubyte dimCount;
         ushort strLen;
         Type type;
+        bool isFast = false;
 
         for (int i = 0; i < node.children.length; i++)
         {
@@ -497,6 +501,11 @@ class VariableReader
                 }
 
                 type = compiler.getTypes().get(typeName);
+                break;
+
+            case "XCBASIC.VarAttrib":
+                // Variable attributes are processed in the
+                //Dim or Function statement, not here
                 break;
 
             default:

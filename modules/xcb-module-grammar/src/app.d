@@ -68,8 +68,8 @@ void main(string[] args)
             Include_stmt <-  "include"i :WS String
             Exitfun_stmt <-  "exit function"i  / "exit sub"i
             Endfun_stmt <-   "end function"i / "end sub"i
-            Fun_stmt <-      ("declare"i :WS)? ("function"i / "sub"i) :WS Varnosubscript :WS? :"(" :WS? VarList? :WS? :")" (:WS Funcattrib)*
-                Funcattrib <- "private"i / "shared"i / "static"i / "overload"i / "inline"i
+            Fun_stmt <-      ("declare"i :WS)? ("function"i / "sub"i) :WS Varnosubscript :WS? :"(" :WS? ParameterList? :WS? :")" (:WS Funcattrib)*
+                Funcattrib <- "private"i / "shared"i / "static"i / "overload"i / "inline"i / "fast"i
             Sys_stmt <-      "sys"i :WS Expression (:WS? "fast"i)?
             Load_stmt <-     "load"i :WS ExprList
             Save_stmt <-     "save"i :WS ExprList
@@ -154,6 +154,7 @@ void main(string[] args)
             TabSep <- ","
             NlSupp <- ";"
             VarList <- Var (:WS? "," :WS? Var)*
+            ParameterList <- Parameter (:WS? "," :WS? Parameter)*
             Datalist <- (Number / String / Label_deref / Varname) (:WS? "," :WS? (Number / String / Label_deref / Varname) :WS?)*
 
             Expression <- Relation (:WS? BW_OP :WS? Relation)*
@@ -172,6 +173,7 @@ void main(string[] args)
 
             Varnosubscript <- Varname Vartype?
             Var <- Varname Subscript? Vartype?
+            Parameter <- Varname Vartype? (:WS? Varattrib)*
             
             IdentifierStart <~ [a-zA-Z_]
             IdentifierCont <~ [a-zA-Z0-9_]+

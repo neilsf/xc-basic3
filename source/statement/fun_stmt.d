@@ -27,6 +27,7 @@ class Fun_stmt : Statement
     private bool isAlreadyDeclared = false;
     private bool isOverload = false;
     private bool isInline = false;
+    private bool isFast = false;
     private Routine routine;
     private ArgumentStub[] argStubs;
     private ushort strLen;
@@ -86,15 +87,20 @@ class Fun_stmt : Statement
         }
     }
 
-    private void readArgs(ParseTree varList)
+    private void readArgs(ParseTree parameterList)
     {
-        foreach (ref arg; varList)
+        foreach (ref arg; parameterList)
         {
             VariableReader reader = new VariableReader(arg, compiler);
             Variable tmpVariable = reader.read(null, this.isStatic, !this.isInline);
             if (reader.isFallbackType())
             {
                 compiler.displayError("Parameter without type: " ~ tmpVariable.name);
+            }
+            // Process attributes (FAST, etc..)
+            for (ref attrib; arg.children[])
+            {
+                // TODO continue here
             }
             this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type, tmpVariable.strLen);
             this.routine.addArgType(tmpVariable.type);
@@ -191,6 +197,10 @@ class Fun_stmt : Statement
                 case "INLINE":
                     this.isInline = true;
                     break;
+
+                case "FAST":
+                    this.isFast = true;
+                    break;
                 }
             }
         }
@@ -270,7 +280,7 @@ class Fun_stmt : Statement
 
         // Get arguments
         if (this.node.children[0].children.length > 1
-                && this.node.children[0].children[1].name == "XCBASIC.VarList")
+                && this.node.children[0].children[1].name == "XCBASIC.ParameterList")
         {
             readArgs(this.node.children[0].children[1]);
         }

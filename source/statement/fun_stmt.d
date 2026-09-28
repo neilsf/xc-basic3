@@ -98,9 +98,19 @@ class Fun_stmt : Statement
                 compiler.displayError("Parameter without type: " ~ tmpVariable.name);
             }
             // Process attributes (FAST, etc..)
-            for (ref attrib; arg.children[])
+            foreach (ref child; arg.children.filter!(c => c.name == "XCBASIC.VarAttrib"))
             {
-                // TODO continue here
+                switch (child.matches.join.toUpper)
+                {
+                    case "FAST":
+                        tmpVariable.isFast = true;
+                        break;
+                    case "SHARED":
+                        compiler.displayError("Parameter cannot be SHARED");
+                        break;
+                    default:
+                        compiler.displayError("Unsupported parameter attribute: " ~ child.matches[0]);
+                }
             }
             this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type, tmpVariable.strLen);
             this.routine.addArgType(tmpVariable.type);

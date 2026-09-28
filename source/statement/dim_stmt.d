@@ -142,6 +142,10 @@ class Dim_stmt : Statement
                 parseAttrib(node);
             }
         }
+        if (compiler.inProcedure && compiler.currentProc.getIsFast())
+        {
+            isFast = true;
+        }
         // Variables second
         for (int i = 0; i < statement.children.length; i++)
         {

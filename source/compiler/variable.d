@@ -348,11 +348,8 @@ class VariableReader
     }
 
     /** Returns variable object built from AST (found in Dim, Let, For, etc...) */
-    public Variable read(
-        Type inferredType = null,
-        bool forceStatic = false,
-        bool stringLengthRequired = true
-    )
+    public Variable read(Type inferredType = null, bool forceStatic = false,
+            bool stringLengthRequired = true)
     {
         ushort[3] dimensions = [1, 1, 1];
         string name;
@@ -503,7 +500,7 @@ class VariableReader
                 type = compiler.getTypes().get(typeName);
                 break;
 
-            case "XCBASIC.VarAttrib":
+            case "XCBASIC.Varattrib":
                 // Variable attributes are processed in the
                 //Dim or Function statement, not here
                 break;

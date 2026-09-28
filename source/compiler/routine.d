@@ -46,11 +46,13 @@ class Routine
     public bool isDeclarationComplete = false;
     /** Inline function */
     protected bool isInline = false;
+    /** Flag indicating that the routine was declared as FAST */
+    protected bool isFast = false;
 
     /** Class constructor */
     this(string name, bool isShared, string fileId, Compiler compiler, string keyword,
             bool isStatic = false, bool isMethod = false, bool isPrivate = false,
-            bool isInline = false)
+            bool isInline = false, bool isFast = false)
     {
         this.name = toLower(name);
         this.isShared = isMethod || isShared;
@@ -65,6 +67,7 @@ class Routine
         }
         this.isPrivate = isPrivate;
         this.isInline = isInline;
+        this.isFast = isFast;
     }
 
     /** The assembly label of the entry point of this routine */
@@ -148,6 +151,12 @@ class Routine
     public bool getIsStatic()
     {
         return isStatic;
+    }
+
+    /** Getter for isFast */
+    public bool getIsFast()
+    {
+        return isFast;
     }
 
     /** Getter for isMethod */

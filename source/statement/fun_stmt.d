@@ -14,6 +14,7 @@ class Fun_stmt : Statement
         string name;
         Type type;
         ushort strLen;
+        bool isFast;
     }
 
     private string keyword;
@@ -27,6 +28,7 @@ class Fun_stmt : Statement
     private bool isAlreadyDeclared = false;
     private bool isOverload = false;
     private bool isInline = false;
+    private bool isFast = false;
     private Routine routine;
     private ArgumentStub[] argStubs;
     private ushort strLen;
@@ -86,9 +88,9 @@ class Fun_stmt : Statement
         }
     }
 
-    private void readArgs(ParseTree varList)
+    private void readArgs(ParseTree parameterList)
     {
-        foreach (ref arg; varList)
+        foreach (ref arg; parameterList.children)
         {
             VariableReader reader = new VariableReader(arg, compiler);
             Variable tmpVariable = reader.read(null, this.isStatic, !this.isInline);
@@ -96,7 +98,34 @@ class Fun_stmt : Statement
             {
                 compiler.displayError("Parameter without type: " ~ tmpVariable.name);
             }
-            this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type, tmpVariable.strLen);
+            // Process attributes (FAST, etc..)
+            foreach (ref child; arg.children.filter!(c => c.name == "XCBASIC.Varattrib"))
+            {
+                switch (child.matches.join.toUpper)
+                {
+                case "FAST":
+                    if (!this.isStatic)
+                    {
+                        compiler.displayError("FAST parameter can only be used in STATIC routines");
+                    }
+                    tmpVariable.isFast = true;
+                    break;
+                case "SHARED":
+                    compiler.displayError("Parameter cannot be SHARED");
+                    break;
+                default:
+                    compiler.displayError("Unsupported parameter attribute: " ~ child.matches[0]);
+                }
+            }
+
+            if (this.isFast)
+            {
+                tmpVariable.isFast = true;
+            }
+
+            this.argStubs ~= ArgumentStub(tmpVariable.name, tmpVariable.type,
+                    tmpVariable.strLen, tmpVariable.isFast);
+
             this.routine.addArgType(tmpVariable.type);
         }
     }
@@ -125,8 +154,9 @@ class Fun_stmt : Statement
                         compiler, this.isStatic, [1, 1, 1], 0, stub.strLen);
                 argument.isDynamic = !this.isStatic;
                 argument.strLen = stub.strLen;
+                argument.isFast = stub.isFast;
                 this.routine.addArgument(argument);
-                this.compiler.getVars().add(argument, false);
+                this.compiler.getVars().add(argument, stub.isFast);
             }
         }
         // Add storage for return value
@@ -138,7 +168,7 @@ class Fun_stmt : Statement
             {
                 v.strLen = this.strLen;
             }
-            compiler.getVars().add(v, false);
+            compiler.getVars().add(v, this.isFast);
             this.routine.returnValue = v;
         }
         // Add routine
@@ -191,8 +221,17 @@ class Fun_stmt : Statement
                 case "INLINE":
                     this.isInline = true;
                     break;
+
+                case "FAST":
+                    this.isFast = true;
+                    break;
                 }
             }
+        }
+
+        if (this.isFast && !this.isStatic)
+        {
+            compiler.displayError("FAST modifier can only be applied to STATIC routines");
         }
 
         // Get name and type
@@ -246,7 +285,11 @@ class Fun_stmt : Statement
 
         if (this.keyword == "SUB" && this.type.name != Type.VOID)
         {
-            compiler.displayError("A SUB may not have a type as it cannot return anything");
+            compiler.displayError("A SUB may not have a return type as it cannot return anything");
+        }
+        else if (this.keyword == "FUNCTION" && this.type.name == Type.VOID)
+        {
+            compiler.displayError("You must must specify a return type for a FUNCTION");
         }
 
         if (compiler.inTypeDef)
@@ -264,13 +307,13 @@ class Fun_stmt : Statement
             compiler.displayError("The PRIVATE modifier can only be applied to type methods");
         }
 
-        this.routine = new Routine(name, isShared, compiler.currentFileId,
-                compiler, this.keyword, isStatic, isMethod, isPrivate, isInline);
+        this.routine = new Routine(name, isShared, compiler.currentFileId, compiler,
+                this.keyword, isStatic, isMethod, isPrivate, isInline, isFast);
         this.routine.type = this.type;
 
         // Get arguments
         if (this.node.children[0].children.length > 1
-                && this.node.children[0].children[1].name == "XCBASIC.VarList")
+                && this.node.children[0].children[1].name == "XCBASIC.ParameterList")
         {
             readArgs(this.node.children[0].children[1]);
         }

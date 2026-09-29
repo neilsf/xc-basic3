@@ -1,6 +1,6 @@
 module statement.let_stmt;
 
-import std.array, std.conv;
+import std.array, std.conv, std.uni;
 
 import pegged.grammar;
 
@@ -54,10 +54,10 @@ class Let_stmt : Statement
             }
             Variable var = Variable.create(join(varNode.matches),
                     exp.getType(), compiler, false, [1, 1, 1], 0, to!ushort(strLen));
-            compiler.getVars().add(var, false);
+            compiler.getVars().add(var, compiler.inProcedure && compiler.currentProc.getIsFast());
             access.setVariable(var);
-            compiler.displayNotice("Variable \"" ~ var.name ~ "\" implicitly defined as " ~ var.type.name ~ (strLen > 0
-                    ? (" * " ~ to!string(strLen)) : ""));
+            compiler.displayNotice("Variable \"" ~ var.name ~ "\" implicitly defined as " ~ toUpper(
+                    var.type.name) ~ (strLen > 0 ? (" * " ~ to!string(strLen)) : ""));
         }
 
         if (access.getVariable().isConst)

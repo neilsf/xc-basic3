@@ -341,7 +341,7 @@ class VariableReader
         this.compiler = compiler;
     }
 
-    /** True in case no explicit nor inferred ttype was provided */
+    /** True in case no explicit nor inferred type was provided */
     public bool isFallbackType()
     {
         return this.fallbackType;
@@ -356,6 +356,7 @@ class VariableReader
         ubyte dimCount;
         ushort strLen;
         Type type;
+        bool isFast = false;
 
         for (int i = 0; i < node.children.length; i++)
         {
@@ -497,6 +498,11 @@ class VariableReader
                 }
 
                 type = compiler.getTypes().get(typeName);
+                break;
+
+            case "XCBASIC.Varattrib":
+                // Variable attributes are processed in the
+                //Dim or Function statement, not here
                 break;
 
             default:

@@ -117,11 +117,12 @@ class Dim_stmt : Statement
                         compiler.displayError("Address must be a constant");
                     }
                     // a constant
-                    if (!var.type.isIntegral() || var.constVal < 0 || var.constVal > 0xFFFF)
+                    Type wordType = compiler.getTypes().get(Type.UINT16);
+                    if (!var.type.isIntegral() || !wordType.canHold(var.constVal))
                     {
                         compiler.displayError("Address must be an integer in range 0-65535");
                     }
-                    addr = to!ushort(var.constVal);
+                    addr = cast(ushort) wordType.wrap(var.constVal.intVal);
                 }
                 else
                 {

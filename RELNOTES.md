@@ -1,3 +1,29 @@
+# Unreleased
+
+## Breaking changes
+
+- Numeric literals and `CONST` values defined without an explicit type are now untyped.
+  An untyped constant adapts to the type of the other operand, e.g. `b + 1` is a `BYTE`
+  operation if `b` is a `BYTE`. If the constant does not fit in that type, the operation is
+  promoted to the smallest type that can hold both, e.g. `b + 300` is a `WORD` operation and
+  `b * -1` is an `INT` operation.
+- Constant expressions (numeric literals and `CONST` values) are evaluated at compile time with
+  exact arithmetic, e.g. `250 + 6` now evaluates to `256` instead of wrapping to `0`.
+  Division truncates toward zero and `MOD` follows the runtime rules. Division by zero and
+  results out of the 24-bit range are compile-time errors.
+- Constants in an expression are combined where possible, e.g. `b + 200 + 100` is compiled
+  as `b + 300`.
+- Assigning or passing an untyped constant that does not fit the target type is now an error
+  (e.g. `b = 300` or `POKE addr, -1`). Use an explicitly typed constant or a variable if
+  wrapping is intended.
+- Arithmetic on typed operands (variables, functions, typed constants) is unchanged and still
+  wraps within its type, e.g. `b1 + b2` where both are `BYTE`.
+- `CONST` accepts constant expressions (e.g. `CONST SIZE = WIDTH * HEIGHT`). A constant
+  declared with `AS <type>` is typed and behaves like a variable of that type in expressions.
+- Untyped constant arguments match any numeric parameter type that can hold their value when
+  resolving overloaded routines.
+- A `FOR` loop with an unsigned counter and a negative constant `STEP` is now an error.
+
 # Version 3.1.13
 
 ## Bugfixes and improvements

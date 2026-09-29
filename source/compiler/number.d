@@ -3,16 +3,25 @@ module compiler.number;
 import std.stdio, std.conv, std.string, std.algorithm, std.math, std.system,
     std.array, std.range, std.format;
 import pegged.grammar;
-import compiler.compiler, compiler.petscii, compiler.type;
+import compiler.compiler, compiler.petscii, compiler.type, compiler.constvalue;
 
-/** Parses a numeric literal */
+/**
+ * Parses a numeric literal
+ *
+ * Integer and real literals are untyped: their exact value is
+ * available through getValue() and the type field only holds the
+ * smallest type that can represent the value. Decimal literals
+ * (e.g 100d) are always typed.
+ */
 class Number
 {
     /** The parsed value, if integral type */
     public int intVal;
     /** The parsed value, if real type */
     public float floatVal;
-    /** The inferred type */
+    /** The parsed value in double precision, if real type */
+    public double realVal;
+    /** The smallest type that can hold the value (or DECIMAL for decimal literals) */
     public Type type;
 
     private static const int intRangeLow = -8_388_608;
@@ -58,7 +67,8 @@ class Number
         case "XCBASIC.Scientific":
             try
             {
-                this.floatVal = to!real(numString);
+                this.realVal = to!double(numString);
+                this.floatVal = cast(float) this.realVal;
                 this.type = compiler.getTypes().get(Type.FLOAT);
             }
             catch (Exception e)
@@ -79,29 +89,28 @@ class Number
 
         if (this.type is null)
         {
-            if (this.intVal < -32_768 || this.intVal > 65_535)
-            {
-                this.type = compiler.getTypes().get(Type.INT24);
-            }
-            else if (this.intVal > 32_767)
-            {
-                this.type = compiler.getTypes().get(Type.UINT16);
-            }
-            else if (this.intVal >= 0 && this.intVal < 256)
-            {
-                this.type = compiler.getTypes().get(Type.UINT8);
-            }
-            else
-            {
-                this.type = compiler.getTypes().get(Type.INT16);
-            }
+            this.type = compiler.getTypes().getSmallestFitting(ConstValue.fromInt(this.intVal));
         }
 
         if ((this.type.name != Type.FLOAT) && forceFloat)
         {
             this.floatVal = to!float(this.intVal);
+            this.realVal = to!double(this.intVal);
             this.type = compiler.getTypes().get(Type.FLOAT);
         }
+    }
+
+    /** Whether the literal is untyped (i.e not a decimal literal) */
+    public bool isUntyped()
+    {
+        return this.type.name != Type.DEC;
+    }
+
+    /** The exact value of the literal */
+    public ConstValue getValue()
+    {
+        return this.type.name == Type.FLOAT
+            ? ConstValue.fromReal(this.realVal) : ConstValue.fromInt(this.intVal);
     }
 
     /** Convert binary float to Hexadecimal */

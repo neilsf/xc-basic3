@@ -212,7 +212,7 @@ private string unescapeString(string str, ubyte[string] escapeSequences)
 
 private ubyte[] asciiToPetsciiBytes(string asciiString)
 {
-    return asciiString.map!(c => petscii[cast(ubyte) c]).array;
+    return (cast(const(ubyte)[]) asciiString).map!(c => petscii[c]).array;
 }
 
 unittest
@@ -276,4 +276,8 @@ unittest
     Assert.equal(hex, "HEX 01 93 ");
     Assert.equal(truncated, true);
     Assert.equal(finalLength, 1);
+
+    hex = asciiToHex("A{CLR}B", 0, truncated, finalLength);
+    Assert.equal(hex, "HEX 03 C1 93 C2 ");
+    Assert.equal(finalLength, 3);
 }

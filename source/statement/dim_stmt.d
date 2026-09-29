@@ -67,6 +67,11 @@ class Dim_stmt : Statement
     {
         VariableReader reader = new VariableReader(node, compiler);
         this.variable = reader.read(null, this.isStatic);
+        if (reader.isFallbackType())
+        {
+            compiler.displayWarning("No type specified for variable \"" ~ this.variable.name ~ "\", using " ~ toUpper(
+                    this.variable.type.name));
+        }
         if (this.variable.type.name == Type.VOID)
         {
             compiler.displayError("Can't define a variable as void");
@@ -141,6 +146,10 @@ class Dim_stmt : Statement
             {
                 parseAttrib(node);
             }
+        }
+        if (compiler.inProcedure && compiler.currentProc.getIsFast())
+        {
+            isFast = true;
         }
         // Variables second
         for (int i = 0; i < statement.children.length; i++)

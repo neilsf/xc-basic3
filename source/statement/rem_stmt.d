@@ -24,7 +24,7 @@ class Rem_stmt : Statement
                     {
                         if (v.isConst)
                         {
-                            return to!string(v.constVal);
+                            return v.constVal.toString();
                         }
                         return v.getAsmLabel();
                     }

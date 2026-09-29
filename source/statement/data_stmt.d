@@ -102,7 +102,8 @@ class Data_stmt : Statement
                     {
                         compiler.displayError("DATA must be constant");
                     }
-                    listItems ~= getNumberAsString(to!int(var.constVal), var.constVal, type);
+                    listItems ~= getNumberAsString(cast(int) var.constVal.toLong(),
+                            cast(float) var.constVal.toDouble(), type);
                 }
                 else
                 {

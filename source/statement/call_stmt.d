@@ -3,7 +3,7 @@ module statement.call_stmt;
 import pegged.grammar;
 
 import compiler.compiler, compiler.type, compiler.routine;
-import language.statement, language.factor, language.accessor;
+import language.statement, language.accessor;
 
 import std.conv, std.array;
 

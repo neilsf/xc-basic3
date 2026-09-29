@@ -29,7 +29,7 @@ void main(string[] args)
                         Sound_clear_stmt | Volume_stmt | Voice_stmt | Filter_stmt | Irq_stmt | Border_stmt | Background_stmt | Sys_stmt |
                         Charset_stmt | Scroll_stmt | VMode_stmt | Field_def |
                         Select_stmt | Case_stmt)
-            Const_stmt <-    ("shared"i :WS)? "const"i :WS Varnosubscript :WS? "=" :WS? Number
+            Const_stmt <-    ("shared"i :WS)? "const"i :WS Varnosubscript :WS? "=" :WS? Expression
             Let_stmt <-      (("let"i :WS) / eps) Accessor :WS? "=" :WS? Expression
             Print_stmt <-    "print"i (:WS? "#" :WS? Expression :WS? ",")? :WS? PrintableList :WS? ";"?
             Write_stmt      <- "write"i :WS? "#" :WS? ExprList

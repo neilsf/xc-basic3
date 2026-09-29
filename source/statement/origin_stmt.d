@@ -35,7 +35,12 @@ class Origin_stmt : Statement
                     compiler.displayError("ORIGIN must be constant");
                 }
                 // a constant
-                address = to!ushort(var.constVal);
+                Type wordType = compiler.getTypes().get(Type.UINT16);
+                if (!var.type.isIntegral() || !wordType.canHold(var.constVal))
+                {
+                    compiler.displayError("Address out of range");
+                }
+                address = cast(ushort) wordType.wrap(var.constVal.intVal);
             }
             else
             {

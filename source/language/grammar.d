@@ -392,7 +392,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt")(p);
         }
         else
         {
@@ -400,7 +400,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt"), "Const_stmt")(p);
                 memo[tuple(`Const_stmt`, p.end)] = result;
                 return result;
             }
@@ -411,12 +411,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Const_stmt(GetName g)

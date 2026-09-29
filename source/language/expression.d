@@ -925,6 +925,16 @@ private class ExpressionBuilder
      */
     private void combineAdjacent(ChainKind kind, ref ExprNode[] operands, ref string[] ops)
     {
+        // In a float chain, constant division must not truncate
+        bool floatChain = false;
+        foreach (ref o; operands)
+        {
+            if (o.isUntyped() ? (cast(ConstNode) o).value.isReal()
+                    : o.getType().name == Type.FLOAT)
+            {
+                floatChain = true;
+            }
+        }
         ExprNode[] outOperands = [operands[0]];
         string[] outOps;
         foreach (i, ref op; ops)
@@ -948,8 +958,14 @@ private class ExpressionBuilder
             }
             if (merge)
             {
-                outOperands[$ - 1] = new ConstNode(compiler, tryFold(foldUntyped(op,
-                        (cast(ConstNode) prev).value, (cast(ConstNode) x).value)));
+                ConstValue a = (cast(ConstNode) prev).value;
+                ConstValue b = (cast(ConstNode) x).value;
+                if (floatChain)
+                {
+                    a = ConstValue.fromReal(a.toDouble());
+                    b = ConstValue.fromReal(b.toDouble());
+                }
+                outOperands[$ - 1] = new ConstNode(compiler, tryFold(foldUntyped(op, a, b)));
             }
             else
             {
@@ -1033,6 +1049,13 @@ private class ExpressionBuilder
             ConstValue b = (cast(ConstNode) right).value;
             bool result;
             bool folded = true;
+            if ((cmpType is null && (a.isReal() || b.isReal()))
+                    || (cmpType !is null && cmpType.name == Type.FLOAT))
+            {
+                // Floats are compared in single precision at runtime
+                a = ConstValue.fromReal(cast(double) cast(float) a.toDouble());
+                b = ConstValue.fromReal(cast(double) cast(float) b.toDouble());
+            }
             if (cmpType is null)
             {
                 result = compareValues(op, a, b);

@@ -63,7 +63,7 @@ CALL ball.init()
 DO
   CALL ball.update()
   ' wait one frame
-  WAIT 53265, 128
+  DO : LOOP UNTIL SCAN() = 251
   CALL ball.draw()
 LOOP WHILE 1
 

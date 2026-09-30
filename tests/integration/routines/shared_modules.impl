@@ -1,0 +1,6 @@
+SUB clear_keyboard_buffer() SHARED STATIC
+END SUB
+
+FUNCTION shared_value AS BYTE () SHARED STATIC
+  RETURN 1
+END FUNCTION

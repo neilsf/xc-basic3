@@ -129,7 +129,8 @@ class Routine
     public string getFunctionHash()
     {
         return [
-            fileId, keyword, name, type.name, (isMethod ? parentType.name : "."),
+            (isShared && !isMethod ? "" : fileId), keyword, name, type.name, (isMethod
+                    ? parentType.name : "."),
             (isStatic ? "S" : "."), (isPrivate ? "P" : "."), (isShared
                     ? "H" : "."), (isMethod ? "M" : ".")
         ].join("|");

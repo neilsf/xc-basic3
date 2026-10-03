@@ -4,7 +4,8 @@ import std.string, std.conv;
 
 import pegged.grammar;
 
-import language.statement, compiler.compiler, compiler.number, compiler.variable;
+import language.statement, language.expression, compiler.compiler, compiler.type,
+    compiler.variable, compiler.constvalue;
 
 /** Compiles a CONST statement */
 class Const_stmt : Statement
@@ -18,9 +19,30 @@ class Const_stmt : Statement
     void process()
     {
         immutable bool isShared = (toLower(node.matches[0]) == "shared");
-        Number num = new Number(node.children[0].children[1], compiler);
-        VariableReader reader = new VariableReader(node.children[0].children[0], compiler);
-        Variable var = reader.read(num.type);
+        ParseTree varNode = node.children[0].children[0];
+        Expression e = new Expression(node.children[0].children[1], compiler);
+        if (!e.isConstant())
+        {
+            compiler.displayError("Constant value must be a constant expression");
+        }
+        Type exprType = e.getType();
+        if (!exprType.isNumeric())
+        {
+            compiler.displayError("Constant can only be a numeric type");
+        }
+        ConstValue value = e.getConstValue();
+
+        bool explicitType = false;
+        foreach (ref child; varNode.children)
+        {
+            if (child.name == "XCBASIC.Vartype" && join(child.matches) != "")
+            {
+                explicitType = true;
+            }
+        }
+
+        VariableReader reader = new VariableReader(varNode, compiler);
+        Variable var = reader.read(exprType);
         // Sanity checks
         if (!var.type.isNumeric())
         {
@@ -34,12 +56,45 @@ class Const_stmt : Statement
         {
             compiler.displayError("Local constant cannot be shared");
         }
-        if (num.type.isIntegral() ^ var.type.isIntegral())
+
+        if (explicitType)
         {
-            compiler.displayError("Type mismatch");
+            Type t = var.type;
+            if (t.name == Type.FLOAT)
+            {
+                if (!e.isUntypedConstant() && !exprType.isConvertable(t))
+                {
+                    compiler.displayError("Type mismatch");
+                }
+                value = ConstValue.fromReal(value.toDouble());
+            }
+            else
+            {
+                if (value.isReal() || (!e.isUntypedConstant() && !exprType.isConvertable(t)))
+                {
+                    compiler.displayError("Type mismatch");
+                }
+                if (e.isUntypedConstant() && !t.canHold(value))
+                {
+                    compiler.displayError("Constant value " ~ value.toString() ~ " is out of "
+                            ~ toUpper(t.name) ~ " range (" ~ to!string(t.minValue()) ~ " to "
+                            ~ to!string(t.maxValue()) ~ ")");
+                }
+                value = ConstValue.fromInt(t.wrap(value.intVal));
+            }
+            var.isUntypedConst = false;
         }
+        else
+        {
+            var.isUntypedConst = e.isUntypedConstant();
+            if (!var.isUntypedConst && !value.isReal() && exprType.name != Type.FLOAT)
+            {
+                value = ConstValue.fromInt(exprType.wrap(value.intVal));
+            }
+        }
+
         var.isConst = true;
-        var.constVal = num.type.isIntegral() ? to!float(num.intVal) : num.floatVal;
+        var.constVal = value;
         if (compiler.inProcedure)
         {
             var.visibility = compiler.VIS_LOCAL;

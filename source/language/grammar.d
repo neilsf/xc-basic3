@@ -143,6 +143,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
         rules["TabSep"] = toDelegate(&TabSep);
         rules["NlSupp"] = toDelegate(&NlSupp);
         rules["VarList"] = toDelegate(&VarList);
+        rules["ParameterList"] = toDelegate(&ParameterList);
         rules["Datalist"] = toDelegate(&Datalist);
         rules["Expression"] = toDelegate(&Expression);
         rules["Relation"] = toDelegate(&Relation);
@@ -157,6 +158,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
         rules["Parenthesis"] = toDelegate(&Parenthesis);
         rules["Varnosubscript"] = toDelegate(&Varnosubscript);
         rules["Var"] = toDelegate(&Var);
+        rules["Parameter"] = toDelegate(&Parameter);
         rules["IdentifierStart"] = toDelegate(&IdentifierStart);
         rules["IdentifierCont"] = toDelegate(&IdentifierCont);
         rules["Varname"] = toDelegate(&Varname);
@@ -390,7 +392,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt")(p);
         }
         else
         {
@@ -398,7 +400,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt"), "Const_stmt")(p);
                 memo[tuple(`Const_stmt`, p.end)] = result;
                 return result;
             }
@@ -409,12 +411,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Number), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.discard!(WS))), pegged.peg.caseInsensitiveLiteral!("const"), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!("="), pegged.peg.discard!(pegged.peg.option!(WS)), Expression), "XCBASIC.Const_stmt"), "Const_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Const_stmt(GetName g)
@@ -1794,7 +1796,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(ParameterList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(p);
         }
         else
         {
@@ -1802,7 +1804,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(ParameterList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(p);
                 memo[tuple(`Fun_stmt`, p.end)] = result;
                 return result;
             }
@@ -1813,12 +1815,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(ParameterList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(VarList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.option!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("declare"), pegged.peg.discard!(WS))), pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("function"), pegged.peg.caseInsensitiveLiteral!("sub")), pegged.peg.discard!(WS), Varnosubscript, pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!("(")), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.option!(ParameterList), pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.discard!(pegged.peg.literal!(")")), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), Funcattrib))), "XCBASIC.Fun_stmt"), "Fun_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Fun_stmt(GetName g)
@@ -1830,7 +1832,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("fast")), "XCBASIC.Funcattrib")(p);
         }
         else
         {
@@ -1838,7 +1840,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib"), "Funcattrib")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("fast")), "XCBASIC.Funcattrib"), "Funcattrib")(p);
                 memo[tuple(`Funcattrib`, p.end)] = result;
                 return result;
             }
@@ -1849,12 +1851,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("fast")), "XCBASIC.Funcattrib")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline")), "XCBASIC.Funcattrib"), "Funcattrib")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("private"), pegged.peg.caseInsensitiveLiteral!("shared"), pegged.peg.caseInsensitiveLiteral!("static"), pegged.peg.caseInsensitiveLiteral!("overload"), pegged.peg.caseInsensitiveLiteral!("inline"), pegged.peg.caseInsensitiveLiteral!("fast")), "XCBASIC.Funcattrib"), "Funcattrib")(TParseTree("", false,[], s));
         }
     }
     static string Funcattrib(GetName g)
@@ -3414,7 +3416,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(p);
         }
         else
         {
@@ -3422,7 +3424,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(p);
                 memo[tuple(`Voice_stmt`, p.end)] = result;
                 return result;
             }
@@ -3433,12 +3435,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Number, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("voice"), pegged.peg.discard!(WS), Expression, pegged.peg.oneOrMore!(pegged.peg.and!(pegged.peg.discard!(WS), VoiceSubCmd))), "XCBASIC.Voice_stmt"), "Voice_stmt")(TParseTree("", false,[], s));
         }
     }
     static string Voice_stmt(GetName g)
@@ -4382,6 +4384,42 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
         return "XCBASIC.VarList";
     }
 
+    static TParseTree ParameterList(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Parameter, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Parameter))), "XCBASIC.ParameterList")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`ParameterList`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Parameter, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Parameter))), "XCBASIC.ParameterList"), "ParameterList")(p);
+                memo[tuple(`ParameterList`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree ParameterList(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Parameter, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Parameter))), "XCBASIC.ParameterList")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Parameter, pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), pegged.peg.literal!(","), pegged.peg.discard!(pegged.peg.option!(WS)), Parameter))), "XCBASIC.ParameterList"), "ParameterList")(TParseTree("", false,[], s));
+        }
+    }
+    static string ParameterList(GetName g)
+    {
+        return "XCBASIC.ParameterList";
+    }
+
     static TParseTree Datalist(TParseTree p)
     {
         if(__ctfe)
@@ -4909,6 +4947,42 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     static string Var(GetName g)
     {
         return "XCBASIC.Var";
+    }
+
+    static TParseTree Parameter(TParseTree p)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Parameter")(p);
+        }
+        else
+        {
+            if (auto m = tuple(`Parameter`, p.end) in memo)
+                return *m;
+            else
+            {
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Parameter"), "Parameter")(p);
+                memo[tuple(`Parameter`, p.end)] = result;
+                return result;
+            }
+        }
+    }
+
+    static TParseTree Parameter(string s)
+    {
+        if(__ctfe)
+        {
+            return         pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Parameter")(TParseTree("", false,[], s));
+        }
+        else
+        {
+            forgetMemo();
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(Varname, pegged.peg.option!(Vartype), pegged.peg.zeroOrMore!(pegged.peg.and!(pegged.peg.discard!(pegged.peg.option!(WS)), Varattrib))), "XCBASIC.Parameter"), "Parameter")(TParseTree("", false,[], s));
+        }
+    }
+    static string Parameter(GetName g)
+    {
+        return "XCBASIC.Parameter";
     }
 
     static TParseTree IdentifierStart(TParseTree p)

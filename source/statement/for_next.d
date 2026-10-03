@@ -106,9 +106,12 @@ class For_stmt : Statement
         bool isLimitConstant;
         limitExp.setExpectedType(counterVar.type);
         limitExp.eval();
-        if (limitExp.isConstant() && counterVar.type.isIntegral())
+        if (limitExp.isConstant() && counterVar.type.isIntegral()
+                && limitExp.getConstValue().isInteger())
         {
-            limitValue = to!string(limitExp.getConstVal());
+            immutable long limitInt = limitExp.getConstValue().intVal;
+            limitValue = to!string(counterVar.type.isBinaryInteger()
+                    ? counterVar.type.wrap(limitInt) : limitInt);
             isLimitConstant = true;
         }
         else
@@ -131,13 +134,14 @@ class For_stmt : Statement
                     counterVar.type, compiler, true);
             stepVar.isPrivate = true;
             compiler.getVars.add(stepVar, false);
+            if (!counterVar.type.isSigned() && stepExp.isConstant()
+                    && stepExp.getConstValue().isNegative())
+            {
+                compiler.displayError(
+                        "FOR loop with unsigned index can not have a negative STEP. Use a signed type.");
+            }
             stepExp.setExpectedType(counterVar.type);
             stepExp.eval();
-            if (!counterVar.type.isSigned() && stepExp.isConstant() && stepExp.getConstVal() < 0)
-            {
-                compiler.displayWarning(
-                        "FOR loop with unsigned index will never be entered if STEP is negative. Use a signed type.");
-            }
             this.appendCode(to!string(stepExp));
             this.appendCode("    pl" ~ counterVar.type.name ~ "var " ~ stepVar.getAsmLabel() ~ "\n");
         }

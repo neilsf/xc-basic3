@@ -63,9 +63,17 @@ class Data_stmt : Statement
                     compiler.displayError(
                             "Type mismatch: expected number, label reference or constant, got string");
                 }
-                compiler.getImCode().appendSegment(inlineData ? IntermediateCode.PROGRAM_SEGMENT
-                        : IntermediateCode.DATA_SEGMENT, "    " ~ asciiToPetsciiHex(join(datum.matches[1 .. $ - 1]),
-                            strLen, truncated, finalLength) ~ "\n");
+                compiler.getImCode().appendSegment(
+                        inlineData ? IntermediateCode.PROGRAM_SEGMENT: IntermediateCode.DATA_SEGMENT,
+                        "    " ~ asciiToHex(
+                            join(datum.matches[1 .. $ - 1]),
+                            strLen,
+                            truncated,
+                            finalLength,
+                            asciiMode
+                        ) ~ "\n"
+                    );
+                
                 if (truncated)
                 {
                     compiler.displayWarning(
@@ -94,7 +102,8 @@ class Data_stmt : Statement
                     {
                         compiler.displayError("DATA must be constant");
                     }
-                    listItems ~= getNumberAsString(to!int(var.constVal), var.constVal, type);
+                    listItems ~= getNumberAsString(cast(int) var.constVal.toLong(),
+                            cast(float) var.constVal.toDouble(), type);
                 }
                 else
                 {

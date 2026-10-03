@@ -1,0 +1,3 @@
+DECLARE SUB clear_keyboard_buffer() SHARED STATIC
+DECLARE FUNCTION shared_value AS BYTE () SHARED STATIC
+INCLUDE "./shared_modules.impl"

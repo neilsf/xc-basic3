@@ -67,6 +67,11 @@ class Dim_stmt : Statement
     {
         VariableReader reader = new VariableReader(node, compiler);
         this.variable = reader.read(null, this.isStatic);
+        if (reader.isFallbackType())
+        {
+            compiler.displayWarning("No type specified for variable \"" ~ this.variable.name ~ "\", using " ~ toUpper(
+                    this.variable.type.name));
+        }
         if (this.variable.type.name == Type.VOID)
         {
             compiler.displayError("Can't define a variable as void");
@@ -112,11 +117,12 @@ class Dim_stmt : Statement
                         compiler.displayError("Address must be a constant");
                     }
                     // a constant
-                    if (!var.type.isIntegral() || var.constVal < 0 || var.constVal > 0xFFFF)
+                    Type wordType = compiler.getTypes().get(Type.UINT16);
+                    if (!var.type.isIntegral() || !wordType.canHold(var.constVal))
                     {
                         compiler.displayError("Address must be an integer in range 0-65535");
                     }
-                    addr = to!ushort(var.constVal);
+                    addr = cast(ushort) wordType.wrap(var.constVal.intVal);
                 }
                 else
                 {
@@ -141,6 +147,10 @@ class Dim_stmt : Statement
             {
                 parseAttrib(node);
             }
+        }
+        if (compiler.inProcedure && compiler.currentProc.getIsFast())
+        {
+            isFast = true;
         }
         // Variables second
         for (int i = 0; i < statement.children.length; i++)

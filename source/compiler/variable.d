@@ -4,7 +4,7 @@ import std.algorithm, std.conv, std.array, std.string, std.math;
 
 import language.expression;
 import compiler.compiler, compiler.type, compiler.number,
-    compiler.intermediatecode, compiler.routine, compiler.helper;
+    compiler.intermediatecode, compiler.routine, compiler.helper, compiler.constvalue;
 
 import globals;
 
@@ -56,7 +56,9 @@ class Variable
     /** In what source file the variable was defined in */
     string fileId;
     /** Value if constant */
-    float constVal = 0;
+    ConstValue constVal;
+    /** Whether the constant was defined without an explicit type */
+    bool isUntypedConst = false;
     /** For strings, the string length */
     ushort strLen = 0;
     /** If this is a field, the byte offset from the start of its type */
@@ -341,7 +343,7 @@ class VariableReader
         this.compiler = compiler;
     }
 
-    /** True in case no explicit nor inferred ttype was provided */
+    /** True in case no explicit nor inferred type was provided */
     public bool isFallbackType()
     {
         return this.fallbackType;
@@ -356,6 +358,7 @@ class VariableReader
         ubyte dimCount;
         ushort strLen;
         Type type;
+        bool isFast = false;
 
         for (int i = 0; i < node.children.length; i++)
         {
@@ -372,51 +375,33 @@ class VariableReader
                 {
 
                     ParseTree expr = cast(ParseTree) x;
+                    Expression e = new Expression(expr, this.compiler);
 
-                    if (!((new Expression(expr, this.compiler)).isConstant()))
+                    if (!e.isConstant())
                     {
                         compiler.displayError("Array dimensions must be constant");
                     }
 
-                    string dim = join(expr.matches);
-                    int dimLength = 0;
-
-                    // Case 1: test for a defined constant
-                    Variable constVar = compiler.getVars().findVisible(dim);
-                    if (constVar !is null)
+                    ConstValue dimValue = e.getConstValue();
+                    if (dimValue.isReal())
                     {
-                        if (!constVar.isConst)
-                        {
-                            compiler.displayError("Array dimension must be a constant");
-                        }
-                        if (!canFind([Type.UINT8, Type.INT16, Type.UINT16], constVar.type.name))
-                        {
-                            compiler.displayError(
-                                    "Array dimensions must be of type byte, int or word.");
-                        }
-
-                        dimLength = to!int(constVar.constVal);
+                        compiler.displayError("Array dimension must be integer");
                     }
-                    // Case 2: test for numeric literal
-                    else
+                    if (!e.isUntypedConstant() && !canFind([Type.UINT8,
+                            Type.INT16, Type.UINT16], e.getType().name))
                     {
-                        if (expr.children.length > 1)
-                        {
-                            compiler.displayError("Array dimensions must be constant");
-                        }
-                        Number num = new Number(expr.children[0].children[0].children[0].children[0].children[0],
-                                this.compiler);
-                        if (num.type == compiler.getTypes.get(Type.FLOAT))
-                        {
-                            compiler.displayError("Array dimension must be integer");
-                        }
-                        dimLength = num.intVal;
+                        compiler.displayError("Array dimensions must be of type byte, int or word.");
                     }
 
-                    if (dimLength < 1)
+                    if (dimValue.intVal < 1)
                     {
                         compiler.displayError("Array dimension must be greater than zero");
                     }
+                    if (dimValue.intVal > ushort.max)
+                    {
+                        compiler.displayError("Array dimension out of range");
+                    }
+                    immutable int dimLength = cast(int) dimValue.intVal;
 
                     dimensions[ix] = to!ushort(dimLength);
                     ix++;
@@ -476,7 +461,11 @@ class VariableReader
                                 compiler.displayError("String length must be constant");
                             }
                             // a constant
-                            len = to!int(var.constVal);
+                            if (!var.constVal.isInteger())
+                            {
+                                compiler.displayError("String length must be an integer");
+                            }
+                            len = cast(int) var.constVal.intVal;
                         }
                         else
                         {
@@ -497,6 +486,11 @@ class VariableReader
                 }
 
                 type = compiler.getTypes().get(typeName);
+                break;
+
+            case "XCBASIC.Varattrib":
+                // Variable attributes are processed in the
+                //Dim or Function statement, not here
                 break;
 
             default:
@@ -593,7 +587,7 @@ class VariableAccess : AccessorInterface
     /** Returns the value if it's a constant */
     public float getConstVal()
     {
-        return variable.constVal;
+        return cast(float) variable.constVal.toDouble();
     }
 
     /** Returns assembly source for accessing variable for writing */
@@ -615,15 +609,15 @@ class VariableAccess : AccessorInterface
             case Type.UINT16:
             case Type.INT16:
             case Type.INT24:
-                asmCode ~= to!string(to!int(variable.constVal));
+                asmCode ~= to!string(variable.constVal.intVal);
                 break;
 
             case Type.FLOAT:
-                asmCode ~= Number.floatToHex(variable.constVal);
+                asmCode ~= Number.floatToHex(cast(float) variable.constVal.toDouble());
                 break;
 
             case Type.DEC:
-                asmCode ~= Number.getDecimalAsHex(to!int(variable.constVal));
+                asmCode ~= Number.getDecimalAsHex(cast(int) variable.constVal.intVal);
                 break;
             }
             return asmCode ~ "\n";
@@ -744,7 +738,12 @@ class VariableAccess : AccessorInterface
                     }
                     if (e.isConstant())
                     {
-                        constSubscript[i] = to!int(e.getConstVal());
+                        if (e.getConstValue().isReal())
+                        {
+                            compiler.displayError(
+                                    "Array index must be an integral type, got float");
+                        }
+                        constSubscript[i] = cast(int) e.getConstValue().intVal;
                         if (constSubscript[i] < 0)
                         {
                             compiler.displayError("Array index must positive");

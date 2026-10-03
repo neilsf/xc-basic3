@@ -46,11 +46,13 @@ class Routine
     public bool isDeclarationComplete = false;
     /** Inline function */
     protected bool isInline = false;
+    /** Flag indicating that the routine was declared as FAST */
+    protected bool isFast = false;
 
     /** Class constructor */
     this(string name, bool isShared, string fileId, Compiler compiler, string keyword,
             bool isStatic = false, bool isMethod = false, bool isPrivate = false,
-            bool isInline = false)
+            bool isInline = false, bool isFast = false)
     {
         this.name = toLower(name);
         this.isShared = isMethod || isShared;
@@ -65,6 +67,7 @@ class Routine
         }
         this.isPrivate = isPrivate;
         this.isInline = isInline;
+        this.isFast = isFast;
     }
 
     /** The assembly label of the entry point of this routine */
@@ -126,7 +129,8 @@ class Routine
     public string getFunctionHash()
     {
         return [
-            fileId, keyword, name, type.name, (isMethod ? parentType.name : "."),
+            (isShared && !isMethod ? "" : fileId), keyword, name, type.name, (isMethod
+                    ? parentType.name : "."),
             (isStatic ? "S" : "."), (isPrivate ? "P" : "."), (isShared
                     ? "H" : "."), (isMethod ? "M" : ".")
         ].join("|");
@@ -148,6 +152,12 @@ class Routine
     public bool getIsStatic()
     {
         return isStatic;
+    }
+
+    /** Getter for isFast */
+    public bool getIsFast()
+    {
+        return isFast;
     }
 
     /** Getter for isMethod */
@@ -296,14 +306,45 @@ class RoutineCall : AccessorInterface
         return node.children[$ - 1];
     }
 
+    private Expression[] getCallerArgs()
+    {
+        Expression[] args;
+        getExprList().children.each!((expr) {
+            args ~= new Expression(expr, compiler);
+        });
+        return args;
+    }
+
     private Type[] getCallerArgTypes()
     {
-        Type[] types;
-        getExprList().children.each!((expr) {
-            Expression e = new Expression(expr, compiler);
-            types ~= e.getType();
-        });
-        return types;
+        return getCallerArgs().map!(e => e.getType()).array();
+    }
+
+    /**
+     * Returns the penalty of passing the argument to a parameter
+     * of the given type or int.max if it can't be passed
+     */
+    private int getArgPenalty(Expression arg, Type calleeType)
+    {
+        Type callerType = arg.getType();
+        if (arg.isUntypedConstant() && arg.getConstValue().isInteger())
+        {
+            // Untyped integer constants fit any numeric type that can hold their value
+            if (calleeType.isIntegral())
+            {
+                return calleeType.canHold(arg.getConstValue()) ? 0 : int.max;
+            }
+            if (calleeType.name == Type.FLOAT)
+            {
+                return callerType.getConversionPenalty(calleeType);
+            }
+            return int.max;
+        }
+        if (!callerType.isConvertable(calleeType))
+        {
+            return int.max;
+        }
+        return callerType.getConversionPenalty(calleeType);
     }
 
     protected string getCallerArgHash()
@@ -424,16 +465,13 @@ class RoutineCall : AccessorInterface
         import std.stdio;
 
         immutable string callerArgHash = getCallerArgHash();
-        Type[] callerArgTypes = getCallerArgTypes();
-        int i, j;
-        int[int] score;
-        j = 0;
-        // Best case: find exact match
-        foreach (ref candidate; candidates)
+        Expression[] callerArgs = getCallerArgs();
+        int minIx = -1;
+        int minVal = int.max;
+        foreach (j, ref candidate; candidates)
         {
-            if (candidate.argTypes.length != callerArgTypes.length)
+            if (candidate.argTypes.length != callerArgs.length)
             {
-                score[j] = int.max;
                 continue;
             }
             if (candidate.getArgsHash() == callerArgHash)
@@ -442,32 +480,21 @@ class RoutineCall : AccessorInterface
                 routine = candidate;
                 return;
             }
-            score[j] = 0;
-            i = -1;
-            foreach (ref calleeType; candidate.argTypes)
+            int score = 0;
+            foreach (i, ref calleeType; candidate.argTypes)
             {
-                i++;
-                Type callerType = callerArgTypes[i];
-                if (!callerType.isConvertable(calleeType))
+                immutable int penalty = getArgPenalty(callerArgs[i], calleeType);
+                if (penalty == int.max)
                 {
-                    score[j] = int.max;
+                    score = int.max;
                     break;
                 }
-                else
-                {
-                    score[j] += callerType.getConversionPenalty(calleeType);
-                }
+                score += penalty;
             }
-            j++;
-        }
-        int minIx = -1;
-        int minVal = int.max;
-        for (i = 0; i < j; i++)
-        {
-            if (score[i] < minVal)
+            if (score < minVal)
             {
-                minVal = score[i];
-                minIx = i;
+                minVal = score;
+                minIx = cast(int) j;
             }
         }
         if (minVal < int.max)

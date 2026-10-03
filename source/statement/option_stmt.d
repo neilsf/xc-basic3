@@ -1,6 +1,6 @@
 module statement.option_stmt;
 
-import app, globals;
+import globals;
 import pegged.grammar;
 import std.array, std.algorithm.searching, std.string;
 import compiler.compiler, language.statement, compiler.number;
@@ -58,6 +58,9 @@ class Option_stmt : Statement
             break;
         case "FASTINTERRUPT":
             fastIrqs = true;
+            break;
+        case "ASCII":
+            asciiMode = true;
             break;
         default:
             compiler.displayError("Unrecognized option: " ~ optionName);

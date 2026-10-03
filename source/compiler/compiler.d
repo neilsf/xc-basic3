@@ -1,7 +1,5 @@
 module compiler.compiler;
 
-import app;
-
 import std.stdio, std.array, std.algorithm, std.file, std.conv, std.ascii;
 import std.typecons, std.string;
 import core.stdc.stdlib;

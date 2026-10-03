@@ -3,7 +3,7 @@ module compiler.type;
 import std.algorithm.searching;
 import std.array, std.string;
 
-import compiler.variable;
+import compiler.variable, compiler.constvalue;
 
 /**
  * This class represents a variable type of the
@@ -244,6 +244,94 @@ class Type
     {
         return this.isNumeric() && this.name != UINT8 && this.name != UINT16 && this.name != DEC;
     }
+
+    /** Whether this is a binary integer type (BYTE, INT, WORD or LONG) */
+    public bool isBinaryInteger()
+    {
+        return this.name == UINT8 || this.name == INT16 || this.name == UINT16
+            || this.name == INT24;
+    }
+
+    /** Lowest value of an integer or decimal type */
+    public long minValue()
+    {
+        switch (this.name)
+        {
+        case INT16:
+            return -32_768;
+        case INT24:
+            return CONST_INT_MIN;
+        case UINT8:
+        case UINT16:
+        case DEC:
+            return 0;
+        default:
+            assert(0, "Not an integer type: " ~ this.name);
+        }
+    }
+
+    /** Highest value of an integer or decimal type */
+    public long maxValue()
+    {
+        switch (this.name)
+        {
+        case UINT8:
+            return 255;
+        case INT16:
+            return 32_767;
+        case UINT16:
+            return 65_535;
+        case INT24:
+            return CONST_INT_MAX;
+        case DEC:
+            return 9999;
+        default:
+            assert(0, "Not an integer type: " ~ this.name);
+        }
+    }
+
+    /** Whether a constant value can be represented in this type without loss */
+    public bool canHold(ConstValue value)
+    {
+        if (this.name == FLOAT)
+        {
+            return true;
+        }
+        if (this.name == DEC)
+        {
+            return value.isInteger() && value.intVal >= 0 && value.intVal <= 9999;
+        }
+        if (!this.isBinaryInteger() || !value.isInteger())
+        {
+            return false;
+        }
+        if (value.intVal >= this.minValue() && value.intVal <= this.maxValue())
+        {
+            return true;
+        }
+        // A negative bit pattern (e.g NOT 0) fits in an unsigned type of the same width
+        return value.isBitPattern && !this.isSigned()
+            && value.intVal >= -(1L << (this.length * 8 - 1));
+    }
+
+    /**
+     * Wraps an integer to the range of this type, the same way
+     * as it happens on the target machine
+     */
+    public long wrap(long value)
+    {
+        if (this.name == DEC)
+        {
+            return ((value % 10_000) + 10_000) % 10_000;
+        }
+        immutable int bits = this.length * 8;
+        long result = value & ((1L << bits) - 1);
+        if (this.isSigned() && result >= (1L << (bits - 1)))
+        {
+            result -= (1L << bits);
+        }
+        return result;
+    }
 }
 
 /** Holds all types defined in the program */
@@ -284,6 +372,32 @@ final class TypeCollection
         }
 
         assert(0);
+    }
+
+    /**
+     * Returns the smallest type that can hold the value
+     * (FLOAT for real numbers)
+     */
+    public Type getSmallestFitting(ConstValue value)
+    {
+        if (value.isReal())
+        {
+            return get(Type.FLOAT);
+        }
+        immutable long v = value.intVal;
+        if (v < -32_768 || v > 65_535)
+        {
+            return get(Type.INT24);
+        }
+        if (v > 32_767)
+        {
+            return get(Type.UINT16);
+        }
+        if (v >= 0 && v < 256)
+        {
+            return get(Type.UINT8);
+        }
+        return get(Type.INT16);
     }
 
     /** Returns whether the type is already defined */

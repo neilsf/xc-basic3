@@ -22,12 +22,23 @@ class Data_stmt : Statement
     public void process()
     {
         const ParseTree varTypeNode = node.children[0].children[0];
-        string typeName = varTypeNode.children[0].matches.join("");
-        if (!compiler.getTypes().defined(typeName))
+        string typeName;
+        if (varTypeNode.children.length < 1)
         {
-            compiler.displayError("Unknown type: " ~ typeName);
+            typeName = "BYTE";
+            compiler.displayNotice("Type not specified for DATA, defaulting to BYTE");
         }
+        else 
+        {
+            typeName = varTypeNode.children[0].matches.join("");
+            if (!compiler.getTypes().defined(typeName))
+            {
+                compiler.displayError("Unknown type: " ~ typeName);
+            }
+        }
+
         type = compiler.getTypes().get(typeName);
+        
         if (!type.isPrimitive)
         {
             compiler.displayError("Only primitive types are allowed in a DATA statement");
@@ -141,7 +152,7 @@ class Data_stmt : Statement
 
         if (listItems.length > 0)
         {
-            foreach (chunk; chunks(listItems, 8))
+            foreach (chunk; std.range.chunks(listItems, 8))
             {
                 compiler.getImCode().appendSegment(inlineData ? IntermediateCode.PROGRAM_SEGMENT
                         : IntermediateCode.DATA_SEGMENT, "    DC.B " ~ chunk.join(",") ~ "\n");
@@ -152,17 +163,26 @@ class Data_stmt : Statement
     // Translates a numeric value to its string representation
     private string getNumberAsString(int intVal, float floatVal, Type type)
     {
-        switch (type.name)
+        try
         {
-        case Type.FLOAT:
-            return Number.floatToHex(floatVal, "$");
+            switch (type.name)
+            {
+            case Type.FLOAT:
+                return Number.floatToHex(floatVal, "$");
 
-        case Type.DEC:
-            return Number.getDecimalAsHex(intVal, "$");
+            case Type.DEC:
+                return Number.getDecimalAsHex(intVal, "$");
 
-        default:
-            return Number.integralToHex(intVal, type, true, "$");
+            default:
+                return Number.integralToHex(intVal, type, true, "$");
+            }
         }
+        catch (Exception e)
+        {
+            compiler.displayError(cast(string) e.message);
+        }
+
+        assert(0);
     }
 
     // Immediately preceding labels should go to DATA segment

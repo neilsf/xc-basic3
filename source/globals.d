@@ -70,6 +70,8 @@ public void setStartAddress()
             break;
 
         case "vic20_8k":
+        case "vic20_16k":
+        case "vic20_24k":
         default:
             startAddress = 0x1201;
             break;
@@ -114,6 +116,7 @@ public void setEndAddress()
         case "pet3032":
         case "pet4032":
         case "pet8032":
+        case "vic20_24k":
             topAddress = 0x8000;
             break;
 
@@ -127,6 +130,10 @@ public void setEndAddress()
         case "pet3016":
         case "pet4016":
             topAddress = 0x4000;
+            break;
+
+        case "vic20_16k":
+            topAddress = 0x6000;
             break;
 
         case "x16":

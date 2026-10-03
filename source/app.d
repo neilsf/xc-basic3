@@ -26,6 +26,8 @@ const string[] targetOpts = [
     "vic20", // Commodore VIC-20 (unexpanded)
     "vic20_3k", // Commodore VIC-20 with 3k RAM expansion
     "vic20_8k", // Commodore VIC-20 with 8k RAM expansion
+    "vic20_16k", // Commodore VIC-20 with 16k RAM expansion
+    "vic20_24k", // Commodore VIC-20 with 24k RAM expansion
     "cplus4", // Commodore Plus/4
     "c16", // Commodore-16,
     "c128", // Commodore-128

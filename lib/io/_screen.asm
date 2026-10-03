@@ -28,16 +28,6 @@ COLOR_RAM EQU $9600
 
 	IF TARGET & pet
 SCR_MEM_START  EQU $8000
-		IF TARGET == pet2001
-SCR_LN_PTR  EQU $E0
-CRS_COL		EQU $E2
-CRS_ROW		EQU $F5
-		ENDIF
-		IF TARGET > pet2001
-SCR_LN_PTR  EQU $C4
-CRS_COL		EQU $C6
-CRS_ROW		EQU $D8
-		ENDIF
 	ENDIF
 
 ; Various C-64 registers
@@ -48,6 +38,7 @@ CIA_DIRECTIONALR EQU $DD00
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
 
+TABWIDTH		 EQU 10
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -144,22 +135,25 @@ STDLIB_TAB SUBROUTINE
 	sec
 	kerncall KERNAL_PLOT
 	tya
-	ldy #$ff
-.1
-	iny
-	cmp.wy .tabs
-	bcs .1
-	cpy #3
-	bne .2
-	printnl
-	rts
-.2	lda.wy .tabs
+.loop
+	cmp #TABWIDTH
+	bcc .done 
+	sec
+	sbc #TABWIDTH
+	jmp .loop
+.done
+	sta R0
+	lda #TABWIDTH
+	sec
+	sbc R0
+	; Print A times SPC
 	tay
-	clc
-	kerncall KERNAL_PLOT
+	lda #$20
+.printspace
+	kerncall KERNAL_CHROUT
+	dey
+	bne .printspace
 	rts
-
-.tabs HEX 0A 14 1E 28 00
 	ENDIF
 
 ; print petscii string
@@ -257,21 +251,9 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	ENDIF
 	tax
 	pla
-	IF TARGET & pet
-		sta CRS_COL
-		stx CRS_ROW
-		txa
-		import I_CALC_SCRROWPTR
-		jsr CALC_SCRROWPTR
-		lda R0
-		sta SCR_LN_PTR
-		lda R0 + 1
-		sta SCR_LN_PTR + 1
-	ELSE
-		tay
-		clc
-		kerncall KERNAL_PLOT
-		ENDIF
+	tay
+	clc
+	kerncall KERNAL_PLOT
 	ENDM
 	
 	; DECLARE FUNCTION CSRLIN AS BYTE () SHARED STATIC INLINE
@@ -512,7 +494,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8032 || TARGET = mega65 || TARGET == x16; 80-column machines
+		IF TARGET == pet8032 || TARGET == mega65 || TARGET == x16; 80-column machines
 		sta R0 + 1
 		asl R0
 		rol R0 + 1

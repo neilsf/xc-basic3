@@ -1,32 +1,86 @@
+	IF TARGET & pet
+		IF TARGET == pet2001 ; ROM 1
+STATUS		EQU $020C
+FNAME_PTR   EQU $F9
+FNAME_LEN   EQU $EE
+DEVICE_NO   EQU $F1
+SECONDARY_D EQU $F0
+MEM_ADDR    EQU $F7
+END_ADDR	EQU $E5
+LOADVERIF   EQU $020B
+SEND_FNAME  EQU $F462
+SEND_TALK   EQU $F0B6
+SEND_CMD    EQU $F12C
+READBYTE    EQU $F187
+		ELSE ; ROM 2 & ROM 4
+STATUS 		EQU $96
+FNAME_PTR   EQU $DA
+FNAME_LEN   EQU $D1
+DEVICE_NO   EQU $D4
+SECONDARY_D EQU $D3
+MEM_ADDR    EQU $FB
+END_ADDR	EQU $C9
+LOADVERIF   EQU $9D
+		IF TARGET & pet3 ; ROM 2
+SEND_FNAME  EQU $F466
+SEND_TALK   EQU $F0B6
+SEND_CMD    EQU $F128
+READBYTE    EQU $F18C
+		ELSE ; ROM 4
+SEND_FNAME  EQU $F4A5
+SEND_TALK   EQU $F0D2
+SEND_CMD    EQU $F143
+READBYTE    EQU $F1C0
+		ENDIF
+		ENDIF
+	ELSE
+STATUS 		EQU $90 ; KERNAL I/O STATUS
+	ENDIF
+
 	; Calls SETNAM with string on stack
 	; {1} = 0 name is empty
 	; {1} = 1 name is not empty
 	MAC setnam
-	IF {1} == 1
-	ldx SP
-	inx
-	lda STRING_WORKAREA,x
-	inx
-	ldy #>STRING_WORKAREA
-	ELSE
-	lda #$00 ; no filename
-    tax
-    tay
-	ENDIF
-	kerncall KERNAL_SETNAM
-	IF {1} == 1
-	import I_STRSCRATCH
-	jsr STRSCRATCH
-	ENDIF
+		IF {1} == 1
+			ldx SP
+			inx
+			lda STRING_WORKAREA,x
+			inx
+			ldy #>STRING_WORKAREA
+		ELSE
+			lda #$00 ; no filename
+			tax
+			tay
+		ENDIF
+		IF TARGET & pet
+			sta FNAME_LEN
+			stx FNAME_PTR
+			sty FNAME_PTR + 1
+		ELSE
+			kerncall KERNAL_SETNAM
+		ENDIF
+		IF {1} == 1
+			import I_STRSCRATCH
+			jsr STRSCRATCH
+		ENDIF
 	ENDM
 	
 	MAC setlfs
-	pla
-	tay
-	pla
-	tax
-	pla
-	kerncall KERNAL_SETLFS
+		IF TARGET & pet
+			pla
+			ora #$60
+			sta SECONDARY_D
+			pla
+			sta DEVICE_NO
+			pla ; Logical number discarded
+		ELSE
+			pla
+			tay
+			pla
+			tax
+			pla
+			kerncall KERNAL_SETLFS
+		ENDIF
 	ENDM
 	
 	MAC open
@@ -173,50 +227,89 @@ I_BINREAD SUBROUTINE
 	; load 1: load at address stored in file
 	; load 0: load at a specified address 
 	MAC load
-	IF USEIRQ == 1
-	jsr IRQRESET
-	ENDIF
-	; get address
-	IF {1} == 0
-	pla
-	tay
-	pla
-	tax
-	ENDIF
-	lda #$00
-	kerncall KERNAL_LOAD
-	bcc .q
-	import I_RUNTIME_ERROR
-	jmp RUNTIME_ERROR
+		IF USEIRQ == 1
+			jsr IRQRESET
+		ENDIF
+		IF TARGET & pet
+			IF {1} == 0
+				pla
+				sta MEM_ADDR + 1
+				pla
+				sta MEM_ADDR
+			ENDIF
+			lda #$00
+			sta LOADVERIF
+			sta STATUS
+			jsr SEND_FNAME
+			jsr SEND_TALK
+			lda SECONDARY_D
+			jsr SEND_CMD
+			jsr READBYTE
+			lda STATUS
+			lsr
+			lsr
+			bcc .cont
+			kerncall KERNAL_CLALL
+			lda #ERR_FILE_NOT_FOUND
+			import I_RUNTIME_ERROR
+			jmp RUNTIME_ERROR
+.cont
+			jsr READBYTE
+			jmp $F355
+		ELSE
+			IF {1} == 0
+				pla
+				tay
+				pla
+				tax
+			ENDIF
+			lda #$00
+			kerncall KERNAL_LOAD
+			bcc .q
+			import I_RUNTIME_ERROR
+			jmp RUNTIME_ERROR
+		ENDIF
 .q:
-	IF USEIRQ == 1
-	jsr IRQSETUP
-	ENDIF
+		IF USEIRQ == 1
+			jsr IRQSETUP
+		ENDIF
 	ENDM
 	
 	; Save routine
 	MAC save
-	; get start address
-	IF USEIRQ == 1
-	jsr IRQRESET
-	ENDIF
-	pla
-	sta R0 + 1
-	pla
-	sta R0
-	pla
-	tay
-	pla
-	tax
-	lda #R0
-	kerncall KERNAL_SAVE
-	bcc .q
-	import I_RUNTIME_ERROR
-	jmp RUNTIME_ERROR
-.q:
-	IF USEIRQ == 1
-	jsr IRQSETUP
-	ENDIF
+		IF USEIRQ == 1
+			jsr IRQRESET
+		ENDIF
+		IF TARGET & pet
+			pla
+			sta MEM_ADDR + 1
+			pla
+			sta MEM_ADDR
+			pla
+			sta END_ADDR + 1
+			pla
+			sta END_ADDR
+			lda #$00
+			sta STATUS
+		ELSE
+			pla
+			sta R0 + 1
+			pla
+			sta R0
+			pla
+			tay
+			pla
+			tax
+			lda #R0	
+		ENDIF
+		kerncall KERNAL_SAVE
+		bcc .q
+		import I_RUNTIME_ERROR
+		jmp RUNTIME_ERROR
+.q
+		IF USEIRQ == 1
+			jsr IRQSETUP
+		ENDIF
 	ENDM
 	
 	; Read string from file

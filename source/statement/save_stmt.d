@@ -40,7 +40,7 @@ class Save_stmt : Statement
         // Device no
         appendCode("    pbyte 0\n");
         appendCode(e[1].toString()); // device no
-        appendCode("    pbyte 0\n");
+        appendCode("    pbyte 1\n"); // secondary address
         appendCode("    setlfs\n");
         // End address (add one)
         appendCode(e[3].toString());

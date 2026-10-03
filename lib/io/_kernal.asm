@@ -45,14 +45,14 @@ SCR_LIN_ADDR_HI  EQU $E76E
 
 		; PLOT. Save or restore cursor position.
 		; Input:  Carry: 0 = Restore from input, 1 = Save to output
-		;		  X = Cursor column (if Carry = 0)
-		;		  Y = Cursor row (if Carry = 0)
-		; Output: X = Cursor column (if Carry = 1); Y = Cursor row (if Carry = 1).
+		;		  Y = Cursor column (if Carry = 0)
+		;		  X = Cursor row (if Carry = 0)
+		; Output: Y = Cursor column (if Carry = 1); X = Cursor row (if Carry = 1).
 		IFCONST I_KERNAL_PLOT_IMPORTED
 KERNAL_PLOT	  SUBROUTINE
 		bcs .read
-		stx CRS_COL
-		sty CRS_ROW
+		sty CRS_COL
+		stx CRS_ROW
 		txa
 		import I_CALC_SCRROWPTR
 		jsr CALC_SCRROWPTR
@@ -62,8 +62,8 @@ KERNAL_PLOT	  SUBROUTINE
 		sta SCR_LN_PTR + 1
 		rts
 .read
-		ldx CRS_COL
-		ldy CRS_ROW
+		ldy CRS_COL
+		ldx CRS_ROW
 		rts
 		ENDIF
 	ENDIF

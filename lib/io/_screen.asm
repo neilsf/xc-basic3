@@ -38,6 +38,7 @@ CIA_DIRECTIONALR EQU $DD00
 TED_CRSR_LO		 EQU $FF0D
 TED_CRSR_HI		 EQU $FF0C
 
+TABWIDTH		 EQU 10
 
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
@@ -134,22 +135,25 @@ STDLIB_TAB SUBROUTINE
 	sec
 	kerncall KERNAL_PLOT
 	tya
-	ldy #$ff
-.1
-	iny
-	cmp.wy .tabs
-	bcs .1
-	cpy #3
-	bne .2
-	printnl
-	rts
-.2	lda.wy .tabs
+.loop
+	cmp #TABWIDTH
+	bcc .done 
+	sec
+	sbc #TABWIDTH
+	jmp .loop
+.done
+	sta R0
+	lda #TABWIDTH
+	sec
+	sbc R0
+	; Print A times SPC
 	tay
-	clc
-	kerncall KERNAL_PLOT
+	lda #$20
+.printspace
+	kerncall KERNAL_CHROUT
+	dey
+	bne .printspace
 	rts
-
-.tabs HEX 0A 14 1E 28 00
 	ENDIF
 
 ; print petscii string
@@ -470,15 +474,6 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #0
 		adc R0 + 1
-	ENDIF
-	; PETs have a Screen line ptr table
-	IF TARGET & pet
-		txa
-		lda SCR_LIN_ADDR_LO,x
-		sta R0
-		lda SCR_LIN_ADDR_HI,x
-		sta R0 + 1
-	ENDIF
 	; 40 or 80-column screen
 	ELSE
 	  	REPEAT 3
@@ -499,7 +494,7 @@ CALC_SCRROWPTR SUBROUTINE
 		sta R0
 		lda #$00
 		adc R0 + 1
-		IF TARGET == pet8032 || TARGET = mega65 || TARGET == x16; 80-column machines
+		IF TARGET == pet8032 || TARGET == mega65 || TARGET == x16; 80-column machines
 		sta R0 + 1
 		asl R0
 		rol R0 + 1

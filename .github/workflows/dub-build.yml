@@ -121,3 +121,5 @@ jobs:
         with:
           body_path: release-notes.md
           files: release/*.zip
+          name: "Release ${CURRENT_TAG}"
+          tag_name: ${CURRENT_TAG}

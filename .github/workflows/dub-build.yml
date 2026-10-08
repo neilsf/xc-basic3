@@ -98,10 +98,12 @@ jobs:
           done
 
       - name: Generate release notes
+        id: release_notes
         shell: bash
         run: |
           set -euo pipefail
-          CURRENT_TAG="${GITHUB_REF_NAME}"
+          CURRENT_TAG=`git describe --tags --abbrev=0`
+          echo "current_tag=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
           PREV_TAG="$(git tag --sort=-creatordate | grep -Fxv "${CURRENT_TAG}" | head -n 1 || true)"
 
           {
@@ -121,5 +123,5 @@ jobs:
         with:
           body_path: release-notes.md
           files: release/*.zip
-          name: "Release ${CURRENT_TAG}"
-          tag_name: ${CURRENT_TAG}
+          name: "Release ${{ steps.release_notes.outputs.current_tag }}"
+          tag_name: ${{ steps.release_notes.outputs.current_tag }}

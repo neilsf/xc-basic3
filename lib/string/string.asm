@@ -294,6 +294,12 @@ PET2SC	SUBROUTINE
 	rts
 	ENDIF
 	
+	; Discard top string from stack
+	MAC discardstring
+	import I_STRSCRATCH
+	jsr STRSCRATCH
+	ENDM
+
 	IFCONST I_STRSCRATCH_IMPORTED
 	; Remove top string from stack without copying
 STRSCRATCH SUBROUTINE

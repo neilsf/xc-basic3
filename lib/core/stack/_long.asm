@@ -159,3 +159,10 @@
 	dey
 	sta (TH),y
 	ENDM
+
+	; Remove top long from stack
+	MAC discardlong
+	pla
+	pla
+	pla
+	ENDM

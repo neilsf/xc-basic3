@@ -57,3 +57,8 @@
 	MAC plrelativeintvar
 	plrelativewordvar {1}
 	ENDM
+
+	; Remove top int from stack
+	MAC discardint
+	discardword
+	ENDM

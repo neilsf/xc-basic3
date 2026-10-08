@@ -30,13 +30,14 @@
 	
 	; Jumps to block {1} if true
 	; Or to next case {2} otherwise
+	; The selector type is expected in {3}
 	MAC case ;@pull
 	IF !FPULL
 	pla
 	ENDIF
 	bne .true
 	jmp {2}
-.true	
+.true
 	jmp {1}
 	ENDIF
 	ENDM

@@ -1,4 +1,14 @@
-# Unreleased
+# Version 3.2.0
+
+## New features
+
+- Commander X16 and MEGA65 targets are now incorporated to the stable branch.
+- Added VIC-20 16 KB and 24 KB targets.
+- `OPTION ASCII` emits strings as ASCII instead of PETSCII.
+- `STATIC` routines support the `FAST` modifier and `FAST` parameters.
+- `INCBIN` accepts an optional offset parameter.
+- Added `LOCATE` support for PET.
+- Added `-z` command line option to zero- fill variable memory
 
 ## Breaking changes
 
@@ -23,6 +33,17 @@
 - Untyped constant arguments match any numeric parameter type that can hold their value when
   resolving overloaded routines.
 - A `FOR` loop with an unsigned counter and a negative constant `STEP` is now an error.
+
+## Bugfixes and improvements
+
+- Fixed `SELECT CASE` comparisons, including range cases.
+- Fixed `DATA` statements without an explicit type.
+- Fixed PET `PRINT TAB` behavior.
+- Fixed `VOICE` command.
+- Fixed float constant folding in comparisons and division chains.
+- Fixed error where the compiler failed to resolve shared routine prototypes.
+- Fixed the `-l` command-line switch and improved argument quoting on Windows.
+- Optimizer improvements
 
 # Version 3.1.13
 

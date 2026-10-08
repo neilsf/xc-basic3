@@ -2,6 +2,10 @@ name: Build project
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version tag"
+        required: true
   push:
     tags:
       - "*"
@@ -19,6 +23,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.version || github.ref }}
 
       - name: Install D compiler
         uses: dlang-community/setup-dlang@v1
@@ -97,31 +103,10 @@ jobs:
             (cd release && zip -r "${PKG_NAME}.zip" "${PKG_NAME}")
           done
 
-      - name: Generate release notes
-        id: release_notes
-        shell: bash
-        run: |
-          set -euo pipefail
-          CURRENT_TAG=`git describe --tags --abbrev=0`
-          echo "current_tag=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
-          PREV_TAG="$(git tag --sort=-creatordate | grep -Fxv "${CURRENT_TAG}" | head -n 1 || true)"
-
-          {
-            echo "## ${CURRENT_TAG}"
-            echo
-            if [[ -n "${PREV_TAG}" ]]; then
-              echo "Changes since ${PREV_TAG}:"
-              git log --pretty='- %s' "${PREV_TAG}..${CURRENT_TAG}"
-            else
-              echo "Changes:"
-              git log --pretty='- %s' "${CURRENT_TAG}"
-            fi
-          } > release-notes.md
-
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          body_path: release-notes.md
+          draft: true
           files: release/*.zip
-          name: "Release ${{ steps.release_notes.outputs.current_tag }}"
-          tag_name: ${{ steps.release_notes.outputs.current_tag }}
+          name: "Release ${{ github.event.inputs.version || github.ref }}"
+          tag_name: ${{ github.event.inputs.version || github.ref }}

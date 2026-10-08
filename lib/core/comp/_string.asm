@@ -1,5 +1,22 @@
 	; Compare top two strings on stack for equality
 	MAC cmpstringeq ; @push
+	lda #0
+	sta RA
+	import I_STRCMP
+	jsr I_STRCMP
+	beq .true
+	pfalse
+	beq .exit
+.true
+	ptrue
+.exit
+	ENDM
+
+	; Compare top two strings on stack for equality
+	; and leave first argument on stack
+	MAC cmpstringeq_lfs ; @push
+	lda #1
+	sta RA
 	import I_STRCMP
 	jsr I_STRCMP
 	beq .true
@@ -12,6 +29,23 @@
 	
 	; Compare top two strings on stack for inequality
 	MAC cmpstringneq ; @push
+	lda #0
+	sta RA
+	import I_STRCMP
+	jsr I_STRCMP
+	bne .true
+	pfalse
+	beq .exit
+.true
+	ptrue
+.exit
+	ENDM
+
+	; Compare top two strings on stack for inequality
+	; and leave first argument on stack
+	MAC cmpstringneq_lfs ; @push
+	lda #1
+	sta RA
 	import I_STRCMP
 	jsr I_STRCMP
 	bne .true
@@ -25,7 +59,9 @@
 	IFCONST I_STRCMP_IMPORTED
 	; STRCMP routine
 	; Compares strings on stack
-	; Result in zero flag 
+	; Result in zero flag
+	; RA = 0: Remove both operands from stack
+	; RA > 0: Leave first operand on stack
 I_STRCMP SUBROUTINE
 	lda #>STRING_WORKAREA
 	sta R2 + 1
@@ -62,9 +98,13 @@ I_STRCMP SUBROUTINE
 	ldy #0
 	lda SP
 	clc
-	adc #2
-	adc (R2),y
-	adc (R0),y
+	adc (R2),y	; First operand length
+	adc #1
+	ldx RA
+	bne .skip
+	adc (R0),y	; Second operand length
+	adc #1
+.skip
 	sta SP 
 	plp
 	rts

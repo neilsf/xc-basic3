@@ -1,5 +1,3 @@
-	
-	
 	; Compare two words on stack for equality
 	MAC cmpwordeq ; @pull @push
 	IF !FPULL
@@ -23,6 +21,27 @@
 	pla
 	pfalse
 .q
+	ENDM
+
+	; Compare two words on stack for equality
+	; and leave first operand on stack
+	; (w w -> w b)
+	MAC cmpwordeq_lfs ; @push
+		tsx
+		lda stack + 2,x
+		cmp stack + 4,x
+		bne .phf
+		lda stack + 1,x
+		cmp stack + 3,x
+		bne .phf
+		pla
+		pla
+		ptrue
+		bne .q
+.phf:	pla
+		pla
+		pfalse
+.q:
 	ENDM
 	
 	; Compare two words on stack for inequality
@@ -49,6 +68,27 @@
 	ptrue
 .q
 	ENDM
+
+	; Compare two words on stack for inequality
+	; and leave first operand on stack
+	; (w w -> w b)
+	MAC cmpwordneq_lfs ; @push
+		tsx
+		lda stack + 2,x
+		cmp stack + 4,x
+		bne .pht
+		lda stack + 1,x
+		cmp stack + 3,x
+		bne .pht
+		pla
+		pla
+		pfalse
+		beq .q
+.pht:	pla
+		pla
+		ptrue
+.q:
+	ENDM
 	
 	; Compare two words on stack for less than
 	MAC cmpwordlt
@@ -69,7 +109,28 @@
 	inx
 	txs
 	ENDM
-	
+
+	; Compare two words on stack for less than
+	; and leave first operand on stack
+	; (w w -> w b)
+	; SP A2H A2L A1H A1L
+	MAC cmpwordlt_lfs
+		tsx
+		lda.wx stack + 4
+		cmp.wx stack + 2
+		lda.wx stack + 3
+		sbc.wx stack + 1
+		bcc .true
+		lda #$00
+		beq .1
+.true
+		lda #$FF
+.1
+		sta.wx stack + 2
+		inx
+		txs
+	ENDM
+
 	; Compare two words on stack for greater than or equal
 	MAC cmpwordgte
 	tsx
@@ -89,7 +150,27 @@
 	inx
 	txs
 	ENDM
-	
+
+	; Compare two words on stack for greater than or equal
+	; and leave first operand on stack
+	; (w w -> w b)
+	MAC cmpwordgte_lfs
+		tsx
+		lda.wx stack + 4
+		cmp.wx stack + 2
+		lda.wx stack + 3
+		sbc.wx stack + 1
+		bcs .true
+		lda #$00
+		beq .1
+.true
+		lda #$FF
+.1
+		sta.wx stack + 2
+		inx
+		txs
+	ENDM
+
 	; Compare two words on stack for greater than
 	MAC cmpwordgt
 	tsx
@@ -108,6 +189,26 @@
 	inx
 	inx
 	txs
+	ENDM
+
+	; Compare two words on stack for greater than
+	; and leave first operand on stack
+	; (w w -> w b)
+	MAC cmpwordgt_lfs
+		tsx
+		lda.wx stack + 2
+		cmp.wx stack + 4
+		lda.wx stack + 1
+		sbc.wx stack + 3
+		bcc .true
+		lda #$00
+		beq .1
+.true
+		lda #$FF
+.1
+		sta.wx stack + 2
+		inx
+		txs
 	ENDM
 	
 	; Compare two words on stack for less than or equal
@@ -128,4 +229,24 @@
 	inx
 	inx
 	txs
+	ENDM
+
+	; Compare two words on stack for less than or equal
+	; and leave first operand on stack
+	; (w w -> w b)
+	MAC cmpwordlte_lfs
+		tsx
+		lda.wx stack + 2
+		cmp.wx stack + 4
+		lda.wx stack + 1
+		sbc.wx stack + 3
+		bcs .true
+		lda #$00
+		beq .1
+.true
+		lda #$FF
+.1
+		sta.wx stack + 2
+		inx
+		txs
 	ENDM

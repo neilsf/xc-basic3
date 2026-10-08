@@ -54,6 +54,8 @@
 	ENDM
 	
 	; Discard top float on stack
+	; Warning: check all references if you change
+	; the exact byte length (6) of this macro
 	MAC discardfloat
 	tsx
 	inx

@@ -142,3 +142,8 @@
 	ldy #{1}
 	sta (TH),y
 	ENDM
+
+	; Remove top byte from stack
+	MAC discardbyte
+	pla
+	ENDM

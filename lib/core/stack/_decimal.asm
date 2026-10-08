@@ -65,3 +65,8 @@
 	MAC plrelativedecimalvar
 	plrelativewordvar {1}
 	ENDM
+
+	; Remove top decimal from stack
+	MAC discarddecimal
+	discardword
+	ENDM

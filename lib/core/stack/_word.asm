@@ -147,3 +147,9 @@
 	dey
 	sta (TH),y
 	ENDM
+
+	; Remove top word from stack
+	MAC discardword
+	pla
+	pla
+	ENDM

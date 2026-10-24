@@ -2,7 +2,7 @@ module statement.if_stmt;
 
 import pegged.grammar;
 
-import compiler.compiler, compiler.codeblock;
+import compiler.compiler, compiler.codeblock, compiler.type;
 import language.statement, language.expression;
 
 import std.conv;
@@ -24,6 +24,7 @@ class If_stmt : Statement
         ParseTree ifStatement = this.node.children[0];
         const bool hasElse = ifStatement.children.length > 2;
         Expression condition = new Expression(ifStatement.children[0], compiler);
+        condition.setExpectedType(compiler.getTypes().get(Type.UINT8));
         condition.eval();
         appendCode(to!string(condition));
         appendCode("    cond_stmt _EI_" ~ to!string(counter) ~ (hasElse
@@ -66,6 +67,7 @@ class If_sa_stmt : Statement
         compiler.blockStack.push(block);
         ParseTree ifStatement = this.node.children[0];
         Expression condition = new Expression(ifStatement.children[0], compiler);
+        condition.setExpectedType(compiler.getTypes().get(Type.UINT8));
         condition.eval();
         appendCode(to!string(condition));
         appendCode("    cond_stmt _EI_" ~ to!string(

@@ -151,10 +151,10 @@ void main(string[] args)
 
     outfile.close();
 
-    string[] dasmArgs = [dasm, asmFilename, "-o" ~  escapeShellFileName(outName), "-s" ~ escapeShellFileName(tmpSymbolfile)];
+    string[] dasmArgs = [dasm, asmFilename, "-o" ~ outName, "-s" ~ tmpSymbolfile];
     if (listfile != "")
     {
-        dasmArgs ~= "-l" ~ escapeShellFileName(listfile);
+        dasmArgs ~= "-l" ~ listfile;
     }
 
     auto dasmCmd = execute(dasmArgs);

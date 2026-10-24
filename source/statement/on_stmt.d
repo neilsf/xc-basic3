@@ -65,7 +65,7 @@ class On_stmt : Statement
         case "raster":
         case "vblank":
             int nodeIndex = 0;
-            if (!canFind(["sprite", "background", "vblank"], toLower(m1)))
+            if (canFind(["sprite", "background", "vblank"], toLower(m1)))
             {
                 if (args[nodeIndex].name == "XCBASIC.Expression")
                 {

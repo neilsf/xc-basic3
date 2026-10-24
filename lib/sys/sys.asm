@@ -142,18 +142,16 @@ KERNAL_RDTIM EQU $FFDE
 	IF (TARGET & pet) == 0	; Use KERNAL RDTIM if not PET
 		jsr KERNAL_RDTIM
 		IF !FPUSH
-			sta R0
-			tya
 			pha
 			txa
 			pha
-			lda R0
+			tya
 			pha
 		ELSE
 			sty R0
-			stx R1
+			txa
+			tay
 			ldx R0
-			ldy R1 
 		ENDIF
 	ELSE					; Read Jiffy on PET
 		IF !USEIRQ

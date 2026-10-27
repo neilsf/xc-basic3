@@ -17,3 +17,7 @@
 	IF TARGET == x16
 	INCLUDE "irq/_x16.asm"
 	ENDIF
+	
+	IF TARGET == nes
+	INCLUDE "irq/_nes.asm"
+	ENDIF

@@ -7,7 +7,11 @@
 	IF TARGET == x16
 R0 EQU $22
 	ELSE
+	  IF TARGET == nes
+R0 EQU $00
+	  ELSE
 R0 EQU $02
+	  ENDIF
 	ENDIF
 
 ; Arithmetic registers

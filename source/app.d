@@ -39,7 +39,8 @@ const string[] targetOpts = [
     "pet4032", // Commodore PET4000 series (32k RAM)
     "pet8032", // Commodore PET8000 series
     "x16", // Commander X16
-    "mega65" // MEGA65
+    "mega65", // MEGA65,
+    "nes" // Nintendo Entertainment System
 ];
 
 // Command line options
@@ -88,6 +89,12 @@ void main(string[] args)
     }
 
     validateOptions(args);
+    
+    if (target == "nes")
+    {
+		basicLoader = false;
+	}
+    
     setStartAddress();
     setEndAddress();
 
@@ -99,7 +106,8 @@ void main(string[] args)
     }
     else
     {
-        outName = to!string(fileName.withExtension("prg"));
+		const string ext = target == "nes" ? "nes" : "prg";
+        outName = to!string(fileName.withExtension(ext));
         if (verbosity >= VERBOSITY_NOTICE)
         {
             stdout.writeln("** NOTICE ** Output file not specified, defaulting to " ~ outName);
@@ -152,11 +160,9 @@ void main(string[] args)
     outfile.close();
 
     string[] dasmArgs = [dasm, asmFilename, "-o" ~ outName, "-s" ~ tmpSymbolfile];
-    if (listfile != "")
-    {
-        dasmArgs ~= "-l" ~ listfile;
-    }
-
+    if (listfile != "") dasmArgs ~= "-l" ~ listfile;
+    if (target == "nes") dasmArgs ~= "-f3";
+	
     auto dasmCmd = execute(dasmArgs);
 
     if (!keepImCode)
@@ -228,6 +234,12 @@ private void validateOptions(string[] args)
         stderr.writeln("Invalid max address: " ~ to!string(topAddress));
         exit(1);
     }
+    
+    if (zerofillVars && target == "nes")
+    {
+		stderr.writeln("Invalid option for NES target: -zerofill-vars, --z");
+        exit(1);
+	}
 }
 
 /**
@@ -245,7 +257,7 @@ Options:
                     Defaults to "c64".
 
    -b
-  --basic-loader=   Include a BASIC loader. Turned on by default (true).
+  --basic-loader=   Include a BASIC loader. Turned on by default (true) - except for NES target.
 
    -o
   --start-address=  Change the default start address. Please provide a decimal number. Has no effect if

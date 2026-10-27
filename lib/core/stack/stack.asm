@@ -1,5 +1,12 @@
 stack 			EQU $0100
+
+; The top of the function stack + 1
+	IF TARGET == nes
+STACKFRAME_TOP 	EQU $0700	
+	ELSE
 STACKFRAME_TOP 	EQU TOPADDR-256
+	ENDIF
+	
 	
 	; (private)
 	; Calculate variable address from address + index

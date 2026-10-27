@@ -1,0 +1,2 @@
+NES_NMI:
+	rti

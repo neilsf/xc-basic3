@@ -27,6 +27,7 @@ bool zerofillVars = false;
 /** Whether to use ASCII mode instead of PETSCII */
 bool asciiMode = false;
 
+
 /**
  * Set implicit start address based on other options
  */
@@ -36,10 +37,6 @@ public void setStartAddress()
     {
         switch (target)
         {
-        case "vic20_3k":
-            startAddress = 0x0401;
-            break;
-
         case "c64":
         case "x16":
             startAddress = 0x0801;
@@ -62,6 +59,7 @@ public void setStartAddress()
         case "pet4016":
         case "pet4032":
         case "pet8032":
+        case "vic20_3k":
             startAddress = 0x0401;
             break;
 
@@ -77,6 +75,10 @@ public void setStartAddress()
             break;
         }
     }
+    else if (target == "nes")
+    {
+		startAddress = 0x8000;
+	}
     else if (startAddress == -1)
     {
         startAddress = 0x1000;
@@ -139,6 +141,10 @@ public void setEndAddress()
         case "x16":
             topAddress = 0x9EFF;
             break;
+            
+        case "nes":
+			topAddress = 0xFFF9;
+			break;
 
         default:
             topAddress = 0x10000;

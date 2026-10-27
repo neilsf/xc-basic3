@@ -26,11 +26,17 @@ class IntermediateCode
         this.compiler = compiler;
         const string varSegmentInit = zerofillVars ? "SEG" : "SEG.U";
         this.segments = [
-            PROGRAM_SEGMENT: "prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
+            PROGRAM_SEGMENT: target == "nes" ?
+				"    SEG PROGRAM\n    ORG $8000\nprg_start EQU $8000\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n"
+				:
+				"prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
             ROUTINE_SEGMENT: "\nroutines_start:\n",
             LIBRARY_SEGMENT: "\n    ; !!opt_end!!\nlibrary_start:\n    SEG \"LIBRARY\"\n    ORG library_start\n" ~ getIncludes() ~ "\n",
             DATA_SEGMENT: "\ndata_start:\n",
-            VAR_SEGMENT: "vars_start:\n    " ~ varSegmentInit ~ " \"VARIABLES\"\n    ORG vars_start\n"
+            VAR_SEGMENT: target == "nes" ?
+				"    " ~ varSegmentInit ~ " \"VARIABLES\"\n    ORG $0300\nvars_start EQU $0300\n"
+				:
+				"vars_start:\n    " ~ varSegmentInit ~ " \"VARIABLES\"\n    ORG vars_start\n"
         ];
     }
 
@@ -56,10 +62,28 @@ class IntermediateCode
     private string getStartUp()
     {
         const string processorType = target == "x16" ? "65c02" : "6502";
-        // Target machine bits meaning
+        
+        string startUpCode = "    PROCESSOR " ~ processorType ~ "\n";
+        startUpCode ~= getMainConstants();
+		if (target == "nes")
+		{
+			startUpCode ~= getNesHeader();
+		}
+		else
+		{
+			startUpCode ~= "    SEG \"UPSTART\"\n    ORG $" ~ to!string(startAddress, 16) ~ "\n";
+			startUpCode ~= getBasicStub();
+		}
+    
+        return startUpCode;
+    }
+
+	private string getMainConstants()
+	{
+		// Target machine bits meaning
         // Bits 15-8: base machine
         // Bits 7-0: machine config 
-        string startUpCode = `    PROCESSOR ` ~ processorType ~ `
+		return `
 c64         EQU %0000000100000000
 
 vic20       EQU %0000001000000000
@@ -88,16 +112,25 @@ pet8032     EQU %0001000001000100
 x16         EQU %0010000000000000
 mega65      EQU %0100000000000000
 
+nes			EQU %1000000000000000
+
 TARGET   EQU ` ~ target ~ `
 TOPADDR  EQU ` ~ to!string(topAddress) ~ `
 USEIRQ   EQU ` ~ (useIrqs ? "1" : "0") ~ `
 FASTIRQ  EQU ` ~ (fastIrqs ? "1" : "0") ~ `
 USESPR   EQU ` ~ (useSprites ? "1" : "0") ~ `
 USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
-    SEG "UPSTART"
-    ORG $` ~ to!string(startAddress, 16) ~ "\n" ~ getBasicStub();
-        return startUpCode;
-    }
+`;
+	}
+	
+	private string getNesHeader()
+	{
+		return `
+	SEG HEADER
+	ORG $7FF0
+    HEX 4E 45 53 1A 02 01 00 08 00 00 00 00 00 00 00 01
+`;
+	}
 
     private string getBasicStub()
     {
@@ -122,11 +155,28 @@ next_line:
 
 `;
     }
+    
+    private string getNesVectorSegment()
+    {
+		return `
+    ORG $FFFA
+    DC.W NES_NMI
+	DC.W NES_RESET
+    DC.W 0
+`;
+	}
 
     public string getCode()
     {
-        return getStartUp() ~ getSegment(PROGRAM_SEGMENT) ~ "    xend\n\n" ~ getSegment(ROUTINE_SEGMENT) ~ getSegment(
-                LIBRARY_SEGMENT) ~ getSegment(DATA_SEGMENT) ~ getSegment(VAR_SEGMENT)
-            ~ "vars_end:\n";
+        return
+			getStartUp() ~
+			getSegment(PROGRAM_SEGMENT) ~
+			"    xend\n\n" ~
+			getSegment(ROUTINE_SEGMENT) ~
+			getSegment(LIBRARY_SEGMENT) ~
+			getSegment(DATA_SEGMENT) ~
+			(target == "nes" ? getNesVectorSegment() : "") ~
+			getSegment(VAR_SEGMENT) ~
+			"vars_end:\n";
     }
 }

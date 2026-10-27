@@ -31,8 +31,11 @@ KERNAL_RDTIM EQU $FFDE
 
 	; Initial code that runs when the program is started
 	MAC xbegin
-	spreset
-	framereset
+	
+	IF TARGET != nes
+		spreset
+		framereset
+	ENDIF
 	
 	IF TARGET == c64
 		; Bank out BASIC ROM
@@ -67,7 +70,33 @@ KERNAL_RDTIM EQU $FFDE
     IF USEIRQ == 1
 		jsr IRQSETUP
 	ENDIF
+		
+	IF TARGET == nes
+NES_RESET	SUBROUTINE
+	sei
+	cld
+
+	ldx #$40
+	stx $4017    ; disable APU frame IRQ
+	ldx #$FF
+	txs          ; Set up stack
+	inx          ; now X = 0
+	stx $2000    ; disable NMI
+	stx $2001    ; disable rendering
+	stx $4010    ; disable DMC IRQs
+
+.vblankwait1:       ; First wait for vblank to make sure PPU is ready
+	bit $2002
+	bpl .vblankwait1
+   
+.vblankwait2:      ; Second wait for vblank, PPU is ready after this
+	bit $2002
+	bpl .vblankwait2
 	
+	spreset
+	framereset
+	ENDIF
+
 	; Init FP workspace
 	ldx #[TEMP3 - CHARAC + 1]
 	lda #0

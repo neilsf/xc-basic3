@@ -62,6 +62,7 @@ class Option_stmt : Statement
         case "ASCII":
             asciiMode = true;
             break;
+			
         default:
             compiler.displayError("Unrecognized option: " ~ optionName);
             break;

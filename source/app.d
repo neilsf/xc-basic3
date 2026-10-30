@@ -75,7 +75,9 @@ void main(string[] args)
                 "max-address|m", &topAddress, "dasm|d", &dasm, "symbol|s",
                 &symbolfile, "list|l", &listfile, "optimize|p",
                 &optimize, "keep-imcode|k", &keepImCode, "verbosity|v",
-                &verbosity, "inline-data|i", &inlineData, "zerofill-vars|z", &zerofillVars);
+                &verbosity, "inline-data|i", &inlineData, "zerofill-vars|z", &zerofillVars,
+                "nes-rom|r", &nesRomSize, "nes-ram|a", &nesRamSize,
+                "nes-charrom|c", &nesCharRomFile);
     }
     catch (Exception e)
     {
@@ -197,7 +199,20 @@ void main(string[] args)
     }
     else
     {
-        if (verbosity == VERBOSITY_INFO)
+        if (target == "nes" && nesCharRomFile != "")
+        {
+			try
+			{
+				concatenateFiles(outName, nesCharRomFile, outName ~ "~");	
+			}
+			catch (Exception e)
+			{
+				stderr.writeln("Error appending Char ROM file: ", e.msg);
+			}
+			
+			rename(outName ~ "~", outName);
+		}
+		if (verbosity == VERBOSITY_INFO)
         {
             displayInformation(tmpSymbolfile);
         }
@@ -238,6 +253,24 @@ private void validateOptions(string[] args)
     if (zerofillVars && target == "nes")
     {
 		stderr.writeln("Invalid option for NES target: -zerofill-vars, --z");
+        exit(1);
+	}
+	
+	if (!canFind([16, 32], nesRomSize))
+	{
+		stderr.writeln("Invalid value for NES ROM size (must be 16 or 32)");
+        exit(1);
+	}
+	
+	if (!canFind([0, 1, 2, 4, 8], nesRamSize))
+	{
+		stderr.writeln("Invalid value for NES RAM size (must be 1, 2, 4 or 8)");
+        exit(1);
+	}
+	
+	if (nesCharRomFile != "" && !exists(nesCharRomFile))
+	{
+		stderr.writeln("NES Char ROM file not found: " ~ nesCharRomFile);
         exit(1);
 	}
 }
@@ -292,7 +325,15 @@ Options:
    -z
   --zerofill-vars=  If set to true, the space for variables will be initialized with zeroes.
                     Makes the output larger. Defaults to false.
-
+   -r
+  --nes-rom=        NES cardridge ROM image size, in kilobytes (16 or 32).
+   
+   -a
+  --nes-ram=        Extra RAM added to NES cardridge image, in kilobytes (1, 2, 4 or 8).
+      
+   -c
+  --nes-charrom=    Char ROM file to attach to NES cardridge image.
+  
    -h
   --help            Show this help
 `);
@@ -390,24 +431,25 @@ private void displayInformation(string tmpSymbolfile)
 }
 
 /**
- * Returns the family of computers the target belongs to
+ * Appends `file2` to `file1` and write the output to `output`
  */
-private string getTargetFamily(string target)
+private void concatenateFiles(string file1, string file2, string output)
 {
-    if (target[0 .. 3] == "pet")
+    auto outFile = File(output, "wb");
+    scope(exit) outFile.close();
+
+    foreach (name; [file1, file2])
     {
-        return "pet";
-    }
-    else if (target[0 .. 3] == "vic")
-    {
-        return "vic20";
-    }
-    else if (target == "c16" || target == "cplus4")
-    {
-        return "c264";
-    }
-    else
-    {
-        return target;
+        auto inFile = File(name, "rb");
+        ubyte[8192] buffer;
+
+        while (true)
+        {
+            auto chunk = inFile.rawRead(buffer[]);
+            if (chunk.length == 0)
+                break;
+
+            outFile.rawWrite(chunk);
+        }
     }
 }

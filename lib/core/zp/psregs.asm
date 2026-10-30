@@ -38,6 +38,22 @@ RF	EQU R0 + 16
 TH  EQU R0 + 17
 ; Current sprite number
 SN  EQU R0 + 18
+; ------- The next available ZP address -----
+EOZ SET R0 + 19
+
+  IF TARGET == nes
+; Frame counter
+FC EQU R0 + 19
+; PPU Shadow registers
+PPUCTRL_SHADOW EQU R0 + 20
+PPUMASK_SHADOW EQU R0 + 21
+CURNAMTBL_ADDR EQU R0 + 22
+CURNAMTBL_ADDH EQU R0 + 23
+XSCROLL        EQU R0 + 24
+YSCROLL        EQU R0 + 25
+SCROLL9BITS    EQU R0 + 26
+EOZ            SET R0 + 27
+  ENDIF
 
 	; Push pseudo-registers onto stack
 	MAC phsr

@@ -62,41 +62,89 @@ VERA_L1_VSCROLL_H EQU $9F3A
 	IF TARGET == x16
 	  IF !FPULL
 	    pla
-		sta VERA_L{1}_HSCROLL_H
-		pla
-		sta VERA_L{1}_HSCROLL_L
+		  sta VERA_L{1}_HSCROLL_H
+		  pla
+		  sta VERA_L{1}_HSCROLL_L
 	  ELSE
 	  	sta VERA_L{1}_HSCROLL_L
-		sty VERA_L{1}_HSCROLL_H
+		  sty VERA_L{1}_HSCROLL_H
 	  ENDIF
 	ENDIF
-
+  
+  IF TARGET == nes    
+    IF !FPULL
+      lda SCROLL9BITS
+      and #%11111110
+      sta SCROLL9BITS
+      pla
+      and #%00000001
+      ora SCROLL9BITS
+      sta SCROLL9BITS
+      pla
+      sta XSCROLL
+    ELSE
+      sta XSCROLL
+      lda SCROLL9BITS
+      and #%11111110
+      sta SCROLL9BITS
+      tya
+      and #%00000001
+      ora SCROLL9BITS
+      sta SCROLL9BITS
+    ENDIF
+  ENDIF
+  
 	ENDM
 	
 	MAC vscroll ; @pull
+    IF TARGET == c64 || TARGET == c128 || TARGET & c264 || TARGET == mega65
+      IF !FPULL
+        pla
+      ENDIF
+      and #%00000111
+      sta R0
+      lda VSCR
+      and #%11111000
+      ora R0
+      sta VSCR
+    ENDIF
 
-	IF TARGET == c64 || TARGET == c128 || TARGET & c264 || TARGET == mega65
-	  IF !FPULL
-	    pla
-	  ENDIF
-	  and #%00000111
-	  sta R0
-	  lda VSCR
-	  and #%11111000
-	  ora R0
-	  sta VSCR
-	ENDIF
-
-	IF TARGET == x16
-	  IF !FPULL
-	    pla
-		sta VERA_L{1}_VSCROLL_H
-		pla
-		sta VERA_L{1}_VSCROLL_L
-	  ELSE
-	  	sta VERA_L{1}_VSCROLL_L
-		sty VERA_L{1}_VSCROLL_H
-	  ENDIF
+    IF TARGET == x16
+      IF !FPULL
+        pla
+        sta VERA_L{1}_VSCROLL_H
+        pla
+        sta VERA_L{1}_VSCROLL_L
+      ELSE
+        sta VERA_L{1}_VSCROLL_L
+        sty VERA_L{1}_VSCROLL_H
+      ENDIF
+    ENDIF
+  
+    IF TARGET == nes    
+      IF !FPULL
+        lda SCROLL9BITS
+        and #%11111101
+        sta SCROLL9BITS
+        pla
+        and #%00000001
+        asl
+        ora SCROLL9BITS
+        sta SCROLL9BITS
+        pla
+        sta YSCROLL
+      ELSE
+        sta YSCROLL
+        lda SCROLL9BITS
+        and #%11111101
+        sta SCROLL9BITS
+        tya
+        and #%00000001
+        asl
+        ora SCROLL9BITS
+        sta SCROLL9BITS
+      ENDIF
+    ENDIF
 
 	ENDM
 	
@@ -205,55 +253,80 @@ CHARSETSEL SET 0
 	ENDM
     
 	MAC charset ; @pull
-	IF TARGET == x16
-	  IF CHARSETSEL == 0
-	    IF !FPULL
-		  pla ; drop HB
-		  pla ; keep LB
-	    ENDIF	
-		and #%00000011
-		jsr X16_screen_set_charset
-	  ELSE
-		IF !FPULL
-		  HEX 7A; ply
-		  HEX FA; plx
-		ELSE
-		  tax
-	    ENDIF
-		lda #0
-		jsr X16_screen_set_charset
-	  ENDIF
-	ELSE
-	IF !FPULL
-      pla
+    
+    IF TARGET == nes
+      IF !FPULL
+        pla
+      ENDIF
+      REPEAT 4
+        asl
+      REPEND
+      sta R0
+      lda PPUCTRL_SHADOW
+      and #%11101111
+      ora R0
+      sta PPUCTRL_SHADOW
+      sta PPUCTRL
     ENDIF
-	ENDIF
+  
+    IF TARGET == x16
+      IF CHARSETSEL == 0
+        IF !FPULL
+        pla ; drop HB
+        pla ; keep LB
+        ENDIF	
+      and #%00000011
+      jsr X16_screen_set_charset
+      ELSE
+      IF !FPULL
+        HEX 7A; ply
+        HEX FA; plx
+      ELSE
+        tax
+        ENDIF
+      lda #0
+      jsr X16_screen_set_charset
+      ENDIF
+    ENDIF
+  
     IF (TARGET == c64) || (TARGET == c128)
-    asl
-    and #%00001110
-    sta R0
-    lda $D018
-    and #%11110001
-    ora R0
-    sta $D018
+      IF !FPULL
+        pla
+      ENDIF
+      asl
+      and #%00001110
+      sta R0
+      lda $D018
+      and #%11110001
+      ora R0
+      sta $D018
     ENDIF
-	IF TARGET & c264
-    asl
-    asl
-    sta R0
-	lda $FF13
-    and #%00000011
-    ora R0
-    sta $FF13
+	
+    IF TARGET & c264
+      IF !FPULL
+        pla
+      ENDIF
+      asl
+      asl
+      sta R0
+      lda $FF13
+      and #%00000011
+      ora R0
+      sta $FF13
     ENDIF
-    IF TARGET & vic20 
-    and #%00000111
-    sta R0
-    lda $9005
-    and #%11111000
-    ora R0
-    sta $9005
+    
+    IF TARGET & vic20
+      IF !FPULL
+        pla
+      ENDIF
+      and #%00000111
+      sta R0
+      lda $9005
+      and #%11111000
+      ora R0
+      sta $9005
     ENDIF
+
     IF TARGET == mega65
       ldx #<VIC4_CHARPTR
       stx R0
@@ -311,3 +384,13 @@ CHARSETSEL SET 0
 	  pha
 	ENDIF
 	ENDM
+  
+  IF TARGET == nes
+    
+    
+    ; DECLARE SUB LOAD_PALETTE(addr AS WORD) SHARED STATIC INLINE
+    MAC F_load_palette_word ; @pull
+    
+    ENDM
+
+  ENDIF

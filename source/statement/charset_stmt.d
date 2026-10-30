@@ -17,6 +17,11 @@ class Charset_stmt : Statement
     {
         super(node, compiler);
     }
+    
+    override protected bool isTargetCompatible()
+    {
+		return getTargetFamily(target) != "pet";
+	}
 
     /** Compile */
     void process()

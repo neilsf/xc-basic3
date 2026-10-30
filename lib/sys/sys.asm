@@ -81,9 +81,16 @@ NES_RESET	SUBROUTINE
 	ldx #$FF
 	txs          ; Set up stack
 	inx          ; now X = 0
-	stx $2000    ; disable NMI
-	stx $2001    ; disable rendering
-	stx $4010    ; disable DMC IRQs
+	stx PPUCTRL
+	stx PPUCTRL_SHADOW
+  stx PPUSCROLL
+  stx CURNAMTBL_ADDR
+  stx $4010    ; disable DMC IRQs
+  lda #$20
+  sta CURNAMTBL_ADDR + 1
+	lda #%00000100
+	stx PPUMASK
+	stx PPUMASK_SHADOW
 
 .vblankwait1:       ; First wait for vblank to make sure PPU is ready
 	bit $2002

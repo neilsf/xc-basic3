@@ -6,7 +6,7 @@ import compiler.compiler, compiler.type;
 import pegged.grammar;
 import globals;
 
-import std.conv;
+import std.conv, std.algorithm.searching;
 
 /** Parses and compiles a BORDER or BACKGROUND statement */
 abstract class Border_bg_stmt : Statement
@@ -18,6 +18,11 @@ abstract class Border_bg_stmt : Statement
     {
         super(node, compiler);
     }
+    
+    override protected bool isTargetCompatible()
+    {
+		return !canFind(["pet", "x16", "nes"], getTargetFamily(target));
+	}
 
     /** Compile */
     void process()

@@ -1,6 +1,6 @@
 module compiler.intermediatecode;
 
-import std.conv;
+import std.conv, std.algorithm.searching, std.format;
 
 import globals, compiler.compiler, compiler.library;
 
@@ -27,7 +27,7 @@ class IntermediateCode
         const string varSegmentInit = zerofillVars ? "SEG" : "SEG.U";
         this.segments = [
             PROGRAM_SEGMENT: target == "nes" ?
-				"    SEG PROGRAM\n    ORG $8000\nprg_start EQU $8000\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n"
+				format("    SEG PROGRAM\n    ORG $%04X\nprg_start EQU $%04X\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n", startAddress, startAddress)
 				:
 				"prg_start:\n    SEG \"PROGRAM\"\n    ORG prg_start\nFPUSH SET 0\nFPULL SET 0\n    xbegin\n    ; !!opt_start!!\n",
             ROUTINE_SEGMENT: "\nroutines_start:\n",
@@ -125,11 +125,14 @@ USESFX   EQU ` ~ (useSound ? "1" : "0") ~ `
 	
 	private string getNesHeader()
 	{
-		return `
+		string ramSize = "0" ~ to!string(countUntil([0, 0, 0, 0, 1, 2, 4, 8], nesRamSize));
+		string romSize = "0" ~ to!string(nesRomSize / 16);
+		
+		return format(`
 	SEG HEADER
-	ORG $7FF0
-    HEX 4E 45 53 1A 02 01 00 08 00 00 00 00 00 00 00 01
-`;
+	ORG $%04X
+    HEX 4E 45 53 1A %s 01 01 08 00 00 %s 00 00 00 00 01
+`, startAddress - 16, romSize, ramSize);
 	}
 
     private string getBasicStub()

@@ -5,3 +5,7 @@
 	IF TARGET == x16
 	INCLUDE "grx/_vera.asm"
 	ENDIF
+	
+	IF TARGET == nes
+	INCLUDE "grx/_ppu.asm"
+	ENDIF

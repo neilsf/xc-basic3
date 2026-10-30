@@ -293,6 +293,7 @@ PET2SC	SUBROUTINE
 .ddEnd:
 	rts
 	ENDIF
+  
 	
 	; Discard top string from stack
 	MAC discardstring

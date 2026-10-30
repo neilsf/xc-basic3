@@ -48,7 +48,7 @@ class Scroll_stmt : Statement
             ix++;
         }
         Expression e2 = new Expression(args.children[ix], compiler);
-        e2.setExpectedType(compiler.getTypes().get(target == "x16" ? Type.UINT16 : Type.UINT8));
+        e2.setExpectedType(compiler.getTypes().get((target == "x16" || target == "nes") ? Type.UINT16 : Type.UINT8));
         e2.eval();
         appendCode(e2.toString());
         appendCode("    " ~ toLower(node.matches[0]) ~ "scroll " ~ layer ~ "\n");

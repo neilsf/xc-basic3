@@ -103,7 +103,7 @@ sprinit_m65 SUBROUTINE
 	sta SPRMULTI
 	ENDM
 
-	 MAC sprite_lowcol
+	MAC sprite_lowcol
     sprite_hires {1}
     ENDM
 

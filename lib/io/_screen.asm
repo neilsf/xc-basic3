@@ -279,78 +279,150 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	; [Color,] Char, Col, Row pushed on stack
 	; {1} = 1 color was pushed
 	MAC charat ; @pull
-	IF !FPULL
-	pla
-	ENDIF
-	; Commander X16
-	IF TARGET == x16
-	  tay
-	  pla
-	  tax
-	  clc
-	  import I_VERA_SETADDR
-	  jsr VERA_SETADDR
-	  pla
-	  sta VERA_DATA0
-	  IF {1} == 1 ; Color was provided
+	  IF !FPULL
 	    pla
-	    sta VERA_DATA0
-	  ENDIF
-	; All other targets
-	ELSE  
-	  import I_CALC_SCRROWPTR
-	  jsr CALC_SCRROWPTR
-	  pla
-	  tay
-	  pla
-	  sta (R0),y
-	  IF {1} == 1 ; Color was provided
-		pla
-        ; Not MEGA65 and not PET
-		IF TARGET != mega65 && ((TARGET & pet) == 0)
-		  tax
-		  lda R0 + 1
-		  sec
-		  IF TARGET & c264
-			sbc #$0C
-		  ELSE
-			sbc KERNAL_SCREEN_ADDR
-		  ENDIF
-		  clc
-		  adc #>COLOR_RAM
-		  sta R0 + 1
-		  txa
-		  sta (R0),y
-	    ENDIF
-        ; MEGA65
-	    IF TARGET == mega65
-          tax
-          ; Store color ram base addr ($0001F800) + relative from screen
-          lda R0
-          sta R4
-          lda R0 + 1
-          clc
-          adc #$F0
-          sta R4 + 1
-          lda #$01
-          sta R4 + 2
-          lda #0
-          sta R4 + 3
-          tya
-          taz
-          txa
-          sta_indz R4
-        ENDIF
+    ENDIF
+    
+    IF TARGET == nes
+      import I_CALC_NAMETBLADDR
+      sta R0
+      pla
+      tax
+      jsr CALC_NAMETBLADDR
+      
+      pla ; Char
+      
+      ldx PPUSTATUS           ; read PPU status to reset the high/low latch
+      ldx R0 + 1
+      stx PPUADDR             ; write the high byte of $2000 address
+      ldx R0
+      stx PPUADDR             ; write the low byte of $2000 address
+      sta PPUDATA
+      ; Color currently not supported
+      IF {1} == 1
+        pla
       ENDIF
-	ENDIF
+    ENDIF
+  
+    ; Commander X16
+    IF TARGET == x16
+      tay
+      pla
+      tax
+      clc
+      import I_VERA_SETADDR
+      jsr VERA_SETADDR
+      pla
+      sta VERA_DATA0
+      IF {1} == 1 ; Color was provided
+        pla
+        sta VERA_DATA0
+      ENDIF
+    ENDIF
+    
+    ; All other targets
+    IF TARGET != nes && target != x16  
+      import I_CALC_SCRROWPTR
+      jsr CALC_SCRROWPTR
+      pla
+      tay
+      pla
+      sta (R0),y
+      IF {1} == 1 ; Color was provided
+      pla
+          ; Not MEGA65 and not PET
+      IF TARGET != mega65 && ((TARGET & pet) == 0)
+        tax
+        lda R0 + 1
+        sec
+        IF TARGET & c264
+        sbc #$0C
+        ELSE
+        sbc KERNAL_SCREEN_ADDR
+        ENDIF
+        clc
+        adc #>COLOR_RAM
+        sta R0 + 1
+        txa
+        sta (R0),y
+        ENDIF
+        ; MEGA65
+        IF TARGET == mega65
+            tax
+            ; Store color ram base addr ($0001F800) + relative from screen
+            lda R0
+            sta R4
+            lda R0 + 1
+            clc
+            adc #$F0
+            sta R4 + 1
+            lda #$01
+            sta R4 + 2
+            lda #0
+            sta R4 + 3
+            tya
+            taz
+            txa
+            sta_indz R4
+          ENDIF
+        ENDIF
+    ENDIF
+
 	ENDM
 	
 	; [Color,] Col, Row pushed on stack
 	; String on string stack
 	MAC textat ; @pull
-	IF !FPULL
-	pla
-	ENDIF
+    IF !FPULL
+      pla
+    ENDIF
+    
+    IF TARGET == nes
+      import I_CALC_NAMETBLADDR
+      sta R0 ; Row
+      pla    ; Col
+      tax
+      jsr CALC_NAMETBLADDR
+      ; Set address increment to 1
+      lda PPUCTRL_SHADOW
+      and #%11111011
+      sta PPUCTRL_SHADOW
+      sta PPUCTRL
+      ldy SP
+      iny
+      lda STRING_WORKAREA,y ; string length
+      beq .l1q
+      sta R2
+      clc
+      adc SP
+      adc #1
+      sta R2
+      
+      ldx PPUSTATUS
+      ldx R0 + 1
+      stx PPUADDR
+      ldx R0
+      stx PPUADDR
+      iny
+.l1
+      lda STRING_WORKAREA,y
+      sec
+      sbc #$20  ; Convert ASCII to screen code
+      sta PPUDATA
+      iny
+      beq .l1q
+      cpy R2
+      bcc .l1
+      beq .l1
+.l1q
+      import I_STRSCRATCH
+      jsr STRSCRATCH
+      ; Color not supported currently
+      IF {1} == 1
+        pla
+      ENDIF
+    ENDIF
+  
 	; Commander X16
 	IF TARGET == x16
 	  tay
@@ -381,8 +453,10 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	    jmp .loop
 .q
 	  ENDIF
-    ; All other targets
-	ELSE
+	ENDIF
+  
+  ; All other targets
+  IF TARGET != nes && TARGET != x16
 	import I_CALC_SCRROWPTR
 	jsr CALC_SCRROWPTR
 	pla
@@ -442,6 +516,29 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
     ENDIF
 	ENDM
 	
+  ; (NES) Calculates a nametable pointer for a screen position
+  ; Row number in R0
+  ; Col number in X
+  ; Outputs pointer in R0
+  IFCONST I_CALC_NAMETBLADDR_IMPORTED
+CALC_NAMETBLADDR SUBROUTINE
+    lda #$00
+    sta R0 + 1
+    REPEAT 5
+      asl R0
+      rol R0 + 1
+    REPEND
+    txa ; Col
+    clc
+    adc R0
+    adc CURNAMTBL_ADDR
+    sta R0
+    lda R0 + 1
+    adc CURNAMTBL_ADDR + 1
+    sta R0 + 1
+    rts
+  ENDIF
+  
 	; Calculates a pointer to screen row
 	; Row number in A
 	; Outputs pointer in R0
@@ -519,42 +616,45 @@ CALC_SCRROWPTR SUBROUTINE
 			
 	; Set Video Matrix Base Address
 	MAC screen ; @pull
-	IF !FPULL
-	pla
-	ENDIF
+    IF !FPULL
+      pla
+    ENDIF
+    
     IF TARGET == x16
-    clc
-    jsr KERNAL_SCREENMODE
+      clc
+      jsr KERNAL_SCREENMODE
     ENDIF
+    
     IF TARGET == c64 || TARGET == c128
-	asl
-	asl
-	sta KERNAL_SCREEN_ADDR
-	pha
-	lda CIA_DIRECTIONALR
-	and #%00000011
-	eor #%00000011
-	REPEAT 6
-	asl
-	REPEND
-	adc KERNAL_SCREEN_ADDR
-	sta KERNAL_SCREEN_ADDR
-	pla
-	asl
-	asl
-	sta R0
-	lda VICII_MEMCONTROL
-	and #%00001111
-	ora R0
-	sta VICII_MEMCONTROL
-    IF TARGET == c64
-	import I_RESET_SCRVECTORS
-	jsr RESET_SCRVECTORS
-	ELSE
-    jsr $CA24
-    jsr KERNAL_HOME
+      asl
+      asl
+      sta KERNAL_SCREEN_ADDR
+      pha
+      lda CIA_DIRECTIONALR
+      and #%00000011
+      eor #%00000011
+      REPEAT 6
+        asl
+      REPEND
+      adc KERNAL_SCREEN_ADDR
+      sta KERNAL_SCREEN_ADDR
+      pla
+      asl
+      asl
+      sta R0
+      lda VICII_MEMCONTROL
+      and #%00001111
+      ora R0
+      sta VICII_MEMCONTROL
+        IF TARGET == c64
+          import I_RESET_SCRVECTORS
+          jsr RESET_SCRVECTORS
+        ELSE
+          jsr $CA24
+          jsr KERNAL_HOME
+        ENDIF
     ENDIF
-    ENDIF
+    
 	ENDM
 	
 	IFCONST I_RESET_SCRVECTORS_IMPORTED

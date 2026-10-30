@@ -26,7 +26,12 @@ bool useSound = false;
 bool zerofillVars = false;
 /** Whether to use ASCII mode instead of PETSCII */
 bool asciiMode = false;
-
+/** The ROM size for NES in kilobytes (16 or 32) */
+ubyte nesRomSize = 16;
+/** The RAM size for NES in kilobytes (1, 2, 4, 8) */
+ubyte nesRamSize = 0;
+/** The char ROM file to add to NES cart image */
+string nesCharRomFile = "";
 
 /**
  * Set implicit start address based on other options
@@ -77,7 +82,8 @@ public void setStartAddress()
     }
     else if (target == "nes")
     {
-		startAddress = 0x8000;
+		import std.stdio; writefln("ROM size is %d", nesRomSize);
+		startAddress = nesRomSize == 32 ? 0x8000 : 0xC000;
 	}
     else if (startAddress == -1)
     {
@@ -155,5 +161,28 @@ public void setEndAddress()
     {
         stderr.writeln("Invalid max address: " ~ to!string(topAddress));
         exit(1);
+    }
+}
+
+/**
+ * Returns the family of computers the target belongs to
+ */
+public string getTargetFamily(string target)
+{
+    if (target[0 .. 3] == "pet")
+    {
+        return "pet";
+    }
+    else if (target[0 .. 3] == "vic")
+    {
+        return "vic20";
+    }
+    else if (target == "c16" || target == "cplus4")
+    {
+        return "c264";
+    }
+    else
+    {
+        return target;
     }
 }

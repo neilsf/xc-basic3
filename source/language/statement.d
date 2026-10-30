@@ -4,7 +4,7 @@ import pegged.grammar;
 import compiler.compiler;
 import std.string, std.conv, std.stdio, std.file, std.path;
 
-import statement;
+import statement, globals;
 
 /** Returns a matching Statement object for an AST node */
 Statement stmtFactory(ParseTree node, Compiler compiler)
@@ -44,6 +44,8 @@ interface StatementInterface
 {
     /** Compiles given AST to intermediate code */
     public void process();
+    /** Whether the statement is supported on the current target */
+    protected bool isTargetCompatible();
 }
 
 abstract class Statement : StatementInterface
@@ -57,6 +59,10 @@ abstract class Statement : StatementInterface
         this.node = node;
         this.compiler = compiler;
         this.dumpLabels();
+        if (!this.isTargetCompatible())
+        {
+			compiler.displayError("Statement not supported by target " ~ target);
+		}
     }
 
     protected void appendCode(string code)
@@ -70,4 +76,9 @@ abstract class Statement : StatementInterface
     {
         this.compiler.dumpLabels();
     }
+    
+    protected bool isTargetCompatible()
+    {
+		return true;
+	}
 }

@@ -114,7 +114,7 @@ SUB LOAD_PALETTE(addr AS WORD) SHARED STATIC
 	END ASM
 END SUB
 
-SUB MEMCPYMV (srcAddr AS WORD, targetAddr AS WORD, cntBytes AS WORD) SHARED STATIC
+SUB MEMCPYMV (srcAddr AS WORD FAST, targetAddr AS WORD, cntBytes AS WORD) SHARED STATIC
 	ASM
 		lda PPUCTRL_SHADOW
 		and #%11111011
@@ -130,6 +130,7 @@ SUB MEMCPYMV (srcAddr AS WORD, targetAddr AS WORD, cntBytes AS WORD) SHARED STAT
 		ldy #0
 .loop1
 		lda ({srcAddr}),y
+		sta PPUDATA
 		iny
 		cpy {cntBytes}
 		bne .loop1
@@ -149,6 +150,7 @@ SUB MEMCPYMV (srcAddr AS WORD, targetAddr AS WORD, cntBytes AS WORD) SHARED STAT
 		ldy #0
 .loop2i
 		lda ({srcAddr}),y
+		sta PPUDATA
 		iny
 		bne .loop2i
 		inx

@@ -40,6 +40,9 @@ TED_CRSR_HI		 EQU $FF0C
 
 TABWIDTH		 EQU 10
 
+; NES Nametable base address
+NAMETABLE_ADDR EQU $2000
+
 	; Print byte on stack as PETSCII string
 	MAC printbyte ; @pull
 	import I_STDLIB_PRINT_BYTE
@@ -285,6 +288,8 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
     
     IF TARGET == nes
       import I_CALC_NAMETBLADDR
+      sta R2 + 1 ; Put nametable addr to R2 HB so that << 2 instead << 10
+      pla
       sta R0
       pla
       tax
@@ -379,6 +384,8 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
     
     IF TARGET == nes
       import I_CALC_NAMETBLADDR
+      sta R2 + 1 ; Put nametable addr to R2 HB so that << 2 instead << 10
+      pla
       sta R0 ; Row
       pla    ; Col
       tax
@@ -517,6 +524,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 	ENDM
 	
   ; (NES) Calculates a nametable pointer for a screen position
+  ; Nametable no in R3
   ; Row number in R0
   ; Col number in X
   ; Outputs pointer in R0
@@ -524,17 +532,21 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
 CALC_NAMETBLADDR SUBROUTINE
     lda #$00
     sta R0 + 1
-    REPEAT 5
+    REPEAT 5  ; R0 *= 32
       asl R0
       rol R0 + 1
+    REPEND
+    REPEAT 2  ; R2 *= 1024
+      asl R2 + 1
     REPEND
     txa ; Col
     clc
     adc R0
-    adc CURNAMTBL_ADDR
+    adc #<NAMETABLE_ADDR
     sta R0
     lda R0 + 1
-    adc CURNAMTBL_ADDR + 1
+    adc #>NAMETABLE_ADDR
+    adc R3
     sta R0 + 1
     rts
   ENDIF

@@ -5,6 +5,10 @@ import language.statement, language.expression;
 import compiler.compiler, compiler.type;
 import pegged.grammar;
 
+import std.format;
+
+import globals;
+
 /** Parses and compiles a CHARAT statement */
 class Charat_stmt : Statement
 {
@@ -18,16 +22,24 @@ class Charat_stmt : Statement
     void process()
     {
         ParseTree argList = this.node.children[0].children[0];
-        Expression[4] e;
-        Type[4] expectedTypes;
-        for (int i = 0; i < 4; i++)
+        Expression[5] e;
+        Type[5] expectedTypes;
+        for (int i = 0; i < 5; i++)
         {
             expectedTypes[i] = compiler.getTypes().get(Type.UINT8);
         }
         const ulong argsCount = argList.children.length;
-        if (argsCount < 3 || argsCount > 4)
+        const ulong minArgsCount = target == "nes" ? 4 : 3;
+        const ulong maxArgsCount = target == "nes" ? 5 : 4;
+        if (argsCount < minArgsCount || argsCount > maxArgsCount)
         {
-            compiler.displayError("Wrong number of arguments (expected 3 or 4)");
+            compiler.displayError(
+				format(
+					"Wrong number of arguments (expected %s or %s)",
+					minArgsCount,
+					maxArgsCount
+				)
+			);
         }
         for (int i = 0; i < argsCount; i++)
         {
@@ -35,13 +47,29 @@ class Charat_stmt : Statement
             e[i].setExpectedType(expectedTypes[i]);
             e[i].eval();
         }
-        if (argsCount == 4)
-        {
-            appendCode(e[3].toString());
-        }
-        appendCode(e[2].toString());
-        appendCode(e[0].toString());
-        appendCode(e[1].toString());
-        appendCode("    charat " ~ (argsCount == 4 ? "1" : "0") ~ "\n");
+        if (target == "nes")
+        {	// Argument push order: [color,] sc, x, y, namtbl
+			if (argsCount == 5)
+			{
+				appendCode(e[4].toString());
+			}
+			appendCode(e[3].toString());
+			appendCode(e[1].toString());
+			appendCode(e[2].toString());
+			appendCode(e[0].toString());
+		}
+		else
+		{	// Argument push order: [color,] sc, x, y
+			if (argsCount == 4)
+			{
+				appendCode(e[3].toString());
+			}
+			appendCode(e[2].toString());
+			appendCode(e[0].toString());
+			appendCode(e[1].toString());
+		}
+        appendCode("    charat "
+					~ (argsCount == maxArgsCount ? "1" : "0")
+					~ "\n");
     }
 }

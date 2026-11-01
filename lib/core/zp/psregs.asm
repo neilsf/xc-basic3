@@ -47,12 +47,10 @@ FC EQU R0 + 19
 ; PPU Shadow registers
 PPUCTRL_SHADOW EQU R0 + 20
 PPUMASK_SHADOW EQU R0 + 21
-CURNAMTBL_ADDR EQU R0 + 22
-CURNAMTBL_ADDH EQU R0 + 23
-XSCROLL        EQU R0 + 24
-YSCROLL        EQU R0 + 25
-SCROLL9BITS    EQU R0 + 26
-EOZ            SET R0 + 27
+XSCROLL        EQU R0 + 22
+YSCROLL        EQU R0 + 23
+SCROLL9BITS    EQU R0 + 24
+EOZ            SET R0 + 25
   ENDIF
 
 	; Push pseudo-registers onto stack

@@ -28,6 +28,36 @@ SUB SPRITES_ENABLE(is_enabled AS BYTE) SHARED STATIC
 	END ASM
 END SUB
 
+SUB SPRITES_SET_PATTERNTBL(tbl_no AS BYTE) SHARED STATIC
+	ASM
+		lda PPUCTRL_SHADOW
+		and #%11110111
+		sta PPUCTRL_SHADOW
+		lda {tbl_no}
+		REPEAT 3
+			asl
+		REPEND
+		ora PPUCTRL_SHADOW
+		sta PPUCTRL_SHADOW
+		sta PPUCTRL
+	END ASM
+END SUB
+
+SUB SPRITES_SET_DBLHEIGHT(is_enabled AS BYTE) SHARED STATIC
+	ASM
+		lda PPUCTRL_SHADOW
+		and #%11011111
+		sta PPUCTRL_SHADOW
+		lda {is_enabled}
+		REPEAT 5
+			asl
+		REPEND
+		ora PPUCTRL_SHADOW
+		sta PPUCTRL_SHADOW
+		sta PPUCTRL
+	END ASM
+END SUB
+
 SUB BG_ENABLE(is_enabled AS BYTE) SHARED STATIC
 	ASM
 		lda PPUMASK_SHADOW
@@ -40,6 +70,21 @@ SUB BG_ENABLE(is_enabled AS BYTE) SHARED STATIC
 		ora PPUMASK_SHADOW
 		sta PPUMASK_SHADOW
 		sta PPUMASK
+	END ASM
+END SUB
+
+SUB BG_SET_PATTERNTBL(tbl_no AS BYTE) SHARED STATIC
+	ASM
+		lda PPUCTRL_SHADOW
+		and #%11101111
+		sta PPUCTRL_SHADOW
+		lda {tbl_no}
+		REPEAT 4
+			asl
+		REPEND
+		ora PPUCTRL_SHADOW
+		sta PPUCTRL_SHADOW
+		sta PPUCTRL
 	END ASM
 END SUB
 
@@ -183,5 +228,73 @@ SUB VMEMSET (vAddr AS WORD, cntBytes AS WORD, value AS BYTE) SHARED STATIC
 		dey
 		cpy #$ff
 		bne .loop
+	END ASM
+END SUB
+
+SUB DRAW_ROW (nametblNo AS BYTE, x AS BYTE, y AS BYTE, srcAddr AS WORD, cntBytes AS BYTE) SHARED STATIC
+	ASM
+		ldx NEXTBUFADDR
+		beq .q
+		lda #1
+		sta $00,x
+		lda {nametblNo}
+		sta R3
+		ldy {x}
+		lda {y}
+		sta R0
+		import I_CALC_NAMETBLADDR
+		jsr CALC_NAMETBLADDR
+		inx
+		lda R0 + 1
+		sta $00,x
+		inx
+		lda R0
+		sta $00,x
+		inx
+		lda {srcAddr}
+		sta $00,x
+		inx
+		lda {srcAddr} + 1
+		sta $00,x
+		inx
+		lda {cntBytes}
+		sta $00,x
+		inx
+		stx NEXTBUFADDR
+.q		
+	END ASM
+END SUB
+
+SUB DRAW_COL (nametblNo AS BYTE, x AS BYTE, y AS BYTE, srcAddr AS WORD, cntBytes AS BYTE) SHARED STATIC
+	ASM
+		ldx NEXTBUFADDR
+		beq .q
+		lda #$FF
+		sta $00,x
+		lda {nametblNo}
+		sta R3
+		ldy {x}
+		lda {y}
+		sta R0
+		import I_CALC_NAMETBLADDR
+		jsr CALC_NAMETBLADDR
+		inx
+		lda R0 + 1
+		sta $00,x
+		inx
+		lda R0
+		sta $00,x
+		inx
+		lda {srcAddr}
+		sta $00,x
+		inx
+		lda {srcAddr} + 1
+		sta $00,x
+		inx
+		lda {cntBytes}
+		sta $00,x
+		inx
+		stx NEXTBUFADDR
+.q		
 	END ASM
 END SUB

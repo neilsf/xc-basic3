@@ -50,7 +50,14 @@ PPUMASK_SHADOW EQU R0 + 21
 XSCROLL        EQU R0 + 22
 YSCROLL        EQU R0 + 23
 SCROLL9BITS    EQU R0 + 24
-EOZ            SET R0 + 25
+NEXTBUFADDR    EQU R0 + 25
+EOZ            SET R0 + 26
+; Draw buffer (4x6 bytes)
+; <0=empty, 1=row, 255=col>,
+; <VRAM addr H-L>
+; <RAM addr L-H>
+; <cntBytes>
+DRAW_BUFFER   EQU $E8
   ENDIF
 
 	; Push pseudo-registers onto stack

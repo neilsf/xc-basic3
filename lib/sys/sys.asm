@@ -84,10 +84,17 @@ NES_RESET	SUBROUTINE
 	stx PPUCTRL
 	stx PPUCTRL_SHADOW
   stx PPUSCROLL
+  stx DRAW_BUFFER
+  stx DRAW_BUFFER + 6
+  stx DRAW_BUFFER + 12
+  stx DRAW_BUFFER + 18
   stx $4010    ; disable DMC IRQs
 	lda #%00000100
 	stx PPUMASK
 	stx PPUMASK_SHADOW
+  lda #DRAW_BUFFER
+  sta NEXTBUFADDR
+  
 
 .vblankwait1:       ; First wait for vblank to make sure PPU is ready
 	bit $2002

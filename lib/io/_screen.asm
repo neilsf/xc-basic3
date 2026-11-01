@@ -292,7 +292,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
       pla
       sta R0
       pla
-      tax
+      tay
       jsr CALC_NAMETBLADDR
       
       pla ; Char
@@ -388,7 +388,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
       pla
       sta R0 ; Row
       pla    ; Col
-      tax
+      tay
       jsr CALC_NAMETBLADDR
       ; Set address increment to 1
       lda PPUCTRL_SHADOW
@@ -526,7 +526,7 @@ STDLIB_PRINT_DECIMAL SUBROUTINE
   ; (NES) Calculates a nametable pointer for a screen position
   ; Nametable no in R3
   ; Row number in R0
-  ; Col number in X
+  ; Col number in Y
   ; Outputs pointer in R0
   IFCONST I_CALC_NAMETBLADDR_IMPORTED
 CALC_NAMETBLADDR SUBROUTINE
@@ -539,7 +539,7 @@ CALC_NAMETBLADDR SUBROUTINE
     REPEAT 2  ; R2 *= 1024
       asl R2 + 1
     REPEND
-    txa ; Col
+    tya ; Col
     clc
     adc R0
     adc #<NAMETABLE_ADDR

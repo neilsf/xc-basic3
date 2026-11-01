@@ -27,7 +27,6 @@ class Incbin_stmt : Statement
             compiler.displayError("INCBIN: error opening file " ~ fileName);
         }
         asmCode ~= "\"" ~ fileName ~ "\"";
-        import std.stdio; writeln(this.node);
         if (incbinStatementNode.children.length > 1)
         {
             ParseTree offsetNode = incbinStatementNode.children[1];

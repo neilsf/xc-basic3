@@ -94,3 +94,29 @@ OUTPUTB EQU $9120
 	ENDIF
 	ENDM
 	ENDIF
+  
+  ; Read Joypad on NES
+  ; Taken from https://www.nesdev.org/wiki/Controller_reading_code
+  IF TARGET == nes
+    MAC F_joy_byte ; @pull @push
+JOYPAD1 EQU $4016
+      ldx #1
+      stx JOYPAD1
+      stx R0
+      dex
+      stx JOYPAD1
+      IF !FPULL
+        pla
+      ENDIF
+      tax
+.l1:
+      lda JOYPAD1 - 1,x
+      lsr
+      rol R0
+      bcc .l1
+      lda R0
+      IF !FPUSH
+        pha
+      ENDIF
+    ENDM
+  ENDIF

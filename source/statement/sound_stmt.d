@@ -131,6 +131,22 @@ class Voice_stmt : Statement
                 immutable string wave = toUpper(node.matches[1]);
                 appendCode("    voice_wave " ~ voiceNo ~ "," ~ wave ~ "\n");
                 break;
+                
+            case "XCBASIC.VoiceSubCmdDuration":
+				Expression duration = new Expression(node.children[0], compiler);
+                duration.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                duration.eval();
+                appendCode(duration.toString());
+                appendCode("    voice_duration " ~ voiceNo ~ "\n");
+                break;
+            
+            case "XCBASIC.VoiceSubCmdEnvelope":
+				Expression envelope = new Expression(node.children[0], compiler);
+                envelope.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                envelope.eval();
+                appendCode(envelope.toString());
+                appendCode("    voice_envelope " ~ voiceNo ~ "\n");
+                break;
             }
         }
         appendCode("    savevoice\n");

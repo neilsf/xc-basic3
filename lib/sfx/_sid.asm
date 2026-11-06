@@ -125,12 +125,6 @@ FMVOLSHAD4  DC.B 0
 	MAC savevoice
 	ENDM
 
-	MAC loadvoice
-	ENDM
-
-	MAC savevoice
-	ENDM
-
 	MAC voice_on
 	lda VOICE{1}WF
 	ora #1
@@ -157,16 +151,16 @@ FMVOLSHAD4  DC.B 0
 	ENDIF	
 	ENDM
 	
-	; e.g voice_wave 1,SAW
-	; e.g voice_wave 2,PULSE
-	MAC voice_wave
-	lda VOICE{1}WF
-	and #%00001111
-    ora #WAVE{2}
-	sta VOICE{1}WF
-	sta V{1}CTRL
-	ENDM
-	
+  ; e.g voice_wave 1,SAW
+  ; e.g voice_wave 2,PULSE
+  MAC voice_wave
+  lda VOICE{1}WF
+  and #%00001111
+  ora #WAVE{2}
+  sta VOICE{1}WF
+  sta V{1}CTRL
+  ENDM
+  
 	MAC voice_pulse ; @pull
 .REG EQU V{1}PULS
 	IF !FPULL
@@ -281,7 +275,7 @@ FMVOLSHAD4  DC.B 0
 	sta V1FREQ,x
 	dex
 	bpl .l1
-    ldx #19
+  ldx #19
 .l2
 	sta VOICE1WF,x
 	dex
@@ -297,7 +291,7 @@ FMVOLSHAD4  DC.B 0
 	ENDM
 
 	MAC voice_volume ; @pull
-	IF !FPULL
+    IF !FPULL
         pla
     ENDIF
 	ENDM

@@ -1,5 +1,3 @@
-	
-	
 	IF TARGET == c64 || TARGET == c128 || TARGET == mega65
 	INCLUDE "sfx/_sid.asm"
 	ENDIF
@@ -15,5 +13,8 @@
 	IF TARGET == x16
 	INCLUDE "sfx/_vera.asm"
 	ENDIF
-	
-	
+  
+  IF TARGET == nes
+  INCLUDE "sfx/_apu.asm"
+  ENDIF
+  

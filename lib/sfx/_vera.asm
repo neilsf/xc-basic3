@@ -118,7 +118,7 @@ CURR_VOICE   EQU R4
 
     ; Unsupported on X16
 	
-	MAC voice_adsr ; @pull
+	MAC voice_envelope ; @pull
 	IF !FPULL
 	pla
 	ENDIF

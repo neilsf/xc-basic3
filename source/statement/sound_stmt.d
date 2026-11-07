@@ -1,6 +1,6 @@
 module statement.sound_stmt;
 
-import std.string, std.conv;
+import std.string, std.conv, std.format, std.uni;
 
 import pegged.grammar;
 
@@ -82,20 +82,35 @@ class Voice_stmt : Statement
                 break;
 
             case "XCBASIC.VoiceSubCmdADSR":
-                if (node.children[0].children.length != 4)
+				const string cmdName = node.matches[0].toUpper();
+				if (cmdName == "ADSR")
+				{
+					compiler.displayWarning(
+						"ADSR is deprecated and will be removed in a future version. Use ENVELOPE instead."
+					);
+				}
+				ulong expParams = target == "nes" ? 1 : 4;
+				ulong gotParams = node.children[0].children.length;
+                if (gotParams != expParams)
                 {
-                    compiler.displayError("VOICE ADSR expects exactly 4 parameters, got " ~ to!string(
-                            node.children[0].children.length));
+                    compiler.displayError(
+						format(
+							"%s expects exactly %s parameter(s), got %s",
+							cmdName,
+							expParams,
+							gotParams
+						)
+					);
                 }
                 Expression val;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < gotParams; i++)
                 {
                     val = new Expression(node.children[0].children[i], compiler);
                     val.setExpectedType(compiler.getTypes().get(Type.UINT8));
                     val.eval();
                     appendCode(val.toString());
                 }
-                appendCode("    voice_adsr " ~ voiceNo ~ "\n");
+                appendCode("    voice_envelope " ~ voiceNo ~ "\n");
                 break;
 
             case "XCBASIC.VoiceSubCmdTone":
@@ -138,14 +153,6 @@ class Voice_stmt : Statement
                 duration.eval();
                 appendCode(duration.toString());
                 appendCode("    voice_duration " ~ voiceNo ~ "\n");
-                break;
-            
-            case "XCBASIC.VoiceSubCmdEnvelope":
-				Expression envelope = new Expression(node.children[0], compiler);
-                envelope.setExpectedType(compiler.getTypes().get(Type.UINT8));
-                envelope.eval();
-                appendCode(envelope.toString());
-                appendCode("    voice_envelope " ~ voiceNo ~ "\n");
                 break;
             }
         }

@@ -124,16 +124,14 @@ void main(string[] args)
             Voice_stmt <- "voice"i :WS Expression (:WS VoiceSubCmd)+
                 VoiceSubCmd <- VoiceSubCmdOnOff / VoiceSubCmdADSR /
                               VoiceSubCmdTone / VoiceSubCmdWave / VoiceSubCmdPulse /
-                              VoiceSubCmdFilterOnOff / VoiceSubCmdDuration /
-                              VoiceSubCmdEnvelope
+                              VoiceSubCmdFilterOnOff / VoiceSubCmdDuration
                     VoiceSubCmdOnOff <- "on"i / "off"i
-                    VoiceSubCmdADSR <- "adsr"i :WS ExprList
+                    VoiceSubCmdADSR <- ("adsr"i / "envelope"i) :WS ExprList
                     VoiceSubCmdTone <- "tone"i :WS Expression
                     VoiceSubCmdWave <- "wave"i :WS ("saw"i / "tri"i / "pulse"i / "noise"i )
                     VoiceSubCmdPulse <- "pulse"i :WS Expression
                     VoiceSubCmdFilterOnOff <- "filter"i :WS ("on"i / "off"i)
                     VoiceSubCmdDuration <- "duration"i :WS Expression
-                    VoiceSubCmdEnvelope <- "envelope"i :WS Expression
                     VoiceSubCmdSweep <- "sweep"i :WS ("up"i / "down"i) :WS ExprList
             Filter_stmt <- "filter"i (:WS FilterSubCmd)+
                 FilterSubCmd <- FilterSubCmdCutoff / FilterSubCmdResonance /

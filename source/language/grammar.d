@@ -125,7 +125,6 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
         rules["VoiceSubCmdPulse"] = toDelegate(&VoiceSubCmdPulse);
         rules["VoiceSubCmdFilterOnOff"] = toDelegate(&VoiceSubCmdFilterOnOff);
         rules["VoiceSubCmdDuration"] = toDelegate(&VoiceSubCmdDuration);
-        rules["VoiceSubCmdEnvelope"] = toDelegate(&VoiceSubCmdEnvelope);
         rules["VoiceSubCmdSweep"] = toDelegate(&VoiceSubCmdSweep);
         rules["Filter_stmt"] = toDelegate(&Filter_stmt);
         rules["FilterSubCmd"] = toDelegate(&FilterSubCmd);
@@ -3455,7 +3454,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdEnvelope), "XCBASIC.VoiceSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd")(p);
         }
         else
         {
@@ -3463,7 +3462,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdEnvelope), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
                 memo[tuple(`VoiceSubCmd`, p.end)] = result;
                 return result;
             }
@@ -3474,12 +3473,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdEnvelope), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdEnvelope), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string VoiceSubCmd(GetName g)
@@ -3527,7 +3526,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(p);
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.caseInsensitiveLiteral!("envelope")), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(p);
         }
         else
         {
@@ -3535,7 +3534,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.caseInsensitiveLiteral!("envelope")), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(p);
                 memo[tuple(`VoiceSubCmdADSR`, p.end)] = result;
                 return result;
             }
@@ -3546,12 +3545,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.caseInsensitiveLiteral!("envelope")), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.or!(pegged.peg.caseInsensitiveLiteral!("adsr"), pegged.peg.caseInsensitiveLiteral!("envelope")), pegged.peg.discard!(WS), ExprList), "XCBASIC.VoiceSubCmdADSR"), "VoiceSubCmdADSR")(TParseTree("", false,[], s));
         }
     }
     static string VoiceSubCmdADSR(GetName g)
@@ -3737,42 +3736,6 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     static string VoiceSubCmdDuration(GetName g)
     {
         return "XCBASIC.VoiceSubCmdDuration";
-    }
-
-    static TParseTree VoiceSubCmdEnvelope(TParseTree p)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("envelope"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdEnvelope")(p);
-        }
-        else
-        {
-            if (auto m = tuple(`VoiceSubCmdEnvelope`, p.end) in memo)
-                return *m;
-            else
-            {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("envelope"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdEnvelope"), "VoiceSubCmdEnvelope")(p);
-                memo[tuple(`VoiceSubCmdEnvelope`, p.end)] = result;
-                return result;
-            }
-        }
-    }
-
-    static TParseTree VoiceSubCmdEnvelope(string s)
-    {
-        if(__ctfe)
-        {
-            return         pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("envelope"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdEnvelope")(TParseTree("", false,[], s));
-        }
-        else
-        {
-            forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.and!(pegged.peg.caseInsensitiveLiteral!("envelope"), pegged.peg.discard!(WS), Expression), "XCBASIC.VoiceSubCmdEnvelope"), "VoiceSubCmdEnvelope")(TParseTree("", false,[], s));
-        }
-    }
-    static string VoiceSubCmdEnvelope(GetName g)
-    {
-        return "XCBASIC.VoiceSubCmdEnvelope";
     }
 
     static TParseTree VoiceSubCmdSweep(TParseTree p)

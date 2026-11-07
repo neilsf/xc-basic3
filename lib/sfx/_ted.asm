@@ -94,7 +94,7 @@ V2WAVE DC.B WAVEPULSE
 	ENDIF
 	ENDM
 	
-	MAC voice_adsr ; @pull
+	MAC voice_envelope ; @pull
 	IF !FPULL
 	pla
 	ENDIF

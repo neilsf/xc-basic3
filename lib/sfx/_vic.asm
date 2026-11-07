@@ -82,7 +82,7 @@ MASTVOL EQU $900E
 	ENDIF
 	ENDM
 	
-	MAC voice_adsr ; @pull
+	MAC voice_envelope ; @pull
 	IF !FPULL
 	pla
 	ENDIF

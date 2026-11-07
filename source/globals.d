@@ -82,9 +82,8 @@ public void setStartAddress()
     }
     else if (target == "nes")
     {
-		import std.stdio; writefln("ROM size is %d", nesRomSize);
-		startAddress = nesRomSize == 32 ? 0x8000 : 0xC000;
-	}
+	startAddress = nesRomSize == 32 ? 0x8000 : 0xC000;
+    }
     else if (startAddress == -1)
     {
         startAddress = 0x1000;

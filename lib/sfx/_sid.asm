@@ -175,7 +175,7 @@ FMVOLSHAD4  DC.B 0
 	ENDM
 	
 	; Push order: A D S R
-	MAC voice_adsr ; @pull
+	MAC voice_envelope ; @pull
 	IF !FPULL
 	pla ; R
 	ENDIF	

@@ -125,6 +125,7 @@ void main(string[] args)
                 VoiceSubCmd <- VoiceSubCmdOnOff / VoiceSubCmdADSR /
                               VoiceSubCmdTone / VoiceSubCmdWave / VoiceSubCmdPulse /
                               VoiceSubCmdFilterOnOff / VoiceSubCmdDuration
+                              / VoiceSubCmdSweep
                     VoiceSubCmdOnOff <- "on"i / "off"i
                     VoiceSubCmdADSR <- ("adsr"i / "envelope"i) :WS ExprList
                     VoiceSubCmdTone <- "tone"i :WS Expression

@@ -59,7 +59,9 @@ APU_MASTER_CTRL  EQU $4015
         pla
       ENDIF
       sta .LO
-      pla ; discard HB
+      IF !FPULL
+        pla ; discard HB
+      ENDIF
       lda .HIS
       sta .HI
     ELSE
@@ -146,13 +148,17 @@ APU_MASTER_CTRL  EQU $4015
     ENDIF
 	ENDM
   
-  MAC voice_envelope
+  MAC voice_envelope ; @pull
 .REG EQU V{1}ENVLP
 .SRE EQU V{1}ENVLP_SHADOW   
+    IF !FPULL
+      pla
+    ENDIF
+    tay
     lda .SRE
     and #%00001111
     sta .SRE
-    pla
+    tya
     ora .SRE
     sta .SRE
     sta .REG
@@ -169,3 +175,25 @@ APU_MASTER_CTRL  EQU $4015
     sta APU_NOISE_LENCT
     sta APU_MASTER_CTRL
 	ENDM
+  
+  MAC voice_sweep ; @pull
+.REG EQU APU_PULSE{2}_SWEEP
+    IF !FPULL
+      pla ; Clock rate
+    ENDIF
+    REPEAT 4
+      asl
+    REPEND
+    IF {1} == "UP"
+      ldx #%10001000
+    ELSE
+      ldx #%10000000
+    ENDIF
+    stx R0
+    ora R0
+    sta R0
+    pla
+    and #%00000111
+    ora R0
+    sta .REG
+  ENDM

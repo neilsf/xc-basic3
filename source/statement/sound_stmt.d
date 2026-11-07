@@ -148,12 +148,40 @@ class Voice_stmt : Statement
                 break;
                 
             case "XCBASIC.VoiceSubCmdDuration":
+				if (target != "nes")
+				{
+					compiler.displayError(format("DURATION not supported on %s", target));
+				}
 				Expression duration = new Expression(node.children[0], compiler);
                 duration.setExpectedType(compiler.getTypes().get(Type.UINT8));
                 duration.eval();
                 appendCode(duration.toString());
                 appendCode("    voice_duration " ~ voiceNo ~ "\n");
                 break;
+                
+            case "XCBASIC.VoiceSubCmdSweep":
+				if (target != "nes")
+				{
+					compiler.displayError(format("SWEEP not supported on %s", target));
+				}
+				immutable string upOrDown = toUpper(node.matches[1]);
+				ulong gotParams = node.children[0].children.length;
+                if (gotParams != 2)
+                {
+                    compiler.displayError(
+						format("SWEEP expects exactly 2 parameters, got %s", gotParams)
+					);
+                }
+                Expression val;
+                for (int i = 0; i < gotParams; i++)
+                {
+                    val = new Expression(node.children[0].children[i], compiler);
+                    val.setExpectedType(compiler.getTypes().get(Type.UINT8));
+                    val.eval();
+                    appendCode(val.toString());
+                }
+                appendCode(format("    voice_sweep \"%s\", %s\n", upOrDown, voiceNo));
+				break;
             }
         }
         appendCode("    savevoice\n");

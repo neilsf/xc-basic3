@@ -3454,7 +3454,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd")(p);
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdSweep), "XCBASIC.VoiceSubCmd")(p);
         }
         else
         {
@@ -3462,7 +3462,7 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
                 return *m;
             else
             {
-                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
+                TParseTree result = hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdSweep), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(p);
                 memo[tuple(`VoiceSubCmd`, p.end)] = result;
                 return result;
             }
@@ -3473,12 +3473,12 @@ Simplexp: Simplexp, Term, Factor, Expression, Relation
     {
         if(__ctfe)
         {
-            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
+            return         pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdSweep), "XCBASIC.VoiceSubCmd")(TParseTree("", false,[], s));
         }
         else
         {
             forgetMemo();
-            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
+            return hooked!(pegged.peg.defined!(pegged.peg.or!(VoiceSubCmdOnOff, VoiceSubCmdADSR, VoiceSubCmdTone, VoiceSubCmdWave, VoiceSubCmdPulse, VoiceSubCmdFilterOnOff, VoiceSubCmdDuration, VoiceSubCmdSweep), "XCBASIC.VoiceSubCmd"), "VoiceSubCmd")(TParseTree("", false,[], s));
         }
     }
     static string VoiceSubCmd(GetName g)
